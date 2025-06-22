@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VL - Personal Profile</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom, #0a0f1c, #111a2d);
+      color: #00ffff;
+    }
+    header {
+      background: linear-gradient(to right, #081021, #0c1b33);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 2px solid #00ffff33;
+      box-shadow: 0 0 10px #00ffff44;
+    }
+    .menu-toggle {
+      font-size: 1.5rem;
+      background: none;
+      border: none;
+      color: #00ffff;
+      cursor: pointer;
+      display: none;
+    }
+    nav {
+      display: flex;
+    }
+    nav ul {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+    nav ul li {
+      position: relative;
+    }
+    nav ul li a {
+      color: #00ffff;
+      text-decoration: none;
+      transition: color 0.3s;
+      cursor: pointer;
+      padding: 0.5rem 1rem;
+      display: inline-block;
+    }
+    nav ul li:hover > a {
+      color: #00aaff;
+    }
+    nav ul li ul {
+      display: none;
+      position: absolute;
+      top: 120%;
+      left: 0;
+      background: #0c1b33;
+      padding: 0.5rem 0;
+      border-radius: 6px;
+      box-shadow: 0 4px 10px rgba(0, 255, 255, 0.2);
+    }
+    nav ul li:hover > ul {
+      display: block;
+    }
+    nav ul li ul li a {
+      display: block;
+      padding: 0.5rem 1rem;
+      color: #00ffff;
+    }
+    nav ul li ul li a:hover {
+      background: #112244;
+    }
+
+    @media (max-width: 768px) {
+      .menu-toggle {
+        display: block;
+      }
+      nav {
+        display: none;
+        width: 100%;
+      }
+      nav ul {
+        flex-direction: column;
+        gap: 0;
+        background: #0c1b33;
+        padding: 1rem;
+        border-top: 1px solid #00ffff33;
+      }
+      nav ul li {
+        width: 100%;
+      }
+      nav ul li a {
+        width: 100%;
+        padding: 1rem;
+      }
+      nav.show {
+        display: block;
+      }
+    }
+
+    /* Iconized Dashboard */
+    .dashboard {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      padding: 4rem 2rem;
+      background-color: rgba(0, 0, 30, 0.2);
+      border-bottom: 1px solid #00ffff22;
+    }
+    .dashboard-content {
+      flex: 1;
+      min-width: 280px;
+    }
+    .nama-text {
+      font-size: 2.5rem;
+      color: #00ffff;
+    }
+    .nama-text span {
+      color: #fff;
+    }
+    .typing-desc {
+      margin-top: 1rem;
+      font-size: 1rem;
+      color: #ccc;
+      max-width: 500px;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 2px solid #00ffff;
+      width: 0;
+      animation: typingCut 3s steps(50, end) forwards, blinkCaret 0.7s step-end infinite;
+    }
+    @keyframes typingCut {
+      from { width: 0; }
+      to { width: 34ch; }
+    }
+    @keyframes blinkCaret {
+      0%, 100% { border-color: transparent; }
+      50% { border-color: #00ffff; }
+    }
+    .photo-glow {
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #0ff2, transparent 60%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+    }
+    .photo-glow img {
+      border-radius: 50%;
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>VL Profile</h1>
+    <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+    <nav id="navMenu">
+      <ul>
+        <li><a onclick="loadContent('dashboard')">📊 Dashboard</a></li>
+        <li><a onclick="loadContent('asset')">💰 Asset</a></li>
+        <li><a onclick="loadContent('service')">🛠️ Service</a></li>
+        <li><a onclick="loadContent('shop')">🛍️ Shop</a></li>
+        <li>
+          <a href="#">🎮 Game ▼</a>
+          <ul>
+            <li><a onclick="loadContent('catur')">♟️ Catur</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#">🧰 Tools ▼</a>
+          <ul>
+            <li><a onclick="loadContent('winrateml')">📈 Winrate Calculator</a></li>
+            <li><a onclick="loadContent('bmicalculator')">⚖️ BMI Calculator</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </header>
+
+  <main id="main-content">
+    <section class="dashboard">
+      <div class="dashboard-content">
+        <h2 class="nama-text">Vicky <span>Satria Lindy</span></h2>
+        <p class="typing-desc">Selamat datang orang gabut :D</p>
+      </div>
+      <div class="photo-glow">
+        <img src="https://i.ibb.co/6mNjg45/foto-vicky.png" alt="Foto Vicky">
+      </div>
+    </section>
+  </main>
+
+  <script>
+    function toggleMenu() {
+      const nav = document.getElementById('navMenu');
+      nav.classList.toggle('show');
+    }
+
+    function loadContent(page) {
+      const main = document.getElementById("main-content");
+      let icon = "📄";
+      if (page === "dashboard") icon = "📊";
+      if (page === "asset") icon = "💰";
+      if (page === "service") icon = "🛠️";
+      if (page === "shop") icon = "🛍️";
+      if (page === "catur") icon = "♟️";
+      if (page === "winrateml") icon = "📈";
+      if (page === "bmicalculator") icon = "⚖️";
+
+      main.innerHTML = `
+        <section style="padding: 4rem 2rem;">
+          <h2 style="font-size: 2rem; color: #00ffff;">${icon} Halaman: ${page}</h2>
+          <p style="color:#ccc;">Konten dari halaman <b>${page}</b> akan dimuat di sini...</p>
+        </section>
+      `;
+    }
+  </script>
+</body>
+</html>
