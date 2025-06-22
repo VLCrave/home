@@ -1,3 +1,8 @@
+function toggleSubmenu(element) {
+  const parentLi = element.parentElement;
+  parentLi.classList.toggle("open");
+}
+
 document.addEventListener("DOMContentLoaded", function () {
   const sidemenu = document.getElementById("sidemenu");
   const menuToggle = document.querySelector(".menu-toggle");
