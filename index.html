@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>VL - Personal Profile</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-+h4l6g34g4B7WQzXxWgNuT8ZXzchqv5rM2DwqMYFqIRiYrwK3FjNU+Jb1SPd6GnJXYPqKZElqflvGkLzW2J+JQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="style.css">
@@ -10,7 +10,7 @@
 <body>
   <header>
     <h1>VL Profile</h1>
-    <div class="menu-toggle" onclick="toggleMenu()">
+    <div class="menu-toggle">
       <span></span>
       <span></span>
       <span></span>
@@ -18,38 +18,34 @@
   </header>
 
   <nav id="sidemenu">
-  <ul>
-    <li><a onclick="loadContent('dashboard')"><i class="fas fa-home"></i> Dashboard</a></li>
-    <li><a onclick="loadContent('asset')"><i class="fas fa-coins"></i> Asset</a></li>
-    <li><a onclick="loadContent('service')"><i class="fas fa-cogs"></i> Service</a></li>
-    <li><a onclick="loadContent('shop')"><i class="fas fa-store"></i> Shop</a></li>
-
-    <!-- Game has submenu -->
-    <li class="has-submenu">
-      <a onclick="toggleSubmenu(this)"><i class="fas fa-gamepad"></i> Game <i class="fas fa-chevron-down dropdown-icon"></i></a>
-      <ul class="submenu">
-        <li><a onclick="loadContent('catur')"><i class="fas fa-chess"></i> Catur</a></li>
-      </ul>
-    </li>
-
-    <!-- Tools has submenu -->
-    <li class="has-submenu">
-      <a onclick="toggleSubmenu(this)"><i class="fas fa-wrench"></i> Tools <i class="fas fa-chevron-down dropdown-icon"></i></a>
-      <ul class="submenu">
-        <li><a onclick="loadContent('submenu1')"><i class="fas fa-toolbox"></i> Submenu 1</a></li>
-        <li><a onclick="loadContent('submenu2')"><i class="fas fa-screwdriver-wrench"></i> Submenu 2</a></li>
-        <li><a onclick="loadContent('submenu3')"><i class="fas fa-hammer"></i> Submenu 3</a></li>
-      </ul>
-    </li>
-  </ul>
-</nav>
+    <ul>
+      <li><a onclick="loadContent('dashboard')"><i class="fas fa-home"></i> Dashboard</a></li>
+      <li><a onclick="loadContent('asset')"><i class="fas fa-coins"></i> Asset</a></li>
+      <li><a onclick="loadContent('service')"><i class="fas fa-cogs"></i> Service</a></li>
+      <li><a onclick="loadContent('shop')"><i class="fas fa-store"></i> Shop</a></li>
+      <li class="has-submenu">
+        <a onclick="toggleSubmenu(this)"><i class="fas fa-gamepad"></i> Game <i class="fas fa-chevron-down dropdown-icon"></i></a>
+        <ul class="submenu">
+          <li><a onclick="loadContent('catur')"><i class="fas fa-chess"></i> Catur</a></li>
+        </ul>
+      </li>
+      <li class="has-submenu">
+        <a onclick="toggleSubmenu(this)"><i class="fas fa-wrench"></i> Tools <i class="fas fa-chevron-down dropdown-icon"></i></a>
+        <ul class="submenu">
+          <li><a onclick="loadContent('submenu1')"><i class="fas fa-toolbox"></i> Submenu 1</a></li>
+          <li><a onclick="loadContent('submenu2')"><i class="fas fa-screwdriver-wrench"></i> Submenu 2</a></li>
+          <li><a onclick="loadContent('submenu3')"><i class="fas fa-hammer"></i> Submenu 3</a></li>
+        </ul>
+      </li>
+    </ul>
+  </nav>
 
   <main id="main-content">
-    <section id="dashboard" class="dashboard">
+    <section class="dashboard">
       <div class="dashboard-content">
         <h2 class="nama-text">Vicky <span>Satria Lindy</span></h2>
         <p class="typing-desc animate">Seorang desainer grafis & kreator digital yang membentuk dan mengak.....</p>
-        <a href="#kerjasama">HIRE ME</a>
+        <a href="#kerjasama">JOIN US</a>
       </div>
       <div class="photo-glow">
         <img src="https://i.ibb.co/6mNjg45/foto-vicky.png" alt="Foto Vicky">
