@@ -1,147 +1,16 @@
-<!<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VL - Personal Profile</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-+h4l6g34g4B7WQzXxWgNuT8ZXzchqv5rM2DwqMYFqIRiYrwK3FjNU+Jb1SPd6GnJXYPqKZElqflvGkLzW2J+JQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #0d1117;
-      color: #00ffff;
-    }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 15px 20px;
-      background-color: #151c26;
-      position: fixed;
-      width: 100%;
-      z-index: 1001;
-    }
-
-    header h1 {
-      margin: 0;
-      font-size: 24px;
-    }
-
-    .menu-toggle {
-      cursor: pointer;
-      display: block;
-    }
-
-    .menu-toggle span {
-      display: block;
-      width: 25px;
-      height: 3px;
-      background-color: cyan;
-      margin: 5px 0;
-    }
-
-    #sidemenu {
-      position: fixed;
-      top: 60px;
-      left: -260px;
-      width: 250px;
-      height: 100%;
-      background-color: #0b1622;
-      transition: left 0.3s ease;
-      overflow-y: auto;
-      z-index: 1000;
-    }
-
-    #sidemenu.active {
-      left: 0;
-    }
-
-    #sidemenu ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-    }
-
-    #sidemenu li a {
-      display: block;
-      padding: 15px 20px;
-      text-decoration: none;
-      color: #00ffff;
-      transition: background 0.3s;
-    }
-
-    #sidemenu li a:hover {
-      background-color: #1c1c2b;
-    }
-
-    .has-submenu > ul {
-      display: none;
-      background-color: #0e1a28;
-    }
-
-    .has-submenu.open > ul {
-      display: block;
-    }
-
-    main {
-      padding: 80px 20px 20px 20px;
-      transition: margin-left 0.3s ease;
-    }
-
-    .dashboard-content {
-      margin-bottom: 20px;
-    }
-
-    .photo-glow img {
-      max-width: 150px;
-      border-radius: 50%;
-      border: 4px solid cyan;
-    }
-
-    .loader {
-      width: 40px;
-      height: 40px;
-      border: 5px solid #00ffff;
-      border-top-color: transparent;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-      margin: 50px auto;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    footer {
-      text-align: center;
-      padding: 20px;
-      font-size: 14px;
-      color: #aaa;
-      background: #151c26;
-    }
-
-    @media (min-width: 768px) {
-      #sidemenu {
-        left: 0;
-      }
-
-      main {
-        margin-left: 250px;
-      }
-
-      .menu-toggle {
-        display: none;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
   <header>
     <h1>VL Profile</h1>
-    <div class="menu-toggle">
+    <div class="menu-toggle" onclick="toggleMenu()">
       <span></span>
       <span></span>
       <span></span>
@@ -149,34 +18,38 @@
   </header>
 
   <nav id="sidemenu">
-    <ul>
-      <li><a onclick="loadContent('dashboard')"><i class="fas fa-home"></i> Dashboard</a></li>
-      <li><a onclick="loadContent('asset')"><i class="fas fa-coins"></i> Asset</a></li>
-      <li><a onclick="loadContent('service')"><i class="fas fa-cogs"></i> Service</a></li>
-      <li><a onclick="loadContent('shop')"><i class="fas fa-store"></i> Shop</a></li>
-      <li class="has-submenu">
-        <a onclick="toggleSubmenu(this)"><i class="fas fa-gamepad"></i> Game <i class="fas fa-chevron-down dropdown-icon"></i></a>
-        <ul class="submenu">
-          <li><a onclick="loadContent('catur')"><i class="fas fa-chess"></i> Catur</a></li>
-        </ul>
-      </li>
-      <li class="has-submenu">
-        <a onclick="toggleSubmenu(this)"><i class="fas fa-wrench"></i> Tools <i class="fas fa-chevron-down dropdown-icon"></i></a>
-        <ul class="submenu">
-          <li><a onclick="loadContent('submenu1')"><i class="fas fa-toolbox"></i> Submenu 1</a></li>
-          <li><a onclick="loadContent('submenu2')"><i class="fas fa-screwdriver-wrench"></i> Submenu 2</a></li>
-          <li><a onclick="loadContent('submenu3')"><i class="fas fa-hammer"></i> Submenu 3</a></li>
-        </ul>
-      </li>
-    </ul>
-  </nav>
+  <ul>
+    <li><a onclick="loadContent('dashboard')"><i class="fas fa-home"></i> Dashboard</a></li>
+    <li><a onclick="loadContent('asset')"><i class="fas fa-coins"></i> Asset</a></li>
+    <li><a onclick="loadContent('service')"><i class="fas fa-cogs"></i> Service</a></li>
+    <li><a onclick="loadContent('shop')"><i class="fas fa-store"></i> Shop</a></li>
+
+    <!-- Game has submenu -->
+    <li class="has-submenu">
+      <a onclick="toggleSubmenu(this)"><i class="fas fa-gamepad"></i> Game <i class="fas fa-chevron-down dropdown-icon"></i></a>
+      <ul class="submenu">
+        <li><a onclick="loadContent('catur')"><i class="fas fa-chess"></i> Catur</a></li>
+      </ul>
+    </li>
+
+    <!-- Tools has submenu -->
+    <li class="has-submenu">
+      <a onclick="toggleSubmenu(this)"><i class="fas fa-wrench"></i> Tools <i class="fas fa-chevron-down dropdown-icon"></i></a>
+      <ul class="submenu">
+        <li><a onclick="loadContent('submenu1')"><i class="fas fa-toolbox"></i> Submenu 1</a></li>
+        <li><a onclick="loadContent('submenu2')"><i class="fas fa-screwdriver-wrench"></i> Submenu 2</a></li>
+        <li><a onclick="loadContent('submenu3')"><i class="fas fa-hammer"></i> Submenu 3</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
 
   <main id="main-content">
-    <section class="dashboard">
+    <section id="dashboard" class="dashboard">
       <div class="dashboard-content">
         <h2 class="nama-text">Vicky <span>Satria Lindy</span></h2>
         <p class="typing-desc animate">Seorang desainer grafis & kreator digital yang membentuk dan mengak.....</p>
-        <a href="#kerjasama">JOIN US</a>
+        <a href="#kerjasama">HIRE ME</a>
       </div>
       <div class="photo-glow">
         <img src="https://i.ibb.co/6mNjg45/foto-vicky.png" alt="Foto Vicky">
@@ -188,118 +61,6 @@
     <p>&copy; 2025 VL Personal Profile. All Rights Reserved.</p>
   </footer>
 
-  <script>
-    function toggleSubmenu(element) {
-      const parentLi = element.parentElement;
-      parentLi.classList.toggle("open");
-    }
-
-    document.addEventListener("DOMContentLoaded", function () {
-      const sidemenu = document.getElementById("sidemenu");
-      const menuToggle = document.querySelector(".menu-toggle");
-      const mainContent = document.getElementById("main-content");
-
-      if (menuToggle) {
-        menuToggle.addEventListener("click", function () {
-          sidemenu.classList.toggle("active");
-          menuToggle.classList.toggle("open");
-        });
-      }
-
-      window.loadContent = function (page) {
-        sidemenu.classList.remove("active");
-        menuToggle.classList.remove("open");
-
-        const loader = document.createElement("div");
-        loader.className = "loader";
-        mainContent.innerHTML = "";
-        mainContent.appendChild(loader);
-
-        setTimeout(() => {
-          let content = "";
-          switch (page) {
-            case "dashboard":
-              content = `
-                <section class="dashboard">
-                  <div class="dashboard-content">
-                    <h2 class="nama-text">Vicky <span>Satria Lindy</span></h2>
-                    <p class="typing-desc animate">Seorang desainer grafis & kreator digital yang membentuk dan mengak.....</p>
-                    <a href="#kerjasama">HIRE ME</a>
-                  </div>
-                  <div class="photo-glow">
-                    <img src="https://i.ibb.co/6mNjg45/foto-vicky.png" alt="Foto Vicky">
-                  </div>
-                </section>`;
-              break;
-            case "asset":
-              content = `<section class="content-section"><h2>Asset</h2><p>Konten halaman Asset.</p></section>`;
-              break;
-            case "service":
-              content = `<section class="content-section"><h2>Service</h2><p>Konten halaman Service.</p></section>`;
-              break;
-            case "shop":
-              content = `<section class="content-section"><h2>Shop</h2><p>Konten halaman Shop.</p></section>`;
-              break;
-            case "catur":
-              content = `
-                <section class="content-section">
-                  <h2>Catur Online</h2>
-                  <label for="difficulty">Pilih Mode:</label>
-                  <select id="difficulty">
-                    <option value="easy">Easy</option>
-                    <option value="medium">Medium</option>
-                    <option value="hard">Hard</option>
-                    <option value="extreme">Extreme</option>
-                  </select>
-                  <div id="chess-board" style="margin-top: 20px;"></div>
-                  <p style="margin-top: 1rem; color: #aaa;">Powered by <a href="https://github.com/jhlywa/chess.js" target="_blank" style="color:#0ff">chess.js</a> & <a href="https://github.com/niklasf/chessboardjs" target="_blank" style="color:#0ff">chessboard.js</a></p>
-                </section>
-                <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/css/chessboard.min.css">
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
-                <script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/js/chessboard.min.js"></script>
-                <script>
-                  const game = new Chess();
-                  const board = Chessboard('chess-board', {
-                    draggable: true,
-                    position: 'start',
-                    onDrop: function (source, target) {
-                      const move = game.move({ from: source, to: target, promotion: 'q' });
-                      if (move === null) return 'snapback';
-                      setTimeout(makeRandomMove, 250);
-                    }
-                  });
-                  function makeRandomMove() {
-                    const possibleMoves = game.moves();
-                    if (game.game_over()) return;
-                    const move = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
-                    game.move(move);
-                    board.position(game.fen());
-                  }
-                </script>
-              `;
-              break;
-            case "submenu1":
-              content = `<section class="content-section"><h2>Tools - Submenu 1</h2><p>Konten tools submenu 1.</p></section>`;
-              break;
-            case "submenu2":
-              content = `<section class="content-section"><h2>Tools - Submenu 2</h2><p>Konten tools submenu 2.</p></section>`;
-              break;
-            case "submenu3":
-              content = `<section class="content-section"><h2>Tools - Submenu 3</h2><p>Konten tools submenu 3.</p></section>`;
-              break;
-          }
-          mainContent.innerHTML = content;
-        }, 500);
-      };
-
-      // Tutup menu jika klik di luar
-      document.addEventListener("click", function (e) {
-        if (!sidemenu.contains(e.target) && !menuToggle.contains(e.target)) {
-          sidemenu.classList.remove("active");
-          menuToggle.classList.remove("open");
-        }
-      });
-    });
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
