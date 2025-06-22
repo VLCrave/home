@@ -98,10 +98,11 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   // Klik di luar menu untuk menutup
-  document.addEventListener("click", function (e) {
-    if (!sidemenu.contains(e.target) && !menuToggle.contains(e.target)) {
-      sidemenu.classList.remove("active");
-      menuToggle.classList.remove("open");
-    }
-  });
+  ddocument.addEventListener("click", function (e) {
+  // Cek apakah klik berasal dari dalam sidemenu atau menuToggle
+  const clickedInside = sidemenu.contains(e.target) || menuToggle.contains(e.target);
+  if (!clickedInside) {
+    sidemenu.classList.remove("active");
+    menuToggle.classList.remove("open");
+  }
 });
