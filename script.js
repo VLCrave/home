@@ -34,21 +34,21 @@ document.addEventListener("DOMContentLoaded", function () {
             </section>`;
           break;
         case "asset":
-          content = `<section class="content-section"><h2><i class='fas fa-coins'></i> Asset</h2><p>Konten halaman Asset.</p></section>`;
+          content = `<section class="content-section"><h2>Asset</h2><p>Konten halaman Asset.</p></section>`;
           break;
         case "service":
-          content = `<section class="content-section"><h2><i class='fas fa-cogs'></i> Service</h2><p>Konten halaman Service.</p></section>`;
+          content = `<section class="content-section"><h2>Service</h2><p>Konten halaman Service.</p></section>`;
           break;
         case "shop":
-          content = `<section class="content-section"><h2><i class='fas fa-store'></i> Shop</h2><p>Konten halaman Shop.</p></section>`;
+          content = `<section class="content-section"><h2>Shop</h2><p>Konten halaman Shop.</p></section>`;
           break;
         case "game":
-          content = `<section class="content-section"><h2><i class='fas fa-gamepad'></i> Game</h2><p>Konten halaman Game.</p></section>`;
+          content = `<section class="content-section"><h2>Game</h2><p>Konten halaman Game.</p></section>`;
           break;
         case "catur":
           content = `
             <section class="content-section">
-              <h2><i class='fas fa-chess'></i> Catur Online</h2>
+              <h2>Catur Online</h2>
               <label for="difficulty">Pilih Mode:</label>
               <select id="difficulty">
                 <option value="easy">Easy</option>
@@ -84,13 +84,13 @@ document.addEventListener("DOMContentLoaded", function () {
           `;
           break;
         case "submenu1":
-          content = `<section class="content-section"><h2><i class='fas fa-tools'></i> Tools - Submenu 1</h2><p>Konten tools submenu 1.</p></section>`;
+          content = `<section class="content-section"><h2>Tools - Submenu 1</h2><p>Konten tools submenu 1.</p></section>`;
           break;
         case "submenu2":
-          content = `<section class="content-section"><h2><i class='fas fa-wrench'></i> Tools - Submenu 2</h2><p>Konten tools submenu 2.</p></section>`;
+          content = `<section class="content-section"><h2>Tools - Submenu 2</h2><p>Konten tools submenu 2.</p></section>`;
           break;
         case "submenu3":
-          content = `<section class="content-section"><h2><i class='fas fa-cog'></i> Tools - Submenu 3</h2><p>Konten tools submenu 3.</p></section>`;
+          content = `<section class="content-section"><h2>Tools - Submenu 3</h2><p>Konten tools submenu 3.</p></section>`;
           break;
       }
       mainContent.innerHTML = content;
@@ -98,11 +98,10 @@ document.addEventListener("DOMContentLoaded", function () {
   };
 
   // Klik di luar menu untuk menutup
-  ddocument.addEventListener("click", function (e) {
-  // Cek apakah klik berasal dari dalam sidemenu atau menuToggle
-  const clickedInside = sidemenu.contains(e.target) || menuToggle.contains(e.target);
-  if (!clickedInside) {
-    sidemenu.classList.remove("active");
-    menuToggle.classList.remove("open");
-  }
+  document.addEventListener("click", function (e) {
+    if (!sidemenu.contains(e.target) && !menuToggle.contains(e.target)) {
+      sidemenu.classList.remove("active");
+      menuToggle.classList.remove("open");
+    }
+  });
 });
