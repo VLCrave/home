@@ -46,7 +46,42 @@ document.addEventListener("DOMContentLoaded", function () {
           content = `<section class="content-section"><h2>Game</h2><p>Konten halaman Game.</p></section>`;
           break;
         case "catur":
-          content = `<section class="content-section"><h2>Catur</h2><p>Permainan Catur Online coming soon...</p></section>`;
+          content = `
+            <section class="content-section">
+              <h2>Catur Online</h2>
+              <label for="difficulty">Pilih Mode:</label>
+              <select id="difficulty">
+                <option value="easy">Easy</option>
+                <option value="medium">Medium</option>
+                <option value="hard">Hard</option>
+                <option value="extreme">Extreme</option>
+              </select>
+              <div id="chess-board" style="margin-top: 20px;"></div>
+              <p style="margin-top: 1rem; color: #aaa;">Powered by <a href="https://github.com/jhlywa/chess.js" target="_blank" style="color:#0ff">chess.js</a> & <a href="https://github.com/niklasf/chessboardjs" target="_blank" style="color:#0ff">chessboard.js</a></p>
+            </section>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/css/chessboard.min.css">
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/chessboard.js/1.0.0/js/chessboard.min.js"></script>
+            <script>
+              const game = new Chess();
+              const board = Chessboard('chess-board', {
+                draggable: true,
+                position: 'start',
+                onDrop: function (source, target) {
+                  const move = game.move({ from: source, to: target, promotion: 'q' });
+                  if (move === null) return 'snapback';
+                  setTimeout(makeRandomMove, 250);
+                }
+              });
+              function makeRandomMove() {
+                const possibleMoves = game.moves();
+                if (game.game_over()) return;
+                const move = possibleMoves[Math.floor(Math.random() * possibleMoves.length)];
+                game.move(move);
+                board.position(game.fen());
+              }
+            </script>
+          `;
           break;
         case "submenu1":
           content = `<section class="content-section"><h2>Tools - Submenu 1</h2><p>Konten tools submenu 1.</p></section>`;
