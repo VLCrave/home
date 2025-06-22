@@ -8,6 +8,16 @@ document.addEventListener("DOMContentLoaded", function () {
   const menuToggle = document.querySelector(".menu-toggle");
   const mainContent = document.getElementById("main-content");
 
+  // Pastikan menuToggle ada
+  if (menuToggle) {
+    // Toggle saat diklik
+    menuToggle.addEventListener("click", function () {
+      sidemenu.classList.toggle("active");
+      menuToggle.classList.toggle("open");
+    });
+  }
+
+  // Fungsi global untuk bisa dipanggil dari HTML onclick
   window.toggleMenu = function () {
     sidemenu.classList.toggle("active");
     menuToggle.classList.toggle("open");
@@ -110,3 +120,4 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   });
 });
+
