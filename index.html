@@ -23,7 +23,6 @@
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
     html, body {
       height: 100%;
       font-family: 'Segoe UI', sans-serif;
@@ -46,17 +45,8 @@
       box-shadow: 0 0 10px #00ffff44;
     }
 
-    .menu-toggle {
+    .menu-toggle, .theme-toggle {
       font-size: 1.5rem;
-      background: none;
-      border: none;
-      color: var(--text-color);
-      cursor: pointer;
-    }
-
-    .theme-toggle {
-      font-size: 1.3rem;
-      margin-left: 1rem;
       background: none;
       border: none;
       color: var(--text-color);
@@ -71,29 +61,19 @@
       position: fixed;
       top: 0;
       left: -260px;
-      transition: left 0.3s ease;
+      transition: left 0.3s ease, transform 0.3s ease;
       z-index: 1000;
       box-shadow: 2px 0 10px #00ffff44;
     }
 
     .sidebar.active {
       left: 0;
+      transform: translateX(0);
     }
 
-    .sidebar h1 {
-      margin-top: 4rem;
-      margin-bottom: 1.5rem;
-      font-size: 1.5rem;
-    }
-
-    nav ul {
-      list-style: none;
-    }
-
-    nav ul li {
-      margin-bottom: 1rem;
-    }
-
+    .sidebar h1 { margin-top: 4rem; margin-bottom: 1.5rem; font-size: 1.5rem; }
+    nav ul { list-style: none; }
+    nav ul li { margin-bottom: 1rem; }
     nav ul li a {
       color: var(--text-color);
       text-decoration: none;
@@ -101,196 +81,165 @@
       align-items: center;
       gap: 0.5rem;
       padding: 0.5rem;
-      transition: background 0.3s;
+      transition: background 0.3s, transform 0.3s ease;
       cursor: pointer;
     }
-
     nav ul li a:hover {
       background: var(--bg-hover);
+      transform: translateX(5px);
     }
-
     nav ul li ul {
       display: none;
       list-style: none;
       padding-left: 1rem;
       margin-top: 0.5rem;
     }
-
     nav ul li.open > ul {
       display: block;
+      animation: slideDown 0.3s ease-out;
+    }
+
+    @keyframes slideDown {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     main {
       flex: 1;
       padding: 2rem;
       margin-top: 60px;
+      transition: all 0.3s ease;
+      animation: fadeSlide 0.3s ease;
     }
 
-
-    .dashboard {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 2rem;
-      align-items: center;
-      justify-content: space-between;
-      animation: fadeIn 1.5s ease-in-out;
-    }
-
-    .dashboard-content {
-      flex: 1;
-      min-width: 280px;
-    }
-
-    .nama-text {
-      font-size: 2.5rem;
-    }
-
-    .nama-text span {
-      color: #fff;
-    }
-
-    .typing-desc {
-      margin-top: 1rem;
-      font-size: 1rem;
-      color: #ccc;
-      max-width: 500px;
-      white-space: nowrap;
-      overflow: hidden;
-      border-right: 2px solid var(--text-color);
-      width: 0;
-    }
-
-    .typing-desc.animate {
-      animation: typingCut 2s steps(100, end) forwards, blinkCaret 1s step-end infinite;
-    }
-
-    .dashboard-content a {
-      display: inline-block;
-      margin-top: 2rem;
-      padding: 0.75rem 1.5rem;
-      background: var(--text-color);
-      color: #000;
-      font-weight: bold;
-      border-radius: 5px;
-      text-decoration: none;
-    }
-
-    .photo-glow {
-      width: 280px;
-      height: 280px;
-      border-radius: 50%;
-      background: radial-gradient(circle, #0ff2, transparent 60%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      animation: pulseGlow 2.5s infinite ease-in-out;
-    }
-
-    .photo-glow img {
-      border-radius: 50%;
-      width: 200px;
-      height: 200px;
-      object-fit: cover;
-    }
-
-    @keyframes typingCut {
-      from { width: 0; }
-      to { width: 34ch; }
-    }
-
-    @keyframes blinkCaret {
-      0%, 100% { border-color: transparent; }
-      50% { border-color: var(--text-color); }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(15px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    @keyframes pulseGlow {
-      0% { box-shadow: 0 0 10px #0ff5; }
-      50% { box-shadow: 0 0 20px #0ff; }
-      100% { box-shadow: 0 0 10px #0ff5; }
-    }
-
     @media (max-width: 768px) {
-      .dashboard {
-        flex-direction: column;
-        text-align: center;
-      }
-
-      .photo-glow {
-        width: 220px;
-        height: 220px;
-      }
-
-      .photo-glow img {
-        width: 160px;
-        height: 160px;
-      }
-      .box {
-  background: #111;
-  border: 2px solid #00ffff;
-  box-shadow: 0 0 15px #00ffffaa;
-  padding: 1.5rem;
-  border-radius: 12px;
-  width: 220px;
-  text-align: center;
-  transition: 0.3s ease;
-}
-
-.box i {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
-  color: #00ffff;
-}
-
-.box .value {
-  font-size: 1.5rem;
-  margin-bottom: 0.25rem;
-}
-
-.box .label {
-  font-size: 1rem;
-  color: #ccc;
-}
-
-.announcement-table {
-  border-collapse: collapse;
-  width: 100%;
-  color: #fff;
-  box-shadow: 0 0 15px #00ffff44;
-}
-
-.announcement-table th, .announcement-table td {
-  border: 1px solid #00ffff66;
-  padding: 0.75rem 1rem;
-  text-align: left;
-}
-
-.announcement-table th {
-  background: #0c1b33;
-}
-
-.badge {
-  padding: 4px 10px;
-  border-radius: 5px;
-  font-size: 0.8rem;
-  color: #fff;
-  text-transform: uppercase;
-}
-
-.badge.update { background-color: #3498db; }
-.badge.new { background-color: #2ecc71; }
-.badge.delete { background-color: #e74c3c; }
-.badge.maintenance { background-color: #f1c40f; color: #000; }
-}
+      main { padding: 1rem; }
     }
+.info-boxes {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .info-box {
+      background: #0c1b33;
+      border-left: 4px solid #00ffff;
+      padding: 1rem;
+      flex: 1 1 200px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #00ffff33;
+    }
+    .info-box h4 {
+      margin-bottom: 0.5rem;
+      color: #00ffff;
+    }
+    .announcement-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1rem;
+    }
+    .announcement-table th, .announcement-table td {
+      border: 1px solid #00ffff55;
+      padding: 0.75rem 1rem;
+      text-align: left;
+    }
+    .announcement-table th {
+      background: #0c1b33;
+    }
+    .badge {
+      padding: 4px 8px;
+      border-radius: 4px;
+      color: white;
+      font-size: 0.75rem;
+    }
+    .update { background: #3498db; }
+    .new { background: #2ecc71; }
+    .delete { background: #e74c3c; }
+    .maintenance { background: #f1c40f; color: #000; }
+
+   @media (max-width: 768px) {
+  .info-boxes {
+    flex-direction: column;
+  }
+}
+
+/* Pindahkan ke luar agar berlaku di semua resolusi */
+.calculator {
+  margin-top: 2rem;
+  background: #0c1b33;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #00ffff33;
+}
+.calculator input {
+  padding: 0.5rem;
+  margin: 0.5rem 0;
+  width: 100%;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+}
+.calculator button {
+  padding: 0.5rem 1rem;
+  background: #00ffff;
+  color: #000;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+  margin-top: 0.5rem;
+}
+.calculator button:hover {
+  background: #00cccc;
+}
+.calculator p {
+  margin-top: 1rem;
+  font-weight: bold;
+}
+.bmi-calculator {
+  margin-top: 2rem;
+  background: #0c1b33;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #00ffff33;
+}
+.bmi-calculator h3 {
+  margin-bottom: 1rem;
+}
+.bmi-calculator select,
+.bmi-calculator input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border-radius: 4px;
+  border: none;
+  font-size: 1rem;
+}
+.bmi-calculator button {
+  padding: 0.5rem 1rem;
+  background: #00ffff;
+  color: #000;
+  font-weight: bold;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.bmi-calculator button:hover {
+  background: #00cccc;
+}
+.bmi-calculator p {
+  margin-top: 1rem;
+  font-weight: bold;
+}
+
   </style>
 </head>
 <body>
-
   <header>
     <h1>VL Profile</h1>
     <div>
@@ -316,8 +265,8 @@
         <li class="has-submenu">
           <a onclick="toggleSubmenu(this)"><i class="fas fa-tools"></i> Tools ▾</a>
           <ul>
-            <li><a onclick="loadContent('submenu1')">Submenu 1</a></li>
-            <li><a onclick="loadContent('submenu2')">Submenu 2</a></li>
+            <li><a onclick="loadContent('submenu1')">Winrate Calculator</a></li>
+            <li><a onclick="loadContent('submenu2')">BMI Calculator</a></li>
             <li><a onclick="loadContent('submenu3')">Submenu 3</a></li>
           </ul>
         </li>
@@ -326,30 +275,39 @@
   </aside>
 
   <main id="main-content">
-    <section id="dashboard" class="dashboard" style="flex-direction: column; gap: 2rem;">
-  <div class="dashboard-boxes" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem;">
-    <div class="box"><i class="fas fa-layer-group"></i><div class="value" id="total-fitur">0</div><div class="label">Total Fitur</div></div>
-    <div class="box"><i class="fas fa-users"></i><div class="value">150</div><div class="label">Total User</div></div>
-    <div class="box"><i class="fas fa-clock"></i><div class="value" id="last-update">--</div><div class="label">Last Update</div></div>
-    <div class="box"><i class="fas fa-user-clock"></i><div class="value" id="last-visit">--</div><div class="label">Last Visit</div></div>
-  </div>
-
-  <table class="announcement-table" style="margin-top:2rem; width:100%; max-width:900px;">
-    <thead>
-      <tr>
-         <center><th>Tanggal</th>
-        <th>Deskripsi</th>
-      </tr>
-    </thead>
-    <tbody>
-    	<tr><td>23-06-2025</td><td>Pembaruan sistem keamanan backend <span class="badge update">Update</span></td></tr>
-      <tr><td>22-06-2025</td><td>Penambahan fitur kalkulator HPP <span class="badge new">New</span></td></tr>
-      <tr><td>21-06-2025</td><td>Penghapusan fitur lama versi v1 <span class="badge delete">Delete</span></td></tr>
-      <tr><td>20-06-2025</td><td>Pemeliharaan server pukul 00:00 - 03:00 <span class="badge maintenance">Maintenance</span></td></tr> </center>
-    </tbody>
-  </table>
+     <section style="padding: 2rem;">
+      <h2 style="font-size: 2rem; color: var(--text-color);">Selamat Datang di VL Personal Profile</h2>
+      <div class="info-boxes">
+        <div class="info-box">
+          <h4>Total Fitur</h4>
+          <p id="totalFitur">--</p>
+        </div>
+        <div class="info-box">
+          <h4>Total User</h4>
+          <p>150</p>
+        </div>
+        <div class="info-box">
+          <h4>Last Update</h4>
+          <p id="lastUpdate">--</p>
+        </div>
+        <div class="info-box">
+          <h4>Last Visit</h4>
+          <p id="lastVisit">--</p>
+        </div>
+      </div>
+      <h3>Pengumuman</h3>
+      <table class="announcement-table">
+        <thead>
+          <tr><th>Tanggal</th><th>Deskripsi</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>23-06-2025</td><td>Pembaruan sistem keamanan backend <span class="badge update">Update</span></td></tr>
+          <tr><td>22-06-2025</td><td>Penambahan fitur kalkulator HPP <span class="badge new">New</span></td></tr>
+          <tr><td>21-06-2025</td><td>Penghapusan fitur lama versi v1 <span class="badge delete">Delete</span></td></tr>
+          <tr><td>20-06-2025</td><td>Pemeliharaan server pukul 00:00 - 03:00 <span class="badge maintenance">Maintenance</span></td></tr>
+        </tbody>
+      </table>
 </section>
-
   </main>
 
   <script>
@@ -358,25 +316,135 @@
     }
 
     function toggleSubmenu(el) {
-      const li = el.parentElement;
-      li.classList.toggle("open");
-    }
-
-    function loadContent(page) {
-      const main = document.getElementById("main-content");
-      main.innerHTML = `
-        <section style="padding: 4rem 2rem; animation: fadeIn 1.5s ease-in-out;">
-          <h2 style="font-size: 2rem; color: var(--text-color);">Halaman: ${page}</h2>
-          <p style="color:#777;">Konten dari halaman <b>${page}</b> akan dimuat di sini...</p>
-        </section>
-      `;
-      // Tutup sidebar otomatis jika terbuka
-      document.getElementById("sidebar").classList.remove("active");
+      el.parentElement.classList.toggle("open");
     }
 
     function toggleTheme() {
       document.body.classList.toggle("light");
     }
+
+    function loadContent(page) {
+      const main = document.getElementById("main-content");
+      let content = '';
+
+      if (page === 'dashboard') {
+        content = `<section style="padding: 2rem;"><h2 style="font-size: 2rem; color: var(--text-color);">Dashboard</h2>
+	<section style="padding: 2rem;">
+      <h2 style="font-size: 2rem; color: var(--text-color);"></h2>
+      <div class="info-boxes">
+        <div class="info-box">
+          <h4>Total Fitur</h4>
+          <p id="totalFitur">--</p>
+        </div>
+        <div class="info-box">
+          <h4>Total User</h4>
+          <p>150</p>
+        </div>
+        <div class="info-box">
+          <h4>Last Update</h4>
+          <p id="lastUpdate">--</p>
+        </div>
+        <div class="info-box">
+          <h4>Last Visit</h4>
+          <p id="lastVisit">--</p>
+        </div>
+      </div>
+      <h3>Pengumuman</h3>
+      <table class="announcement-table">
+        <thead>
+          <tr><th>Tanggal</th><th>Deskripsi</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>23-06-2025</td><td>Pembaruan sistem keamanan backend <span class="badge update">Update</span></td></tr>
+          <tr><td>22-06-2025</td><td>Penambahan fitur kalkulator HPP <span class="badge new">New</span></td></tr>
+          <tr><td>21-06-2025</td><td>Penghapusan fitur lama versi v1 <span class="badge delete">Delete</span></td></tr>
+          <tr><td>20-06-2025</td><td>Pemeliharaan server pukul 00:00 - 03:00 <span class="badge maintenance">Maintenance</span></td></tr>
+        </tbody>
+      </table>
+	</section>`;
+      }
+
+      if (page === 'submenu1') {
+        content = `
+          <section style="padding: 2rem;">
+            <section class="calculator">
+              <center><h3>Penghitung Winrate Mobile Legends</h3>
+              <input type="number" id="matches" placeholder="Pertandingan Saat Ini">
+              <input type="number" id="currentWR" placeholder="Winrate Saat Ini (%)">
+              <input type="number" id="desiredWR" placeholder="Winrate yang Diinginkan (%)">
+              <button onclick="calculateWinrate()">Hitung</button></center>
+              <p id="result"></p>
+            </section>
+          </section>`;
+      }
+	
+	if (page === 'submenu2') {
+  content = `
+    <section style="padding: 2rem;">
+      <h2 style="font-size: 2rem; color: var(--text-color);">BMI Calculator</h2>
+      <section class="bmi-calculator">
+        <h3><i class="fas fa-weight"></i> Hitung BMI Anda</h3>
+        <select id="gender">
+          <option value="">Pilih Jenis Kelamin</option>
+          <option value="male">♂ Laki-laki</option>
+          <option value="female">♀ Perempuan</option>
+        </select>
+        <input type="number" id="height" placeholder="Tinggi Badan (cm)">
+        <input type="number" id="weight" placeholder="Berat Badan (kg)">
+        <button onclick="calculateBMI()">Hitung</button>
+        <p id="bmiResult"></p>
+      </section>
+    </section>`;
+      }
+
+      main.innerHTML = content;
+      document.getElementById("sidebar").classList.remove("active");
+    }
+
+    function calculateWinrate() {
+      const matches = parseInt(document.getElementById("matches")?.value);
+      const currentWR = parseFloat(document.getElementById("currentWR")?.value);
+      const desiredWR = parseFloat(document.getElementById("desiredWR")?.value);
+      const result = document.getElementById("result");
+
+      if (!matches || !currentWR || !desiredWR || isNaN(matches) || isNaN(currentWR) || isNaN(desiredWR)) {
+        result.textContent = "Mohon isi semua kolom dengan benar.";
+        return;
+      }
+
+      if (desiredWR >= 100) {
+        result.textContent = "GABAKAL BISA CUK JANGAN ANEH ANEH";
+        return;
+      }
+
+      const currentWins = (currentWR / 100) * matches;
+      const neededTotalMatches = currentWins / (desiredWR / 100);
+      const additionalWinsNeeded = Math.ceil(neededTotalMatches - matches);
+
+      result.textContent = `Kamu perlu menang ${additionalWinsNeeded} pertandingan berturut-turut untuk mencapai ${desiredWR}% winrate.`;
+    }
+function calculateBMI() {
+  const gender = document.getElementById("gender")?.value;
+  const heightCm = parseFloat(document.getElementById("height")?.value);
+  const weightKg = parseFloat(document.getElementById("weight")?.value);
+  const result = document.getElementById("bmiResult");
+
+  if (!gender || isNaN(heightCm) || isNaN(weightKg) || heightCm <= 0 || weightKg <= 0) {
+    result.textContent = "Mohon isi semua data dengan benar.";
+    return;
+  }
+
+  const heightM = heightCm / 100;
+  const bmi = weightKg / (heightM * heightM);
+  let status = "";
+
+  if (bmi < 18.5) status = "Underweight (Kurus)";
+  else if (bmi < 25) status = "Normal";
+  else if (bmi < 30) status = "Overweight (Gemuk)";
+  else status = "Obesitas";
+
+  result.textContent = `BMI Anda adalah ${bmi.toFixed(2)} (${status})`;
+}
 
   </script>
 </body>
