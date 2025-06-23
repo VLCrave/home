@@ -1,107 +1,128 @@
-/* style.css */
+/* === STYLE.CSS === */
+
+:root {
+  --bg-main: linear-gradient(to bottom, #0a0f1c, #111a2d);
+  --text-color: #00ffff;
+  --bg-header: linear-gradient(to right, #081021, #0c1b33);
+  --bg-sidebar: #081021;
+  --bg-hover: #0c1b33;
+}
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body {
+html, body {
+  height: 100%;
   font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(to bottom, #0a0f1c, #111a2d);
-  color: #00ffff;
-  min-height: 100vh;
+  background: var(--bg-main);
+  color: var(--text-color);
   display: flex;
   flex-direction: column;
 }
 
 header {
-  background: linear-gradient(to right, #081021, #0c1b33);
+  background: var(--bg-header);
   padding: 1rem 2rem;
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: sticky;
   top: 0;
-  z-index: 1000;
+  z-index: 1001;
   border-bottom: 2px solid #00ffff33;
   box-shadow: 0 0 10px #00ffff44;
 }
 
 .menu-toggle {
-  display: flex;
-  flex-direction: column;
-  gap: 5px;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: var(--text-color);
   cursor: pointer;
 }
 
-.menu-toggle span {
-  display: block;
-  width: 25px;
-  height: 3px;
-  background-color: #00ffff;
-  border-radius: 3px;
-}
-
-nav#sidemenu {
-  position: fixed;
-  top: 70px;
-  left: 0;
-  background-color: #081021;
+.sidebar {
   width: 250px;
-  height: calc(100% - 70px);
-  transform: translateX(-100%);
-  transition: transform 0.3s ease;
-  z-index: 999;
-  overflow-y: auto;
+  background: var(--bg-sidebar);
   padding: 1rem;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: -260px;
+  transition: left 0.3s ease;
+  z-index: 1000;
+  box-shadow: 2px 0 10px #00ffff44;
 }
 
-nav#sidemenu.open {
-  transform: translateX(0);
+.sidebar.active {
+  left: 0;
 }
 
-nav#sidemenu ul {
+.sidebar h1 {
+  margin-top: 4rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+nav ul {
   list-style: none;
-  padding: 0;
 }
 
-nav#sidemenu ul li {
+nav ul li {
   margin-bottom: 1rem;
-  position: relative;
 }
 
-nav#sidemenu ul li a {
-  color: #00ffff;
+nav ul li a {
+  color: var(--text-color);
   text-decoration: none;
-  font-weight: bold;
-  display: block;
-  transition: background 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
   padding: 0.5rem;
-  border-radius: 5px;
+  transition: background 0.3s;
+  cursor: pointer;
 }
 
-nav#sidemenu ul li a:hover,
-nav#sidemenu ul li a.active {
-  background-color: rgba(0, 255, 255, 0.2);
-  box-shadow: 0 0 10px #00ffff77;
+nav ul li a:hover {
+  background: var(--bg-hover);
 }
 
-nav#sidemenu ul li ul {
-  margin-top: 0.5rem;
+nav ul li ul {
+  display: none;
+  list-style: none;
   padding-left: 1rem;
+  margin-top: 0.5rem;
 }
 
-main#main-content {
+nav ul li.open > ul {
+  display: block;
+}
+
+main {
   flex: 1;
   padding: 2rem;
+  margin-top: 60px;
+}
+
+
+footer {
+  background: #081021;
+  color: #00ffff;
+  text-align: center;
+  padding: 1rem;
+  box-shadow: 0 -2px 10px #00ffff22;
+  margin-top: auto;
 }
 
 .dashboard {
   display: flex;
   flex-wrap: wrap;
+  gap: 2rem;
   align-items: center;
   justify-content: space-between;
-  gap: 2rem;
   animation: fadeIn 1.5s ease-in-out;
 }
 
@@ -112,7 +133,6 @@ main#main-content {
 
 .nama-text {
   font-size: 2.5rem;
-  color: #00ffff;
 }
 
 .nama-text span {
@@ -126,7 +146,7 @@ main#main-content {
   max-width: 500px;
   white-space: nowrap;
   overflow: hidden;
-  border-right: 2px solid #00ffff;
+  border-right: 2px solid var(--text-color);
   width: 0;
 }
 
@@ -138,12 +158,11 @@ main#main-content {
   display: inline-block;
   margin-top: 2rem;
   padding: 0.75rem 1.5rem;
-  background: #00ffff;
+  background: var(--text-color);
   color: #000;
   font-weight: bold;
   border-radius: 5px;
   text-decoration: none;
-  transition: all 0.3s ease;
 }
 
 .photo-glow {
@@ -164,20 +183,6 @@ main#main-content {
   object-fit: cover;
 }
 
-footer {
-  background: #081021;
-  color: #00ffff;
-  text-align: center;
-  padding: 1rem;
-  box-shadow: 0 -2px 10px #00ffff22;
-  margin-top: auto;
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
 @keyframes typingCut {
   from { width: 0; }
   to { width: 34ch; }
@@ -185,7 +190,12 @@ footer {
 
 @keyframes blinkCaret {
   0%, 100% { border-color: transparent; }
-  50% { border-color: #00ffff; }
+  50% { border-color: var(--text-color); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes pulseGlow {
@@ -198,11 +208,6 @@ footer {
   .dashboard {
     flex-direction: column;
     text-align: center;
-    padding: 2rem 1rem;
-  }
-
-  .nama-text {
-    font-size: 2rem;
   }
 
   .photo-glow {
@@ -214,23 +219,4 @@ footer {
     width: 160px;
     height: 160px;
   }
-  .has-submenu .submenu {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s ease, padding 0.3s ease;
-  padding-left: 1rem;
-  margin-top: 0.5rem;
-}
-
-.has-submenu.open .submenu {
-  max-height: 500px; /* cukup besar untuk isi submenu */
-  padding-top: 0.5rem;
-}
-.has-submenu .toggle-icon {
-  transition: transform 0.3s ease;
-}
-
-.has-submenu.open .toggle-icon {
-  transform: rotate(180deg);
-}
 }
