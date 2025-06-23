@@ -1,45 +1,4 @@
-function loadContent(page) {
-  const contentArea = document.getElementById("main-content");
-  fetch(page + ".html")
-    .then(res => res.text())
-    .then(html => {
-      contentArea.innerHTML = html;
-    })
-    .catch(err => {
-      contentArea.innerHTML = "<p>Gagal memuat konten.</p>";
-    });
-}
- document.getElementById("mlbb-form").addEventListener("submit", async function (e) {
-    const userId = document.getElementById("userid").value.trim();
-    const zoneId = document.getElementById("zoneid").value.trim();
-    const resultBox = document.getElementById("mlbb-result");
-
-    if (!userId || !zoneId) {
-      resultBox.textContent = "User ID dan Server ID wajib diisi.";
-      return;
-    }
-
-    resultBox.textContent = "Memproses...";
-
-    try {
-      const response = await fetch("https://cekidml.caliph.dev/check", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user_id: userId, server_id: zoneId })
-      });
-
-      const data = await response.json();
-
-      if (data?.username) {
-        resultBox.innerHTML = `Nickname: <b>${data.username}</b><br>Region: <b>${data.region || "Tidak tersedia"}</b>`;
-      } else {
-        resultBox.textContent = "Data tidak ditemukan. Cek kembali User ID & Server ID kamu.";
-      }
-    } catch (err) {
-      resultBox.textContent = "Gagal menghubungi server.";
-    }
-  });
-// Blokir klik kanan
+ // Blokir klik kanan
   document.addEventListener('contextmenu', function (e) {
     e.preventDefault();
   });
@@ -325,74 +284,99 @@ if (page === 'appspremium') {
 	</section>`;
       }
 
-	    if (page === 'cekidmlbb') {
-        content = `
-          <section style="padding: 2rem;">
-            <section class="calculator">
-              <div class="card">
-  <div class="card-header">
-    <h4 class="card-title">Check Region MLBB | Stalk ML</h4>
-  </div>
-  <div class="card-body">
-    <div class="text-center mt-2">
-      <h5 class="text-black">Cek Nickname dan Region Mobile Legends</h5>
-      <small class="text-black">Masukkan ID dan Server untuk mendapatkan informasi nickname dan region.</small>
-    </div>
-    <form id="mlbb-form" action="javascript:void(0);">
-      <div class="row mt-2">
-        <div class="col-md-6 form-group">
-          <label for="userid">User ID</label>
-          <input type="text" class="form-control" id="userid" placeholder="Masukkan User ID" required>
-        </div>
-        <div class="col-md-6 form-group">
-          <label for="zoneid">Server ID</label>
-          <input type="text" class="form-control" id="zoneid" placeholder="Masukkan Server ID" required>
-        </div>
-      </div>
-      <div class="row mt-2">
-        <div class="col-12">
-          <button type="submit" class="btn btn-primary">Cek Akun</button>
-          <button type="reset" class="btn btn-danger">Reset</button>
-        </div>
-      </div>
-    </form>
-    <div id="mlbb-result" class="mt-3 text-center text-black fw-bold"></div>
-  </div>
-</div>
-            </section>
-          </section>`;
-      }
-// BATAS UNTUK HALAMAN DAN JS FUNGSI //
-document.getElementById("mlbb-form").addEventListener("submit", async function (e) {
-    const userId = document.getElementById("userid").value.trim();
-    const zoneId = document.getElementById("zoneid").value.trim();
+	     if (page === 'cekidmlbb') {
+    content = `
+      <section style="padding: 2rem;">
+        <section class="calculator">
+          <div class="card">
+            <div class="card-header">
+              <h4 class="card-title">Check Region MLBB | Stalk ML</h4>
+            </div>
+            <div class="card-body">
+              <div class="text-center mt-2">
+                <h5 class="text-black">Cek Nickname dan Region Mobile Legends</h5>
+                <small class="text-black">Masukkan ID dan Server untuk mendapatkan informasi nickname dan region.</small>
+              </div>
+              <form id="mlbb-form" action="javascript:void(0);">
+                <div class="row mt-2">
+                  <div class="col-md-6 form-group">
+                    <label for="userid">User ID</label>
+                    <input type="text" class="form-control" id="userid" placeholder="Masukkan User ID" required>
+                  </div>
+                  <div class="col-md-6 form-group">
+                    <label for="zoneid">Server ID</label>
+                    <input type="text" class="form-control" id="zoneid" placeholder="Masukkan Server ID" required>
+                  </div>
+                </div>
+                <div class="row mt-2">
+                  <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Cek Akun</button>
+                    <button type="reset" class="btn btn-danger">Reset</button>
+                  </div>
+                </div>
+              </form>
+              <div id="loading-spinner" style="display:none; text-align:center; margin-top:1rem;">
+                <div class="spinner-border text-info" role="status">
+                  <span class="visually-hidden">Loading...</span>
+                </div>
+              </div>
+              <div id="mlbb-result" class="mt-3 text-center text-black fw-bold"></div>
+            </div>
+          </div>
+        </section>
+      </section>
+    `;
+  }
+
+  contentArea.innerHTML = content;
+
+  if (page === 'cekidmlbb') {
+    const form = document.getElementById("mlbb-form");
     const resultBox = document.getElementById("mlbb-result");
+    const spinner = document.getElementById("loading-spinner");
 
-    if (!userId || !zoneId) {
-      resultBox.textContent = "User ID dan Server ID wajib diisi.";
-      return;
-    }
+    form.addEventListener("submit", async function (e) {
+      const userId = document.getElementById("userid").value.trim();
+      const zoneId = document.getElementById("zoneid").value.trim();
 
-    resultBox.textContent = "Memproses...";
-
-    try {
-      const response = await fetch("https://cekidml.caliph.dev/check", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ user_id: userId, server_id: zoneId })
-      });
-
-      const data = await response.json();
-
-      if (data?.username) {
-        resultBox.innerHTML = `Nickname: <b>${data.username}</b><br>Region: <b>${data.region || "Tidak tersedia"}</b>`;
-      } else {
-        resultBox.textContent = "Data tidak ditemukan. Cek kembali User ID & Server ID kamu.";
+      if (!userId || !zoneId) {
+        resultBox.textContent = "User ID dan Server ID wajib diisi.";
+        return;
       }
-    } catch (err) {
-      resultBox.textContent = "Gagal menghubungi server.";
-    }
-  });
+
+      spinner.style.display = "block";
+      resultBox.innerHTML = "";
+
+      try {
+        const response = await fetch("https://cekidml.caliph.dev/check", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ user_id: userId, server_id: zoneId })
+        });
+
+        const data = await response.json();
+        spinner.style.display = "none";
+
+        if (data?.username) {
+          resultBox.innerHTML = `
+            <div class="alert alert-success">
+              Nickname: <b>${data.username}</b><br>
+              Region: <b>${data.region || "Tidak tersedia"}</b>
+            </div>`;
+        } else {
+          resultBox.innerHTML = `<div class="alert alert-warning">Data tidak ditemukan. Cek kembali User ID & Server ID kamu.</div>`;
+        }
+      } catch (err) {
+        spinner.style.display = "none";
+        resultBox.innerHTML = `<div class="alert alert-danger">Gagal menghubungi server. Silakan coba beberapa saat lagi.</div>`;
+        console.error(err);
+      }
+    });
+  }
+}
+
+// BATAS UNTUK HALAMAN DAN JS FUNGSI //
+
       main.innerHTML = content;
       document.getElementById("sidebar").classList.remove("active");
     }
