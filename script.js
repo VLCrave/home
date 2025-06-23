@@ -1,26 +1,32 @@
 // === script.js ===
 
 function toggleSidebar() {
-  const sidebar = document.getElementById("sidebar");
-  sidebar.classList.toggle("active");
-}
+      document.getElementById("sidebar").classList.toggle("active");
+    }
 
-// Tutup sidebar setelah klik menu
-document.querySelectorAll("#sidebar nav a").forEach(link => {
-  link.addEventListener("click", () => {
-    document.getElementById("sidebar").classList.remove("active");
-  });
-});
+    function toggleSubmenu(el) {
+      const li = el.parentElement;
+      li.classList.toggle("open");
+    }
 
-// Toggle submenu
-function toggleSubmenu(element) {
-  const parent = element.parentElement;
-  parent.classList.toggle("open");
-}
+    function loadContent(page) {
+      const main = document.getElementById("main-content");
+      main.innerHTML = `
+        <section style="padding: 4rem 2rem; animation: fadeIn 1.5s ease-in-out;">
+          <h2 style="font-size: 2rem; color: var(--text-color);">Halaman: ${page}</h2>
+          <p style="color:#777;">Konten dari halaman <b>${page}</b> akan dimuat di sini...</p>
+        </section>
+        <footer>
+          <p>&copy; 2025 VL Personal Profile. All Rights Reserved.</p>
+        </footer>
+      `;
+      // Tutup sidebar otomatis jika terbuka
+      document.getElementById("sidebar").classList.remove("active");
+    }
 
-// Load konten dinamis berdasarkan halaman
-function loadContent(page) {
-  const main = document.getElementById("main-content");
+    function toggleTheme() {
+      document.body.classList.toggle("light");
+    }
 
   const contents = {
     dashboard: `
