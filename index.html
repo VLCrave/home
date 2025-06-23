@@ -166,6 +166,17 @@
   .info-boxes {
     flex-direction: column;
   }
+.result-box {
+    background: #0c1b33;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 0 10px #00ffff33;
+    margin-top: 1rem;
+    color: #00ffff;
+  }
+  .result-box p {
+    margin: 0.5rem 0;
+  }
 }
 
 /* Pindahkan ke luar agar berlaku di semua resolusi */
@@ -236,6 +247,36 @@
   margin-top: 1rem;
   font-weight: bold;
 }
+.hpp-calculator input {
+  display: block;
+  width: 100%;
+  margin: 0.3rem 0;
+  padding: 0.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+}
+
+.hpp-calculator button {
+  background: #00ffff;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 4px;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  font-weight: bold;
+}
+
+.hpp-calculator table button {
+  background: #00ffff;
+  border: none;
+  color: #000;
+  padding: 4px 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
 
   </style>
 </head>
@@ -267,7 +308,7 @@
           <ul>
             <li><a onclick="loadContent('submenu1')">Winrate Calculator</a></li>
             <li><a onclick="loadContent('submenu2')">BMI Calculator</a></li>
-            <li><a onclick="loadContent('submenu3')">Submenu 3</a></li>
+            <li><a onclick="loadContent('submenu3')">HPP Calculator</a></li>
           </ul>
         </li>
       </ul>
@@ -397,6 +438,53 @@
     </section>`;
       }
 
+	if (page === 'submenu3') {
+  content = `
+  <section style="padding: 2rem;">
+    <h2 style="font-size: 2rem; color: var(--text-color);">HPP Calculator (Detail Bahan Baku)</h2>
+    <section class="hpp-calculator">
+      <h3><i class="fas fa-calculator"></i> Input Bahan Baku</h3>
+      <input type="text" id="namaBahan" placeholder="Nama Bahan Baku">
+<input type="text" id="jenisBahan" placeholder="Jenis">
+<input type="number" id="qtyBahan" placeholder="Jumlah">
+<select id="satuanBahan">
+  <option value="kg">kg</option>
+  <option value="gram">gram</option>
+  <option value="liter">liter</option>
+  <option value="ml">ml</option>
+  <option value="pcs">pcs</option>
+  <option value="unit">unit</option>
+</select>
+<input type="number" id="hargaBahan" placeholder="Harga per Satuan">
+<button onclick="tambahBahanBaku()">Tambah</button>
+
+
+      <table class="announcement-table" style="margin-top:1rem;">
+        <thead>
+  <tr>
+    <th>Nama</th>
+    <th>Jenis</th>
+    <th>Qty</th>
+    <th>Harga per Satuan</th>
+    <th>Aksi</th>
+  </tr>
+</thead>
+
+
+        <tbody id="tabelBahanBakuBody"></tbody>
+        </tbody>
+      </table>
+
+      <input type="number" id="jumlahProduk" placeholder="Jumlah Produk yang dihasilkan">
+<input type="number" id="marginPersen" placeholder="Margin (%) default 40%">
+<input type="number" id="persenPajak" placeholder="Persentase Pajak (%) (Opsional)">
+<button onclick="hitungHPP()">Hitung HPP & Keuntungan</button>
+<div id="hppResult" style="margin-top: 1rem;"></div>
+
+    </section>
+  </section>`;
+}
+
       main.innerHTML = content;
       document.getElementById("sidebar").classList.remove("active");
     }
@@ -446,6 +534,99 @@ function calculateBMI() {
   result.textContent = `BMI Anda adalah ${bmi.toFixed(2)} (${status})`;
 }
 
+let bahanBakuList = [];
+
+function tambahBahanBaku() {
+  const nama = document.getElementById("namaBahan").value;
+  const jenis = document.getElementById("jenisBahan").value;
+  const qty = parseFloat(document.getElementById("qtyBahan").value);
+  const satuan = document.getElementById("satuanBahan").value;
+  const harga = parseFloat(document.getElementById("hargaBahan").value);
+
+  if (!nama || !jenis || !qty || !harga || isNaN(qty) || isNaN(harga)) {
+    alert("Isi semua kolom dengan benar!");
+    return;
+  }
+
+  bahanBakuList.push({ nama, jenis, qty, satuan, harga });
+  renderTabelBahanBaku();
+
+  document.getElementById("namaBahan").value = "";
+  document.getElementById("jenisBahan").value = "";
+  document.getElementById("qtyBahan").value = "";
+  document.getElementById("hargaBahan").value = "";
+}
+
+function renderTabelBahanBaku() {
+  const tabel = document.getElementById("tabelBahanBakuBody");
+  tabel.innerHTML = "";
+
+  bahanBakuList.forEach((bahan, index) => {
+    const row = `<tr>
+      <td>${bahan.nama}</td>
+      <td>${bahan.jenis}</td>
+      <td>${bahan.qty} ${bahan.satuan}</td>
+      <td>Rp${bahan.harga.toLocaleString()}</td>
+      <td>
+        <button onclick="editBahan(${index})">Edit</button>
+        <button onclick="hapusBahan(${index})">Hapus</button>
+      </td>
+    </tr>`;
+    tabel.innerHTML += row;
+  });
+}
+
+function editBahan(index) {
+  const bahan = bahanBakuList[index];
+  document.getElementById("namaBahan").value = bahan.nama;
+  document.getElementById("jenisBahan").value = bahan.jenis;
+  document.getElementById("qtyBahan").value = bahan.qty;
+  document.getElementById("satuanBahan").value = bahan.satuan;
+  document.getElementById("hargaBahan").value = bahan.harga;
+  bahanBakuList.splice(index, 1);
+  renderTabelBahanBaku();
+}
+
+function hapusBahan(index) {
+  bahanBakuList.splice(index, 1);
+  renderTabelBahanBaku();
+}
+
+function hitungHPP() {
+  const jumlahProduk = parseFloat(document.getElementById("jumlahProduk").value);
+  const persenPajak = parseFloat(document.getElementById("persenPajak").value) || 0;
+  const marginInput = parseFloat(document.getElementById("marginPersen").value);
+  const marginPersen = isNaN(marginInput) ? 40 : marginInput; // default 40% jika kosong
+  const result = document.getElementById("hppResult");
+
+  if (!jumlahProduk || jumlahProduk <= 0) {
+    result.innerHTML = `<p style="color:red;">Jumlah produk harus diisi dan lebih dari 0.</p>`;
+    return;
+  }
+
+  const totalBahan = bahanBakuList.reduce((sum, bahan) => {
+    const isPerUnit = bahan.satuan === 'pcs' || bahan.satuan === 'unit';
+    const biaya = isPerUnit ? (bahan.qty * bahan.harga) : bahan.harga;
+    return sum + biaya;
+  }, 0);
+
+  const hppPerProduk = totalBahan / jumlahProduk;
+  const hargaJual = hppPerProduk + (hppPerProduk * marginPersen / 100);
+  const keuntunganKotor = hargaJual - hppPerProduk;
+  const pajak = (persenPajak / 100) * keuntunganKotor;
+  const keuntunganBersih = keuntunganKotor - pajak;
+
+  result.innerHTML = `
+    <div class="result-box">
+      <p><strong>Total Modal Bahan:</strong> Rp${totalBahan.toLocaleString()}</p>
+      <p><strong>HPP per Produk:</strong> Rp${hppPerProduk.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</p>
+      <p><strong>Harga Jual (+${marginPersen}%):</strong> Rp${hargaJual.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</p>
+      <p><strong>Keuntungan Kotor:</strong> Rp${keuntunganKotor.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</p>
+      <p><strong>Pajak (${persenPajak}%):</strong> Rp${pajak.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</p>
+      <p><strong>Keuntungan Bersih:</strong> Rp${keuntunganBersih.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ".")}</p>
+    </div>
+  `;
+}
   </script>
 </body>
 </html>
