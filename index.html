@@ -337,15 +337,15 @@
   <table class="announcement-table" style="margin-top:2rem; width:100%; max-width:900px;">
     <thead>
       <tr>
-        <th>Tanggal</th>
+         <center><th>Tanggal</th>
         <th>Deskripsi</th>
       </tr>
     </thead>
     <tbody>
-      <tr><td>23-06-2025</td><td>Pembaruan sistem keamanan backend <span class="badge update">Update</span></td></tr>
+    	<tr><td>23-06-2025</td><td>Pembaruan sistem keamanan backend <span class="badge update">Update</span></td></tr>
       <tr><td>22-06-2025</td><td>Penambahan fitur kalkulator HPP <span class="badge new">New</span></td></tr>
       <tr><td>21-06-2025</td><td>Penghapusan fitur lama versi v1 <span class="badge delete">Delete</span></td></tr>
-      <tr><td>20-06-2025</td><td>Pemeliharaan server pukul 00:00 - 03:00 <span class="badge maintenance">Maintenance</span></td></tr>
+      <tr><td>20-06-2025</td><td>Pemeliharaan server pukul 00:00 - 03:00 <span class="badge maintenance">Maintenance</span></td></tr> </center>
     </tbody>
   </table>
 </section>
@@ -377,19 +377,7 @@
     function toggleTheme() {
       document.body.classList.toggle("light");
     }
-    // Total fitur (ambil semua section dalam #main-content)
-document.getElementById("total-fitur").textContent = document.querySelectorAll("#main-content section").length;
 
-// Last update (hari ini pukul 00:00)
-const now = new Date();
-const options = { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' };
-document.getElementById("last-update").textContent = now.toLocaleDateString("id-ID", options) + " pukul 00:00";
-
-// Last visit (jam + IP acak)
-const jam = now.toLocaleTimeString("id-ID");
-const fakeIP = Math.random().toString(36).substring(2, 10).toUpperCase();
-document.getElementById("last-visit").textContent = `${jam}, IP: ${fakeIP}`;
-  }
   </script>
 </body>
 </html>
