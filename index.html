@@ -229,6 +229,63 @@
         width: 160px;
         height: 160px;
       }
+      .box {
+  background: #111;
+  border: 2px solid #00ffff;
+  box-shadow: 0 0 15px #00ffffaa;
+  padding: 1.5rem;
+  border-radius: 12px;
+  width: 220px;
+  text-align: center;
+  transition: 0.3s ease;
+}
+
+.box i {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: #00ffff;
+}
+
+.box .value {
+  font-size: 1.5rem;
+  margin-bottom: 0.25rem;
+}
+
+.box .label {
+  font-size: 1rem;
+  color: #ccc;
+}
+
+.announcement-table {
+  border-collapse: collapse;
+  width: 100%;
+  color: #fff;
+  box-shadow: 0 0 15px #00ffff44;
+}
+
+.announcement-table th, .announcement-table td {
+  border: 1px solid #00ffff66;
+  padding: 0.75rem 1rem;
+  text-align: left;
+}
+
+.announcement-table th {
+  background: #0c1b33;
+}
+
+.badge {
+  padding: 4px 10px;
+  border-radius: 5px;
+  font-size: 0.8rem;
+  color: #fff;
+  text-transform: uppercase;
+}
+
+.badge.update { background-color: #3498db; }
+.badge.new { background-color: #2ecc71; }
+.badge.delete { background-color: #e74c3c; }
+.badge.maintenance { background-color: #f1c40f; color: #000; }
+}
     }
   </style>
 </head>
@@ -282,14 +339,13 @@
       <tr>
         <th>Tanggal</th>
         <th>Deskripsi</th>
-        <th>Status</th>
       </tr>
     </thead>
     <tbody>
-      <tr><td>23-06-2025</td><td>Pembaruan sistem keamanan backend</td><td><span class="badge update">Update</span></td></tr>
-      <tr><td>22-06-2025</td><td>Penambahan fitur kalkulator HPP</td><td><span class="badge new">New</span></td></tr>
-      <tr><td>21-06-2025</td><td>Penghapusan fitur lama versi v1</td><td><span class="badge delete">Delete</span></td></tr>
-      <tr><td>20-06-2025</td><td>Pemeliharaan server pukul 00:00 - 03:00</td><td><span class="badge maintenance">Maintenance</span></td></tr>
+      <tr><td>23-06-2025</td><td>Pembaruan sistem keamanan backend <span class="badge update">Update</span></td></tr>
+      <tr><td>22-06-2025</td><td>Penambahan fitur kalkulator HPP <span class="badge new">New</span></td></tr>
+      <tr><td>21-06-2025</td><td>Penghapusan fitur lama versi v1 <span class="badge delete">Delete</span></td></tr>
+      <tr><td>20-06-2025</td><td>Pemeliharaan server pukul 00:00 - 03:00 <span class="badge maintenance">Maintenance</span></td></tr>
     </tbody>
   </table>
 </section>
@@ -321,6 +377,19 @@
     function toggleTheme() {
       document.body.classList.toggle("light");
     }
+    // Total fitur (ambil semua section dalam #main-content)
+document.getElementById("total-fitur").textContent = document.querySelectorAll("#main-content section").length;
+
+// Last update (hari ini pukul 00:00)
+const now = new Date();
+const options = { weekday: 'long', day: '2-digit', month: 'long', year: 'numeric' };
+document.getElementById("last-update").textContent = now.toLocaleDateString("id-ID", options) + " pukul 00:00";
+
+// Last visit (jam + IP acak)
+const jam = now.toLocaleTimeString("id-ID");
+const fakeIP = Math.random().toString(36).substring(2, 10).toUpperCase();
+document.getElementById("last-visit").textContent = `${jam}, IP: ${fakeIP}`;
+  }
   </script>
 </body>
 </html>
