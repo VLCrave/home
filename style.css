@@ -1,17 +1,4 @@
 /* style.css */
-.has-submenu .submenu {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.4s ease, padding 0.3s ease;
-  padding-left: 1rem;
-  margin-top: 0.5rem;
-}
-
-.has-submenu.open .submenu {
-  max-height: 500px; /* cukup besar untuk isi submenu */
-  padding-top: 0.5rem;
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -227,4 +214,23 @@ footer {
     width: 160px;
     height: 160px;
   }
+  .has-submenu .submenu {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease, padding 0.3s ease;
+  padding-left: 1rem;
+  margin-top: 0.5rem;
+}
+
+.has-submenu.open .submenu {
+  max-height: 500px; /* cukup besar untuk isi submenu */
+  padding-top: 0.5rem;
+}
+.has-submenu .toggle-icon {
+  transition: transform 0.3s ease;
+}
+
+.has-submenu.open .toggle-icon {
+  transform: rotate(180deg);
+}
 }
