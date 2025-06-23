@@ -277,6 +277,37 @@
   font-weight: bold;
 }
 
+.download-btn {
+  background: linear-gradient(to right, #00ffff, #0077ff);
+  color: #000;
+  font-weight: 600;
+  padding: 0.4rem 1rem;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 6px;
+  box-shadow: 0 0 8px #00ffff66;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.download-btn:hover {
+  background: linear-gradient(to right, #00cccc, #0055cc);
+  color: #fff;
+  box-shadow: 0 0 12px #00ffffaa;
+  transform: scale(1.04);
+}
+
+/* Responsif untuk layar kecil */
+@media (max-width: 600px) {
+  .download-btn {
+    font-size: 0.8rem;
+    padding: 0.35rem 0.8rem;
+  }
+}
+
 
   </style>
 </head>
@@ -298,9 +329,9 @@
         <li><a onclick="loadContent('service')"><i class="fas fa-hand-holding-heart"></i> Service</a></li>
         <li><a onclick="loadContent('shop')"><i class="fas fa-store"></i> Shop</a></li>
         <li class="has-submenu">
-          <a onclick="toggleSubmenu(this)"><i class="fas fa-gamepad"></i> Game ▾</a>
+          <a onclick="toggleSubmenu(this)"><i class="fas fa-gamepad"></i> Aplikasi Premium ▾</a>
           <ul>
-            <li><a onclick="loadContent('catur')">Catur</a></li>
+            <li><a onclick="loadContent('appspremium')">Aplikasi Premium (Android)</a></li>
           </ul>
         </li>
         <li class="has-submenu">
@@ -308,7 +339,7 @@
           <ul>
             <li><a onclick="loadContent('submenu1')">Winrate Calculator</a></li>
             <li><a onclick="loadContent('submenu2')">BMI Calculator</a></li>
-            <li><a onclick="loadContent('submenu3')">HPP Calculator</a></li>
+            <li><a onclick="loadContent('submenu3')">HPP Claculator</a></li>
           </ul>
         </li>
       </ul>
@@ -316,39 +347,40 @@
   </aside>
 
   <main id="main-content">
-     <section style="padding: 2rem;">
-      <h2 style="font-size: 2rem; color: var(--text-color);">Selamat Datang di VL Personal Profile</h2>
-      <div class="info-boxes">
-        <div class="info-box">
-          <h4>Total Fitur</h4>
-          <p id="totalFitur">--</p>
-        </div>
-        <div class="info-box">
-          <h4>Total User</h4>
-          <p>150</p>
-        </div>
-        <div class="info-box">
-          <h4>Last Update</h4>
-          <p id="lastUpdate">--</p>
-        </div>
-        <div class="info-box">
-          <h4>Last Visit</h4>
-          <p id="lastVisit">--</p>
-        </div>
+     <section style="padding: 2rem;"><h2 style="font-size: 2rem; color: var(--text-color);">Dashboard</h2>
+  <section style="padding: 2rem;">
+    <h2 style="font-size: 2rem; color: var(--text-color);"></h2>
+    <div class="info-boxes">
+      <div class="info-box">
+        <h4><i class="fas fa-puzzle-piece"></i> Total Fitur</h4>
+        <p id="totalFitur">--</p>
       </div>
-      <h3>Pengumuman</h3>
-      <table class="announcement-table">
-        <thead>
-          <tr><th>Tanggal</th><th>Deskripsi</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>23-06-2025</td><td>Pembaruan sistem keamanan backend <span class="badge update">Update</span></td></tr>
-          <tr><td>22-06-2025</td><td>Penambahan fitur kalkulator HPP <span class="badge new">New</span></td></tr>
-          <tr><td>21-06-2025</td><td>Penghapusan fitur lama versi v1 <span class="badge delete">Delete</span></td></tr>
-          <tr><td>20-06-2025</td><td>Pemeliharaan server pukul 00:00 - 03:00 <span class="badge maintenance">Maintenance</span></td></tr>
-        </tbody>
-      </table>
-</section>
+      <div class="info-box">
+        <h4><i class="fas fa-users"></i> Total User</h4>
+        <p>150</p>
+      </div>
+      <div class="info-box">
+        <h4><i class="fas fa-sync-alt"></i> Last Update</h4>
+        <p id="lastUpdate">--</p>
+      </div>
+      <div class="info-box">
+        <h4><i class="fas fa-clock"></i> Last Visit</h4>
+        <p id="lastVisit">--</p>
+      </div>
+    </div>
+    <h3><i class="fas fa-bullhorn"></i> Pengumuman</h3>
+    <table class="announcement-table">
+      <thead>
+        <tr><th><i class="fas fa-calendar-alt"></i> Tanggal</th><th><i class="fas fa-info-circle"></i> Deskripsi</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>23-06-2025</td><td>Pembaruan sistem keamanan backend <span class="badge update">Update</span></td></tr>
+        <tr><td>22-06-2025</td><td>Penambahan fitur kalkulator HPP <span class="badge new">New</span></td></tr>
+        <tr><td>21-06-2025</td><td>Penghapusan fitur lama versi v1 <span class="badge delete">Delete</span></td></tr>
+        <tr><td>20-06-2025</td><td>Pemeliharaan server pukul 00:00 - 03:00 <span class="badge maintenance">Maintenance</span></td></tr>
+      </tbody>
+    </table>
+  </section>
   </main>
 
   <script>
@@ -369,41 +401,75 @@
       let content = '';
 
       if (page === 'dashboard') {
-        content = `<section style="padding: 2rem;"><h2 style="font-size: 2rem; color: var(--text-color);">Dashboard</h2>
-	<section style="padding: 2rem;">
-      <h2 style="font-size: 2rem; color: var(--text-color);"></h2>
-      <div class="info-boxes">
-        <div class="info-box">
-          <h4>Total Fitur</h4>
-          <p id="totalFitur">--</p>
-        </div>
-        <div class="info-box">
-          <h4>Total User</h4>
-          <p>150</p>
-        </div>
-        <div class="info-box">
-          <h4>Last Update</h4>
-          <p id="lastUpdate">--</p>
-        </div>
-        <div class="info-box">
-          <h4>Last Visit</h4>
-          <p id="lastVisit">--</p>
-        </div>
+  content = `<section style="padding: 2rem;"><h2 style="font-size: 2rem; color: var(--text-color);">Dashboard</h2>
+  <section style="padding: 2rem;">
+    <h2 style="font-size: 2rem; color: var(--text-color);"></h2>
+    <div class="info-boxes">
+      <div class="info-box">
+        <h4><i class="fas fa-puzzle-piece"></i> Total Fitur</h4>
+        <p id="totalFitur">--</p>
       </div>
-      <h3>Pengumuman</h3>
-      <table class="announcement-table">
-        <thead>
-          <tr><th>Tanggal</th><th>Deskripsi</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>23-06-2025</td><td>Pembaruan sistem keamanan backend <span class="badge update">Update</span></td></tr>
-          <tr><td>22-06-2025</td><td>Penambahan fitur kalkulator HPP <span class="badge new">New</span></td></tr>
-          <tr><td>21-06-2025</td><td>Penghapusan fitur lama versi v1 <span class="badge delete">Delete</span></td></tr>
-          <tr><td>20-06-2025</td><td>Pemeliharaan server pukul 00:00 - 03:00 <span class="badge maintenance">Maintenance</span></td></tr>
-        </tbody>
-      </table>
-	</section>`;
+      <div class="info-box">
+        <h4><i class="fas fa-users"></i> Total User</h4>
+        <p>150</p>
+      </div>
+      <div class="info-box">
+        <h4><i class="fas fa-sync-alt"></i> Last Update</h4>
+        <p id="lastUpdate">--</p>
+      </div>
+      <div class="info-box">
+        <h4><i class="fas fa-clock"></i> Last Visit</h4>
+        <p id="lastVisit">--</p>
+      </div>
+    </div>
+    <h3><i class="fas fa-bullhorn"></i> Pengumuman</h3>
+    <table class="announcement-table">
+      <thead>
+        <tr><th><i class="fas fa-calendar-alt"></i> Tanggal</th><th><i class="fas fa-info-circle"></i> Deskripsi</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>23-06-2025</td><td>Pembaruan sistem keamanan backend <span class="badge update">Update</span></td></tr>
+        <tr><td>22-06-2025</td><td>Penambahan fitur kalkulator HPP <span class="badge new">New</span></td></tr>
+        <tr><td>21-06-2025</td><td>Penghapusan fitur lama versi v1 <span class="badge delete">Delete</span></td></tr>
+        <tr><td>20-06-2025</td><td>Pemeliharaan server pukul 00:00 - 03:00 <span class="badge maintenance">Maintenance</span></td></tr>
+      </tbody>
+    </table>
+  </section>`;
+
+  setTimeout(() => {
+    const sidebar = document.querySelectorAll('#sidebar nav ul li');
+    let totalFitur = 0;
+    sidebar.forEach(li => {
+      const submenu = li.querySelector('ul');
+      if (submenu) {
+        totalFitur += submenu.querySelectorAll('li').length;
+      } else {
+        totalFitur++;
       }
+    });
+    document.getElementById("totalFitur").textContent = totalFitur;
+  }, 0);
+
+  function updateLastVisit() {
+    const now = new Date();
+    const waktu = now.toLocaleString("id-ID", {
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+      hour: '2-digit', minute: '2-digit', second: '2-digit'
+    });
+    document.getElementById("lastVisit").textContent = waktu;
+  }
+  updateLastVisit();
+
+  function updateLastUpdate() {
+    const now = new Date();
+    now.setHours(15, 0, 0, 0);
+    const formatted = now.toLocaleDateString('id-ID', {
+      day: '2-digit', month: '2-digit', year: 'numeric'
+    });
+    document.getElementById("lastUpdate").textContent = formatted + " 15:00 WIB";
+  }
+  updateLastUpdate();
+}
 
       if (page === 'submenu1') {
         content = `
@@ -484,6 +550,29 @@
     </section>
   </section>`;
 }
+
+if (page === 'appspremium') {
+        content = `<section style="padding: 2rem;"><h2 style="font-size: 2rem; color: var(--text-color);">Dashboard</h2>
+	<section style="padding: 2rem;">
+      <h2 style="font-size: 2rem; color: var(--text-color);"></h2>
+      <h3>Pengumuman</h3>
+      <table class="announcement-table">
+        <thead>
+          <tr><th>Last Updated</th><th>Deskripsi</th><th>Link Download</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>23-06-2025</td><td>Capcut Premium <span class="badge update">Update</span></td><td><a href="https://contohlink.com/download-capcut" class="download-btn" target="_blank">
+    <i class="fas fa-download"></i> Download</a></td>
+</tr>
+<tr><td>23-06-2025</td><td>Capcut Premium <span class="badge update">Update</span></td><td><a href="https://contohlink.com/download-capcut" class="download-btn" target="_blank">
+    <i class="fas fa-download"></i> Download</a></td>
+</tr>
+        </tbody>
+      </table>
+	</section>`;
+      }
+
+// BATAS UNTUK HALAMAN DAN JS FUNGSI //
 
       main.innerHTML = content;
       document.getElementById("sidebar").classList.remove("active");
