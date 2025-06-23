@@ -7,7 +7,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
   <style>
     :root {
-      --bg-main: linear-gradient(to bottom, #0a0f1c, #111a2d);
+      --bg-main: linear-gradient(to bottom, #0a0f1c);
       --text-color: #00ffff;
       --bg-header: linear-gradient(to right, #081021, #0c1b33);
       --bg-sidebar: #081021;
@@ -306,11 +306,221 @@
     font-size: 0.8rem;
     padding: 0.35rem 0.8rem;
   }
+
+ .profile-pic {
+    width: 150px;
+    border-radius: 50%;
+    box-shadow: 0 0 20px #0ff;
+    margin-bottom: 1rem;
+  }
+
+  .neon-text {
+  font-size: 2rem;
+  color: #00f0ff;
+  text-shadow: 0 0 5px #00f0ff, 0 0 10px #00f0ff;
+  animation: neon-glow 2s infinite alternate;
+  transition: transform 0.3s ease;
 }
 
+.neon-text:hover {
+  transform: scale(1.05);
+  text-shadow: 0 0 10px #00ffff, 0 0 20px #00ffff;
+}
 
+@keyframes neon-glow {
+  from {
+    text-shadow: 0 0 5px #00f0ff, 0 0 10px #00f0ff;
+  }
+  to {
+    text-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff;
+  }
+}
+
+.neon-paragraph {
+  color: #ccefff;
+  text-shadow: 0 0 3px #00e5ff;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+}
+
+#popup-greeting {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #1e1e2f;
+    color: #fff;
+    padding: 2rem;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 0 25px rgba(0, 255, 255, 0.25);
+    z-index: 9999;
+    text-align: center;
+    font-family: 'Segoe UI', sans-serif;
+  }
+
+  #popup-greeting h2 {
+    margin-bottom: 1rem;
+    font-size: 1.8rem;
+    color: #00ffff;
+    text-shadow: 0 0 6px #00ffff;
+  }
+
+  #popup-greeting .terms-box {
+    margin: 1rem 0;
+    padding: 0.9rem;
+    border: 1px solid #00ffff;
+    border-radius: 6px;
+    font-size: 0.95rem;
+    background-color: rgba(255, 255, 255, 0.03);
+  }
+
+  #popup-greeting .check-label {
+    display: block;
+    margin: 1rem 0;
+    color: #ccc;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  #popup-greeting .check-label a {
+    color: #00ffff;
+    text-decoration: underline;
+    display: inline-block;
+    margin-top: 0.4rem;
+  }
+
+  #popup-greeting input#access-code {
+    width: 90%;
+    max-width: 300px;
+    padding: 0.7rem;
+    font-size: 1rem;
+    margin-top: 1rem;
+    border-radius: 6px;
+    border: none;
+    outline: none;
+    text-align: center;
+    background: #2d2d44;
+    color: white;
+  }
+
+  #popup-greeting .btn-validate {
+    margin-top: 1rem;
+    padding: 0.6rem 1.5rem;
+    background-color: #00bcd4;
+    border: none;
+    border-radius: 6px;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 188, 212, 0.5);
+    transition: 0.3s ease;
+  }
+
+  #popup-greeting .btn-validate:hover {
+    background-color: #0097a7;
+  }
+
+  #popup-greeting .feedback-icons {
+    margin-top: 1.2rem;
+    font-size: 1.8rem;
+    min-height: 30px;
+  }
+
+  #popup-greeting .feedback-icons i {
+    display: none;
+  }
+
+  #loading-icon {
+    color: #00ffff;
+    animation: spin 1s linear infinite;
+  }
+
+  #success-icon {
+    color: #00ff7f;
+  }
+
+  #error-icon {
+    color: #ff4f4f;
+  }
+
+  @keyframes spin {
+    0% { transform: rotate(0); }
+    100% { transform: rotate(360deg); }
+  }
+
+  #purchase-link {
+    display: none;
+    margin-top: 1rem;
+  }
+
+  #purchase-link a {
+    display: inline-block;
+    background: #ff0066;
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background 0.3s ease;
+  }
+
+  #purchase-link a:hover {
+    background: #cc0052;
+  }
+
+  body.popup-active > *:not(#popup-greeting) {
+    filter: blur(6px);
+    pointer-events: none;
+    user-select: none;
+  }
+
+  @media (max-width: 768px) {
+    #popup-greeting {
+      width: 95%;
+      padding: 1.2rem;
+      border-radius: 10px;
+    }
+
+    #popup-greeting h2 {
+      font-size: 1.5rem;
+    }
+
+    #popup-greeting .terms-box,
+    #popup-greeting .check-label {
+      font-size: 0.85rem;
+    }
+
+    #popup-greeting input#access-code {
+      width: 95%;
+    }
+
+    #popup-greeting .btn-validate {
+      width: 100%;
+    }
+  }
   </style>
 </head>
+	<div id="popup-greeting">
+  <h2>Selamat Datang!</h2>
+  <p class="terms-box">Silahkan masukan kode Akses untuk melanjutkan</p>
+  </label>
+  <input type="text" id="access-code" placeholder="Masukkan kode akses" />
+  <button class="btn-validate" onclick="validateAccessCode()">Verifikasi</button>
+
+  <div class="feedback-icons">
+    <i id="loading-icon" class="fas fa-spinner"></i>
+    <i id="success-icon" class="fas fa-check-circle"></i>
+    <i id="error-icon" class="fas fa-times-circle"></i>
+  </div>
+
+  <div id="purchase-link">
+    <a href="https://lynk.id/vickysatrialindy/rr13vjv48rq9/checkout?token=cGFyYW1zPSU1QiU1RCZiaWRfcHJpY2U9MCZxdHlfcHJvZD0x" target="_blank">
+      Dapatkan Kode Akses
+    </a>
+  </div>
+</div>
 <body>
   <header>
     <h1>VL Profile</h1>
@@ -345,45 +555,54 @@
       </ul>
     </nav>
   </aside>
-
-  <main id="main-content">
-     <section style="padding: 2rem;"><h2 style="font-size: 2rem; color: var(--text-color);">Dashboard</h2>
-  <section style="padding: 2rem;">
-    <h2 style="font-size: 2rem; color: var(--text-color);"></h2>
-    <div class="info-boxes">
-      <div class="info-box">
-        <h4><i class="fas fa-puzzle-piece"></i> Total Fitur</h4>
-        <p id="totalFitur">--</p>
-      </div>
-      <div class="info-box">
-        <h4><i class="fas fa-users"></i> Total User</h4>
-        <p>150</p>
-      </div>
-      <div class="info-box">
-        <h4><i class="fas fa-sync-alt"></i> Last Update</h4>
-        <p id="lastUpdate">--</p>
-      </div>
-      <div class="info-box">
-        <h4><i class="fas fa-clock"></i> Last Visit</h4>
-        <p id="lastVisit">--</p>
-      </div>
-    </div>
-    <h3><i class="fas fa-bullhorn"></i> Pengumuman</h3>
-    <table class="announcement-table">
-      <thead>
-        <tr><th><i class="fas fa-calendar-alt"></i> Tanggal</th><th><i class="fas fa-info-circle"></i> Deskripsi</th></tr>
-      </thead>
-      <tbody>
-        <tr><td>23-06-2025</td><td>Pembaruan sistem keamanan backend <span class="badge update">Update</span></td></tr>
-        <tr><td>22-06-2025</td><td>Penambahan fitur kalkulator HPP <span class="badge new">New</span></td></tr>
-        <tr><td>21-06-2025</td><td>Penghapusan fitur lama versi v1 <span class="badge delete">Delete</span></td></tr>
-        <tr><td>20-06-2025</td><td>Pemeliharaan server pukul 00:00 - 03:00 <span class="badge maintenance">Maintenance</span></td></tr>
-      </tbody>
-    </table>
+     <main id="main-content">
+  <section style="padding: 2rem; text-align: center;">
+    <img src="https://via.placeholder.com/150" alt="Foto Profil" class="profile-pic" />
+    <h1 class="neon-text">Selamat Datang di VL - Personal Profile</h1>
+    <p class="neon-paragraph">
+      Halo! Saya <strong>Vicky Satria Lindy</strong>, seorang desainer grafis dan pengembang antarmuka kreatif. Di website ini, Anda akan menemukan berbagai tools, aplikasi premium, dan fitur interaktif yang terus berkembang.
+    </p>
+    <p class="neon-paragraph">Jelajahi semua menu di sidebar dan temukan fitur menarik untuk mendukung aktivitas digital Anda.</p>
   </section>
-  </main>
+</main>
 
   <script>
+function validateAccessCode() {
+  const input = document.getElementById("access-code").value.trim();
+  const loadingIcon = document.getElementById("loading-icon");
+  const successIcon = document.getElementById("success-icon");
+  const errorIcon = document.getElementById("error-icon");
+  const purchaseLink = document.getElementById("purchase-link");
+
+  // Reset semua ikon dan link beli
+  loadingIcon.style.display = "inline-block";
+  successIcon.style.display = "none";
+  errorIcon.style.display = "none";
+  purchaseLink.style.display = "none";
+
+  // Simulasi loading selama 2 detik
+  setTimeout(() => {
+    loadingIcon.style.display = "none";
+
+    if (input === "PREMIUM") {
+      successIcon.style.display = "inline-block";
+
+      // Izinkan popup ditutup setelah sukses
+      setTimeout(() => {
+        document.getElementById("popup-greeting").style.display = "none";
+        document.body.classList.remove("blurred");
+      }, 1000);
+    } else {
+      errorIcon.style.display = "inline-block";
+      purchaseLink.style.display = "block"; // Tampilkan tombol beli
+    }
+  }, 2000);
+}
+
+
+
+
+
     function toggleSidebar() {
       document.getElementById("sidebar").classList.toggle("active");
     }
@@ -436,6 +655,35 @@
     </table>
   </section>`;
 
+  // Fungsi-fungsi untuk last visit dan last update
+  function updateLastVisit() {
+    const now = new Date();
+    const waktu = now.toLocaleString("id-ID", {
+      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
+      hour: '2-digit', minute: '2-digit', second: '2-digit'
+    });
+    const el = document.getElementById("lastVisit");
+    if (el) el.textContent = waktu;
+  }
+
+  function updateLastUpdate() {
+    const now = new Date();
+    const updateTime = new Date(now);
+    updateTime.setHours(15, 0, 0, 0);
+
+    // Jika sekarang sebelum jam 15.00, ambil hari sebelumnya
+    if (now < updateTime) {
+      updateTime.setDate(updateTime.getDate() - 1);
+    }
+
+    const formatted = updateTime.toLocaleDateString("id-ID", {
+      day: '2-digit', month: '2-digit', year: 'numeric'
+    });
+    const el = document.getElementById("lastUpdate");
+    if (el) el.textContent = `${formatted} 15:00 WIB`;
+  }
+
+  // Tunggu DOM elemen muncul dulu
   setTimeout(() => {
     const sidebar = document.querySelectorAll('#sidebar nav ul li');
     let totalFitur = 0;
@@ -448,28 +696,13 @@
       }
     });
     document.getElementById("totalFitur").textContent = totalFitur;
-  }, 0);
 
-  function updateLastVisit() {
-    const now = new Date();
-    const waktu = now.toLocaleString("id-ID", {
-      weekday: 'long', year: 'numeric', month: 'long', day: 'numeric',
-      hour: '2-digit', minute: '2-digit', second: '2-digit'
-    });
-    document.getElementById("lastVisit").textContent = waktu;
-  }
-  updateLastVisit();
-
-  function updateLastUpdate() {
-    const now = new Date();
-    now.setHours(15, 0, 0, 0);
-    const formatted = now.toLocaleDateString('id-ID', {
-      day: '2-digit', month: '2-digit', year: 'numeric'
-    });
-    document.getElementById("lastUpdate").textContent = formatted + " 15:00 WIB";
-  }
-  updateLastUpdate();
+    // Jalankan fungsi ini setelah elemen sudah dimuat
+    updateLastVisit();
+    updateLastUpdate();
+  }, 10); // Delay kecil untuk memastikan elemen ter-render
 }
+
 
       if (page === 'submenu1') {
         content = `
