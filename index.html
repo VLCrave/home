@@ -1,42 +1,47 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>VL - Personal Profile</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-+h4l6g34g4B7WQzXxWgNuT8ZXzchqv5rM2DwqMYFqIRiYrwK3FjNU+Jb1SPd6GnJXYPqKZElqflvGkLzW2J+JQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header>
     <h1>VL Profile</h1>
-    <div class="menu-toggle" onclick="event.stopPropagation(); toggleMenu()">
-      <span></span>
-      <span></span>
-      <span></span>
+    <div>
+      <button class="menu-toggle" onclick="toggleSidebar()">
+        <i class="fas fa-bars"></i>
+      </button>
     </div>
   </header>
 
-  <nav id="sidemenu">
-    <ul>
-      <li><a onclick="loadContent('dashboard')"><i class="fas fa-home"></i> Dashboard</a></li>
-      <li><a onclick="loadContent('asset')"><i class="fas fa-coins"></i> Asset</a></li>
-      <li><a onclick="loadContent('service')"><i class="fas fa-cogs"></i> Service</a></li>
-      <li><a onclick="loadContent('shop')"><i class="fas fa-store"></i> Shop</a></li>
-      <li><a onclick="loadContent('game')"><i class="fas fa-gamepad"></i> Game</a>
-        <ul>
-          <li><a onclick="loadContent('catur')"><i class="fas fa-chess"></i> Catur</a></li>
-        </ul>
-      </li>
-      <li><a><i class="fas fa-wrench"></i> Tools</a>
-        <ul>
-          <li><a onclick="loadContent('submenu1')">Submenu 1</a></li>
-          <li><a onclick="loadContent('submenu2')">Submenu 2</a></li>
-          <li><a onclick="loadContent('submenu3')">Submenu 3</a></li>
-        </ul>
-      </li>
-    </ul>
-  </nav>
+  <aside class="sidebar" id="sidebar">
+    <h1>Menu</h1>
+    <nav>
+      <ul>
+        <li><a onclick="loadContent('dashboard')"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+        <li><a onclick="loadContent('asset')"><i class="fas fa-coins"></i> Asset</a></li>
+        <li><a onclick="loadContent('service')"><i class="fas fa-hand-holding-heart"></i> Service</a></li>
+        <li><a onclick="loadContent('shop')"><i class="fas fa-store"></i> Shop</a></li>
+        <li class="has-submenu">
+          <a onclick="toggleSubmenu(this)"><i class="fas fa-gamepad"></i> Game ▾</a>
+          <ul>
+            <li><a onclick="loadContent('catur')">Catur</a></li>
+          </ul>
+        </li>
+        <li class="has-submenu">
+          <a onclick="toggleSubmenu(this)"><i class="fas fa-tools"></i> Tools ▾</a>
+          <ul>
+            <li><a onclick="loadContent('submenu1')">Submenu 1</a></li>
+            <li><a onclick="loadContent('submenu2')">Submenu 2</a></li>
+            <li><a onclick="loadContent('submenu3')">Submenu 3</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
+  </aside>
 
   <main id="main-content">
     <section id="dashboard" class="dashboard">
@@ -49,11 +54,11 @@
         <img src="https://i.ibb.co/6mNjg45/foto-vicky.png" alt="Foto Vicky">
       </div>
     </section>
-  </main>
 
-  <footer>
-    <p>&copy; 2025 VL Personal Profile. All Rights Reserved.</p>
-  </footer>
+    <footer>
+      <p>&copy; 2025 VL Personal Profile. All Rights Reserved.</p>
+    </footer>
+  </main>
 
   <script src="script.js"></script>
 </body>
