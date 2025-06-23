@@ -1,51 +1,213 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>VL - Personal Profile</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-+h4l6g34g4B7WQzXxWgNuT8ZXzchqv5rM2DwqMYFqIRiYrwK3FjNU+Jb1SPd6GnJXYPqKZElqflvGkLzW2J+JQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-  <link rel="stylesheet" href="style.css">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body {
+      height: 100%;
+    }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom, #0a0f1c, #111a2d);
+      color: #00ffff;
+      display: flex;
+      flex-direction: column;
+    }
+    header {
+      background: linear-gradient(to right, #081021, #0c1b33);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 2px solid #00ffff33;
+      box-shadow: 0 0 10px #00ffff44;
+    }
+    nav ul {
+      display: flex;
+      gap: 1.5rem;
+      list-style: none;
+    }
+    nav ul li {
+      position: relative;
+    }
+    nav ul li a {
+      color: #00ffff;
+      text-decoration: none;
+      transition: color 0.3s;
+      cursor: pointer;
+    }
+    nav ul li a:hover {
+      color: #00aaff;
+    }
+    nav ul li ul {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: #0c1b33;
+      padding: 0.5rem;
+      border: 1px solid #00ffff;
+    }
+    nav ul li:hover ul {
+      display: block;
+    }
+    main {
+      flex: 1;
+    }
+    section {
+      padding: 2rem;
+      background-color: rgba(0, 0, 30, 0.2);
+      border-bottom: 1px solid #00ffff22;
+    }
+    footer {
+      background: #081021;
+      color: #00ffff;
+      text-align: center;
+      padding: 1rem;
+      box-shadow: 0 -2px 10px #00ffff22;
+    }
+    .dashboard {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+      padding: 4rem 2rem;
+      background-color: rgba(0, 0, 30, 0.2);
+      border-bottom: 1px solid #00ffff22;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+    .dashboard-content {
+      flex: 1;
+      min-width: 280px;
+    }
+    .nama-text {
+      font-size: 2.5rem;
+      color: #00ffff;
+    }
+    .nama-text span {
+      color: #fff;
+    }
+    .typing-desc {
+      margin-top: 1rem;
+      font-size: 1rem;
+      color: #ccc;
+      max-width: 500px;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 2px solid #00ffff;
+      width: 0;
+    }
+    .typing-desc.animate {
+      animation: typingCut 3s steps(50, end) forwards, blinkCaret 0.7s step-end infinite;
+    }
+    .dashboard-content a {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 0.75rem 1.5rem;
+      background: #00ffff;
+      color: #000;
+      font-weight: bold;
+      border-radius: 5px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+    }
+    .photo-glow {
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #0ff2, transparent 60%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      animation: pulseGlow 2.5s infinite ease-in-out;
+    }
+    .photo-glow img {
+      border-radius: 50%;
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+    }
+    @media (max-width: 768px) {
+      .dashboard {
+        flex-direction: column;
+        text-align: center;
+        padding: 2rem 1rem;
+      }
+      .nama-text {
+        font-size: 2rem;
+      }
+      .photo-glow {
+        width: 220px;
+        height: 220px;
+      }
+      .photo-glow img {
+        width: 160px;
+        height: 160px;
+      }
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes typingCut {
+      from { width: 0; }
+      to { width: 34ch; }
+    }
+    @keyframes blinkCaret {
+      0%, 100% { border-color: transparent; }
+      50% { border-color: #00ffff; }
+    }
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 10px #0ff5; }
+      50% { box-shadow: 0 0 20px #0ff; }
+      100% { box-shadow: 0 0 10px #0ff5; }
+    }
+  </style>
 </head>
 <body>
   <header>
     <h1>VL Profile</h1>
-    <div class="menu-toggle">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
+    <nav>
+      <ul>
+        <li><a onclick="loadContent('dashboard')">Dashboard</a></li>
+        <li><a onclick="loadContent('asset')">Asset</a></li>
+        <li><a onclick="loadContent('service')">Service</a></li>
+        <li><a onclick="loadContent('shop')">Shop</a></li>
+        <li>
+          <a href="#">Game</a>
+          <ul>
+            <li><a onclick="loadContent('catur')">Catur</a></li>
+          </ul>
+        </li>
+        <li>
+          <a href="#">Tools</a>
+          <ul>
+            <li><a onclick="loadContent('submenu1')">Submenu 1</a></li>
+            <li><a onclick="loadContent('submenu2')">Submenu 2</a></li>
+            <li><a onclick="loadContent('submenu3')">Submenu 3</a></li>
+          </ul>
+        </li>
+      </ul>
+    </nav>
   </header>
 
-  <nav id="sidemenu">
-    <ul>
-      <li><a onclick="loadContent('dashboard')"><i class="fas fa-home"></i> Dashboard</a></li>
-      <li><a onclick="loadContent('asset')"><i class="fas fa-coins"></i> Asset</a></li>
-      <li><a onclick="loadContent('service')"><i class="fas fa-cogs"></i> Service</a></li>
-      <li><a onclick="loadContent('shop')"><i class="fas fa-store"></i> Shop</a></li>
-      <li class="has-submenu">
-        <a onclick="toggleSubmenu(this)"><i class="fas fa-gamepad"></i> Game <i class="fas fa-chevron-down dropdown-icon"></i></a>
-        <ul class="submenu">
-          <li><a onclick="loadContent('catur')"><i class="fas fa-chess"></i> Catur</a></li>
-        </ul>
-      </li>
-      <li class="has-submenu">
-        <a onclick="toggleSubmenu(this)"><i class="fas fa-wrench"></i> Tools <i class="fas fa-chevron-down dropdown-icon"></i></a>
-        <ul class="submenu">
-          <li><a onclick="loadContent('submenu1')"><i class="fas fa-toolbox"></i> Submenu 1</a></li>
-          <li><a onclick="loadContent('submenu2')"><i class="fas fa-screwdriver-wrench"></i> Submenu 2</a></li>
-          <li><a onclick="loadContent('submenu3')"><i class="fas fa-hammer"></i> Submenu 3</a></li>
-        </ul>
-      </li>
-    </ul>
-  </nav>
-
   <main id="main-content">
-    <section class="dashboard">
+    <section id="dashboard" class="dashboard">
       <div class="dashboard-content">
         <h2 class="nama-text">Vicky <span>Satria Lindy</span></h2>
         <p class="typing-desc animate">Seorang desainer grafis & kreator digital yang membentuk dan mengak.....</p>
-        <a href="#kerjasama">JOIN US</a>
+        <a href="#kerjasama">HIRE ME</a>
       </div>
       <div class="photo-glow">
         <img src="https://i.ibb.co/6mNjg45/foto-vicky.png" alt="Foto Vicky">
@@ -57,6 +219,11 @@
     <p>&copy; 2025 VL Personal Profile. All Rights Reserved.</p>
   </footer>
 
-  <script src="script.js"></script>
+  <script>
+    function loadContent(page) {
+      const main = document.getElementById("main-content");
+      main.innerHTML = `<section style="padding: 4rem 2rem; animation: fadeIn 1.5s ease-in-out;"><h2 style="font-size: 2rem; color: #00ffff;">Halaman: ${page}</h2><p style="color:#ccc;">Konten dari halaman <b>${page}</b> akan dimuat di sini...</p></section>`;
+    }
+  </script>
 </body>
 </html>
