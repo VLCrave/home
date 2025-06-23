@@ -343,94 +343,117 @@
   margin-bottom: 1rem;
 }
 
+#popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  backdrop-filter: blur(6px);
+  background-color: rgba(0, 0, 0, 0.4);
+  z-index: 998;
+  display: block;
+}
+
 #popup-greeting {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background: #1e1e2f;
-    color: #fff;
-    padding: 2rem;
-    border-radius: 12px;
-    width: 100%;
-    max-width: 420px;
-    box-shadow: 0 0 25px rgba(0, 255, 255, 0.25);
-    z-index: 9999;
-    text-align: center;
-    font-family: 'Segoe UI', sans-serif;
-  }
+  position: fixed;
+  z-index: 999;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: #111;
+  color: white;
+  padding: 2rem;
+  border-radius: 10px;
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 0 15px #00ffff;
+}
 
-  #popup-greeting h2 {
-    margin-bottom: 1rem;
-    font-size: 1.8rem;
-    color: #00ffff;
-    text-shadow: 0 0 6px #00ffff;
-  }
+#popup-greeting h2 {
+  margin-bottom: 1rem;
+}
 
-  #popup-greeting .terms-box {
-    margin: 1rem 0;
-    padding: 0.9rem;
-    border: 1px solid #00ffff;
-    border-radius: 6px;
-    font-size: 0.95rem;
-    background-color: rgba(255, 255, 255, 0.03);
-  }
+#popup-greeting input[type="password"] {
+  padding: 0.5rem;
+  width: 80%;
+  max-width: 250px;
+  margin-top: 1rem;
+  border: 1px solid #00ffff;
+  border-radius: 5px;
+  background-color: #111;
+  color: #fff;
+  font-size: 1rem;
+  text-align: center;
+}
 
-  #popup-greeting .check-label {
-    display: block;
-    margin: 1rem 0;
-    color: #ccc;
-    font-size: 0.9rem;
-    line-height: 1.6;
-  }
+#popup-greeting button {
+  margin-top: 1rem;
+  padding: 0.6rem 1.5rem;
+  font-size: 1rem;
+  color: #fff;
+  background: #00bcd4;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 188, 212, 0.6);
+  transition: background 0.3s ease;
+}
 
-  #popup-greeting .check-label a {
-    color: #00ffff;
-    text-decoration: underline;
-    display: inline-block;
-    margin-top: 0.4rem;
-  }
+#popup-greeting button:hover {
+  background: #0097a7;
+}
 
-  #popup-greeting input#access-code {
-    width: 90%;
-    max-width: 300px;
-    padding: 0.7rem;
-    font-size: 1rem;
-    margin-top: 1rem;
-    border-radius: 6px;
-    border: none;
-    outline: none;
-    text-align: center;
-    background: #2d2d44;
-    color: white;
-  }
+.terms-box {
+  border: 1px solid #00ffff;
+  padding: 0.75rem;
+  border-radius: 5px;
+  margin: 1rem 0;
+  font-size: 0.95rem;
+  background: rgba(0, 255, 255, 0.05);
+}
 
-  #popup-greeting .btn-validate {
-    margin-top: 1rem;
-    padding: 0.6rem 1.5rem;
-    background-color: #00bcd4;
-    border: none;
-    border-radius: 6px;
-    color: #fff;
-    font-weight: bold;
-    cursor: pointer;
-    box-shadow: 0 0 10px rgba(0, 188, 212, 0.5);
-    transition: 0.3s ease;
-  }
+.check-label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 0.95rem;
+  color: #ccc;
+}
 
-  #popup-greeting .btn-validate:hover {
-    background-color: #0097a7;
-  }
 
-  #popup-greeting .feedback-icons {
-    margin-top: 1.2rem;
-    font-size: 1.8rem;
-    min-height: 30px;
-  }
+#loading-spinner {
+  border: 4px solid rgba(255, 255, 255, 0.2);
+  border-top: 4px solid #00ffff;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  animation: spin 1s linear infinite;
+  margin: 1rem auto;
+  display: none;
+}
 
-  #popup-greeting .feedback-icons i {
-    display: none;
-  }
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.result-icon {
+  font-size: 36px;
+  text-align: center;
+  display: none;
+  margin: 1rem auto;
+}
+
+.result-icon.success {
+  color: limegreen;
+}
+
+.result-icon.error {
+  color: red;
+}
 
   #loading-icon {
     color: #00ffff;
@@ -470,10 +493,16 @@
     background: #cc0052;
   }
 
-  body.popup-active > *:not(#popup-greeting) {
-    filter: blur(6px);
-    pointer-events: none;
-    user-select: none;
+  body.popup-active::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    z-index: 9990;
   }
 
   @media (max-width: 768px) {
@@ -502,24 +531,23 @@
   }
   </style>
 </head>
-	<div id="popup-greeting">
+	<div id="popup-overlay"></div>
+
+<div id="popup-greeting">
   <h2>Selamat Datang!</h2>
-  <p class="terms-box">Silahkan masukan kode Akses untuk melanjutkan</p>
+  <p class="terms-box">Dengan menggunakan website ini, Anda <strong>menyetujui syarat & ketentuan</strong> yang berlaku.</p>
+  
+  <label class="check-label">
+    <input type="checkbox" checked disabled />
+    Saya menyetujui syarat dan ketentuan
   </label>
-  <input type="text" id="access-code" placeholder="Masukkan kode akses" />
-  <button class="btn-validate" onclick="validateAccessCode()">Verifikasi</button>
 
-  <div class="feedback-icons">
-    <i id="loading-icon" class="fas fa-spinner"></i>
-    <i id="success-icon" class="fas fa-check-circle"></i>
-    <i id="error-icon" class="fas fa-times-circle"></i>
-  </div>
-
-  <div id="purchase-link">
-    <a href="https://lynk.id/vickysatrialindy/rr13vjv48rq9/checkout?token=cGFyYW1zPSU1QiU1RCZiaWRfcHJpY2U9MCZxdHlfcHJvZD0x" target="_blank">
-      Dapatkan Kode Akses
-    </a>
-  </div>
+  <input type="password" id="access-code" placeholder="Masukkan kode akses..." />
+  <br />
+  <button id="close-popup">Masuk</button>
+<div id="loading-spinner"></div>
+<div id="checkmark" class="result-icon success"><i class="fas fa-check-circle"></i></div>
+<div id="crossmark" class="result-icon error"><i class="fas fa-times-circle"></i></div>
 </div>
 <body>
   <header>
@@ -567,37 +595,43 @@
 </main>
 
   <script>
-function validateAccessCode() {
-  const input = document.getElementById("access-code").value.trim();
-  const loadingIcon = document.getElementById("loading-icon");
-  const successIcon = document.getElementById("success-icon");
-  const errorIcon = document.getElementById("error-icon");
-  const purchaseLink = document.getElementById("purchase-link");
+window.addEventListener("DOMContentLoaded", () => {
+  const popup = document.getElementById("popup-greeting");
+  const overlay = document.getElementById("popup-overlay");
+  const closeBtn = document.getElementById("close-popup");
+  const accessCodeInput = document.getElementById("access-code");
+  const spinner = document.getElementById("loading-spinner");
+  const checkIcon = document.getElementById("checkmark");
+  const crossIcon = document.getElementById("crossmark");
 
-  // Reset semua ikon dan link beli
-  loadingIcon.style.display = "inline-block";
-  successIcon.style.display = "none";
-  errorIcon.style.display = "none";
-  purchaseLink.style.display = "none";
+  closeBtn.addEventListener("click", () => {
+    const kode = accessCodeInput.value.trim();
+    spinner.style.display = "block";
+    checkIcon.style.display = "none";
+    crossIcon.style.display = "none";
+    closeBtn.disabled = true;
 
-  // Simulasi loading selama 2 detik
-  setTimeout(() => {
-    loadingIcon.style.display = "none";
+    setTimeout(() => {
+      spinner.style.display = "none";
 
-    if (input === "PREMIUM") {
-      successIcon.style.display = "inline-block";
+      if (kode === "PREMIUM") {
+        checkIcon.style.display = "block";
+        setTimeout(() => {
+          popup.style.display = "none";
+          overlay.style.display = "none";
+        }, 1000);
+      } else {
+        crossIcon.style.display = "block";
+        setTimeout(() => {
+          crossIcon.style.display = "none";
+        }, 1000);
+      }
 
-      // Izinkan popup ditutup setelah sukses
-      setTimeout(() => {
-        document.getElementById("popup-greeting").style.display = "none";
-        document.body.classList.remove("blurred");
-      }, 1000);
-    } else {
-      errorIcon.style.display = "inline-block";
-      purchaseLink.style.display = "block"; // Tampilkan tombol beli
-    }
-  }, 2000);
-}
+      closeBtn.disabled = false;
+    }, 2000);
+  });
+});
+
 
 
 
