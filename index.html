@@ -269,13 +269,31 @@
   </aside>
 
   <main id="main-content">
-    <section id="dashboard" class="dashboard">
-      <div class="dashboard-content">
-        <h2 class="nama-text">Vicky <span>Satria Lindy</span></h2>
-        <p class="">Selamat siang sobat sukses :D.</p>
-        <a href="#kerjasama">HIRE ME</a>
-      </div>
-    </section>
+    <section id="dashboard" class="dashboard" style="flex-direction: column; gap: 2rem;">
+  <div class="dashboard-boxes" style="display: flex; flex-wrap: wrap; justify-content: center; gap: 1.5rem;">
+    <div class="box"><i class="fas fa-layer-group"></i><div class="value" id="total-fitur">0</div><div class="label">Total Fitur</div></div>
+    <div class="box"><i class="fas fa-users"></i><div class="value">150</div><div class="label">Total User</div></div>
+    <div class="box"><i class="fas fa-clock"></i><div class="value" id="last-update">--</div><div class="label">Last Update</div></div>
+    <div class="box"><i class="fas fa-user-clock"></i><div class="value" id="last-visit">--</div><div class="label">Last Visit</div></div>
+  </div>
+
+  <table class="announcement-table" style="margin-top:2rem; width:100%; max-width:900px;">
+    <thead>
+      <tr>
+        <th>Tanggal</th>
+        <th>Deskripsi</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>23-06-2025</td><td>Pembaruan sistem keamanan backend</td><td><span class="badge update">Update</span></td></tr>
+      <tr><td>22-06-2025</td><td>Penambahan fitur kalkulator HPP</td><td><span class="badge new">New</span></td></tr>
+      <tr><td>21-06-2025</td><td>Penghapusan fitur lama versi v1</td><td><span class="badge delete">Delete</span></td></tr>
+      <tr><td>20-06-2025</td><td>Pemeliharaan server pukul 00:00 - 03:00</td><td><span class="badge maintenance">Maintenance</span></td></tr>
+    </tbody>
+  </table>
+</section>
+
   </main>
 
   <script>
