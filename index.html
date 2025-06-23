@@ -5,7 +5,232 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>VL - Personal Profile</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    :root {
+      --bg-main: linear-gradient(to bottom, #0a0f1c, #111a2d);
+      --text-color: #00ffff;
+      --bg-header: linear-gradient(to right, #081021, #0c1b33);
+      --bg-sidebar: #081021;
+      --bg-hover: #0c1b33;
+    }
+
+    body.light {
+      --bg-main: #f5f5f5;
+      --text-color: #111;
+      --bg-header: #fff;
+      --bg-sidebar: #eee;
+      --bg-hover: #ddd;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      height: 100%;
+      font-family: 'Segoe UI', sans-serif;
+      background: var(--bg-main);
+      color: var(--text-color);
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: var(--bg-header);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1001;
+      border-bottom: 2px solid #00ffff33;
+      box-shadow: 0 0 10px #00ffff44;
+    }
+
+    .menu-toggle {
+      font-size: 1.5rem;
+      background: none;
+      border: none;
+      color: var(--text-color);
+      cursor: pointer;
+    }
+
+    .theme-toggle {
+      font-size: 1.3rem;
+      margin-left: 1rem;
+      background: none;
+      border: none;
+      color: var(--text-color);
+      cursor: pointer;
+    }
+
+    .sidebar {
+      width: 250px;
+      background: var(--bg-sidebar);
+      padding: 1rem;
+      height: 100vh;
+      position: fixed;
+      top: 0;
+      left: -260px;
+      transition: left 0.3s ease;
+      z-index: 1000;
+      box-shadow: 2px 0 10px #00ffff44;
+    }
+
+    .sidebar.active {
+      left: 0;
+    }
+
+    .sidebar h1 {
+      margin-top: 4rem;
+      margin-bottom: 1.5rem;
+      font-size: 1.5rem;
+    }
+
+    nav ul {
+      list-style: none;
+    }
+
+    nav ul li {
+      margin-bottom: 1rem;
+    }
+
+    nav ul li a {
+      color: var(--text-color);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem;
+      transition: background 0.3s;
+      cursor: pointer;
+    }
+
+    nav ul li a:hover {
+      background: var(--bg-hover);
+    }
+
+    nav ul li ul {
+      display: none;
+      list-style: none;
+      padding-left: 1rem;
+      margin-top: 0.5rem;
+    }
+
+    nav ul li.open > ul {
+      display: block;
+    }
+
+    main {
+      flex: 1;
+      padding: 2rem;
+      margin-top: 60px;
+    }
+
+
+    .dashboard {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      align-items: center;
+      justify-content: space-between;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    .dashboard-content {
+      flex: 1;
+      min-width: 280px;
+    }
+
+    .nama-text {
+      font-size: 2.5rem;
+    }
+
+    .nama-text span {
+      color: #fff;
+    }
+
+    .typing-desc {
+      margin-top: 1rem;
+      font-size: 1rem;
+      color: #ccc;
+      max-width: 500px;
+      white-space: nowrap;
+      overflow: hidden;
+      border-right: 2px solid var(--text-color);
+      width: 0;
+    }
+
+    .typing-desc.animate {
+      animation: typingCut 2s steps(100, end) forwards, blinkCaret 1s step-end infinite;
+    }
+
+    .dashboard-content a {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 0.75rem 1.5rem;
+      background: var(--text-color);
+      color: #000;
+      font-weight: bold;
+      border-radius: 5px;
+      text-decoration: none;
+    }
+
+    .photo-glow {
+      width: 280px;
+      height: 280px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #0ff2, transparent 60%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      animation: pulseGlow 2.5s infinite ease-in-out;
+    }
+
+    .photo-glow img {
+      border-radius: 50%;
+      width: 200px;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    @keyframes typingCut {
+      from { width: 0; }
+      to { width: 34ch; }
+    }
+
+    @keyframes blinkCaret {
+      0%, 100% { border-color: transparent; }
+      50% { border-color: var(--text-color); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes pulseGlow {
+      0% { box-shadow: 0 0 10px #0ff5; }
+      50% { box-shadow: 0 0 20px #0ff; }
+      100% { box-shadow: 0 0 10px #0ff5; }
+    }
+
+    @media (max-width: 768px) {
+      .dashboard {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .photo-glow {
+        width: 220px;
+        height: 220px;
+      }
+
+      .photo-glow img {
+        width: 160px;
+        height: 160px;
+      }
+    }
+  </style>
 </head>
 <body>
 
@@ -47,7 +272,7 @@
     <section id="dashboard" class="dashboard">
       <div class="dashboard-content">
         <h2 class="nama-text">Vicky <span>Satria Lindy</span></h2>
-        <p class="typing-desc animate">Seorang desainer grafis & kreator digital yang membentuk dan mengak.....</p>
+        <p class="">Selamat siang sobat sukses :D.</p>
         <a href="#kerjasama">HIRE ME</a>
       </div>
       <div class="photo-glow">
@@ -55,6 +280,35 @@
       </div>
     </section>
   </main>
-  <script src="script.js"></script>
+
+  <script>
+    function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle("active");
+    }
+
+    function toggleSubmenu(el) {
+      const li = el.parentElement;
+      li.classList.toggle("open");
+    }
+
+    function loadContent(page) {
+      const main = document.getElementById("main-content");
+      main.innerHTML = `
+        <section style="padding: 4rem 2rem; animation: fadeIn 1.5s ease-in-out;">
+          <h2 style="font-size: 2rem; color: var(--text-color);">Halaman: ${page}</h2>
+          <p style="color:#777;">Konten dari halaman <b>${page}</b> akan dimuat di sini...</p>
+        </section>
+        <footer>
+          <p>&copy; 2025 VL Personal Profile. All Rights Reserved.</p>
+        </footer>
+      `;
+      // Tutup sidebar otomatis jika terbuka
+      document.getElementById("sidebar").classList.remove("active");
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle("light");
+    }
+  </script>
 </body>
 </html>
