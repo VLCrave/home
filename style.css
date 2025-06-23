@@ -465,3 +465,18 @@ body.popup-active::before {
     margin-bottom: 1rem;
   }
 }
+
+.spinner-border {
+  display: inline-block;
+  width: 2rem;
+  height: 2rem;
+  border: 0.25em solid #00ffff33;
+  border-top: 0.25em solid #00ffff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
