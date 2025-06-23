@@ -290,17 +290,7 @@ if (page === 'appspremium') {
       document.getElementById("sidebar").classList.remove("active");
     }
 
-   function rumus(tMatch, tWr, wrReq) {
-  let tWin = tMatch * (tWr / 100);
-  let tLose = tMatch - tWin;
-  let sisaWr = 100 - wrReq;
-  let wrResult = 100 / sisaWr;
-  let seratusPersen = tLose * wrResult;
-  let final = seratusPersen - tMatch;
-  return Math.round(final);
-}
-
-function calculateWinrate() {
+    function calculateWinrate() {
   const matches = parseInt(document.getElementById("matches")?.value);
   const currentWR = parseFloat(document.getElementById("currentWR")?.value);
   const desiredWR = parseFloat(document.getElementById("desiredWR")?.value);
@@ -316,23 +306,50 @@ function calculateWinrate() {
     return;
   }
 
-  if (currentWR > 100 || desiredWR > 100) {
-    result.textContent = "WR tidak boleh lebih dari 100%.";
+  if (matches % 1 !== 0) {
+    result.textContent = "Jumlah match harus bilangan bulat.";
     return;
   }
+
+  if (currentWR > 100 || desiredWR > 100) {
+    result.textContent = "Winrate tidak boleh lebih dari 100%.";
+    return;
+  }
+
+  if (currentWR === desiredWR) {
+    result.textContent = `Winrate kamu sudah ${currentWR}%. Tidak perlu tambahan match.`;
+    return;
+  }
+
+  const tWin = matches * (currentWR / 100);
+  const tLose = matches - tWin;
 
   if (desiredWR === 100) {
-    result.textContent = "GABAKAL BISA CUK JANGAN ANEH ANEH";
+    if (tLose === 0) {
+      result.textContent = `Kamu sudah 100% WR, gak perlu apa-apa.`;
+    } else {
+      result.textContent = `Yo ndak bisa, yang bisa cuman Monton.`;
+    }
     return;
   }
 
-  const additionalWinsNeeded = rumus(matches, currentWR, desiredWR);
+  const sisaWr = 100 - desiredWR;
+  const wrResult = 100 / sisaWr;
+  const seratusPersen = tLose * wrResult;
+  const finalNeededWin = Math.round(seratusPersen - matches);
 
-  if (additionalWinsNeeded >= 100000) {
-    result.textContent = `Kamu perlu lebih dari 100.000 win tanpa lose untuk mencapai ${desiredWR}% winrate.`;
+  if (currentWR < desiredWR) {
+    if (finalNeededWin > 100000) {
+      result.textContent = `Kamu perlu lebih dari 100.000 win tanpa lose untuk mencapai ${desiredWR}%.`;
+    } else {
+      result.textContent = `Kamu perlu menang ${finalNeededWin} pertandingan berturut-turut untuk mencapai ${desiredWR}% winrate.`;
+    }
   } else {
-    result.textContent = `Kamu perlu menang ${additionalWinsNeeded} pertandingan berturut-turut untuk mencapai ${desiredWR}% winrate.`;
+    const loseNeeded = Math.round(((tWin / (desiredWR / 100)) - matches));
+    result.textContent = `Kamu perlu kalah ${loseNeeded} match tanpa win untuk turun ke ${desiredWR}% winrate.`;
   }
+}
+
 function calculateBMI() {
   const gender = document.getElementById("gender")?.value;
   const heightCm = parseFloat(document.getElementById("height")?.value);
