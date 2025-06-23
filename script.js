@@ -1,3 +1,35 @@
+ // Blokir klik kanan
+  document.addEventListener('contextmenu', function (e) {
+    e.preventDefault();
+  });
+
+  // Blokir shortcut umum DevTools
+  document.addEventListener('keydown', function (e) {
+    // F12
+    if (e.key === 'F12') {
+      e.preventDefault();
+    }
+
+    // Ctrl+Shift+I, Ctrl+Shift+C, Ctrl+Shift+J
+    if (e.ctrlKey && e.shiftKey && ['I', 'C', 'J'].includes(e.key.toUpperCase())) {
+      e.preventDefault();
+    }
+
+    // Ctrl+U (view source), Ctrl+S (save)
+    if (e.ctrlKey && ['U', 'S'].includes(e.key.toUpperCase())) {
+      e.preventDefault();
+    }
+  });
+
+  // Deteksi Developer Tools dibuka (basic)
+  setInterval(function () {
+    const before = new Date().getTime();
+    debugger;
+    const after = new Date().getTime();
+    if (after - before > 100) {
+      document.body.innerHTML = "<h1 style='color: red; text-align: center;'>Akses Diblokir!</h1>";
+    }
+  }, 1000);
 
 window.addEventListener("DOMContentLoaded", () => {
   const popup = document.getElementById("popup-greeting");
