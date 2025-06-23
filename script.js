@@ -1,13 +1,28 @@
-function toggleMenu() {
-  const sidemenu = document.getElementById("sidemenu");
-  sidemenu.classList.toggle("open");
+// === script.js ===
+
+function toggleSidebar() {
+  const sidebar = document.getElementById("sidebar");
+  sidebar.classList.toggle("active");
 }
 
-function loadContent(sectionId) {
-  const contentArea = document.getElementById("main-content");
+// Tutup sidebar setelah klik menu
+document.querySelectorAll("#sidebar nav a").forEach(link => {
+  link.addEventListener("click", () => {
+    document.getElementById("sidebar").classList.remove("active");
+  });
+});
 
-  // Dummy data sementara untuk setiap section
-  const sections = {
+// Toggle submenu
+function toggleSubmenu(element) {
+  const parent = element.parentElement;
+  parent.classList.toggle("open");
+}
+
+// Load konten dinamis berdasarkan halaman
+function loadContent(page) {
+  const main = document.getElementById("main-content");
+
+  const contents = {
     dashboard: `
       <section class="dashboard">
         <div class="dashboard-content">
@@ -20,28 +35,59 @@ function loadContent(sectionId) {
         </div>
       </section>
     `,
-    asset: `<section><h2>Asset</h2><p>Daftar aset akan ditampilkan di sini.</p></section>`,
-    service: `<section><h2>Service</h2><p>Layanan yang tersedia akan muncul di sini.</p></section>`,
-    shop: `<section><h2>Shop</h2><p>Belanja produk atau layanan digital di sini.</p></section>`,
-    game: `<section><h2>Game</h2><p>Pilih permainan yang tersedia dari submenu.</p></section>`,
-    catur: `<section><h2>Catur</h2><p>Mainkan permainan catur di sini.</p></section>`,
-    submenu1: `<section><h2>Tools - Submenu 1</h2><p>Isi untuk tools submenu 1.</p></section>`,
-    submenu2: `<section><h2>Tools - Submenu 2</h2><p>Isi untuk tools submenu 2.</p></section>`,
-    submenu3: `<section><h2>Tools - Submenu 3</h2><p>Isi untuk tools submenu 3.</p></section>`
+    asset: `
+      <section style="padding: 2rem;">
+        <h2>Asset</h2>
+        <p>Daftar aset digital dan fisik yang dimiliki.</p>
+      </section>
+    `,
+    service: `
+      <section style="padding: 2rem;">
+        <h2>Service</h2>
+        <p>Layanan yang tersedia seperti desain grafis, video editing, dll.</p>
+      </section>
+    `,
+    shop: `
+      <section style="padding: 2rem;">
+        <h2>Shop</h2>
+        <p>Tempat menjual jasa dan produk digital.</p>
+      </section>
+    `,
+    catur: `
+      <section style="padding: 2rem;">
+        <h2>Catur</h2>
+        <p>Permainan catur online dengan berbagai tingkat kesulitan.</p>
+      </section>
+    `,
+    submenu1: `
+      <section style="padding: 2rem;">
+        <h2>Submenu 1</h2>
+        <p>Tools atau fitur kecil pertama.</p>
+      </section>
+    `,
+    submenu2: `
+      <section style="padding: 2rem;">
+        <h2>Submenu 2</h2>
+        <p>Tools atau fitur kecil kedua.</p>
+      </section>
+    `,
+    submenu3: `
+      <section style="padding: 2rem;">
+        <h2>Submenu 3</h2>
+        <p>Tools atau fitur kecil ketiga.</p>
+      </section>
+    `
   };
 
-  // Ganti isi dari main-content dengan section yang dipilih
-  contentArea.innerHTML = sections[sectionId] || "<section><h2>404</h2><p>Halaman tidak ditemukan.</p></section>";
+  main.innerHTML = contents[page] || `
+    <section style="padding: 4rem 2rem;">
+      <h2 style="font-size: 2rem; color: #00ffff;">Halaman tidak ditemukan</h2>
+    </section>
+  `;
 
-  // Tutup menu setelah klik jika layar kecil
-  document.getElementById("sidemenu").classList.remove("open");
-} 
-
-// Tutup menu jika klik di luar
-window.addEventListener('click', function(e) {
-  const sidemenu = document.getElementById("sidemenu");
-  const toggle = document.querySelector(".menu-toggle");
-  if (!sidemenu.contains(e.target) && !toggle.contains(e.target)) {
-    sidemenu.classList.remove("open");
-  }
-});
+  main.innerHTML += `
+    <footer>
+      <p>&copy; 2025 VL Personal Profile. All Rights Reserved.</p>
+    </footer>
+  `;
+}
