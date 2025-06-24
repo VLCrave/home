@@ -480,3 +480,416 @@ body.popup-active::before {
   100% { transform: rotate(360deg); }
 }
 
+/* =============== CEK ID MLBB =============== */
+.card {
+  background: #0c1b33;
+  color: var(--text-color);
+  padding: 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 0 15px #00ffff44;
+  margin: 1rem auto;
+  max-width: 600px;
+}
+
+.card-header {
+  border-bottom: 1px solid #00ffff33;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.card-title {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #00ffff;
+  text-align: center;
+}
+
+.card-body label {
+  display: block;
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.card-body input {
+  width: 100%;
+  padding: 0.6rem;
+  border-radius: 6px;
+  border: none;
+  background: #0e2545;
+  color: white;
+  font-size: 1rem;
+}
+
+.card-body .btn {
+  padding: 0.6rem 1.2rem;
+  margin-right: 1rem;
+  font-weight: bold;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  border: none;
+  transition: background 0.3s ease;
+}
+
+.card-body .btn-primary {
+  background-color: #00ffff;
+  color: #000;
+}
+
+.card-body .btn-primary:hover {
+  background-color: #00cccc;
+}
+
+.card-body .btn-danger {
+  background-color: #ff4f4f;
+  color: white;
+}
+
+.card-body .btn-danger:hover {
+  background-color: #cc0000;
+}
+
+.alert {
+  margin-top: 1.5rem;
+  padding: 1rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  box-shadow: 0 0 10px #00ffff44;
+}
+
+.alert-success {
+  background-color: #2ecc71;
+  color: #000;
+}
+
+.alert-warning {
+  background-color: #f1c40f;
+  color: #000;
+}
+
+.alert-danger {
+  background-color: #e74c3c;
+  color: #fff;
+}
+
+@media (max-width: 600px) {
+  .card {
+    padding: 1rem;
+    margin: 0.5rem;
+  }
+
+  .card-title {
+    font-size: 1.2rem;
+  }
+
+  .card-body .btn {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .card-body .btn + .btn {
+    margin-left: 0;
+  }
+}
+
+.download-btn {
+  background: linear-gradient(to right, #00ffff, #0077ff);
+  color: #000;
+  font-weight: 600;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.95rem;
+  border: none;
+  border-radius: 8px;
+  box-shadow: 0 0 10px #00ffff66;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.download-btn:hover {
+  background: linear-gradient(to right, #00cccc, #0055cc);
+  color: #fff;
+  box-shadow: 0 0 15px #00ffffaa;
+  transform: scale(1.04);
+}
+
+.download-btn i {
+  margin-right: 0.4rem;
+}
+
+.copy-btn {
+  background: linear-gradient(to right, #00ffff, #0077ff);
+  color: #000;
+  font-weight: 600;
+  padding: 0.4rem 1rem;
+  font-size: 0.9rem;
+  border: none;
+  border-radius: 6px;
+  box-shadow: 0 0 8px #00ffff66;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+}
+.copy-btn:hover {
+  background: linear-gradient(to right, #00cccc, #0055cc);
+  color: #fff;
+  box-shadow: 0 0 12px #00ffffaa;
+  transform: scale(1.04);
+}
+
+/* Tombol Laporkan warna merah */
+.report-btn {
+  background: linear-gradient(to right, #ff4d4d, #ff0000);
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(255, 0, 0, 0.7);
+  transition: all 0.3s ease;
+}
+
+.report-btn:hover {
+  background: linear-gradient(to right, #ff0000, #ff4d4d);
+  box-shadow: 0 0 14px rgba(255, 0, 0, 0.9);
+}
+
+
+.download-btn, .report-btn {
+      display: inline-block;
+      padding: 6px 14px;
+      margin: 4px 6px 4px 0;
+      font-size: 14px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      transition: all 0.3s ease;
+    }
+
+.kodeBtn {
+  width: auto;
+  padding: 10px 14px;
+}
+
+.status-text {
+  color: #00ffe1;
+  font-size: 14px;
+  min-height: 1.2em;
+}
+
+.kodeBtn {
+  padding: 12px 14px;
+  background: linear-gradient(to right, #00bfff, #007bff);
+  border: none;
+  color: #fff;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.3s, transform 0.2s;
+}
+
+.kodeBtn:hover {
+  background: linear-gradient(to right, #00eaff, #0088ff);
+  transform: scale(1.03);
+}
+
+@media screen and (max-width: 600px) {
+  .form-group-inline {
+    flex-direction: column;
+  }
+
+  .kodeBtn {
+    width: 100%;
+  }
+}
+
+
+#bantuanForm {
+  max-width: 500px;
+  margin: 2rem auto;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background-color: #0d1126;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 15px rgba(0, 191, 255, 0.2);
+}
+
+#bantuanForm label {
+  color: #00bfff;
+  font-weight: 500;
+  margin-bottom: 0.2rem;
+}
+
+#bantuanForm input[type="text"],
+#bantuanForm select,
+#bantuanForm textarea {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 2px solid #00bfff;
+  background-color: #0e1a2b;
+  font-size: 1rem;
+  color: #ffffff;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+/* Box putih untuk input text khusus */
+#bantuanForm input[type="text"] {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+/* Placeholder styling */
+#bantuanForm input::placeholder,
+#bantuanForm textarea::placeholder {
+  color: #888;
+  opacity: 1;
+}
+
+/* Hover & focus efek */
+#bantuanForm input:focus,
+#bantuanForm select,
+#bantuanForm textarea {
+  background-color: #ffffff;  /* Ubah jadi putih */
+  color: #000000;             /* Teks jadi hitam */
+}
+
+
+/* Tombol kirim */
+#bantuanForm button[type="submit"] {
+  background: linear-gradient(to right, #00ffff, #00bfff);
+  color: #000;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s, box-shadow 0.3s;
+  box-shadow: 0 0 12px #00ffff;
+}
+
+#bantuanForm button:hover {
+  background: linear-gradient(to right, #00bfff, #00ffff);
+  box-shadow: 0 0 16px #00ffff;
+}
+
+/* Status pesan */
+#statusKirim {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  color: #00ffcc;
+}
+
+.page-qrgenerator .qr-section {
+  padding: 2rem;
+  text-align: center;
+  color: #00ffff;
+}
+
+.page-qrgenerator .qr-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #00ffff;
+  margin-bottom: 0.3rem;
+}
+
+.page-qrgenerator .qr-desc {
+  font-size: 1rem;
+  color: #ccc;
+  margin-bottom: 1.5rem;
+}
+
+.page-qrgenerator .qr-box {
+  background: #0c162c;
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 500px;
+  margin: 0 auto;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.3);
+  border: 2px solid #00ffff;
+  position: relative;
+}
+
+.page-qrgenerator .qr-input {
+  padding: 0.6rem 1rem;
+  width: 70%;
+  max-width: 300px;
+  border: 2px solid #00ffff;
+  border-radius: 8px;
+  background-color: #fff;
+  color: #000;
+  margin-right: 0.5rem;
+  font-size: 1rem;
+  transition: box-shadow 0.3s ease;
+}
+
+.page-qrgenerator .qr-input:focus {
+  box-shadow: 0 0 10px #00ffff;
+  outline: none;
+}
+
+.page-qrgenerator .qr-button {
+  padding: 0.6rem 1rem;
+  background: linear-gradient(to right, #00ffff, #00bfff);
+  color: #000;
+  font-weight: bold;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 0 10px #00ffff;
+  transition: background 0.3s, box-shadow 0.3s;
+  margin-top: 0.75rem;
+}
+
+.page-qrgenerator .qr-button:hover {
+  background: linear-gradient(to right, #00bfff, #00ffff);
+  box-shadow: 0 0 14px #00ffff;
+}
+
+.page-qrgenerator #loading-spinner {
+  display: none;
+  width: 32px;
+  height: 32px;
+  margin: 1rem auto;
+  border: 4px solid #00ffff;
+  border-top: 4px solid transparent;
+  border-radius: 50%;
+  animation: pageQrgeneratorSpin 1s linear infinite;
+}
+
+.page-qrgenerator .qr-result {
+  margin-top: 2rem;
+  animation: pageQrgeneratorFadeIn 0.8s ease-in-out;
+}
+
+.page-qrgenerator .qr-result img {
+  max-width: 200px;
+  border: 3px solid #00ffff;
+  border-radius: 8px;
+  box-shadow: 0 0 20px #00ffff;
+  animation: pageQrgeneratorPulse 1.5s ease-in-out infinite;
+}
+
+/* Animasi */
+@keyframes pageQrgeneratorSpin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pageQrgeneratorFadeIn {
+  from { opacity: 0; transform: scale(0.9); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pageQrgeneratorPulse {
+  0%   { box-shadow: 0 0 12px #00ffff; }
+  50%  { box-shadow: 0 0 22px #00ffff; }
+  100% { box-shadow: 0 0 12px #00ffff; }
+}

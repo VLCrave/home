@@ -33,7 +33,6 @@
 <h1>VL Profile</h1>
 <div>
 <button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
-<button class="theme-toggle" onclick="toggleTheme()"><i class="fas fa-moon"></i></button>
 </div>
 </header>
 <aside class="sidebar" id="sidebar">
@@ -41,19 +40,28 @@
 <nav>
 <ul>
 <li><a onclick="loadContent('dashboard')"><i class="fas fa-chart-line"></i> Dashboard</a></li>
-<li><a onclick="loadContent('asset')"><i class="fas fa-coins"></i> Asset</a></li>
-<li><a onclick="loadContent('service')"><i class="fas fa-hand-holding-heart"></i> Service</a></li>
-<li><a onclick="loadContent('shop')"><i class="fas fa-store"></i> Shop</a></li>
 <li class="has-submenu">
-<a onclick="toggleSubmenu(this)"><i class="fas fa-gamepad"></i> Aplikasi Premium ▾</a>
+<a onclick="toggleSubmenu(this)"><i class="fas fa-book"></i> Marketing ▾</a>
 <ul>
-<li><a onclick="loadContent('appspremium')">Aplikasi Premium (Android)</a></li>
+<li><a onclick="loadContent('promosiapk')">Promosi Aplikasi Premium</a></li>
+<li><a onclick="loadContent('promosigame')">Promosi Topup Game</a></li>
+<li><a onclick="loadContent('promosiJasa')">Promosi Jasa</a></li>
 </ul>
 </li>
 <li class="has-submenu">
-<a onclick="toggleSubmenu(this)"><i class="fas fa-gamepad"></i> Game ▾</a>
+<a onclick="toggleSubmenu(this)"><i class="fas fa-download"></i> Editing ▾</a>
 <ul>
-<li><a onclick="loadContent('cekidml')">Check ID MLBB</a></li>
+<li><a onclick="loadContent('templatecanva')">Template Canva Premium</a></li>
+<li><a onclick="loadContent('appsoriginal')">Game Original</a></li>
+<li><a onclick="loadContent('scam')">Game Mod</a></li>
+</ul>
+</li>
+<li class="has-submenu">
+<a onclick="toggleSubmenu(this)"><i class="fas fa-download"></i> Aplikasi Premium ▾</a>
+<ul>
+<li><a onclick="loadContent('appspremium')">Streaming, AI, Music Pro</a></li>
+<li><a onclick="loadContent('appsoriginal')">Game Original</a></li>
+<li><a onclick="loadContent('appsmod')">Game Mod</a></li>
 </ul>
 </li>
 <li class="has-submenu">
@@ -61,9 +69,13 @@
 <ul>
 <li><a onclick="loadContent('submenu1')">Winrate Calculator</a></li>
 <li><a onclick="loadContent('submenu2')">BMI Calculator</a></li>
-<li><a onclick="loadContent('submenu3')">HPP Claculator</a></li>
+<li><a onclick="loadContent('submenu3')">HPP Caculator</a></li>
+<li><a onclick="loadContent('qrgenerator')">QR Generator</a></li>
 </ul>
 </li>
+</ul>
+<ul>
+<li><a onclick="loadContent('bantuan')"><i class="fas fa-envelope"></i> Bantuan</a></li>
 </ul>
 </nav>
 </aside>
