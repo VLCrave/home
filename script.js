@@ -1,27 +1,22 @@
- // Blokir klik kanan
+const allowedIPs = ['125.167.48.16', '111.111.111.111']; // ← Ganti dengan IP yang diizinkan
+
+  // Blokir klik kanan
   document.addEventListener('contextmenu', function (e) {
     e.preventDefault();
   });
 
   // Blokir shortcut umum DevTools
   document.addEventListener('keydown', function (e) {
-    // F12
-    if (e.key === 'F12') {
-      e.preventDefault();
-    }
-
-    // Ctrl+Shift+I, Ctrl+Shift+C, Ctrl+Shift+J
-    if (e.ctrlKey && e.shiftKey && ['I', 'C', 'J'].includes(e.key.toUpperCase())) {
-      e.preventDefault();
-    }
-
-    // Ctrl+U (view source), Ctrl+S (save)
-    if (e.ctrlKey && ['U', 'S'].includes(e.key.toUpperCase())) {
+    if (
+      e.key === 'F12' ||
+      (e.ctrlKey && e.shiftKey && ['I', 'C', 'J'].includes(e.key.toUpperCase())) ||
+      (e.ctrlKey && ['U', 'S'].includes(e.key.toUpperCase()))
+    ) {
       e.preventDefault();
     }
   });
 
-  // Deteksi Developer Tools dibuka (basic)
+  // Deteksi DevTools dibuka
   setInterval(function () {
     const before = new Date().getTime();
     debugger;
@@ -31,56 +26,70 @@
     }
   }, 1000);
 
-window.addEventListener("DOMContentLoaded", () => {
-  const popup = document.getElementById("popup-greeting");
-  const overlay = document.getElementById("popup-overlay");
-  const closeBtn = document.getElementById("close-popup");
-  const accessCodeInput = document.getElementById("access-code");
-  const spinner = document.getElementById("loading-spinner");
-  const checkIcon = document.getElementById("checkmark");
-  const crossIcon = document.getElementById("crossmark");
-  const purchaseLink = document.getElementById("purchase-link");
+  window.addEventListener("DOMContentLoaded", () => {
+    const popup = document.getElementById("popup-greeting");
+    const overlay = document.getElementById("popup-overlay");
+    const closeBtn = document.getElementById("close-popup");
+    const accessCodeInput = document.getElementById("access-code");
+    const spinner = document.getElementById("loading-spinner");
+    const checkIcon = document.getElementById("checkmark");
+    const crossIcon = document.getElementById("crossmark");
+    const purchaseLink = document.getElementById("purchase-link");
 
-  // WAJIB: Tampilkan popup saat pertama kali
-  document.body.classList.add("popup-active");
+    document.body.classList.add("popup-active");
 
-  closeBtn.addEventListener("click", () => {
-    const kode = accessCodeInput.value.trim();
-    spinner.style.display = "block";
-    checkIcon.style.display = "none";
-    crossIcon.style.display = "none";
-    purchaseLink.style.display = "none";
-    closeBtn.disabled = true;
+    closeBtn.addEventListener("click", async () => {
+      const kode = accessCodeInput.value.trim();
 
-    setTimeout(() => {
-      spinner.style.display = "none";
+      spinner.style.display = "block";
+      checkIcon.style.display = "none";
+      crossIcon.style.display = "none";
+      purchaseLink.style.display = "none";
+      closeBtn.disabled = true;
 
-      if (kode === "PREMIUM") {
-        checkIcon.style.display = "block";
-        purchaseLink.style.display = "none";
-        setTimeout(() => {
-          popup.style.display = "none";
-          overlay.style.display = "none";
-          document.body.classList.remove("popup-active"); // WAJIB agar halaman bisa dipakai
-        }, 1000);
-      } else {
-        crossIcon.style.display = "block";
-        purchaseLink.style.display = "block";
-        setTimeout(() => {
-          crossIcon.style.display = "none";
-        }, 3000);
+      let userIP = '';
+      try {
+        const res = await fetch('https://api.ipify.org?format=json');
+        const data = await res.json();
+        userIP = data.ip;
+      } catch (err) {
+        spinner.style.display = "none";
+        alert("❌ Gagal mendeteksi IP. Pastikan kamu terhubung ke internet.");
+        closeBtn.disabled = false;
+        return;
       }
 
-      closeBtn.disabled = false;
-    }, 2000);
+      setTimeout(() => {
+        spinner.style.display = "none";
+
+        if (kode === "PREMIUM") {
+          if (allowedIPs.includes(userIP)) {
+            checkIcon.style.display = "block";
+            setTimeout(() => {
+              popup.style.display = "none";
+              overlay.style.display = "none";
+              document.body.classList.remove("popup-active");
+            }, 1000);
+          } else {
+            alert("❌ IP Anda tidak diizinkan untuk mengakses.");
+            crossIcon.style.display = "block";
+            purchaseLink.style.display = "block";
+            setTimeout(() => {
+              crossIcon.style.display = "none";
+            }, 3000);
+          }
+        } else {
+          crossIcon.style.display = "block";
+          purchaseLink.style.display = "block";
+          setTimeout(() => {
+            crossIcon.style.display = "none";
+          }, 3000);
+        }
+
+        closeBtn.disabled = false;
+      }, 2000);
+    });
   });
-});
-
-
-
-
-
-
 
     function toggleSidebar() {
       document.getElementById("sidebar").classList.toggle("active");
@@ -1091,7 +1100,17 @@ if (page === 'appsmod') {
             ["04-04-2025", "Roblox v2.624.673 MOD", "https://id.happymod.cloud/roblox/com.roblox.client/"],
             ["03-04-2025", "GTA San Andreas v2.00 ⭐ Premium MOD", "https://id.happymod.cloud/grand-theft-auto-san-andreas/com.rockstargames.gtasa/"],
             ["02-04-2025", "Pokémon UNITE v2.0.0 MOD", "https://id.happymod.cloud/pokemon-unite/com.pokemon.unite/"],
-            ["01-04-2025", "Subway Surfers v3.30.2 MOD", "https://id.happymod.cloud/subway-surfers/com.kiloo.subwaysurf/"]
+            ["01-04-2025", "Subway Surfers v3.30.2 MOD", "https://id.happymod.cloud/subway-surfers/com.kiloo.subwaysurf/"],
+	    ["30-06-2025", "Idle Heroes v1.32.0 MOD", "https://id.happymod.cloud/idle-heroes/com.droidhang.ad/"],
+            ["30-06-2025", "Hustle Castle v1.70.0 MOD", "https://id.happymod.cloud/hustle-castle/com.my.hc.rpg.kingdom.simulator/"],
+            ["30-06-2025", "Grim Soul v5.4.0 MOD", "https://id.happymod.cloud/grim-soul/com.digitalsouls.grimsoul/"],
+            ["30-06-2025", "Zombeast v0.33.1 MOD", "https://id.happymod.cloud/zombeast/com.akpublish.zombie/"],
+            ["30-06-2025", "Last Hope Sniper v3.33 MOD", "https://id.happymod.cloud/last-hope-sniper/com.JESoftware.LastHopeSniperWar/"],
+            ["30-06-2025", "Hero Wars v1.178.101 MOD", "https://id.happymod.cloud/hero-wars/com.nexters.herowars/"],
+            ["30-06-2025", "Stick War: Legacy v2023.2.35 MOD", "https://id.happymod.cloud/stick-war-legacy/com.maxgames.stickwarlegacy/"],
+            ["30-06-2025", "Zombie Tsunami v4.5.124 MOD", "https://id.happymod.cloud/zombie-tsunami/net.mobigame.zombietsunami/"],
+            ["30-06-2025", "Dragon City v24.1.1 MOD", "https://id.happymod.cloud/dragon-city/es.socialpoint.DragonCity/"],
+            ["30-06-2025", "Temple Run 2 v6.9.2 MOD", "https://id.happymod.cloud/temple-run-2/com.imangi.templerun2/"]
           ].map(item => `
           <tr>
     <td>${item[0]}</td>
@@ -1108,11 +1127,874 @@ if (page === 'appsmod') {
   </section>`;
 }
 
-// BATAS UNTUK HALAMAN DAN JS FUNGSI //
+if (page === 'cekmbti') {
+  content = `
+    <section style="padding: 2rem;">
+      <center><h2 style="color: var(--text-color); font-size: 2rem;">🔮 Cek Kepribadian Zodiak</h2></center>
+      <div style="max-width: 500px; margin: auto; background: #0c1b33; padding: 2rem; border-radius: 12px; box-shadow: 0 0 15px #00ffff44;">
+        <label for="nama" style="color: #00ffff;">Nama Lengkap:</label>
+        <input type="text" id="namaUser" placeholder="Masukkan nama" style="width: 100%; padding: 10px; margin-bottom: 1rem; border: none; border-radius: 6px;" />
 
-      main.innerHTML = content;
-      document.getElementById("sidebar").classList.remove("active");
+        <label for="tgl" style="color: #00ffff;">Tanggal Lahir:</label>
+        <input type="date" id="tglLahirUser" style="width: 100%; padding: 10px; margin-bottom: 1rem; border: none; border-radius: 6px;" />
+
+        <button onclick="prosesKepribadian()" style="background-color: #00ffff; color: #000; padding: 10px 20px; border: none; border-radius: 6px; font-weight: bold; cursor: pointer;">
+          🔍 Cek Sekarang
+        </button>
+
+        <div id="hasilMBTI" style="margin-top: 2rem;"></div>
+      </div>
+    </section>
+  `;
+}
+
+if (page === 'nontonfilm') {
+  content = `
+    <section class="film-mood-container">
+      <h2>🎬 Rekomendasi Film Berdasarkan Mood Kamu</h2>
+      <p class="terms-box">Masukkan nama kamu dan mood saat ini, lalu kami akan berikan rekomendasi film, anime, atau drama yang cocok!</p>
+      <div class="film-form">
+        <input type="text" id="namaPengguna" placeholder="Nama kamu...">
+        <select id="mood">
+          <option value="senang">Senang</option>
+          <option value="sedih">Sedih</option>
+          <option value="marah">Marah</option>
+          <option value="bosan">Bosan</option>
+          <option value="kesepian">Kesepian</option>
+          <option value="romantis">Romantis</option>
+          <option value="cemas">Cemas</option>
+          <option value="bahagia">Bahagia</option>
+          <option value="bingung">Bingung</option>
+          <option value="galau">Galau</option>
+        </select>
+        <button onclick="generateRekomendasiFilm()">🎥 Tampilkan Rekomendasi</button>
+      </div>
+      <div id="filmResult" class="film-result"></div>
+    </section>`;
+}
+
+if (page === 'gombal') {
+  content = `
+    <section class="gombal-page">
+      <h2>💘 Yuk Gombal!</h2>
+      <p class="subtitle">Masukkan nama & pilih jenis kelamin target gombalanmu 😍</p>
+
+      <input type="text" id="namaTarget" placeholder="Masukkan nama..." />
+      <select id="genderTarget">
+        <option value="">-- Pilih Jenis Kelamin --</option>
+        <option value="L">Laki-laki</option>
+        <option value="P">Perempuan</option>
+      </select>
+
+      <button onclick="generateGombal()">🎯 Gombalin Sekarang</button>
+
+      <div id="gombalResult" class="gombal-box">Belum ada gombalan. Yuk mulai!</div>
+      <button id="copyBtn" onclick="copyQuote()" style="display:none;">📋 Copy Gombalan</button>
+    </section>
+  `;
+}
+
+if (page === 'ytnonton') {
+  content = `
+    <section class="yt-watch-container">
+      <h2>🎥 Nonton Video YouTube</h2>
+      <p class="subtitle">Masukkan link video YouTube dan nikmati dalam mode theater! 🎬</p>
+
+      <input type="text" id="ytVideoLink" placeholder="https://www.youtube.com/watch?v=xxxxxxxxxxx" />
+      <div class="controls">
+        <button onclick="tampilkanVideoYoutube()">▶️ Tonton Video</button>
+        <button onclick="toggleTheaterMode()">🖥️ Toggle Theater Mode</button>
+      </div>
+
+      <div id="ytIframeContainer" class="yt-iframe"></div>
+    </section>
+  `;
+}
+
+if (page === 'cheatgame') {
+  content = `
+    <section class="cheat-game-container">
+      <h2>💉 Kumpulan Cheat Game Terbaru</h2>
+      <p class="subtitle">Berikut adalah link download cheat untuk game populer, diupdate setiap hari! 🔥</p>
+      <div class="cheat-list">
+        ${generateCheatList()}
+      </div>
+    </section>
+  `;
+}
+
+if (page === 'affiliator') {
+  content = `
+    <section class="book-container">
+      <div class="book-content" id="bookContent">
+
+        <div class="page active" data-page="1">
+          <h2>Pengantar</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/1094/1094983.png" alt="Affiliate Intro" class="page-img" />
+          <p>Ingin jadi affiliator sukses dalam 3 bulan? Buku edukasi ini akan membimbing kamu langkah demi langkah mulai dari pemula hingga punya penghasilan sendiri dari program afiliasi. Yuk mulai!</p>
+        </div>
+
+        <div class="page" data-page="2">
+          <h2>Bab 1: Kenali Dunia Afiliasi</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/4320/4320330.png" alt="Affiliate Network" class="page-img" />
+          <p>Afiliasi adalah model bisnis di mana kamu mempromosikan produk orang lain dan mendapatkan komisi dari setiap penjualan melalui link kamu. Platform populer: Tokopedia Affiliate, Shopee, TikTok Shop, Amazon.</p>
+        </div>
+
+        <div class="page" data-page="3">
+          <h2>Bab 2: Pilih Produk & Platform</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/7115/7115894.png" alt="Product Choice" class="page-img" />
+          <p>Pilih platform yang kamu kuasai (misalnya TikTok jika suka video pendek). Fokus pada produk yang kamu suka & percaya. Jangan asal pilih, karena kepercayaan followers itu penting.</p>
+        </div>
+
+        <div class="page" data-page="4">
+          <h2>Bab 3: Bangun Personal Branding</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/3811/3811636.png" alt="Branding" class="page-img" />
+          <p>Gunakan media sosial untuk membangun kepercayaan. Buat konten yang edukatif, menghibur, dan jujur. Orang akan lebih percaya membeli dari kamu kalau kamu terlihat “nyata” dan konsisten.</p>
+        </div>
+
+        <div class="page" data-page="5">
+          <h2>Bab 4: Buat Konten yang Menjual</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/1828/1828884.png" alt="Sell Content" class="page-img" />
+          <p>Gunakan hook, solusi, dan ajakan. Contoh: "Capek nyetrika? Ini solusinya!" lalu review produknya. Tambahkan link afiliasi di bio atau deskripsi. Berikan alasan kenapa produk ini layak dibeli.</p>
+        </div>
+
+        <div class="page" data-page="6">
+          <h2>Bab 5: Pelajari Algoritma</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/4122/4122511.png" alt="Algorithm" class="page-img" />
+          <p>Setiap platform punya algoritma. Rajin upload, gunakan hashtag yang tepat, dan interaksi dengan audiens akan bantu jangkauan konten kamu makin luas. Konsistensi itu kunci!</p>
+        </div>
+
+        <div class="page" data-page="7">
+          <h2>Bab 6: Gunakan Data & Evaluasi</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/4963/4963465.png" alt="Data Evaluation" class="page-img" />
+          <p>Cek performa link afiliasi. Produk mana yang paling banyak dibeli? Jam posting terbaik kapan? Belajar dari data akan membantu kamu perbaiki strategi agar lebih efektif ke depannya.</p>
+        </div>
+
+        <div class="page" data-page="8">
+          <h2>Bab 7: Tingkatkan Komunikasi</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/3990/3990066.png" alt="Communication" class="page-img" />
+          <p>Jawab pertanyaan followers. Bangun hubungan baik. Kalau perlu, buat grup WhatsApp atau Telegram agar kamu bisa promosi lebih dekat dan personal. Jadilah teman, bukan cuma penjual.</p>
+        </div>
+
+        <div class="page" data-page="9">
+          <h2>Bab 8: Monetisasi & Diversifikasi</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/484/484167.png" alt="Monetize" class="page-img" />
+          <p>Setelah 2 bulan berjalan, kamu bisa mulai cari produk afiliasi dari platform lain juga. Jangan bergantung ke satu platform. Pelajari juga digital marketing dasar seperti email list dan retargeting.</p>
+        </div>
+
+        <div class="page" data-page="10">
+          <h2>Penutup & Motivasi</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/3159/3159078.png" alt="Motivasi" class="page-img" />
+          <p>Jadi affiliator sukses itu bukan mimpi, tapi hasil dari konsistensi, belajar, dan adaptasi. Tetap semangat, evaluasi diri, dan percaya bahwa setiap usaha tidak akan mengkhianati hasil 💪✨</p>
+        </div>
+	<div class="page" data-page="11">
+  <h2>Eksekusi: Persiapan Awal</h2>
+  <img src="https://cdn-icons-png.flaticon.com/512/1828/1828940.png" alt="Checklist" class="page-img" />
+  <ul>
+    <li>🔍 Tentukan niche (produk bayi, fashion, gadget, dll)</li>
+    <li>🛒 Pilih platform afiliasi (Tokopedia, Shopee, TikTok Shop)</li>
+    <li>📱 Siapkan akun media sosial (TikTok, IG, YouTube Short)</li>
+  </ul>
+</div>
+<div class="page" data-page="12">
+  <h2>Eksekusi: Bulan 1</h2>
+  <img src="https://cdn-icons-png.flaticon.com/512/3159/3159310.png" alt="Content Start" class="page-img" />
+  <ul>
+    <li>🎥 Upload minimal 3 konten per minggu</li>
+    <li>🧠 Fokus pada edukasi produk atau konten problem-solving</li>
+    <li>📊 Coba 2-3 produk berbeda, lihat mana yang lebih menarik</li>
+  </ul>
+</div>
+
+<div class="page" data-page="13">
+  <h2>Eksekusi: Bulan 2</h2>
+  <img src="https://cdn-icons-png.flaticon.com/512/4090/4090388.png" alt="Grow Content" class="page-img" />
+  <ul>
+    <li>📈 Analisa performa video: jam tayang, klik link, sales</li>
+    <li>🔁 Konsisten upload + mulai buat seri konten (contoh: #ReviewMurah)</li>
+    <li>🤝 Interaksi rutin dengan penonton (balas komen, DM)</li>
+  </ul>
+</div>
+
+<div class="page" data-page="14">
+  <h2>Eksekusi: Bulan 3</h2>
+  <img src="https://cdn-icons-png.flaticon.com/512/4661/4661525.png" alt="Monetize" class="page-img" />
+  <ul>
+    <li>💰 Fokus produk paling laris (double down)</li>
+    <li>🎯 Mulai kolaborasi dengan kreator lain</li>
+    <li>📤 Promosikan link afiliasi di komentar, grup WA, Bio Link</li>
+  </ul>
+</div>
+      </div>
+      <div class="book-footer">
+        <button id="prevBtn" class="nav-btn" disabled>⬅️ Kembali</button>
+        <span id="pageNumber" class="page-number">Halaman 1 / 14</span>
+        <button id="nextBtn" class="nav-btn">Lanjut ➡️</button>
+      </div>
+    </section>
+  `;
+}
+
+if (page === 'contentcreator') {
+  content = `
+    <section class="book-container">
+      <div class="book-content" id="bookContent">
+
+        <!-- EDUKASI -->
+        <div class="page active" data-page="1">
+          <h2>Pengantar</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/1041/1041916.png" alt="Intro" class="page-img" />
+          <p>Ingin jadi konten kreator sukses dalam 6 bulan? Panduan ini berisi langkah-langkah yang terstruktur untuk membantumu memulai, membangun audiens, dan menghasilkan uang dari kontenmu!</p>
+        </div>
+
+        <div class="page" data-page="2">
+          <h2>Bab 1: Tentukan Niche</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/3406/3406951.png" alt="Niche" class="page-img" />
+          <p>Pilih topik yang kamu sukai: game, review, lifestyle, edukasi. Fokus pada 1 niche agar mudah membangun audiens dan branding.</p>
+        </div>
+
+        <div class="page" data-page="3">
+          <h2>Bab 2: Riset Audiens</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/2721/2721317.png" alt="Riset" class="page-img" />
+          <p>Pelajari siapa target penontonmu. Gunakan TikTok Trends, YouTube Trending, Google Trends untuk tahu konten apa yang mereka suka.</p>
+        </div>
+
+        <div class="page" data-page="4">
+          <h2>Bab 3: Produksi Konten</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/3159/3159310.png" alt="Produksi" class="page-img" />
+          <p>Gunakan HP dan cahaya alami. Edit pakai CapCut/VN. Buat video pendek, to the point, dan visual menarik.</p>
+        </div>
+
+        <div class="page" data-page="5">
+          <h2>Bab 4: Konsistensi</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/3075/3075977.png" alt="Konsisten" class="page-img" />
+          <p>Upload minimal 3x seminggu. Gunakan jadwal tetap. Semakin sering upload, makin besar peluang muncul di algoritma.</p>
+        </div>
+
+        <div class="page" data-page="6">
+          <h2>Bab 5: Optimasi Sosial Media</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/3293/3293815.png" alt="Sosial Media" class="page-img" />
+          <p>Gunakan bio menarik, link tree, hashtag relevan, judul clickbait sehat, dan caption yang memancing interaksi.</p>
+        </div>
+
+        <div class="page" data-page="7">
+          <h2>Bab 6: Monetisasi & Kolaborasi</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/1087/1087929.png" alt="Monetisasi" class="page-img" />
+          <p>Jika sudah punya audiens aktif, cari sponsor, endorse, atau afiliasi. Kolaborasi dengan kreator lain untuk menambah jangkauan.</p>
+        </div>
+
+        <!-- EKSEKUSI -->
+        <div class="page" data-page="8">
+          <h2>Eksekusi: Bulan 1–2</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/2721/2721317.png" alt="Eksekusi1" class="page-img" />
+          <ul>
+            <li>🎯 Tentukan niche & nama akun</li>
+            <li>📱 Produksi 10 video awal</li>
+            <li>📅 Posting rutin (3-4 kali seminggu)</li>
+          </ul>
+        </div>
+
+        <div class="page" data-page="9">
+          <h2>Eksekusi: Bulan 3–4</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/3079/3079166.png" alt="Eksekusi2" class="page-img" />
+          <ul>
+            <li>📊 Analisa performa konten</li>
+            <li>📌 Fokus pada video yang perform</li>
+            <li>🤝 Mulai kolaborasi kecil (duet, stitching)</li>
+          </ul>
+        </div>
+
+        <div class="page" data-page="10">
+          <h2>Eksekusi: Bulan 5–6</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/1087/1087929.png" alt="Eksekusi3" class="page-img" />
+          <ul>
+            <li>💰 Ajukan diri untuk endorse</li>
+            <li>🌐 Daftar ke affiliate platform</li>
+            <li>📺 Bangun ciri khas kontenmu (signature style)</li>
+          </ul>
+        </div>
+
+        <div class="page" data-page="11">
+          <h2>Penutup</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/3534/3534066.png" alt="Motivasi" class="page-img" />
+          <p>Konten kreator sukses bukan hanya soal viral, tapi juga konsistensi dan keberanian mencoba. Kamu bisa mulai sekarang dan tumbuh pelan-pelan. Yang penting, jangan berhenti! 🚀🔥</p>
+        </div>
+      </div>
+
+      <div class="book-footer">
+        <button id="prevBtn" class="nav-btn" disabled>⬅️ Kembali</button>
+        <span id="pageNumber" class="page-number">Halaman 1 / 11</span>
+        <button id="nextBtn" class="nav-btn">Lanjut ➡️</button>
+      </div>
+    </section>
+  `;
+}
+
+if (page === 'personalbranding') {
+  content = `
+    <section class="book-container">
+      <div class="book-content" id="bookContent">
+
+        <!-- EDUKASI -->
+        <div class="page active" data-page="1">
+          <h2>Pengantar</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/1484/1484815.png" class="page-img" alt="Brand Intro">
+          <p>Personal Branding adalah kunci di era digital saat ini. Buku ini akan membimbingmu membangun citra dan identitas digital yang kuat, autentik, dan dipercaya audiensmu.</p>
+        </div>
+
+        <div class="page" data-page="2">
+          <h2>Bab 1: Kenali Dirimu</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/2641/2641034.png" class="page-img" alt="Self Discover">
+          <p>Mulailah dari memahami siapa kamu, apa nilai kamu, passion, dan tujuanmu. Personal branding yang kuat berasal dari kejelasan jati diri.</p>
+        </div>
+
+        <div class="page" data-page="3">
+          <h2>Bab 2: Tentukan Niche dan Audiens</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/4359/4359764.png" class="page-img" alt="Niche">
+          <p>Pilih satu topik utama yang kamu kuasai dan sukai. Kenali siapa target audiensmu, apa yang mereka butuhkan, dan bagaimana kamu bisa membantu mereka.</p>
+        </div>
+
+        <div class="page" data-page="4">
+          <h2>Bab 3: Buat Konten Autentik</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/11104/11104375.png" class="page-img" alt="Content">
+          <p>Bangun konten yang menunjukkan keahlian dan kepribadianmu. Gunakan cerita pribadi, studi kasus, dan pengalaman nyata agar lebih relatable dan kuat.</p>
+        </div>
+
+        <div class="page" data-page="5">
+          <h2>Bab 4: Konsistensi dan Visual Branding</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/4212/4212885.png" class="page-img" alt="Visual Style">
+          <p>Pakai warna, font, dan tone yang konsisten. Buat logo, foto profil, dan desain template yang mencerminkan branding-mu secara visual.</p>
+        </div>
+
+        <div class="page" data-page="6">
+          <h2>Bab 5: Bangun Kredibilitas</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/1684/1684460.png" class="page-img" alt="Trust">
+          <p>Bagikan testimoni, pencapaian, atau kolaborasi. Aktif di komunitas, buat ebook, atau podcast agar orang melihatmu sebagai sosok berpengaruh di bidangmu.</p>
+        </div>
+
+        <div class="page" data-page="7">
+          <h2>Bab 6: Evaluasi dan Adaptasi</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/4019/4019485.png" class="page-img" alt="Evaluate">
+          <p>Personal branding bukan hal statis. Evaluasi kontenmu, baca insight audiens, dan adaptasikan sesuai feedback dan perkembangan tren digital.</p>
+        </div>
+
+        <!-- EKSEKUSI -->
+        <div class="page" data-page="8">
+          <h2>Eksekusi: Minggu 1–2</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/3870/3870822.png" class="page-img" alt="Plan">
+          <ul>
+            <li>🔍 Identifikasi keunikan, nilai, dan minat kamu</li>
+            <li>📝 Tentukan niche & siapa audiens targetmu</li>
+            <li>📷 Buat profil media sosial yang rapi dan profesional</li>
+          </ul>
+        </div>
+
+        <div class="page" data-page="9">
+          <h2>Eksekusi: Minggu 3–4</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/3021/3021339.png" class="page-img" alt="Content">
+          <ul>
+            <li>🎥 Buat dan upload minimal 6 konten otentik</li>
+            <li>🎨 Gunakan template visual branding konsisten</li>
+            <li>💬 Balas semua komentar dan interaksi dari audiens</li>
+          </ul>
+        </div>
+
+        <div class="page" data-page="10">
+          <h2>Eksekusi: Bulan Kedua</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/1388/1388431.png" class="page-img" alt="Growth">
+          <ul>
+            <li>📈 Evaluasi insight konten (reach, share, save)</li>
+            <li>🤝 Bangun kolaborasi dengan kreator serupa</li>
+            <li>📚 Tambah konten berbasis edukasi & pengalaman pribadi</li>
+          </ul>
+        </div>
+
+        <div class="page" data-page="11">
+          <h2>Penutup</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/2011/2011108.png" class="page-img" alt="Finish">
+          <p>Membangun personal branding adalah proses panjang. Tapi dengan langkah yang tepat, kamu bisa jadi sosok yang dipercaya, diingat, dan dicari. Tetap konsisten dan nikmati prosesnya ✨</p>
+        </div>
+
+      </div>
+      <div class="book-footer">
+        <button id="prevBtn" class="nav-btn" disabled>⬅️ Kembali</button>
+        <span id="pageNumber" class="page-number">Halaman 1 / 11</span>
+        <button id="nextBtn" class="nav-btn">Lanjut ➡️</button>
+      </div>
+    </section>
+  `;
+}
+
+if (page === 'jualcepat') {
+  content = `
+    <section class="book-container">
+      <div class="book-content" id="bookContent">
+
+        <!-- EDUKASI -->
+        <div class="page active" data-page="1">
+          <h2>Pengantar</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/10080/10080794.png" alt="Intro Jual Cepat" class="page-img" />
+          <p>Bingung gimana cara jualan online cepat laku? Di buku ini kamu akan belajar cara menjual barang apapun hanya dalam 3 menit dengan teknik storytelling, hook, dan call to action yang terbukti berhasil!</p>
+        </div>
+
+        <div class="page" data-page="2">
+          <h2>Bab 1: Struktur 3 Menit</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/8598/8598825.png" alt="Struktur 3 Menit" class="page-img" />
+          <p>Bagi waktu 3 menit menjadi:<br>
+          - 🧠 Menit 1: Masalah + Hook<br>
+          - 🛠️ Menit 2: Solusi + Demo Produk<br>
+          - 🎯 Menit 3: Bukti Sosial + CTA (Ajak beli)</p>
+        </div>
+
+        <div class="page" data-page="3">
+          <h2>Bab 2: Menit 1 - Hook & Masalah</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/9068/9068561.png" alt="Hook" class="page-img" />
+          <p>Mulailah dengan pertanyaan atau pernyataan yang bikin penonton berhenti scroll:<br>
+          - “Kamu sering capek nyapu rumah setiap hari?”<br>
+          - “Skincare kamu nggak ngaruh juga?”</p>
+        </div>
+
+        <div class="page" data-page="4">
+          <h2>Bab 3: Menit 2 - Solusi & Demo</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/5696/5696220.png" alt="Solusi" class="page-img" />
+          <p>Tawarkan solusi langsung. Tunjukkan produknya, tampilkan cara pakainya, atau bandingkan dengan cara lama. Pastikan penonton melihat bahwa barangmu bisa membantu mereka.</p>
+        </div>
+
+        <div class="page" data-page="5">
+          <h2>Bab 4: Menit 3 - Testimoni & Ajakan</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/2620/2620591.png" alt="CTA" class="page-img" />
+          <p>Gunakan testimoni atau buktikan dari review pelanggan. Akhiri dengan CTA kuat:<br>
+          - “Cuma hari ini diskon!”<br>
+          - “Klik link bio sebelum kehabisan!”</p>
+        </div>
+
+        <!-- EKSEKUSI -->
+        <div class="page" data-page="6">
+          <h2>Eksekusi: Skenario Video</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/2471/2471993.png" alt="Demo" class="page-img" />
+          <p><strong>Produk:</strong> Vacuum Mini<br>
+          - Menit 1: “Capek bersih-bersih manual tiap hari?”<br>
+          - Menit 2: “Coba ini... Vacuum Mini Portable. Cuma 2 menit, debu langsung bersih!”<br>
+          - Menit 3: “Sudah 5000+ orang pakai. Sekarang diskon 30%! Link di bio!”</p>
+        </div>
+
+        <div class="page" data-page="7">
+          <h2>Eksekusi: Template Caption</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/4108/4108884.png" alt="Caption" class="page-img" />
+          <p><strong>Contoh Caption Jualan:</strong>\n
+          "Capek nyapu setiap hari? 🚨 Coba vacuum mini ini!<br>
+          ✅ Ringan & praktis<br>
+          ✅ Harga di bawah 100rb<br>
+          🎁 Promo cuma hari ini! Klik link bio sebelum habis!"</p>
+        </div>
+
+        <div class="page" data-page="8">
+          <h2>Eksekusi: Check List Produksi</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/3940/3940083.png" alt="Checklist" class="page-img" />
+          <ul>
+            <li>📱 Siapkan HP dengan kamera bersih</li>
+            <li>🎬 Rekam video 3 menit dengan struktur edukasi</li>
+            <li>🧑‍💻 Edit cepat dengan CapCut (tambah teks & musik)</li>
+            <li>📤 Upload ke TikTok/Reels jam prime time</li>
+          </ul>
+        </div>
+
+        <div class="page" data-page="9">
+          <h2>Penutup</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/3534/3534066.png" alt="Akhir" class="page-img" />
+          <p>Kunci jualan cepat adalah menyampaikan solusi dengan jelas dan cepat. Terapkan teknik ini secara konsisten, dan kamu bisa menjual produk apapun dengan percaya diri dalam waktu 3 menit!</p>
+        </div>
+
+      </div>
+      <div class="book-footer">
+        <button id="prevBtn" class="nav-btn" disabled>⬅️ Kembali</button>
+        <span id="pageNumber" class="page-number">Halaman 1 / 9</span>
+        <button id="nextBtn" class="nav-btn">Lanjut ➡️</button>
+      </div>
+    </section>
+`;
+}
+
+
+// PISAHIN
+
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+  initBook();
+}
+
+
+let currentPage = 0;
+let pages, prevBtn, nextBtn, pageNumber;
+
+function initBook() {
+  // Ambil semua elemen halaman (class .page)
+  pages = document.querySelectorAll('.book-content .page');
+  prevBtn = document.getElementById('prevBtn');
+  nextBtn = document.getElementById('nextBtn');
+  pageNumber = document.getElementById('pageNumber');
+
+  // Fungsi untuk update tampilan halaman
+  function updatePage() {
+    pages.forEach((page, index) => {
+      page.classList.toggle('active', index === currentPage);
+    });
+
+    pageNumber.textContent = `Halaman ${currentPage + 1} / ${pages.length}`;
+    prevBtn.disabled = currentPage === 0;
+    nextBtn.disabled = currentPage === pages.length - 1;
+  }
+
+  // Tombol kembali
+  prevBtn.addEventListener('click', () => {
+    if (currentPage > 0) {
+      currentPage--;
+      updatePage();
     }
+  });
+
+  // Tombol lanjut
+  nextBtn.addEventListener('click', () => {
+    if (currentPage < pages.length - 1) {
+      currentPage++;
+      updatePage();
+    }
+  });
+
+  // Inisialisasi tampilan halaman pertama
+  updatePage();
+}
+
+
+
+function getLastUpdateTime(index) {
+  const now = new Date();
+  let day = now.getDate();
+  let hour = (index * 6) % 24;
+
+  if (index * 6 >= 24) day += 1;
+
+  const month = String(now.getMonth() + 1).padStart(2, '0');
+  const dayStr = String(day).padStart(2, '0');
+  const hourStr = String(hour).padStart(2, '0');
+
+  return `${dayStr}/${month} jam ${hourStr}.00`;
+}
+
+function generateCheatList() {
+  const cheats = [
+    ["ml", "https://img.utdstc.com/icon/78d/66f/78d66ff1ab1bd23f7fd6d9cdb93854881cb8f0b69e8a301faaf4f4eab058d19e:200", "Mobile Legends", "active", "", "https://cdn.unipin.com/images/icon_product_pages/1735814979-icon-Image_20250102184102.jpg"],
+    ["pb", "https://example.com/pb-cheat", "Point Blank", "maintenance", "24/06 jam 06.01", "https://cdn.unipin.com/images/icon_product_pages/1571814027-icon-1559011491-icon-1557743544-icon-point_blank.jpg"],
+    ["ff", "https://example.com/ff-cheat", "Free Fire", "error", "24/06 jam 12.01", "https://cdn.unipin.com/images/icon_product_pages/1658817763-icon-200x200_icon%20ff.jpg"],
+    ["pubgm", "https://example.com/pubgm-cheat", "PUBG Mobile", "active", "", "https://cdn.unipin.com/images/icon_product_pages/1592228250-icon-pubgm.jpg"],
+    ["codm", "https://example.com/codm-cheat", "Call of Duty Mobile", "active", "", "https://cdn.unipin.com/images/icon_product_pages/1633599388-icon-Icon_1024.jpg"]
+  ];
+
+  const descList = {
+    "ml": "Auto Aim, Drone View, Skin Unlocker",
+    "pb": "Wallhack, Aimlock, Fast Reload",
+    "ff": "Headshot Auto, Antiban, ESP",
+    "pubgm": "Wallhack, No Recoil, Antiban",
+    "codm": "Radar Hack, Aimbot, ESP"
+  };
+
+  const badgeStyle = {
+    active: `<span class="cheat-badge badge-green">🟢</span>`,
+    maintenance: `<span class="cheat-badge badge-yellow">🟡</span>`,
+    error: `<span class="cheat-badge badge-red">🔴</span>`
+  };
+
+  return cheats.map((item, i) => {
+    const status = item[3];
+    const updateTime = status === 'active' ? getLastUpdateTime(i) : item[4];
+    const iconUrl = item[5];
+
+    return `
+      <div class="cheat-card">
+        <div class="cheat-content">
+          <div class="cheat-info">
+            <h3>🎮 ${item[2]} <span class="badge-wrapper">${badgeStyle[status]}</span></h3>
+            <p><strong>📅 Update:</strong> ${updateTime}</p>
+            <p><strong>🧩 Fitur:</strong> ${descList[item[0]]}</p>
+            <div class="cheat-buttons">
+              <a href="${item[1]}" target="_blank" class="dl-btn">
+                <i class="fa fa-download"></i> Download
+              </a>
+              <button class="report-btn" onclick="laporkanKeTelegram('${item[1]}', '${item[2]}', 'link')">
+                ⚠️ Laporkan
+              </button>
+            </div>
+          </div>
+          <div class="cheat-icon">
+            <img src="${iconUrl}" alt="${item[2]}" />
+          </div>
+        </div>
+      </div>
+    `;
+  }).join("");
+}
+
+
+
+function tampilkanVideoYoutube() {
+  const url = document.getElementById('ytVideoLink').value.trim();
+  const iframeContainer = document.getElementById('ytIframeContainer');
+
+  const match = url.match(/(?:v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+  if (!match) {
+    iframeContainer.innerHTML = "🚫 Link tidak valid. Harap masukkan link YouTube yang benar.";
+    return;
+  }
+
+  const videoID = match[1];
+  const embedURL = `https://www.youtube.com/embed/${videoID}?rel=0&showinfo=0&autoplay=1`;
+
+  iframeContainer.innerHTML = `
+    <iframe src="${embedURL}" allowfullscreen allow="autoplay; encrypted-media"></iframe>
+  `;
+}
+
+function toggleTheaterMode() {
+  const container = document.querySelector('.yt-watch-container');
+  container.classList.toggle('theater-mode');
+}
+
+
+function generateGombal() {
+  const nama = document.getElementById("namaTarget").value.trim();
+  const gender = document.getElementById("genderTarget").value;
+  const resultBox = document.getElementById("gombalResult");
+  const copyBtn = document.getElementById("copyBtn");
+
+  if (!nama || !gender) {
+    alert("Isi nama dan pilih jenis kelamin dulu ya.");
+    return;
+  }
+
+  const gombalL = [
+  `${nama}, tahu nggak? Kamu bukan cuma cantik, tapi juga bikin hati tenang tiap kali ngobrol sama kamu. 💖`,
+  `Kalau hari-hariku kayak puzzle, kamu itu potongan yang paling pas. 🧩❤️`,
+  `${nama}, kamu tuh kayak lagu favorit. Didengar sekali langsung nagih. 🎶😍`,
+  `Nggak tahu kenapa, tapi tiap lihat kamu senyum, rasanya kayak semua masalah hilang sebentar. 😊💘`,
+  `Aku nggak nyari yang sempurna, aku cuma nyari yang bikin aku senyaman pas bareng kamu. 💑`,
+  `${nama}, kamu kayak kopi di pagi hari—nggak bisa jalanin hari tanpamu. ☕💓`,
+  `Bukan cuma karena kamu manis, tapi karena kamu bikin aku pengen jadi versi terbaik dari diriku. 🌟💕`,
+  `Kalo boleh jujur, aku lebih milih ngobrol sama kamu 5 menit daripada scrolling TikTok sejam. 🕒💬`,
+  `${nama}, kamu nggak sadar ya? Setiap kamu ngomong, aku tuh diem bukan karena gak denger, tapi karena fokus ke kamu. 👀❤️`,
+  `Kadang aku mikir, kenapa ya dunia ini bisa seluas ini, tapi yang paling bikin nyaman justru kamu. 🌍💞`,
+  `Pernah nggak ngerasa klik sama seseorang? Nah, aku ngerasa itu tiap ngobrol sama kamu. 🔗💗`,
+  `Kamu bukan cuma sekadar suka-sukaan, kamu tuh alasan kenapa aku semangat bangun pagi. ☀️🥰`,
+  `${nama}, kamu kayak playlist favorit. Gak pernah bosen, selalu bikin suasana hati enak. 🎧💓`,
+  `Nggak semua orang ngerti aku. Tapi entah kenapa, kamu bisa banget bikin aku ngerasa dimengerti. 🤝💙`,
+  `Aku suka caramu jadi diri sendiri. Itu hal paling menarik yang nggak bisa ditiru siapa pun. 🌷💫`
+];
+
+
+  const gombalP = [
+  `${nama}, kamu tuh bukan cuma ganteng, tapi juga punya cara yang bikin aku ngerasa aman. 🛡️💖`,
+  `Aku udah pernah ketemu banyak orang, tapi cuma sama kamu aku bisa jadi diri sendiri. 🫂💕`,
+  `${nama}, kalau aku kelihatan senyum sendiri, itu gara-gara mikirin hal random tentang kamu. 😳❤️`,
+  `Nggak banyak orang bisa bikin aku nyaman ngobrol berjam-jam, tapi kamu bisa. 🕰️💬`,
+  `${nama}, kamu tuh kayak kopi favorit aku—pahit dikit, tapi bikin nagih. ☕😘`,
+  `Aku nggak ngerti cara kerja hati, tapi entah kenapa kamu selalu muncul di pikiranku. 🧠💘`,
+  `Kalau kamu ngerasa dunia terlalu berat, sini deh. Kita hadapi bareng. 🤗💞`,
+  `Bukan cuma karena kamu perhatian, tapi karena kamu dengerin bahkan yang nggak aku ucapin. 👂💓`,
+  `Kadang aku rindu kamu, padahal baru juga ngobrol beberapa jam lalu. ⏳💌`,
+  `${nama}, kalau kamu nyari orang yang bisa nemenin kamu di saat susah dan senang—aku ada. 🚀🫶`,
+  `Jangan terlalu keras sama diri sendiri, kamu tuh udah hebat banget. Dan aku bangga bisa kenal kamu. 🌟❤️`,
+  `Setiap kali kamu cerita, aku ngerasa kayak dunia luar berhenti sebentar. 🌎💗`,
+  `Bersama kamu itu kayak pulang setelah hari yang panjang. Nyaman banget. 🏡💑`,
+  `Nggak ada yang sempurna, tapi kamu tuh... pas aja gitu buat aku. ✔️🥰`,
+  `Aku nggak tahu masa depan kayak apa, tapi semoga tetap ada kamu di dalamnya. 🔮💞`
+];
+
+
+  const daftar = gender === "L" ? gombalL : gombalP;
+  const random = daftar[Math.floor(Math.random() * daftar.length)];
+
+  resultBox.textContent = random;
+  copyBtn.style.display = "inline-block";
+}
+
+function copyQuote() {
+  const text = document.getElementById("gombalResult").textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    alert("✅ Gombalan berhasil dicopy!");
+  });
+}
+
+
+function generateRekomendasiFilm() {
+  const nama = document.getElementById('namaPengguna').value.trim();
+  const mood = document.getElementById('mood').value;
+  const resultBox = document.getElementById('filmResult');
+
+  if (!nama) {
+    resultBox.innerHTML = '<p style="color:red;">⚠️ Harap masukkan nama terlebih dahulu.</p>';
+    return;
+  }
+
+  const rekomendasi = {
+    senang: [
+      ["Extreme Job", "Comedy, Action", "https://www.netflix.com/id/title/81221381"],
+      ["Hospital Playlist", "Drama, Slice of Life", "https://www.netflix.com/id/title/81287394"],
+      ["SPY x FAMILY", "Action, Comedy", "https://www.bilibili.tv/id/play/2064035"],
+      ["Detective Conan Movie 25", "Mystery, Crime", "https://www.bilibili.tv/id/play/1049796"],
+      ["Yowis Ben", "Comedy, Music", "https://www.netflix.com/id/title/81017350"]
+    ],
+    sedih: [
+      ["Hi Bye, Mama!", "Family, Fantasy", "https://www.netflix.com/id/title/81243994"],
+      ["A Silent Voice", "Drama, Animation", "https://www.netflix.com/id/title/80092844"],
+      ["Itaewon Class", "Drama, Revenge", "https://www.netflix.com/id/title/81193309"],
+      ["The Wind Rises", "Historical, Drama", "https://www.netflix.com/id/title/70293678"],
+      ["Youth of May", "Romance, Drama", "https://www.netflix.com/id/title/81422987"]
+    ],
+    marah: [
+      ["Vincenzo", "Crime, Action", "https://www.netflix.com/id/title/81365087"],
+      ["Taxi Driver", "Thriller, Crime", "https://www.netflix.com/id/title/81511744"],
+      ["My Name", "Action, Revenge", "https://www.netflix.com/id/title/81011211"],
+      ["Narcos", "Crime, Drama", "https://www.netflix.com/id/title/80025172"],
+      ["The Glory", "Revenge, Drama", "https://www.netflix.com/id/title/81519223"]
+    ],
+    bosan: [
+      ["Alice in Borderland", "Thriller, Sci-fi", "https://www.netflix.com/id/title/81271294"],
+      ["Sweet Home", "Thriller, Horror", "https://www.netflix.com/id/title/81061734"],
+      ["Kingdom", "Historical, Horror", "https://www.netflix.com/id/title/80180171"],
+      ["Stranger Things", "Mystery, Sci-fi", "https://www.netflix.com/id/title/80057281"],
+      ["All of Us Are Dead", "Zombie, Action", "https://www.netflix.com/id/title/81237994"]
+    ],
+    kesepian: [
+      ["Your Name", "Romance, Fantasy", "https://www.netflix.com/id/title/80137674"],
+      ["Hometown Cha-Cha-Cha", "Romance, Comedy", "https://www.netflix.com/id/title/81473182"],
+      ["Misaeng", "Slice of Life, Drama", "https://www.viu.com/id/id/vod/248408"],
+      ["When the Weather is Fine", "Drama, Romance", "https://www.netflix.com/id/title/81240923"],
+      ["Start-Up", "Drama, Tech", "https://www.netflix.com/id/title/81290293"]
+    ],
+    romantis: [
+      ["20th Century Girl", "Romance, Drama", "https://www.netflix.com/id/title/81546731"],
+      ["Love Alarm", "Romance, Sci-fi", "https://www.netflix.com/id/title/81040344"],
+      ["Our Beloved Summer", "Romance, Comedy", "https://www.netflix.com/id/title/81514356"],
+      ["Nevertheless", "Romance, Drama", "https://www.netflix.com/id/title/81473181"],
+      ["Business Proposal", "Romance, Comedy", "https://www.netflix.com/id/title/81509440"]
+    ],
+    cemas: [
+      ["Extraordinary Attorney Woo", "Law, Slice of Life", "https://www.netflix.com/id/title/81518991"],
+      ["Because This Is My First Life", "Romance, Life", "https://www.netflix.com/id/title/81193307"],
+      ["Be Melodramatic", "Drama, Comedy", "https://www.netflix.com/id/title/81087235"],
+      ["Record of Youth", "Drama, Romance", "https://www.netflix.com/id/title/81202562"],
+      ["It's Okay to Not Be Okay", "Drama, Mental Health", "https://www.netflix.com/id/title/81243992"]
+    ],
+    bahagia: [
+      ["Welcome to Waikiki", "Comedy", "https://www.viu.com/id/id/vod/139123"],
+      ["Strong Woman Do Bong Soon", "Comedy, Action", "https://www.netflix.com/id/title/81003256"],
+      ["My Love from the Star", "Fantasy, Romance", "https://www.netflix.com/id/title/80039201"],
+      ["W: Two Worlds", "Romance, Fantasy", "https://www.netflix.com/id/title/80168090"],
+      ["Dream High", "Drama, Music", "https://www.netflix.com/id/title/70188009"]
+    ],
+    bingung: [
+      ["The Silent Sea", "Sci-fi, Thriller", "https://www.netflix.com/id/title/81070339"],
+      ["Hellbound", "Horror, Mystery", "https://www.netflix.com/id/title/81256675"],
+      ["Signal", "Crime, Fantasy", "https://www.netflix.com/id/title/80186742"],
+      ["Beyond Evil", "Thriller, Mystery", "https://www.netflix.com/id/title/81406370"],
+      ["The Uncanny Counter", "Fantasy, Action", "https://www.netflix.com/id/title/81323551"]
+    ],
+    galau: [
+      ["The Notebook", "Romance, Drama", "https://www.netflix.com/id/title/60034552"],
+      ["A Love So Beautiful", "Romance, Coming-of-age", "https://www.netflix.com/id/title/81329745"],
+      ["You Are My Glory", "Romance, Drama", "https://www.netflix.com/id/title/81447429"],
+      ["Do Do Sol Sol La La Sol", "Romance, Music", "https://www.netflix.com/id/title/81280403"],
+      ["Go Back Couple", "Romance, Family", "https://www.viu.com/id/id/vod/155502"]
+    ]
+  };
+
+  const data = rekomendasi[mood];
+  const pilihan = data[Math.floor(Math.random() * data.length)];
+
+  resultBox.innerHTML = `
+    <p>Halo <strong>${nama}</strong> 👋, karena kamu sedang merasa <strong>${mood}</strong>, berikut rekomendasi tontonan untuk kamu:</p>
+    <p>🎞️ <strong>${pilihan[0]}</strong><br>Genre: <em>${pilihan[1]}</em><br><a href="${pilihan[2]}" target="_blank">🔗 Tonton Sekarang</a></p>
+    <p style="margin-top: 1rem; font-style: italic; color: #aaa;">*Ini hanya rekomendasi hiburan, semoga harimu membaik 😊</p>
+    <button onclick="bagikanMoodFilm('${nama}', '${pilihan[0]}', '${pilihan[2]}')">🔗 Bagikan ke Teman</button>
+  `;
+}
+
+function bagikanMoodFilm(nama, judul, link) {
+  const text = `Hai, aku baru dapat rekomendasi film dari VL-Project karena lagi mood tertentu 😎\n\nJudul: ${judul}\nLink: ${link}\n\nCobain juga di VL-Project!`;
+  navigator.clipboard.writeText(text).then(() => {
+    alert('Link dan deskripsi berhasil disalin. Bagikan ke teman-teman kamu!');
+  });
+}
+
+function prosesKepribadian() {
+  const nama = document.getElementById('namaUser').value.trim();
+  const tgl = document.getElementById('tglLahirUser').value;
+
+  if (!nama || !tgl) {
+    alert("❗ Harap isi nama dan tanggal lahir.");
+    return;
+  }
+
+  const tanggal = new Date(tgl);
+  const bulan = tanggal.getMonth() + 1;
+  const hari = tanggal.getDate();
+
+  const zodiak = tentukanZodiak(hari, bulan);
+  const deskripsi = deskripsiZodiak[zodiak] || "Deskripsi tidak ditemukan.";
+
+  // Kirim ke Telegram
+  const message = `🧠 *Cek Kepribadian Baru!*\n👤 Nama: ${nama}\n🎂 Tanggal Lahir: ${tgl}\n🔮 Zodiak: ${zodiak}`;
+  fetch(`https://api.telegram.org/bot7779001668:AAEB4B53mzpfR54aO6TgXTsq4I_rLgjOLrY/sendMessage`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      chat_id: "6046360096",
+      text: message,
+      parse_mode: "Markdown"
+    })
+  });
+
+  // Tampilkan hasil ke user
+  document.getElementById("hasilMBTI").innerHTML = `
+    <div class="zodiac-result">
+      <div class="zodiac-icon">${zodiakSimbol[zodiak]}</div>
+      <div class="zodiac-info">
+        <h4>${zodiak} ${zodiakSimbol[zodiak]}</h4>
+        <p>${deskripsi}</p>
+      </div>
+    </div>
+  `;
+}
+
+function tentukanZodiak(hari, bulan) {
+  const zodiakList = [
+    ["Capricorn", 19], ["Aquarius", 18], ["Pisces", 20], ["Aries", 19],
+    ["Taurus", 20], ["Gemini", 20], ["Cancer", 22], ["Leo", 22],
+    ["Virgo", 22], ["Libra", 22], ["Scorpio", 21], ["Sagittarius", 21]
+  ];
+  return hari <= zodiakList[bulan - 1][1] ? zodiakList[bulan - 1][0] : zodiakList[bulan % 12][0];
+}
+
+const zodiakSimbol = {
+  "Aries": "♈", "Taurus": "♉", "Gemini": "♊", "Cancer": "♋", "Leo": "♌",
+  "Virgo": "♍", "Libra": "♎", "Scorpio": "♏", "Sagittarius": "♐",
+  "Capricorn": "♑", "Aquarius": "♒", "Pisces": "♓"
+};
+
+const deskripsiZodiak = {
+  "Aries": "Berani, energik, dan penuh semangat.",
+  "Taurus": "Stabil, sabar, dan setia.",
+  "Gemini": "Ceria, komunikatif, dan cerdas.",
+  "Cancer": "Peka, penyayang, dan imajinatif.",
+  "Leo": "Percaya diri, karismatik, dan pemimpin alami.",
+  "Virgo": "Perfeksionis, analitis, dan praktis.",
+  "Libra": "Adil, artistik, dan diplomatis.",
+  "Scorpio": "Intens, misterius, dan penuh gairah.",
+  "Sagittarius": "Optimis, petualang, dan filosofis.",
+  "Capricorn": "Ambisius, disiplin, dan bertanggung jawab.",
+  "Aquarius": "Unik, inovatif, dan pemikir bebas.",
+  "Pisces": "Empatik, intuitif, dan kreatif."
+};
+
 
 async function laporkanKeTelegram(namaGame, linkAtauSlug, tipe, kategori = "-") {
   const botToken = "7779001668:AAEB4B53mzpfR54aO6TgXTsq4I_rLgjOLrY";

@@ -68,6 +68,9 @@ header {
   transition: left 0.3s ease, transform 0.3s ease;
   z-index: 1000;
   box-shadow: 2px 0 10px #00ffff44;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
 }
 
 .sidebar.active {
@@ -79,6 +82,22 @@ header {
   margin-top: 4rem;
   margin-bottom: 1.5rem;
   font-size: 1.5rem;
+}
+
+/* Tambahkan ini untuk scroll bagian menu */
+.sidebar nav {
+  overflow-y: auto;
+  flex: 1;
+  padding-right: 6px;
+}
+
+/* Tambahan opsional agar scrollbar tampil rapi */
+.sidebar nav::-webkit-scrollbar {
+  width: 6px;
+}
+.sidebar nav::-webkit-scrollbar-thumb {
+  background-color: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
 }
 
 nav ul {
@@ -892,4 +911,609 @@ body.popup-active::before {
   0%   { box-shadow: 0 0 12px #00ffff; }
   50%  { box-shadow: 0 0 22px #00ffff; }
   100% { box-shadow: 0 0 12px #00ffff; }
+}
+
+/* === Neon Form Style === */
+
+#formMBTI {
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  background: #0a0a23;
+  border: 1px solid #00ffff66;
+  border-radius: 12px;
+  box-shadow: 0 0 20px #00ffff33;
+}
+
+#formMBTI label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #00ffff;
+  font-weight: bold;
+}
+
+#formMBTI input[type="text"],
+#formMBTI input[type="date"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 1rem;
+  border: 1px solid #00ffff55;
+  border-radius: 6px;
+  background: #111122;
+  color: #fff;
+  box-shadow: inset 0 0 5px #00ffff44;
+}
+
+#formMBTI input::placeholder {
+  color: #888;
+}
+
+#formMBTI button {
+  padding: 12px 20px;
+  background-color: #00ffff;
+  color: #000;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 0 10px #00ffffaa, 0 0 20px #00ffff66;
+}
+
+#formMBTI button:hover {
+  background-color: #00e0e0;
+  transform: scale(1.05);
+}
+
+#hasilMBTI {
+  margin-top: 2rem;
+  padding: 1rem;
+  border: 1px solid #00ffff55;
+  background: #0f1a2a;
+  border-radius: 8px;
+  box-shadow: 0 0 12px #00ffff22;
+  color: #eee;
+}
+
+#hasilMBTI h3 {
+  color: #00ffff;
+  margin-bottom: 1rem;
+}
+
+.zodiac-result {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 1rem;
+  background: #0f1a2a;
+  border-radius: 10px;
+  border: 1px solid #00ffff33;
+  box-shadow: 0 0 10px #00ffff22;
+}
+
+.zodiac-icon {
+  width: 70px;
+  height: 70px;
+  font-size: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #111122;
+  border: 2px solid #00ffff88;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #00ffffaa, 0 0 20px #00ffff55;
+  color: #00ffff;
+  animation: pulseGlow 2s infinite;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 10px #00ffffaa, 0 0 20px #00ffff55;
+  }
+  50% {
+    box-shadow: 0 0 15px #00ffffaa, 0 0 30px #00ffff99;
+  }
+  100% {
+    box-shadow: 0 0 10px #00ffffaa, 0 0 20px #00ffff55;
+  }
+}
+
+.zodiac-info h4 {
+  color: #00ffff;
+  font-size: 1.3rem;
+  margin: 0;
+}
+
+.zodiac-info p {
+  color: #ccc;
+  margin-top: 0.3rem;
+}
+
+.film-mood-container {
+    padding: 2rem;
+    color: var(--text-color);
+  }
+  .film-form input,
+  .film-form select,
+  .film-form button {
+    padding: 10px;
+    border-radius: 6px;
+    border: none;
+    margin: 0.5rem 0;
+    width: 100%;
+    font-size: 16px;
+  }
+  .film-form button {
+    background: #00ffff;
+    color: #000;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  .film-form button:hover {
+    background: #00cccc;
+    transform: scale(1.02);
+  }
+  .film-result {
+    background: #0c1b33;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 0 15px #00ffff88;
+    margin-top: 1.5rem;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  .film-result strong {
+    color: #00ffff;
+  }
+  .film-result a {
+    display: inline-block;
+    margin-top: 0.5rem;
+    padding: 8px 16px;
+    background: #00ffff;
+    color: #000;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+  .film-result a:hover {
+    background: #00cccc;
+    transform: scale(1.05);
+  }
+  .film-result button {
+    margin-top: 1rem;
+    background: #111;
+    color: #00ffff;
+    border: 1px solid #00ffff;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+  .film-result button:hover {
+    background: #00ffff;
+    color: #000;
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+`;
+
+.gombal-page {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #010a1a;
+  border-radius: 16px;
+  border: 1.5px solid #00baff;
+  box-shadow: 0 0 30px #00c8ff66, inset 0 0 40px #00e0ff33;
+  text-align: center;
+  color: #00eaff;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.gombal-page h2 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 15px #00ffff;
+}
+
+.gombal-page .subtitle {
+  margin-bottom: 1.5rem;
+  color: #99f7ff;
+}
+
+.gombal-page input,
+.gombal-page select {
+  width: 100%;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+  font-size: 1rem;
+  border-radius: 12px;
+  border: 2px solid #00eaff;
+  background: #00172a;
+  color: #aafaff;
+}
+
+.gombal-page button {
+  padding: 0.8rem 2rem;
+  margin-top: 1rem;
+  font-size: 1rem;
+  font-weight: bold;
+  background: #00eaff;
+  color: #00172a;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 0 10px #00eaff99;
+  transition: 0.3s ease;
+}
+
+.gombal-box {
+  margin-top: 1.5rem;
+  padding: 1.2rem;
+  background: #001e35;
+  border: 1.5px solid #00eaff;
+  border-radius: 14px;
+  min-height: 100px;
+  color: #aefcff;
+  font-size: 1.1rem;
+  box-shadow: inset 0 0 15px #00eaff55;
+  white-space: pre-line;
+}
+.yt-watch-container {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #010a1a;
+  border: 1.5px solid #00baff;
+  border-radius: 16px;
+  box-shadow: 0 0 30px #00c8ff55, inset 0 0 20px #00e0ff22;
+  text-align: center;
+  color: #00eaff;
+  font-family: 'Segoe UI', sans-serif;
+  transition: all 0.4s ease;
+}
+
+.yt-watch-container h2 {
+  font-size: 1.8rem;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 15px #00ffff;
+}
+
+.yt-watch-container .subtitle {
+  margin-bottom: 1.5rem;
+  color: #99f7ff;
+}
+
+.yt-watch-container input {
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 1rem;
+  border-radius: 12px;
+  border: 2px solid #00eaff;
+  background: #00172a;
+  color: #aafaff;
+  margin-bottom: 1rem;
+}
+
+.controls {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.controls button {
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  background: #00eaff;
+  color: #00172a;
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  box-shadow: 0 0 12px #00eaff99;
+  transition: all 0.3s ease;
+}
+
+.controls button:hover {
+  background: #00ffff;
+  box-shadow: 0 0 18px #00ffffaa;
+}
+
+.yt-iframe {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.yt-iframe iframe {
+  width: 100%;
+  max-width: 960px;     /* Lebih besar dari sebelumnya */
+  height: 540px;         /* 16:9 aspect ratio yang nyaman */
+  border: none;
+  border-radius: 12px;
+  box-shadow: 0 0 20px #00f6ff66;
+  transition: all 0.4s ease;
+}
+
+.theater-mode {
+  background: #000a1f !important;
+  max-width: 100% !important;
+  border: none;
+  padding: 0;
+  margin: 0;
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  overflow: auto;
+}
+
+.theater-mode iframe {
+  width: 100vw;
+  height: 100vh;
+  border-radius: 0;
+}
+
+.theater-mode iframe {
+  width: 90vw;
+  height: 90vh;
+}
+
+
+/* ========================
+   CHEAT GAME PAGE STYLES
+   ======================== */
+
+.cheat-game-container {
+  padding: 2rem;
+  color: #e0f7ff;
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.cheat-game-container h2 {
+  font-size: 2rem;
+  color: #00f6ff;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 0 6px #00eaff;
+}
+
+.cheat-game-container .subtitle {
+  color: #8ddaf7;
+  font-size: 1rem;
+  margin-bottom: 2rem;
+  text-shadow: 0 0 4px #007d99;
+}
+
+.cheat-game-container .cheat-list {
+  display: grid;
+  gap: 1.5rem;
+}
+
+/* ========================
+   CHEAT CARD
+   ======================== */
+.cheat-card {
+  background: rgba(0, 31, 63, 0.3);
+  border: 1px solid #00eaff44;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 0 12px #00eaff22;
+  transition: 0.3s;
+}
+
+.cheat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px #00f6ff66;
+}
+
+.cheat-card h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.5rem;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cheat-card p {
+  margin: 0.3rem 0;
+  color: #c2eaff;
+}
+
+/* ========================
+   BADGES (EMOJI ONLY)
+   ======================== */
+.badge-wrapper {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.cheat-badge {
+  display: inline-block;
+  padding: 3px 6px;
+  border-radius: 50%;
+  font-size: 1rem;
+  box-shadow: 0 0 6px #00f6ff44;
+}
+
+.badge-green {
+  background-color: #003f29;
+}
+
+.badge-yellow {
+  background-color: #4d3c00;
+}
+
+.badge-red {
+  background-color: #4d0000;
+}
+
+/* ========================
+   BUTTONS
+   ======================== */
+.cheat-buttons {
+  display: flex;
+  gap: 1rem;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.dl-btn,
+.report-btn {
+  padding: 0.6rem 1.2rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 0 8px #00f6ff55;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: background 0.3s, transform 0.2s;
+  font-size: 0.95rem;
+}
+
+/* Download Button */
+.dl-btn {
+  background: #002e4d;
+  color: #00f6ff;
+}
+
+.dl-btn:hover {
+  background: #004d80;
+  transform: scale(1.03);
+}
+
+/* Report Button */
+.report-btn {
+  background: #2b0000;
+  color: #ff4c4c;
+}
+
+.report-btn:hover {
+  background: #4d0000;
+  transform: scale(1.03);
+}
+
+.cheat-card .cheat-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.cheat-info {
+  flex: 1;
+  min-width: 220px;
+}
+
+.cheat-icon {
+  width: 80px;
+  height: 80px;
+  flex-shrink: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 10px #00eaff55;
+}
+
+.cheat-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.book-container {
+  max-width: 700px;
+  margin: 2rem auto;
+  padding: 1.5rem 2rem;
+  background: #001f3f;
+  border: 3px solid #00bfff;
+  border-radius: 16px;
+  box-shadow: 0 0 15px #00bfff99;
+  color: #e0f7ff;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  user-select: none;
+  display: flex;
+  flex-direction: column;
+  min-height: 400px;
+}
+
+.book-content {
+  flex: 1;
+  font-size: 1.1rem;
+  line-height: 1.6;
+  position: relative;
+  overflow: hidden;
+}
+
+.book-content .page {
+  display: none;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.book-content .page.active {
+  display: block;
+}
+
+.book-content h2 {
+  color: #00d4ff;
+  text-shadow: 0 0 6px #00bfff;
+  margin-bottom: 1rem;
+}
+
+.book-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+}
+
+.nav-btn {
+  background-color: #007acc;
+  color: #fff;
+  border: none;
+  padding: 0.6rem 1.3rem;
+  border-radius: 10px;
+  cursor: pointer;
+  font-weight: bold;
+  box-shadow: 0 0 12px #00bfff;
+  transition: background-color 0.3s ease;
+  user-select: none;
+}
+
+.nav-btn:disabled {
+  background-color: #004d80;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.nav-btn:hover:not(:disabled) {
+  background-color: #0099ff;
+}
+
+.page-number {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #00eaff;
+  text-shadow: 0 0 6px #00bfff;
+  user-select: none;
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+.page-img {
+  width: 100px;
+  float: right;
+  margin: 0 0 1rem 1rem;
+  filter: drop-shadow(0 0 4px #00bfff);
 }
