@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Ucapan Spesial 🎉</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #0f172a, #1e293b);
+      color: #e0f2fe;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .ucapan-container {
+      max-width: 600px;
+      padding: 2rem;
+      background: rgba(30, 58, 138, 0.2);
+      border: 2px solid #38bdf8;
+      border-radius: 20px;
+      box-shadow: 0 0 30px #38bdf8;
+    }
+
+    .bubble {
+      background-color: #38bdf8;
+      color: #0f172a;
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 16px;
+      position: relative;
+      animation: fadeIn 1s ease-out;
+    }
+
+    .bubble:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 20px;
+      width: 0;
+      height: 0;
+      border: 10px solid transparent;
+      border-top-color: #38bdf8;
+      border-bottom: 0;
+      margin-left: -10px;
+      margin-bottom: -10px;
+    }
+
+    .bubble.nama {
+      font-size: 1.5rem;
+      font-weight: bold;
+      background: #0ea5e9;
+      color: #fff;
+    }
+
+    .bubble.pesan {
+      font-size: 1.2rem;
+      white-space: pre-wrap;
+    }
+
+    .bubble.dari {
+      font-style: italic;
+      text-align: right;
+      background: transparent;
+      color: #94a3b8;
+      box-shadow: none;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    audio {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+<audio id="bgm" autoplay loop></audio>
+  <div class="ucapan-container">
+    <div id="ucapanNama" class="bubble nama">Hai 👋</div>
+    <div id="ucapanPesan" class="bubble pesan"></div>
+    <div id="ucapanDari" class="bubble dari"></div>
+  </div>
+
+  <!-- Musik autoplay -->
+  <audio id="bgm" autoplay loop>
+    <source src="https://example.com/lagu.mp3" type="audio/mpeg">
+    Browser kamu tidak mendukung audio.
+  </audio>
+
+  <script>
+    function getQueryParam(key) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return decodeURIComponent(urlParams.get(key) || '');
+  }
+
+  const tema = getQueryParam("tema") || "default";
+  const nama = getQueryParam("nama") || "Seseorang";
+  const dari = getQueryParam("dari") || "Anonim";
+  const pesanQuery = getQueryParam("pesan");
+
+  const templateUcapan = {
+    ulangtahun: `🎉 Selamat ulang tahun ya, ${nama}!\nSemoga sehat selalu, bahagia, dan semua impianmu tercapai ✨`,
+    mintamaaf: `🙏 Maaf banget ya ${nama}...\nAku sadar aku salah dan ingin memperbaikinya. Maafkan aku ya 💔`,
+    weekend: `☀️ Selamat weekend, ${nama}!\nJangan lupa istirahat, recharge, dan nikmati harimu 😌`,
+    dating: `💌 Hai ${nama},\nAku ingin ngajak kamu jalan hari ini. Cuma berdua aja, gimana? 🥰`,
+    dinner: `🍽️ ${nama}, malam ini kita dinner bareng yuk!\nAku kangen ngobrol dan ketawa bareng kamu 😄`,
+    default: `📩 Hai ${nama}!\nAda pesan spesial buat kamu hari ini! 💙`
+  };
+
+  const musicMap = {
+    ulangtahun: "https://assets.mixkit.co/music/preview/mixkit-happy-birthday-897.mp3",
+    mintamaaf: "https://assets.mixkit.co/music/preview/mixkit-sadness-126.mp3",
+    weekend: "https://assets.mixkit.co/music/preview/mixkit-chill-lofi-hip-hop-808.mp3",
+    dating: "https://assets.mixkit.co/music/preview/mixkit-love-is-in-the-air-205.mp3",
+    dinner: "https://assets.mixkit.co/music/preview/mixkit-soft-jazz-140.mp3",
+    default: "https://assets.mixkit.co/music/preview/mixkit-relaxing-acoustic-guitar-128.mp3"
+  };
+
+  const pesanFinal = pesanQuery || templateUcapan[tema] || templateUcapan.default;
+  const musicUrl = musicMap[tema] || musicMap.default;
+
+  // Tampilkan
+  document.getElementById("ucapanNama").innerText = `Hai ${nama} 👋`;
+  document.getElementById("ucapanPesan").innerText = pesanFinal;
+  document.getElementById("ucapanDari").innerText = `— Dari ${dari}`;
+
+  // Atur sumber musik
+  const bgm = document.getElementById("bgm");
+  bgm.src = musicUrl;
+
+  // Play on click (bypass autoplay restrictions)
+  window.addEventListener('click', () => {
+    if (bgm.paused) {
+      bgm.play().catch(() => {});
+    }
+  }, { once: true });
+  </script>
+</body>
+</html>
