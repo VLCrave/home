@@ -178,87 +178,109 @@
     <source id="musicSource" src="" type="audio/mpeg">
   </audio>
 
-  <script>
-    const params = new URLSearchParams(window.location.search);
-    const tema = params.get("tema") || "default";
-    const nama = params.get("nama") || "Kamu";
-    const dari = params.get("dari") || "Seseorang";
-    const pesan = params.get("pesan")?.split("\n") || ["Selamat Malam!", "Ini pesan untukmu!", "Semoga suka ya!"];
-    const wa = params.get("wa") || "";
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const tema = params.get("tema") || "default";
+  const nama = params.get("nama") || "Kamu";
+  const dari = params.get("dari") || "Seseorang";
+  const pesanParam = params.get("pesan");
+  const wa = params.get("wa") || "";
 
-    document.getElementById("pengirimNotif").innerText = dari;
+  // Tema warna latar
+  const temaWarna = {
+    ulangtahun: "#1a2a6c",
+    mintamaaf: "#2b2d42",
+    weekend: "#153b50",
+    dating: "#3d1f4e",
+    dinner: "#2c3e50",
+    roomwangi: "#0c1932",
+    motivasi: "#1b2735",
+    default: "#12163a"
+  };
+  document.getElementById("chatBox").style.background = temaWarna[tema] || temaWarna.default;
 
-    // Background dan musik sesuai tema
-    const temaWarna = {
-      ulangtahun: "#1a2a6c",
-      mintamaaf: "#2b2d42",
-      weekend: "#153b50",
-      dating: "#3d1f4e",
-      dinner: "#2c3e50",
-      default: "#12163a"
-    };
-    document.getElementById("chatBox").style.background = temaWarna[tema] || temaWarna.default;
+  // Musik tema
+  const lagu = {
+    ulangtahun: "https://example.com/happy.mp3",
+    mintamaaf: "https://example.com/maaf.mp3",
+    weekend: "https://example.com/weekend.mp3",
+    dating: "https://example.com/date.mp3",
+    dinner: "https://example.com/dinner.mp3",
+    roomwangi: "https://example.com/roomwangi.mp3",
+    motivasi: "https://example.com/motivasi.mp3"
+  };
+  document.getElementById("musicSource").src = lagu[tema] || "";
+  document.getElementById("bgMusic").load();
 
-    const lagu = {
-      ulangtahun: "https://example.com/happy.mp3",
-      mintamaaf: "https://example.com/maaf.mp3",
-      weekend: "https://example.com/weekend.mp3",
-      dating: "https://example.com/date.mp3",
-      dinner: "https://example.com/dinner.mp3"
-    };
-    document.getElementById("musicSource").src = lagu[tema] || "";
-    document.getElementById("bgMusic").load();
+  // Default pesan berdasarkan tema (digunakan jika tidak ada param pesan)
+  const defaultPesan = {
+    ulangtahun: `Selamat ulang tahun ${nama}! 🎉\nSemoga panjang umur dan sehat selalu.\nTetap jadi yang terbaik ya!`,
+    mintamaaf: `Aku minta maaf ya ${nama} 🙏\nAku sadar aku salah dan ingin memperbaiki semuanya.\nSemoga kamu bisa maafin aku.`,
+    weekend: `Selamat menikmati weekend, ${nama}! 😄\nSemoga akhir pekanmu menyenangkan.\nJangan lupa istirahat ya.`,
+    dating: `Hai ${nama} 💕\nKamu sibuk gak hari ini?\nAku pengen ajak kamu jalan bareng...`,
+    dinner: `Malam ini kita dinner bareng yuk? 🍽️\nAku yang traktir deh hehe\nTemenin aku ya ${nama}!`,
+    roomwangi: `Buat kamu, ${nama}, si pemilik room paling wangi 💐\nJangan kasih musuh napas malam ini!\nAyo gas bareng ML malam ini!`,
+    motivasi: `Halo ${nama},\nKamu hebat dan punya potensi besar 💪\nTerus semangat dan jangan menyerah ya!`,
+    default: `Halo ${nama}, ini pesan spesial dari ${dari}.\nSemoga harimu menyenangkan!`
+  };
 
-    let index = 0;
-    let isStarted = false;
+  // Gunakan pesan dari param jika ada, jika tidak pakai default
+  const pesan = pesanParam ? pesanParam.split("\n") : defaultPesan[tema]?.split("\n") || defaultPesan.default.split("\n");
 
-    function mulaiPesan() {
-      if (isStarted) return;
-      isStarted = true;
-      document.getElementById("notifPopup").style.display = "none";
-      document.getElementById("mainContent").classList.remove("blur");
-      tampilkanBubbleSatuPerSatu();
-    }
+  document.getElementById("pengirimNotif").innerText = dari;
 
-    function tampilkanBubbleSatuPerSatu() {
-      if (index < pesan.length) {
-        const typingDiv = document.createElement("div");
-        typingDiv.className = "typing";
-        typingDiv.innerHTML = `
+  let index = 0;
+  let isStarted = false;
+
+  function mulaiPesan() {
+    if (isStarted) return;
+    isStarted = true;
+    document.getElementById("notifPopup").style.display = "none";
+    document.getElementById("mainContent").classList.remove("blur");
+    tampilkanBubbleSatuPerSatu();
+  }
+
+  function tampilkanBubbleSatuPerSatu() {
+    if (index < pesan.length) {
+      const typingDiv = document.createElement("div");
+      typingDiv.className = "typing";
+      typingDiv.innerHTML = `
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScsg7vbHBvu5Lu2SYjgSPtVaLc_fCfScFftw&s" alt="anon">
+        <span class="dotdotdot">Sedang mengetik</span>
+      `;
+      const chatBox = document.getElementById("chatBox");
+      chatBox.appendChild(typingDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
+
+      setTimeout(() => {
+        typingDiv.remove();
+        const div = document.createElement("div");
+        div.className = "bubble";
+        div.innerHTML = `
           <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScsg7vbHBvu5Lu2SYjgSPtVaLc_fCfScFftw&s" alt="anon">
-          <span class="dotdotdot">Sedang mengetik</span>
+          <div class="bubble-text">${pesan[index]}</div>
         `;
-        const chatBox = document.getElementById("chatBox");
-        chatBox.appendChild(typingDiv);
+        chatBox.appendChild(div);
         chatBox.scrollTop = chatBox.scrollHeight;
-
-        setTimeout(() => {
-          typingDiv.remove();
-          const div = document.createElement("div");
-          div.className = "bubble";
-          div.innerHTML = `
-            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScsg7vbHBvu5Lu2SYjgSPtVaLc_fCfScFftw&s" alt="anon">
-            <div class="bubble-text">${pesan[index]}</div>
-          `;
-          chatBox.appendChild(div);
-          chatBox.scrollTop = chatBox.scrollHeight;
-          index++;
-          setTimeout(tampilkanBubbleSatuPerSatu, 1000);
-        }, 800);
-      } else {
-        document.getElementById("balasContainer").style.display = "flex";
-      }
+        index++;
+        setTimeout(tampilkanBubbleSatuPerSatu, 1000);
+      }, 800);
+    } else {
+      document.getElementById("balasContainer").style.display = "flex";
     }
+  }
 
-    function kirimKeWA() {
-      const isi = document.getElementById("balasPesan").value.trim();
-      if (!isi) {
-        alert("Pesan tidak boleh kosong.");
-        return;
-      }
-      const pesanWa = `Hai ${dari}, ini balasanku atas pesan kamu:\n\n"${isi}"`;
-      window.open(`https://wa.me/${wa}?text=${encodeURIComponent(pesanWa)}`, "_blank");
+  function kirimKeWA() {
+    const isi = document.getElementById("balasPesan").value.trim();
+    if (!isi) {
+      alert("Pesan tidak boleh kosong.");
+      return;
     }
-  </script>
+    const pesanWa = `Hai ${dari}, ini balasanku atas pesan kamu:\n\n"${isi}"`;
+    window.open(`https://wa.me/${wa}?text=${encodeURIComponent(pesanWa)}`, "_blank");
+  }
+</script>
+
+
 </body>
 </html>
