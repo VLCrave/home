@@ -33,6 +33,8 @@
       border-radius: 15px;
       box-shadow: 0 0 15px #00f7ff44;
       min-height: 300px;
+      max-height: 70vh;
+      overflow-y: auto;
     }
 
     .bubble {
@@ -77,6 +79,10 @@
       font-size: 1rem;
       background: white;
       color: #0f1330;
+      line-height: 1.4;
+      overflow-y: auto;
+      min-height: 40px;
+      max-height: 120px;
     }
 
     #kirimBalasan {
@@ -131,7 +137,7 @@
       display: flex;
       align-items: center;
       margin-bottom: 15px;
-      animation: fadeIn 0.6s ease-in;
+      animation: fadeIn 0.4s ease-in;
     }
 
     .typing span {
@@ -153,154 +159,176 @@
       66%  { content: '..'; }
       100% { content: '...'; }
     }
+
+    @media only screen and (max-width: 480px) {
+      .chat-container {
+        width: 95%;
+        padding: 15px;
+        max-height: 65vh;
+      }
+      .bubble-text {
+        font-size: 0.9rem;
+      }
+      #balasPesan {
+        font-size: 0.9rem;
+      }
+      .lanjut-btn {
+        font-size: 0.95rem;
+        padding: 8px 15px;
+      }
+      .bubble img,
+      .typing img {
+        width: 32px;
+        height: 32px;
+      }
+      #kirimBalasan {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+      }
+    }
   </style>
 </head>
 <body>
-  <!-- Notifikasi Masuk -->
+  <!-- Popup Notif -->
   <div id="notifPopup">
     <p>📩 Pesan masuk dari <span id="pengirimNotif" style="color: #00f7ff; font-weight: bold;"></span></p>
     <button onclick="mulaiPesan()" class="lanjut-btn">Klik di sini untuk membuka pesan</button>
   </div>
 
-  <!-- Kontainer Pesan -->
+  <!-- Konten Utama -->
   <div id="mainContent" class="blur">
     <div class="chat-container" id="chatBox"></div>
 
-    <!-- Kolom Balasan -->
     <div id="balasContainer" class="reply-row">
       <textarea id="balasPesan" rows="1" placeholder="Tulis balasanmu di sini..."></textarea>
       <button id="kirimBalasan" onclick="kirimKeWA()">➤</button>
     </div>
   </div>
 
-  <!-- Musik -->
+  <!-- Musik Latar -->
   <audio id="bgMusic" autoplay loop>
     <source id="musicSource" src="" type="audio/mpeg">
   </audio>
 
-<script>
-  const params = new URLSearchParams(window.location.search);
-  const tema = params.get("tema") || "default";
-  const nama = params.get("nama") || "Kamu";
-  const dari = params.get("dari") || "Seseorang";
-  const pesanParam = params.get("pesan");
-  const wa = params.get("wa") || "";
+  <!-- SCRIPT -->
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const tema = params.get("tema") || "default";
+    const nama = params.get("nama") || "Kamu";
+    const dari = params.get("dari") || "Seseorang";
+    const pesanParam = params.get("pesan");
+    const wa = params.get("wa") || "";
 
-  // Tema warna latar
-  const temaWarna = {
-    ulangtahun: "#1a2a6c",
-    mintamaaf: "#2b2d42",
-    weekend: "#153b50",
-    dating: "#3d1f4e",
-    dinner: "#2c3e50",
-    roomwangi: "#0c1932",
-    motivasi: "#1b2735",
-    default: "#12163a"
-  };
-  document.getElementById("chatBox").style.background = temaWarna[tema] || temaWarna.default;
+    const temaWarna = {
+      ulangtahun: "#1a2a6c",
+      mintamaaf: "#2b2d42",
+      weekend: "#153b50",
+      dating: "#3d1f4e",
+      dinner: "#2c3e50",
+      roomwangi: "#0c1932",
+      motivasi: "#1b2735",
+      default: "#12163a"
+    };
+    document.getElementById("chatBox").style.background = temaWarna[tema] || temaWarna.default;
 
-  // Musik tema
-  const lagu = {
-    ulangtahun: "https://example.com/happy.mp3",
-    mintamaaf: "https://example.com/maaf.mp3",
-    weekend: "https://example.com/weekend.mp3",
-    dating: "https://example.com/date.mp3",
-    dinner: "https://example.com/dinner.mp3",
-    roomwangi: "https://example.com/roomwangi.mp3",
-    motivasi: "https://example.com/motivasi.mp3"
-  };
-  document.getElementById("musicSource").src = lagu[tema] || "";
-  document.getElementById("bgMusic").load();
+    const lagu = {
+      ulangtahun: "https://example.com/happy.mp3",
+      mintamaaf: "https://example.com/maaf.mp3",
+      weekend: "https://example.com/weekend.mp3",
+      dating: "https://example.com/date.mp3",
+      dinner: "https://example.com/dinner.mp3",
+      roomwangi: "https://example.com/roomwangi.mp3",
+      motivasi: "https://example.com/motivasi.mp3"
+    };
+    document.getElementById("musicSource").src = lagu[tema] || "";
+    document.getElementById("bgMusic").load();
 
-  // Tentukan waktu salam
-  function getSalamWaktu() {
-    const jam = new Date().getHours();
-    if (jam >= 5 && jam < 11) return "pagi";
-    if (jam >= 11 && jam < 15) return "siang";
-    if (jam >= 15 && jam < 18) return "sore";
-    return "malam";
-  }
+    function getSalamWaktu() {
+      const jam = new Date().getHours();
+      if (jam >= 5 && jam < 11) return "pagi";
+      if (jam >= 11 && jam < 15) return "siang";
+      if (jam >= 15 && jam < 18) return "sore";
+      return "malam";
+    }
 
-  const salamWaktu = getSalamWaktu();
+    const salamWaktu = getSalamWaktu();
 
-  // Default pesan berdasarkan tema
-  const defaultPesan = {
-    ulangtahun: `Selamat ulang tahun ${nama}! 🎉\nSemoga panjang umur dan sehat selalu.\nTetap jadi yang terbaik ya!`,
-    mintamaaf: `Aku minta maaf ya ${nama} 🙏\nAku sadar aku salah dan ingin memperbaiki semuanya.\nSemoga kamu bisa maafin aku.`,
-    weekend: `Selamat menikmati weekend, ${nama}! 😄\nSemoga akhir pekanmu menyenangkan.\nJangan lupa istirahat ya.`,
-    dating: `Hai ${nama} 💕\nKamu sibuk gak hari ini?\nAku pengen ajak kamu jalan bareng...`,
-    dinner: `Malam ini kita dinner bareng yuk? 🍽️\nAku yang traktir deh hehe\nTemenin aku ya ${nama}!`,
-    roomwangi: `Buat kamu, ${nama}, si pemilik room paling wangi 💐\nJangan kasih musuh napas malam ini!\nAyo gas bareng ML malam ini!`,
-    motivasi: `Halo ${nama},\nKamu hebat dan punya potensi besar 💪\nTerus semangat dan jangan menyerah ya!`,
-    default: `Halo ${nama}, ini pesan spesial dari ${dari}.\nSemoga harimu menyenangkan!`,
-    personal: `Selamat ${salamWaktu} ${nama}, terima kasih telah meluangkan waktu untuk membuka pesan yang ${dari} sampaikan.`
-  };
+    const defaultPesan = {
+      ulangtahun: `Selamat ulang tahun ${nama}! 🎉\nSemoga panjang umur dan sehat selalu.\nTetap jadi yang terbaik ya!`,
+      mintamaaf: `Aku minta maaf ya ${nama} 🙏\nAku sadar aku salah dan ingin memperbaiki semuanya.\nSemoga kamu bisa maafin aku.`,
+      weekend: `Selamat menikmati weekend, ${nama}! 😄\nSemoga akhir pekanmu menyenangkan.\nJangan lupa istirahat ya.`,
+      dating: `Hai ${nama} 💕\nKamu sibuk gak hari ini?\nAku pengen ajak kamu jalan bareng...`,
+      dinner: `Malam ini kita dinner bareng yuk? 🍽️\nAku yang traktir deh hehe\nTemenin aku ya ${nama}!`,
+      roomwangi: `Buat kamu, ${nama}, si pemilik room paling wangi 💐\nJangan kasih musuh napas malam ini!\nAyo gas bareng ML malam ini!`,
+      motivasi: `Halo ${nama},\nKamu hebat dan punya potensi besar 💪\nTerus semangat dan jangan menyerah ya!`,
+      default: `Halo ${nama}, ini pesan spesial dari ${dari}.\nSemoga harimu menyenangkan!`
+    };
 
-  // Menentukan isi pesan
-  const pesan = [];
-  if (pesanParam) {
-    pesan.push(...pesanParam.split("\n"));
-  } else if (defaultPesan[tema]) {
-    pesan.push(defaultPesan.personal, ...defaultPesan[tema].split("\n"));
-  } else {
-    pesan.push(defaultPesan.personal);
-  }
+    const pembuka = `Selamat ${salamWaktu} ${nama}, terima kasih telah meluangkan waktu untuk membuka pesan yang ${dari} sampaikan.`;
 
-  document.getElementById("pengirimNotif").innerText = dari;
+    let pesan = [];
 
-  let index = 0;
-  let isStarted = false;
-
-  function mulaiPesan() {
-    if (isStarted) return;
-    isStarted = true;
-    document.getElementById("notifPopup").style.display = "none";
-    document.getElementById("mainContent").classList.remove("blur");
-    tampilkanBubbleSatuPerSatu();
-  }
-
-  function tampilkanBubbleSatuPerSatu() {
-    if (index < pesan.length) {
-      const typingDiv = document.createElement("div");
-      typingDiv.className = "typing";
-      typingDiv.innerHTML = `
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScsg7vbHBvu5Lu2SYjgSPtVaLc_fCfScFftw&s" alt="anon">
-        <span class="dotdotdot">Sedang mengetik</span>
-      `;
-      const chatBox = document.getElementById("chatBox");
-      chatBox.appendChild(typingDiv);
-      chatBox.scrollTop = chatBox.scrollHeight;
-
-      setTimeout(() => {
-        typingDiv.remove();
-        const div = document.createElement("div");
-        div.className = "bubble";
-        div.innerHTML = `
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScsg7vbHBvu5Lu2SYjgSPtVaLc_fCfScFftw&s" alt="anon">
-          <div class="bubble-text">${pesan[index]}</div>
-        `;
-        chatBox.appendChild(div);
-        chatBox.scrollTop = chatBox.scrollHeight;
-        index++;
-        setTimeout(tampilkanBubbleSatuPerSatu, 1000);
-      }, 800);
+    if (pesanParam) {
+      pesan = [pembuka, ...pesanParam.split("\n")];
+    } else if (defaultPesan[tema]) {
+      pesan = [pembuka, ...defaultPesan[tema].split("\n")];
     } else {
-      document.getElementById("balasContainer").style.display = "flex";
+      pesan = [pembuka, defaultPesan.default];
     }
-  }
 
-  function kirimKeWA() {
-    const isi = document.getElementById("balasPesan").value.trim();
-    if (!isi) {
-      alert("Pesan tidak boleh kosong.");
-      return;
+    document.getElementById("pengirimNotif").innerText = dari;
+
+    let index = 0;
+    let isStarted = false;
+
+    function mulaiPesan() {
+      if (isStarted) return;
+      isStarted = true;
+      document.getElementById("notifPopup").style.display = "none";
+      document.getElementById("mainContent").classList.remove("blur");
+      tampilkanBubbleSatuPerSatu();
     }
-    const pesanWa = `Hai ${dari}, ini balasanku atas pesan kamu:\n\n"${isi}"`;
-    window.open(`https://wa.me/${wa}?text=${encodeURIComponent(pesanWa)}`, "_blank");
-  }
-</script>
 
+    function tampilkanBubbleSatuPerSatu() {
+      if (index < pesan.length) {
+        const typingDiv = document.createElement("div");
+        typingDiv.className = "typing";
+        typingDiv.innerHTML = `
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScsg7vbHBvu5Lu2SYjgSPtVaLc_fCfScFftw&s" alt="anon">
+          <span class="dotdotdot">Sedang mengetik</span>
+        `;
+        const chatBox = document.getElementById("chatBox");
+        chatBox.appendChild(typingDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
 
+        setTimeout(() => {
+          typingDiv.remove();
+          const div = document.createElement("div");
+          div.className = "bubble";
+          div.innerHTML = `
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScsg7vbHBvu5Lu2SYjgSPtVaLc_fCfScFftw&s" alt="anon">
+            <div class="bubble-text">${pesan[index]}</div>
+          `;
+          chatBox.appendChild(div);
+          chatBox.scrollTop = chatBox.scrollHeight;
+          index++;
+          setTimeout(tampilkanBubbleSatuPerSatu, 1000);
+        }, 800);
+      } else {
+        document.getElementById("balasContainer").style.display = "flex";
+      }
+    }
 
+    function kirimKeWA() {
+      const isi = document.getElementById("balasPesan").value.trim();
+      if (!isi) {
+        alert("Pesan tidak boleh kosong.");
+        return;
+      }
+      const pesanWa = `Hai ${dari}, ini balasanku atas pesan kamu:\n\n"${isi}"`;
+      window.open(`https://wa.me/${wa}?text=${encodeURIComponent(pesanWa)}`, "_blank");
+    }
+  </script>
 </body>
 </html>
