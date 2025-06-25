@@ -48,20 +48,7 @@ header {
   border-bottom: 2px solid #00ffff33;
   box-shadow: 0 0 10px #00ffff44;
 }
-.logo-container {
-  width: 60px;
-  height: 60px;
-  overflow: hidden;
-  border-radius: 50%;
-  border: 2px solid #00f0ff; /* opsional: outline neon */
-  box-shadow: 0 0 10px #00f0ff; /* efek glow neon */
-}
 
-.circle-logo {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
 
 .menu-toggle, .theme-toggle {
   font-size: 1.5rem;
@@ -1634,3 +1621,19 @@ body.popup-active::before {
     overflow-y: auto;
     box-sizing: border-box;
   }
+
+.access-btn {
+  display: inline-block;
+  background-color: #00ffff;
+  color: #000;
+  padding: 0.6rem 1.2rem;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+.access-btn:hover {
+  background-color: #00cccc;
+}

@@ -1,95 +1,202 @@
-const allowedIPs = ['125.167.48.16', '111.111.111.111']; // ← Ganti dengan IP yang diizinkan
+// === Data akses & IP yang diizinkan ===
+const accessCodes = {
+  "PREMIUM": ["125.167.48.16", "111.111.111.111"],
+  "TESTER": ["111.111.111.112"],
+  "ADMIN": ["123.123.123.123"]
+};
 
-  // Blokir klik kanan
-  document.addEventListener('contextmenu', function (e) {
+const chatId = "6046360096"; // VL
+const botToken = "7779001668:AAEB4B53mzpfR54aO6TgXTsq4I_rLgjOLrY";
+
+// === Session Timeout (30 Menit) ===
+const SESSION_EXPIRE_TIME = 30 * 60 * 1000;
+
+function isSessionValid() {
+  const savedTime = localStorage.getItem("sessionStartTime");
+  const accessCode = localStorage.getItem("userAccessCode");
+  const userIP = localStorage.getItem("userIP");
+
+  if (!savedTime || !accessCode || !userIP) return false;
+
+  const now = Date.now();
+  return now - parseInt(savedTime) < SESSION_EXPIRE_TIME;
+}
+
+function clearSession() {
+  localStorage.removeItem("userAccessCode");
+  localStorage.removeItem("userIP");
+  localStorage.removeItem("sessionStartTime");
+}
+
+// === Blokir klik kanan dan shortcut umum ===
+document.addEventListener('contextmenu', e => e.preventDefault());
+document.addEventListener('keydown', e => {
+  if (
+    e.key === 'F12' ||
+    (e.ctrlKey && e.shiftKey && ['I', 'C', 'J'].includes(e.key.toUpperCase())) ||
+    (e.ctrlKey && ['U', 'S'].includes(e.key.toUpperCase()))
+  ) {
     e.preventDefault();
+  }
+});
+
+// === Deteksi DevTools ===
+setInterval(() => {
+  const before = new Date().getTime();
+  debugger;
+  const after = new Date().getTime();
+  if (after - before > 100) {
+    document.body.innerHTML = "<h1 style='color: red; text-align: center;'>Akses Diblokir!</h1>";
+  }
+}, 1000);
+
+// === Kirim Notifikasi Akses Login Baru ===
+async function sendAccessRequestToTelegram(ip, kode) {
+  const now = new Date();
+  const time = now.toLocaleString();
+  const message = `🟡 *Permintaan Akses Login Baru*\nIP: \`${ip}\`\nKode: \`${kode}\`\nWaktu: \`${time}\``;
+
+  const telegramURL = `https://api.telegram.org/bot${botToken}/sendMessage`;
+  await fetch(telegramURL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      chat_id: chatId,
+      text: message,
+      parse_mode: "Markdown"
+    })
   });
+}
 
-  // Blokir shortcut umum DevTools
-  document.addEventListener('keydown', function (e) {
-    if (
-      e.key === 'F12' ||
-      (e.ctrlKey && e.shiftKey && ['I', 'C', 'J'].includes(e.key.toUpperCase())) ||
-      (e.ctrlKey && ['U', 'S'].includes(e.key.toUpperCase()))
-    ) {
-      e.preventDefault();
-    }
+// === Kirim Permintaan Request IP Baru ===
+async function sendRequestIPToTelegram(ip, kode) {
+  const now = new Date();
+  const time = now.toLocaleString();
+  const message = `🔴 *Permintaan Request IP Baru*\nKode Akses : \`${kode}\`\nIP: \`${ip}\`\nWaktu: \`${time}\``;
+
+  const telegramURL = `https://api.telegram.org/bot${botToken}/sendMessage`;
+  await fetch(telegramURL, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      chat_id: chatId,
+      text: message,
+      parse_mode: "Markdown"
+    })
   });
+}
 
-  // Deteksi DevTools dibuka
-  setInterval(function () {
-    const before = new Date().getTime();
-    debugger;
-    const after = new Date().getTime();
-    if (after - before > 100) {
-      document.body.innerHTML = "<h1 style='color: red; text-align: center;'>Akses Diblokir!</h1>";
-    }
-  }, 1000);
+// === Login & Session Validation ===
+window.addEventListener("DOMContentLoaded", () => {
+  const popup = document.getElementById("popup-greeting");
+  const overlay = document.getElementById("popup-overlay");
+  const closeBtn = document.getElementById("close-popup");
+  const accessCodeInput = document.getElementById("access-code");
+  const spinner = document.getElementById("loading-spinner");
+  const checkIcon = document.getElementById("checkmark");
+  const crossIcon = document.getElementById("crossmark");
+  const purchaseLink = document.getElementById("purchase-link");
+  const requestIPBtn = document.getElementById("request-ip");
+  const requestIPContainer = document.getElementById("request-ip-container");
 
-  window.addEventListener("DOMContentLoaded", () => {
-    const popup = document.getElementById("popup-greeting");
-    const overlay = document.getElementById("popup-overlay");
-    const closeBtn = document.getElementById("close-popup");
-    const accessCodeInput = document.getElementById("access-code");
-    const spinner = document.getElementById("loading-spinner");
-    const checkIcon = document.getElementById("checkmark");
-    const crossIcon = document.getElementById("crossmark");
-    const purchaseLink = document.getElementById("purchase-link");
-
+  // Cek session
+  if (!isSessionValid()) {
+    clearSession();
     document.body.classList.add("popup-active");
+    popup.style.display = "block";
+    overlay.style.display = "block";
+  } else {
+    popup.style.display = "none";
+    overlay.style.display = "none";
+    document.body.classList.remove("popup-active");
+    return;
+  }
 
-    closeBtn.addEventListener("click", async () => {
-      const kode = accessCodeInput.value.trim();
+  closeBtn.addEventListener("click", async () => {
+    const kode = accessCodeInput.value.trim().toUpperCase();
 
-      spinner.style.display = "block";
-      checkIcon.style.display = "none";
-      crossIcon.style.display = "none";
-      purchaseLink.style.display = "none";
-      closeBtn.disabled = true;
+    spinner.style.display = "block";
+    checkIcon.style.display = "none";
+    crossIcon.style.display = "none";
+    purchaseLink.style.display = "none";
+    requestIPContainer.style.display = "none";
+    closeBtn.disabled = true;
 
-      let userIP = '';
-      try {
-        const res = await fetch('https://api.ipify.org?format=json');
-        const data = await res.json();
-        userIP = data.ip;
-      } catch (err) {
-        spinner.style.display = "none";
-        alert("❌ Gagal mendeteksi IP. Pastikan kamu terhubung ke internet.");
-        closeBtn.disabled = false;
-        return;
-      }
+    let userIP = '';
+    try {
+      const res = await fetch('https://api.ipify.org?format=json');
+      const data = await res.json();
+      userIP = data.ip;
+    } catch (err) {
+      spinner.style.display = "none";
+      alert("❌ Gagal mendeteksi IP. Pastikan kamu terhubung ke internet.");
+      closeBtn.disabled = false;
+      return;
+    }
 
-      setTimeout(() => {
-        spinner.style.display = "none";
+    setTimeout(async () => {
+      spinner.style.display = "none";
 
-        if (kode === "PREMIUM") {
-          if (allowedIPs.includes(userIP)) {
-            checkIcon.style.display = "block";
-            setTimeout(() => {
-              popup.style.display = "none";
-              overlay.style.display = "none";
-              document.body.classList.remove("popup-active");
-            }, 1000);
-          } else {
-            alert("❌ IP Anda tidak diizinkan untuk mengakses.");
-            crossIcon.style.display = "block";
-            purchaseLink.style.display = "block";
-            setTimeout(() => {
-              crossIcon.style.display = "none";
-            }, 3000);
-          }
+      if (accessCodes[kode]) {
+        if (accessCodes[kode].includes(userIP)) {
+          // ✅ Akses valid
+          localStorage.setItem("userAccessCode", kode);
+          localStorage.setItem("userIP", userIP);
+          localStorage.setItem("sessionStartTime", Date.now().toString());
+
+          checkIcon.style.display = "block";
+          setTimeout(() => {
+            popup.style.display = "none";
+            overlay.style.display = "none";
+            document.body.classList.remove("popup-active");
+          }, 1000);
         } else {
+          // ✅ Kode benar, IP tidak cocok
+          await sendRequestIPToTelegram(userIP, kode);
+          alert("🔒 Kode benar, tapi IP Anda belum didaftarkan.");
+
           crossIcon.style.display = "block";
-          purchaseLink.style.display = "block";
+          requestIPContainer.style.display = "block";
+          purchaseLink.style.display = "none";
+
           setTimeout(() => {
             crossIcon.style.display = "none";
           }, 3000);
         }
+      } else {
+        // ❌ Kode salah
+        crossIcon.style.display = "block";
+        purchaseLink.style.display = "inline-block";
+        requestIPContainer.style.display = "none";
 
-        closeBtn.disabled = false;
-      }, 2000);
-    });
+        setTimeout(() => {
+          crossIcon.style.display = "none";
+        }, 3000);
+      }
+
+      closeBtn.disabled = false;
+    }, 2000);
   });
+
+  // Tombol Request IP manual
+  requestIPBtn.addEventListener("click", async (e) => {
+    e.preventDefault();
+    const kode = accessCodeInput.value.trim().toUpperCase();
+
+    try {
+      const res = await fetch('https://api.ipify.org?format=json');
+      const data = await res.json();
+      const ip = data.ip;
+
+      await sendRequestIPToTelegram(ip, kode);
+      alert("✅ Permintaan IP Anda telah dikirim ke Admin.");
+      requestIPContainer.style.display = "none";
+    } catch (err) {
+      alert("❌ Gagal mengirim permintaan IP.");
+    }
+  });
+}); 
+
 
     function toggleSidebar() {
       document.getElementById("sidebar").classList.toggle("active");

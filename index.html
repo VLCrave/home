@@ -5,39 +5,43 @@
 <meta charset="utf-8"/>
 <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
 <title>VL - Personal Profile</title>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet"/>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+<link href="style.css" rel="stylesheet" />
 <div id="popup-overlay"></div>
 <div id="popup-greeting">
   <h2>Selamat Datang!</h2>
-  <p class="terms-box">Sebelum masuk ke dalam website <strong>silahkan masukkan Kode Akses</strong> yang berlaku.</p>
+  <p class="terms-box">
+    Sebelum masuk ke dalam website <strong>silahkan masukkan Kode Akses</strong> yang berlaku.
+  </p>
   <label class="check-label">
-    <input checked disabled type="checkbox"/>
+    <input type="checkbox" checked disabled />
     Silakan masukkan kode akses terlebih dahulu.
   </label>
-  <input id="access-code" placeholder="Masukkan kode akses..." type="password"/>
-  <br/>
+  <input id="access-code" placeholder="Masukkan kode akses..." type="password" />
+  <br />
   <button id="close-popup">Masuk</button>
-
   <div id="loading-spinner" style="display:none;">⏳</div>
-  <div class="result-icon success" id="checkmark" style="display:none;"><i class="fas fa-check-circle"></i></div>
-  <div class="result-icon error" id="crossmark" style="display:none;"><i class="fas fa-times-circle"></i></div>
-
-  <div id="purchase-link" style="display:none;">
-    <a href="https://lynk.id/vickysatrialindy/rr13vjv48rq9/checkout?token=cGFyYW1zPSU1QiU1RCZiaWRfcHJpY2U9MCZxdHlfcHJvZD0x" target="_blank">Beli Kode Akses</a>
+  <div class="result-icon success" id="checkmark" style="display:none;">
+    <i class="fas fa-check-circle"></i>
   </div>
+  <div class="result-icon error" id="crossmark" style="display:none;">
+    <i class="fas fa-times-circle"></i>
+  </div>
+  <div id="purchase-link" style="display:none;">
+  <a href="https://lynk.id/vickysatrialindy/rr13vjv48rq9/checkout?token=..." target="_blank" class="access-btn">Beli Kode Akses</a>
 </div>
 
-<link href="style.css" rel="stylesheet"/></head>
+<div id="request-ip-container" style="display:none;">
+  <a href="#" id="request-ip" class="access-btn">Request IP</a>
+</div>
+</div>
+</head>
 <body>
 <header>
-  <div class="logo-container">
-    <img src="5b76fe43-7074-491b-b352-6664b86eb08f.png" alt="VL Logo" class="circle-logo" />
-  </div>
-  <h1>VL Profile</h1>
+  <h1 class="logo">VL Profile</h1>
+  <button id="sidebarToggle" class="menu-toggle" onclick="toggleSidebar()">☰</button>
 </header>
-<button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
-</div>
-</header>
+
 <aside class="sidebar" id="sidebar">
 <h1>Menu</h1>
 <nav>
@@ -55,7 +59,7 @@
 </ul>
 </li>
 <li class="has-submenu">
-<a onclick="toggleSubmenu(this)"><i class="fas fa-gamepad"></i> Special MLBB ▾<span class="badge-exclusive">Exclusive</span></a>
+<a onclick="toggleSubmenu(this)"><i class="fas fa-gamepad"></i> Special▾<span class="badge-exclusive">Exclusive</span></a>
 <ul>
 <li><a onclick="loadContent('roomwangi')">Room Wangi</a></li>
 <li><a onclick="loadContent('roombot')">Room Bot Alltier</a></li>
