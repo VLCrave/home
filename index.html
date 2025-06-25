@@ -30,8 +30,11 @@
 <link href="style.css" rel="stylesheet"/></head>
 <body>
 <header>
-<h1>VL Profile</h1>
-<div>
+  <div class="logo-container">
+    <img src="5b76fe43-7074-491b-b352-6664b86eb08f.png" alt="VL Logo" class="circle-logo" />
+  </div>
+  <h1>VL Profile</h1>
+</header>
 <button class="menu-toggle" onclick="toggleSidebar()"><i class="fas fa-bars"></i></button>
 </div>
 </header>
@@ -41,8 +44,26 @@
 <ul>
 <li><a onclick="loadContent('dashboard')"><i class="fas fa-chart-line"></i> Dashboard</a></li>
 <li><a onclick="loadContent('cheatgame')"><i class="fas fa-gamepad"></i> Cheat Game</a></li>
+<li><a onclick="loadContent('promptchatgpt')"><i class="fas fa-book"></i> Prompt ChatGPT</a></li>
+<li><a onclick="loadContent('promptgeminiveo3')"><i class="fas fa-book"></i> Prompt Gemini VEO3</a></li>
 <li class="has-submenu">
-<a onclick="toggleSubmenu(this)"><i class="fas fa-book"></i> Edukasi ▾</a>
+<a onclick="toggleSubmenu(this)"><i class="fas fa-book"></i> Tips ▾</a>
+<ul>
+<li><a onclick="loadContent('veo3')">Gemini VEO3</a></li>
+<li><a onclick="loadContent('roombot')">Room Bot Alltier</a></li>
+<li><a onclick="loadContent('bugroomwangi')">Bug Room Wangi</a></li>
+</ul>
+</li>
+<li class="has-submenu">
+<a onclick="toggleSubmenu(this)"><i class="fas fa-gamepad"></i> Special MLBB ▾<span class="badge-exclusive">Exclusive</span></a>
+<ul>
+<li><a onclick="loadContent('roomwangi')">Room Wangi</a></li>
+<li><a onclick="loadContent('roombot')">Room Bot Alltier</a></li>
+<li><a onclick="loadContent('bugroomwangi')">Bug Room Wangi</a></li>
+</ul>
+</li>
+<li class="has-submenu">
+<a onclick="toggleSubmenu(this)"><i class="fas fa-book"></i> Edukasi ▾<span class="badge-exclusive">Exclusive</span></a>
 <ul>
 <li><a onclick="loadContent('affiliator')">3 Bulan Jadi Affiliator</a></li>
 <li><a onclick="loadContent('contentcreator')">6 Bulan Jadi Konten Kreator</a></li>
@@ -93,6 +114,7 @@
 </ul>
 <ul>
 <li><a onclick="loadContent('bantuan')"><i class="fas fa-envelope"></i> Bantuan</a></li>
+<li><a onclick="loadContent('danakaget')"><i class="fas fa-gift"></i> Dana Kaget</a></li>
 </ul>
 </nav>
 </aside>

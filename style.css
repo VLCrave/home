@@ -48,6 +48,20 @@ header {
   border-bottom: 2px solid #00ffff33;
   box-shadow: 0 0 10px #00ffff44;
 }
+.logo-container {
+  width: 60px;
+  height: 60px;
+  overflow: hidden;
+  border-radius: 50%;
+  border: 2px solid #00f0ff; /* opsional: outline neon */
+  box-shadow: 0 0 10px #00f0ff; /* efek glow neon */
+}
+
+.circle-logo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 
 .menu-toggle, .theme-toggle {
   font-size: 1.5rem;
@@ -140,6 +154,27 @@ nav ul li.open > ul {
   from { opacity: 0; transform: translateY(-10px); }
   to { opacity: 1; transform: translateY(0); }
 }
+
+.badge-exclusive {
+  background-color: #00f0ff;
+  color: #fff;
+  font-size: 10px;
+  padding: 2px 6px;
+  border-radius: 8px;
+  margin-left: 8px;
+  animation: pulse 1.5s infinite;
+  font-weight: bold;
+  text-transform: uppercase;
+  box-shadow: 0 0 5px #00f0ff, 0 0 10px #00f0ff;
+}
+
+/* Efek berdenyut untuk eksklusif */
+@keyframes pulse {
+  0% { box-shadow: 0 0 5px #00f0ff; }
+  50% { box-shadow: 0 0 15px #00f0ff; }
+  100% { box-shadow: 0 0 5px #00f0ff; }
+}
+
 
 main {
   flex: 1;
@@ -1429,6 +1464,13 @@ body.popup-active::before {
   border-radius: 12px;
 }
 
+.dl-btn[disabled] {
+  background-color: #777;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+
 .book-container {
   max-width: 700px;
   margin: 2rem auto;
@@ -1517,3 +1559,78 @@ body.popup-active::before {
   margin: 0 0 1rem 1rem;
   filter: drop-shadow(0 0 4px #00bfff);
 }
+
+.gift-container {
+  text-align: center;
+  padding: 2rem;
+}
+
+.gift-box {
+  width: 180px;
+  height: 180px;
+  margin: 1rem auto;
+  border: 4px solid #00f0ff;
+  border-radius: 20px;
+  padding: 1rem;
+  background-color: #001d2e;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.gift-img {
+  width: 100px;
+  height: 100px;
+}
+
+.result-box {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  padding: 1rem;
+  border: 2px solid #00f0ff;
+  background: #001828;
+  border-radius: 10px;
+  color: #fff;
+}
+
+.open-gift-btn {
+  margin-top: 1rem;
+  padding: 0.75rem 1.5rem;
+  background: #00f0ff;
+  color: #000;
+  border: none;
+  border-radius: 12px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.open-gift-btn:disabled {
+  background: #999;
+  cursor: not-allowed;
+}
+
+.shake {
+  animation: shakeBox 0.5s infinite;
+}
+
+@keyframes shakeBox {
+  0% { transform: rotate(0deg); }
+  25% { transform: rotate(3deg); }
+  50% { transform: rotate(-3deg); }
+  75% { transform: rotate(3deg); }
+  100% { transform: rotate(0deg); }
+}
+
+ .prompt-box {
+    background: #2c2c2c; /* Abu gelap */
+    color: #f5f5f5;       /* Teks terang */
+    border: 1px solid #444;
+    padding: 1rem;
+    font-family: monospace;
+    white-space: pre-wrap;
+    margin: 0.5rem 0 1rem 0;
+    border-radius: 8px;
+    max-height: 200px;
+    overflow-y: auto;
+    box-sizing: border-box;
+  }

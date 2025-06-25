@@ -135,13 +135,19 @@ const allowedIPs = ['125.167.48.16', '111.111.111.111']; // ← Ganti dengan IP 
         <tr><th><i class="fas fa-calendar-alt"></i> Tanggal</th><th><i class="fas fa-info-circle"></i> Deskripsi</th></tr>
       </thead>
       <tbody>
-        <tr><td>23-06-2025</td><td>Pembaruan sistem keamanan backend <span class="badge update">Update</span></td></tr>
-        <tr><td>22-06-2025</td><td>Penambahan fitur kalkulator HPP <span class="badge new">New</span></td></tr>
-        <tr><td>21-06-2025</td><td>Penghapusan fitur lama versi v1 <span class="badge delete">Delete</span></td></tr>
-        <tr><td>20-06-2025</td><td>Pemeliharaan server pukul 00:00 - 03:00 <span class="badge maintenance">Maintenance</span></td></tr>
+	<tr><td>25-06-2025</td><td>Penambahan Fitur <b>Room Bot Alltier</b> pada Menu <i class="fas fa-gamepad"></i>  Special MLBB  <span class="badge new">  NEW</span></td></tr>
+	<tr><td>25-06-2025</td><td>Penambahan Fitur <b>Room Wangi</b> pada Menu <i class="fas fa-gamepad"></i>  Special MLBB  <span class="badge new">  NEW</span></td></tr>
+	<tr><td>25-06-2025</td><td>Penambahan Fitur <b>Bug Room Wangi</b> pada Menu <i class="fas fa-gamepad"></i>  Special MLBB  <span class="badge new">  NEW</span></td></tr>
+	<tr><td>24-06-2025</td><td>Penambahan Menu <i class="fas fa-gift"></i> DANA KAGET Akan aktif setiap seminggu sekali.  <span class="badge new">  NEW</span></td></tr>
+	<tr><td>24-06-2025</td><td>Penambahan Fitur <b>Jualan Dalam 3 Menit</b> pada Menu <i class="fas fa-book"></i> Edukasi  <span class="badge new">  NEW</span></td></tr>
+	<tr><td>24-06-2025</td><td>Penambahan Fitur <b>Membangun Personal Branding</b> pada Menu <i class="fas fa-book"></i>  Edukasi  <span class="badge new">  NEW</span></td></tr>
+	<tr><td>24-06-2025</td><td>Penambahan Fitur <b>6 Bulan Jadi Konten Kreator</b> pada Menu <i class="fas fa-book"></i>  Edukasi  <span class="badge new">  NEW</span></td></tr>
+	<tr><td>24-06-2025</td><td>Penambahan Fitur <b>3 Bulan Jadi Affiliator</b> pada Menu <i class="fas fa-book"></i>  Edukasi  <span class="badge new">  NEW</span></td></tr>
       </tbody>
     </table>
   </section>`;
+main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
 
   // Fungsi-fungsi untuk last visit dan last update
   function updateLastVisit() {
@@ -204,6 +210,8 @@ const allowedIPs = ['125.167.48.16', '111.111.111.111']; // ← Ganti dengan IP 
               <p id="result"></p>
             </section>
           </section>`;
+main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
       }
 	
 	if (page === 'submenu2') {
@@ -223,6 +231,8 @@ const allowedIPs = ['125.167.48.16', '111.111.111.111']; // ← Ganti dengan IP 
         <p id="bmiResult"></p>
       </section>
     </section>`;
+main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
       }
 
 	if (page === 'submenu3') {
@@ -270,6 +280,8 @@ const allowedIPs = ['125.167.48.16', '111.111.111.111']; // ← Ganti dengan IP 
 
     </section>
   </section>`;
+main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
 }
 
 if (page === 'appspremium') {
@@ -339,6 +351,8 @@ if (page === 'appspremium') {
       </table>
     </section>
   </section>`;
+main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
 }
 
 if (page === 'appsoriginal') {
@@ -443,6 +457,8 @@ if (page === 'appsoriginal') {
       </table>
     </section>
   </section>`;
+main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
 }
 
 
@@ -546,6 +562,8 @@ if (page === 'promosiapk') {
       </table>
     </section>
   </section>`;
+main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
 }
 
 if (page === 'promosigame') {
@@ -615,6 +633,8 @@ if (page === 'promosigame') {
       </table>
     </section>
   </section>`;
+main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
 }
 
 if (page === 'promosiJasa') {
@@ -716,6 +736,8 @@ if (page === 'promosiJasa') {
       </table>
     </section>
   </section>`;
+main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
 }
 
 if (page === 'bantuan') {
@@ -750,6 +772,8 @@ if (page === 'bantuan') {
   </form>
 </section>
   </section>`;
+main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
 }
 
 if (page === 'qrgenerator') {
@@ -769,6 +793,8 @@ if (page === 'qrgenerator') {
   </section>
     </section>
   `;
+main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
 }
 
 if (page === 'templatecanva') {
@@ -991,7 +1017,7 @@ if (page === 'templatecanva') {
             const no = item[0];
             const category = item[1];
             const name = item[2];
-            const url = `https://www.canva.com/templates/?query=${encodeURIComponent(category)}`;
+            const url = `https://www.canva.com/templates/?query=${encodeURIComponent(name)}`;
             return `
             <tr>
               <td>${no}</td>
@@ -1011,6 +1037,8 @@ if (page === 'templatecanva') {
       </table>
     </section>
   </section>`;
+main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
 }
 
 if (page === 'appsmod') { 
@@ -1125,6 +1153,8 @@ if (page === 'appsmod') {
       </table>
     </section>
   </section>`;
+main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
 }
 
 if (page === 'cekmbti') {
@@ -1146,6 +1176,8 @@ if (page === 'cekmbti') {
       </div>
     </section>
   `;
+main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
 }
 
 if (page === 'nontonfilm') {
@@ -1171,6 +1203,8 @@ if (page === 'nontonfilm') {
       </div>
       <div id="filmResult" class="film-result"></div>
     </section>`;
+main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
 }
 
 if (page === 'gombal') {
@@ -1192,6 +1226,8 @@ if (page === 'gombal') {
       <button id="copyBtn" onclick="copyQuote()" style="display:none;">📋 Copy Gombalan</button>
     </section>
   `;
+main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
 }
 
 if (page === 'ytnonton') {
@@ -1209,6 +1245,8 @@ if (page === 'ytnonton') {
       <div id="ytIframeContainer" class="yt-iframe"></div>
     </section>
   `;
+main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
 }
 
 if (page === 'cheatgame') {
@@ -1221,6 +1259,8 @@ if (page === 'cheatgame') {
       </div>
     </section>
   `;
+main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
 }
 
 if (page === 'affiliator') {
@@ -1328,12 +1368,16 @@ if (page === 'affiliator') {
       </div>
       <div class="book-footer">
         <button id="prevBtn" class="nav-btn" disabled>⬅️ Kembali</button>
-        <span id="pageNumber" class="page-number">Halaman 1 / 14</span>
+        <span id="pageNumber" class="page-number">1 / 14</span>
         <button id="nextBtn" class="nav-btn">Lanjut ➡️</button>
       </div>
     </section>
   `;
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+  initBook(); // ⬅️ INI WAJIB DIPANGGIL SETELAH KONTEN DIMUAT
 }
+
 
 if (page === 'contentcreator') {
   content = `
@@ -1423,12 +1467,16 @@ if (page === 'contentcreator') {
 
       <div class="book-footer">
         <button id="prevBtn" class="nav-btn" disabled>⬅️ Kembali</button>
-        <span id="pageNumber" class="page-number">Halaman 1 / 11</span>
+        <span id="pageNumber" class="page-number">1 / 11</span>
         <button id="nextBtn" class="nav-btn">Lanjut ➡️</button>
       </div>
     </section>
   `;
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+  initBook(); // ⬅️ INI WAJIB DIPANGGIL SETELAH KONTEN DIMUAT
 }
+
 
 if (page === 'personalbranding') {
   content = `
@@ -1518,12 +1566,16 @@ if (page === 'personalbranding') {
       </div>
       <div class="book-footer">
         <button id="prevBtn" class="nav-btn" disabled>⬅️ Kembali</button>
-        <span id="pageNumber" class="page-number">Halaman 1 / 11</span>
+        <span id="pageNumber" class="page-number">1 / 11</span>
         <button id="nextBtn" class="nav-btn">Lanjut ➡️</button>
       </div>
     </section>
   `;
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+  initBook(); // ⬅️ INI WAJIB DIPANGGIL SETELAH KONTEN DIMUAT
 }
+
 
 if (page === 'jualcepat') {
   content = `
@@ -1608,19 +1660,3104 @@ if (page === 'jualcepat') {
       </div>
       <div class="book-footer">
         <button id="prevBtn" class="nav-btn" disabled>⬅️ Kembali</button>
-        <span id="pageNumber" class="page-number">Halaman 1 / 9</span>
+        <span id="pageNumber" class="page-number">1 / 9</span>
         <button id="nextBtn" class="nav-btn">Lanjut ➡️</button>
       </div>
     </section>
 `;
-}
-
-
-// PISAHIN
 
   main.innerHTML = content;
   document.getElementById("sidebar").classList.remove("active");
-  initBook();
+  initBook(); // ⬅️ INI WAJIB DIPANGGIL SETELAH KONTEN DIMUAT
+}
+
+if (page === 'roomwangi') {
+  content = `
+    <section class="book-container">
+      <div class="book-content" id="bookContent">
+
+        <!-- PAGE 1 -->
+        <div class="page active" data-page="1">
+          <h2>🔧 Langkah 1: Download Aplikasi OpenVPN</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/888/888879.png" alt="Download OpenVPN" class="page-img" />
+          <p>Unduh aplikasi <strong>OpenVPN for Android</strong> melalui Google Play Store. Aplikasi ini digunakan untuk membuat koneksi VPN agar bisa mempengaruhi algoritma matchmaking Mobile Legends.</p>
+        </div>
+
+        <!-- PAGE 2 -->
+        <div class="page" data-page="2">
+          <h2>🔧 Langkah 2: Buat Config File</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/2838/2838912.png" alt="Buat Config" class="page-img" />
+          <p>Buka situs <a href="https://www.vpnjantit.com/free-openvpn" target="_blank">freeopenvpnserver</a> dari browser kamu. Pilih server seperti <strong>Philippines</strong> yang sering digunakan untuk Room Wangi.</p>
+          <p>Klik tombol <em>“create username open VPN”</em>, masukkan username dan password. Setelah itu klik kembali tombol tersebut untuk membuat akun VPN.</p>
+        </div>
+
+        <!-- PAGE 3 -->
+        <div class="page" data-page="3">
+          <h2>🔧 Langkah 3: Unduh dan Import Config</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/633/633611.png" alt="Import ke OpenVPN" class="page-img" />
+          <p>Setelah akun berhasil dibuat, klik “<strong>Download Config V2UDP 2500 OpenVPN</strong>”. File akan disimpan di folder Downloads.</p>
+          <p>Buka aplikasi OpenVPN & klik tombol plus (+) oranye, pilih <strong>Browse</strong>, lalu cari file yang sudah diunduh dan klik "OK". Setelah itu tekan <strong>Connect</strong>.</p>
+        </div>
+
+        <!-- PAGE 4 -->
+        <div class="page" data-page="4">
+          <h2>🔧 Langkah 4: Gunakan Room Wangi di ML</h2>
+	<img src="https://cdn-icons-png.flaticon.com/512/2769/2769339.png" alt="Matchmaking Mobile Legends" class="page-img" />
+          <p>Buka aplikasi <strong>Mobile Legends</strong>. Masuk ke mode <strong>Brawl</strong> terlebih dahulu, lalu ubah ke mode <strong>Rank</strong>.</p>
+          <p>Putuskan koneksi OpenVPN (Disconnect), lalu tunggu beberapa detik hingga ping stabil di lobby game.</p>
+        </div>
+
+        <!-- PAGE 5 -->
+        <div class="page" data-page="5">
+          <h2>🔧 Langkah 5: Konfirmasi Room Wangi Aktif</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/2210/2210151.png" alt="Ping Tinggi" class="page-img" />
+          <p>Jika setelah disconnect, ping berubah-ubah lalu menjadi stabil (biasanya kuning atau merah awalnya), maka Room Wangi telah aktif. Ini akan meningkatkan peluangmu bertemu lawan yang lebih mudah.</p>
+          <p>Kamu sekarang siap bermain Ranked dengan kondisi matchmaking yang lebih menguntungkan.</p>
+        </div>
+      </div>
+      <div class="book-footer">
+        <button id="prevBtn" class="nav-btn" disabled>⬅️ Kembali</button>
+        <span id="pageNumber" class="page-number">1 / 5</span>
+        <button id="nextBtn" class="nav-btn">Lanjut ➡️</button>
+      </div>
+    </section>
+  `;
+
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+  initBook(); // Penting: jalankan setelah konten dimuat
+}
+
+if (page === 'roombot') {
+  content = `
+    <section class="book-container">
+      <div class="book-content" id="bookContent">
+
+        <div class="page active" data-page="1">
+          <h2>Pengenalan Room Bot Mobile Legends</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/2618/2618579.png" alt="Room Bot" class="page-img" />
+          <p>Room Bot adalah strategi untuk bermain melawan lawan yang dikendalikan oleh AI (bot), bukan pemain asli. Ini dimanfaatkan untuk menyelesaikan misi, push rank, atau farming dengan mudah. Salah satu caranya adalah menggunakan akun Returning Player sebagai host.</p>
+        </div>
+
+        <div class="page" data-page="2">
+          <h2>Langkah 1: Gunakan Akun Tidak Aktif</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/897/897188.png" alt="Akun Lama" class="page-img" />
+          <p>Gunakan akun yang sudah tidak login selama minimal 15 hari. Setelah tidak aktif cukup lama, event <strong>"Returning Player"</strong> akan muncul, dan akun ini bisa memancing munculnya musuh bot saat membuat room.</p>
+        </div>
+
+        <div class="page" data-page="3">
+          <h2>Langkah 2: Mainkan 2–3 Ranked Sebelum Dianggurkan</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/7331/7331332.png" alt="Ranked" class="page-img" />
+          <p>Sebelum akun dianggurkan, mainkan terlebih dahulu 2–3 pertandingan ranked. Ini membantu sistem mencatat aktivitas akun. Setelah itu, biarkan tidak aktif selama 15 hari atau lebih.</p>
+        </div>
+
+        <div class="page" data-page="4">
+          <h2>Langkah 3: Gunakan Akun Tier Rendah</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/190/190411.png" alt="Tier Rendah" class="page-img" />
+          <p>Akun dengan tier <strong>Warrior</strong> atau <strong>Elite</strong> lebih sering memunculkan lawan bot. Bot biasanya memakai hero seperti <em>Estes, Zilong, Alucard, Vexana, dan Lesley</em> serta tidak memiliki strategi tim yang baik.</p>
+        </div>
+
+        <div class="page" data-page="5">
+          <h2>Langkah 4: Hindari Akun Tier Tinggi</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/4240/4240472.png" alt="Tier Tinggi" class="page-img" />
+          <p>Jangan gunakan akun dengan tier <strong>Epic</strong>, <strong>Legend</strong>, atau di atasnya sebagai host. Ini akan meningkatkan kemungkinan kamu bertemu lawan asli, bukan bot.</p>
+        </div>
+
+        <div class="page" data-page="6">
+          <h2>Langkah 5: Delay Start Room Sekitar 20 Detik</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/8578/8578439.png" alt="Delay Start" class="page-img" />
+          <p>Setelah membuat room, tunggu sekitar 20 detik sebelum menekan tombol "Start". Ini memberi sinyal sistem untuk mengisi lawan dengan bot, bukan pemain sungguhan.</p>
+        </div>
+
+        <div class="page" data-page="7">
+          <h2>Langkah 6: Kenali Ciri Musuh Bot</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/1580/1580179.png" alt="Bot Ciri" class="page-img" />
+          <p>Lawan bot biasanya memilih hero sembarangan, tidak menggunakan skin, emblemnya acak, dan gaya mainnya aneh. Kamu bisa mengetahuinya saat loading screen atau awal permainan.</p>
+        </div>
+
+        <div class="page" data-page="8">
+          <h2>Langkah 7: Hindari Server 5K</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" alt="Server" class="page-img" />
+          <p>Beberapa server seperti <strong>5K (server Amerika)</strong> sering tidak memunculkan bot. Gunakan server lain seperti <strong>1K</strong>, <strong>2K</strong>, atau <strong>3K</strong> untuk hasil terbaik.</p>
+        </div>
+
+        <div class="page" data-page="9">
+          <h2>Langkah 8: Batas dan Reset Pertandingan Bot</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/1828/1828677.png" alt="Batas Harian" class="page-img" />
+          <p>Satu akun hanya bisa mendapatkan maksimal <strong>5 pertandingan bot</strong> per hari. Namun, dengan trik tertentu, kamu bisa mendapatkan hingga <strong>10 pertandingan</strong> sehari.</p>
+        </div>
+
+        <div class="page" data-page="10">
+          <h2>Langkah 9: Reset Mingguan</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/2921/2921222.png" alt="Reset" class="page-img" />
+          <p>Reset mingguan terjadi setiap <strong>Senin pukul 15:00 WIB</strong>. Setelah itu, kamu bisa menggunakan kembali akun yang sudah mencapai batas sebelumnya.</p>
+        </div>
+
+        <div class="page" data-page="11">
+          <h2>Langkah 10: Gunakan Ulang Akun Bot</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/2910/2910791.png" alt="Reuse" class="page-img" />
+          <p>Akun host bot bisa digunakan berulang kali. Cukup tunggu 7 hari dan pastikan event Returning Player masih aktif, maka kamu bisa menggunakannya kembali untuk membuat room bot.</p>
+        </div>
+
+        <div class="page" data-page="12">
+          <h2>Langkah 11: Atasi Batasan dengan Server 1K</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/1008/1008140.png" alt="Bypass Server" class="page-img" />
+          <p>Jika kamu sudah mencapai batas match bot, gunakan akun dari <strong>server 1K</strong> sebagai pembuat room (pinger). Server ini juga punya kelebihan lain seperti biaya WDP yang lebih murah dan bisa membantu bypass batas sistem matchmaking.</p>
+        </div>
+
+      </div>
+      <div class="book-footer">
+        <button id="prevBtn" class="nav-btn" disabled>⬅️ Kembali</button>
+        <span id="pageNumber" class="page-number">1 / 12</span>
+        <button id="nextBtn" class="nav-btn">Lanjut ➡️</button>
+      </div>
+    </section>
+  `;
+
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+  initBook(); // Penting: jalankan setelah konten dimuat
+}
+
+if (page === 'bugroomwangi') {
+  content = `
+    <section class="book-container">
+      <div class="book-content" id="bookContent">
+
+        <div class="page active" data-page="1">
+          <h2>Pengenalan Bug Room Wangi</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/5957/5957294.png" alt="Room Bug" class="page-img" />
+          <p>Bug Room Wangi adalah trik untuk membuat sistem matchmaking Mobile Legends memunculkan musuh bot di mode Ranked. Dengan mengatur langkah-langkah khusus, kita bisa mengelabui sistem untuk mendapatkan musuh yang lebih mudah.</p>
+        </div>
+
+        <div class="page" data-page="2">
+          <h2>Langkah 1: Tanpa VPN Aktif</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/10065/10065185.png" alt="No VPN" class="page-img" />
+          <p>Mulai proses ini tanpa mengaktifkan VPN apapun. Tujuannya adalah menciptakan pola matchmaking alami sebelum sistem “dijebak”.</p>
+        </div>
+
+        <div class="page" data-page="3">
+          <h2>Langkah 2: Masuk ke Mode Brawl</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/7075/7075824.png" alt="Brawl Mode" class="page-img" />
+          <p>Pilih mode <strong>Brawl</strong> di MLBB. Undang teman-teman untuk membuat party 5 orang. Jika waktu matchmaking lama (misalnya 3 menit), berarti bug mulai bekerja.</p>
+        </div>
+
+        <div class="page" data-page="4">
+          <h2>Langkah 3: Mainkan 2 Match Brawl</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/10280/10280460.png" alt="Match Brawl" class="page-img" />
+          <p>Biarkan musuh menang dengan cepat. Tim kamu cukup tetap di base dan gunakan skill seperti Flame Shot ke arah musuh agar terdeteksi aktif. Catat durasi setiap pertandingan, karena penting untuk langkah selanjutnya.</p>
+        </div>
+
+        <div class="page" data-page="5">
+          <h2>Langkah 4: Hubungkan ke VPN Pancingan</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/897/897221.png" alt="VPN Pancingan" class="page-img" />
+          <p>Hubungkan ke VPN Pancingan melalui OpenVPN:</p>
+          <a href="https://www.vpnjantit.com/download-openvpn.php?server=in10" target="_blank" style="color:deepskyblue;">🔗 Unduh Config VPN Pancingan (in10)</a>
+          <p>Buka MLBB hingga muncul notifikasi sistem, lalu kamu akan otomatis logout dari game.</p>
+        </div>
+
+        <div class="page" data-page="6">
+          <h2>Langkah 5: Ganti ke VPN RW</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/897/897222.png" alt="VPN RW" class="page-img" />
+          <p>Setelah keluar dari game, putuskan koneksi VPN Pancingan lalu sambungkan ke VPN RW:</p>
+          <a href="https://www.vpnjantit.com/download-openvpn.php?server=indo4" target="_blank" style="color:limegreen;">🔗 Unduh Config VPN RW (indo4)</a>
+          <p>Kemudian buka kembali MLBB seperti biasa.</p>
+        </div>
+
+        <div class="page" data-page="7">
+          <h2>Langkah 6: Pindah Mode Brawl ke Ranked</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/4265/4265623.png" alt="Pindah Mode" class="page-img" />
+          <p>Setelah masuk MLBB, jangan langsung ke mode Ranked! Pertama-tama buka dulu mode <strong>Brawl</strong>, lalu langsung pindah ke mode <strong>Ranked</strong> tanpa keluar ke lobby utama.</p>
+        </div>
+
+        <div class="page" data-page="8">
+          <h2>Langkah 7: Mulai Match Ranked</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/4467/4467414.png" alt="Ranked Start" class="page-img" />
+          <p>Undang teman ke dalam party jika perlu, lalu mulai pertandingan Ranked. Jika bug berhasil, waktu matchmaking akan singkat dan durasi match akan menyerupai durasi Brawl sebelumnya.</p>
+        </div>
+
+        <div class="page" data-page="9">
+          <h2>Langkah Tambahan: Tes Jaringan</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/3215/3215426.png" alt="Tes Jaringan" class="page-img" />
+          <p>Buka pengaturan jaringan di MLBB dan klik tes jaringan. Meskipun gagal karena VPN aktif, langkah ini kadang membantu memperkuat bug matchmaking.</p>
+        </div>
+
+        <div class="page" data-page="10">
+          <h2>Hasil Akhir</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/6099/6099835.png" alt="Hasil Room Wangi" class="page-img" />
+          <p>Jika berhasil, kamu akan bertemu dengan musuh bot di Ranked. Cocok digunakan untuk push rank atau menyelesaikan misi harian dengan mudah.</p>
+        </div>
+
+      </div>
+      <div class="book-footer">
+        <button id="prevBtn" class="nav-btn" disabled>⬅️ Kembali</button>
+        <span id="pageNumber" class="page-number">1 / 10</span>
+        <button id="nextBtn" class="nav-btn">Lanjut ➡️</button>
+      </div>
+    </section>
+  `;
+
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+  initBook(); // Jalankan sistem buku
+}
+
+if (page === 'veo3') {
+  content = `
+    <section class="book-container">
+      <div class="book-content" id="bookContent">
+
+        <div class="page active" data-page="1">
+          <h2>Pengenalan Google Veo 3</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/11536/11536059.png" alt="Veo 3" class="page-img" />
+          <p>Google Veo 3 adalah teknologi AI terbaru dari Google yang memungkinkan pengguna membuat video animasi hanya dengan mengetikkan prompt (perintah teks). Fitur ini bisa diakses lewat <strong>Gemini Pro</strong> dengan bantuan VPN.</p>
+        </div>
+
+        <div class="page" data-page="2">
+          <h2>Langkah 1: Buka Chrome & Login ke Gemini</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/3050/3050247.png" alt="Gemini Pro" class="page-img" />
+          <p>Buka Google Chrome dan masuk ke situs <a href="https://gemini.google.com/" target="_blank" style="color:deepskyblue;">Gemini Google</a>. Pastikan kamu sudah login dengan akun Google aktif untuk bisa mengakses semua fitur AI dari Google.</p>
+        </div>
+
+        <div class="page" data-page="3">
+          <h2>Langkah 2: Instal VPN Browser</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/4152/4152530.png" alt="VPN" class="page-img" />
+          <p>Ketik "Browsec VPN Chrome" di Google, lalu tambahkan ekstensi tersebut ke browser Chrome kamu. VPN ini diperlukan karena fitur Veo 3 hanya bisa diakses dari wilayah Amerika Serikat.</p>
+        </div>
+
+        <div class="page" data-page="4">
+          <h2>Langkah 3: Aktifkan VPN ke Server Amerika</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/3944/3944519.png" alt="US VPN" class="page-img" />
+          <p>Klik ikon Browsec di pojok kanan atas browser → Pilih lokasi <strong>United States</strong> → Klik "ON". Sekarang kamu dianggap berasal dari wilayah AS oleh sistem Google.</p>
+        </div>
+
+        <div class="page" data-page="5">
+          <h2>Langkah 4: Refresh Halaman Gemini</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/190/190406.png" alt="Refresh" class="page-img" />
+          <p>Setelah VPN aktif, kembali ke halaman <strong>Gemini</strong> dan tekan tombol refresh. Jika berhasil, fitur <strong>Veo 3</strong> akan muncul dan kamu bisa mulai membuat video AI.</p>
+        </div>
+
+        <div class="page" data-page="6">
+          <h2>Langkah 5: Mulai Buat Video AI</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/6822/6822107.png" alt="Video AI" class="page-img" />
+          <p>Ketik prompt (perintah teks) untuk menggambarkan isi video yang kamu inginkan. Kamu juga bisa menambahkan opsi seperti:</p>
+          <ul>
+            <li>🎤 Narasi (text-to-speech)</li>
+            <li>🎵 Musik latar</li>
+            <li>🗣️ Sinkronisasi bibir (lip-sync) untuk karakter AI</li>
+          </ul>
+          <p>Veo akan otomatis menambahkan musik jika narasi tidak digunakan.</p>
+        </div>
+
+         <div class="page" data-page="7">
+          <h2>Contoh Prompt 1: Edukasi</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/7023/7023451.png" alt="Edukasi" class="page-img" />
+          <p><strong>Prompt:</strong></p>
+          <pre id="prompt1" class="prompt-box">Buat video animasi berdurasi 30 detik tentang pentingnya menjaga kesehatan mental remaja. Gunakan gaya visual seperti kartun sekolah, karakter pelajar, dan narasi suara perempuan yang tenang.</pre>
+          <button onclick="salinPrompt('prompt1')" class="copy-btn">📋 Salin Prompt</button>
+        </div>
+
+        <div class="page" data-page="8">
+          <h2>Contoh Prompt 2: Promosi Produk</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/11479/11479017.png" alt="Promosi" class="page-img" />
+          <p><strong>Prompt:</strong></p>
+          <pre id="prompt2" class="prompt-box">Buat video iklan animasi selama 45 detik untuk produk kopi dingin ‘Chill Brew’. Gunakan animasi kafe modern, gaya visual minimalis, musik jazz lembut, dan narasi maskulin yang hangat.</pre>
+          <button onclick="salinPrompt('prompt2')" class="copy-btn">📋 Salin Prompt</button>
+        </div>
+
+        <div class="page" data-page="9">
+          <h2>Contoh Prompt 3: Cerita Pendek</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/9010/9010185.png" alt="Cerita" class="page-img" />
+          <p><strong>Prompt:</strong></p>
+          <pre id="prompt3" class="prompt-box">Buat video animasi cerita pendek tentang seekor rubah kecil yang tersesat di hutan ajaib. Gunakan suasana visual fantasi, efek suara alam, dan narasi anak-anak ceria selama 1 menit.</pre>
+          <button onclick="salinPrompt('prompt3')" class="copy-btn">📋 Salin Prompt</button>
+        </div>
+
+        <div class="page" data-page="10">
+          <h2>Penutup: Tips Tambahan</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/3534/3534033.png" alt="Tips" class="page-img" />
+          <p>Gunakan prompt yang jelas dan visual detail. Semakin spesifik perintah kamu, semakin bagus hasil video yang dihasilkan. Jangan lupa eksplorasi efek, musik, dan karakter unik!</p>
+        </div>
+
+      </div>
+      <div class="book-footer">
+        <button id="prevBtn" class="nav-btn" disabled>⬅️ Kembali</button>
+        <span id="pageNumber" class="page-number">1 / 10</span>
+        <button id="nextBtn" class="nav-btn">Lanjut ➡️</button>
+      </div>
+    </section>
+  `;
+
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+  initBook(); // Inisialisasi sistem buku
+}
+if (page === 'promptchatgpt') { 
+  content = `<section style="padding: 2rem;">
+    <h2 style="font-size: 2rem; color: var(--text-color);">📚 Kumpulan Prompt ChatGPT Terbaik</h2>
+    <section style="padding: 2rem; overflow-x: auto;">
+      <h3>🔥 600+ Prompt ChatGPT Siap Pakai</h3>
+      <table class="announcement-table" style="min-width: 1000px;">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Kategori</th> 
+            <th>Deskripsi</th>
+            <th>Salin</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${[
+            { kategori: "Konten Sosial Media", deskripsi: "Buatkan caption IG yang bikin orang auto share tentang [tema kamu]" },
+{ kategori: "Konten Sosial Media", deskripsi: "Tuliskan ide konten harian untuk TikTok bertema [niche kamu]" },
+{ kategori: "Konten Sosial Media", deskripsi: "Bikin thread X (Twitter) dengan gaya storytelling tentang [kisah inspiratif / fakta unik]" },
+{ kategori: "Konten Sosial Media", deskripsi: "Tuliskan skrip video YouTube Shorts tentang [topik menarik]" },
+{ kategori: "Konten Sosial Media", deskripsi: "Buatkan konten lucu + relate tentang kehidupan sehari-hari gen Z" },
+{ kategori: "Konten Sosial Media", deskripsi: "Buatkan konten 'unpopular opinion' tentang [topik niche]" },
+{ kategori: "Konten Sosial Media", deskripsi: "Tulis pertanyaan kontroversial tapi santai seputar [tema] untuk engagement tinggi" },
+{ kategori: "Konten Sosial Media", deskripsi: "Tulis ulang konten viral ini dengan gayaku sendiri: [paste konten]" },
+{ kategori: "Konten Sosial Media", deskripsi: "Buat skrip video 60 detik dengan hook di 3 detik pertama" },
+{ kategori: "Konten Sosial Media", deskripsi: "Simulasikan konten podcast 2 orang ngobrol santai tentang [tema]" },
+{ kategori: "Bisnis & Marketing", deskripsi: "Buatkan copywriting jualan produk [nama produk] agar pembaca langsung tergoda beli" },
+{ kategori: "Bisnis & Marketing", deskripsi: "Tulis iklan Facebook Ads yang efektif untuk produk [nama produk]" },
+{ kategori: "Bisnis & Marketing", deskripsi: "Tulis teks broadcast WhatsApp jualan yang tidak terasa seperti jualan" },
+{ kategori: "Bisnis & Marketing", deskripsi: "Buatkan 5 versi tagline bisnis saya: [deskripsi bisnis]" },
+{ kategori: "Bisnis & Marketing", deskripsi: "Tulis pitch singkat 30 detik seolah saya presentasi ke investor" },
+{ kategori: "Bisnis & Marketing", deskripsi: "Simulasikan obrolan customer nanya produk dan saya jawab meyakinkan" },
+{ kategori: "Bisnis & Marketing", deskripsi: "Buat postingan soft selling tentang [produk/jasa] dengan gaya bercerita" },
+{ kategori: "Bisnis & Marketing", deskripsi: "Buat strategi promosi produk digital saya di Instagram selama 7 hari" },
+{ kategori: "Bisnis & Marketing", deskripsi: "Tulis script closing penjualan dalam 5 detik terakhir video TikTok" },
+{ kategori: "Bisnis & Marketing", deskripsi: "Tulis email marketing singkat tapi powerful untuk penawaran terbatas" },
+{ kategori: "Produktivitas & Self-Help", deskripsi: "Bantu aku menyusun jadwal harian yang produktif mulai jam [xx]" },
+{ kategori: "Produktivitas & Self-Help", deskripsi: "Berikan metode sederhana untuk menghindari prokrastinasi" },
+{ kategori: "Produktivitas & Self-Help", deskripsi: "Tulis afirmasi harian untuk orang yang sedang berjuang" },
+{ kategori: "Produktivitas & Self-Help", deskripsi: "Buat jurnal malam untuk refleksi diri hari ini" },
+{ kategori: "Produktivitas & Self-Help", deskripsi: "Tulis morning routine versi orang sukses + versi realistis" },
+{ kategori: "Produktivitas & Self-Help", deskripsi: "Simulasikan pembicaraan antara saya dan versi ideal diriku di masa depan" },
+{ kategori: "Produktivitas & Self-Help", deskripsi: "Buat template to-do list berdasarkan prioritas penting vs mendesak" },
+{ kategori: "Produktivitas & Self-Help", deskripsi: "Bantu buat skrip self-talk positif saat merasa gagal" },
+{ kategori: "Produktivitas & Self-Help", deskripsi: "Rancang habit tracker mingguan dalam bentuk tabel" },
+{ kategori: "Produktivitas & Self-Help", deskripsi: "Berikan tantangan pengembangan diri selama 30 hari" },
+{ kategori: "Edukasi", deskripsi: "Jelaskan topik [misal: ekonomi digital] dalam gaya ngobrol ala teman" },
+{ kategori: "Edukasi", deskripsi: "Buat thread edukatif Twitter tentang [topik rumit] tapi dikemas ringan" },
+{ kategori: "Edukasi", deskripsi: "Bikin kuis cepat 5 soal seputar [topik]" },
+{ kategori: "Edukasi", deskripsi: "Tulis fakta menarik tentang sejarah [negara/produk/hal]" },
+{ kategori: "Edukasi", deskripsi: "Ubah topik pelajaran [nama pelajaran] menjadi cerita pendek" },
+{ kategori: "Edukasi", deskripsi: "Jelaskan konsep [X] pakai analogi sehari-hari yang lucu" },
+{ kategori: "Edukasi", deskripsi: "Berikan cheat sheet ringkas seputar [topik]" },
+{ kategori: "Edukasi", deskripsi: "Buat infografis dalam bentuk teks untuk tema [X]" },
+{ kategori: "Edukasi", deskripsi: "Tulis contoh soal + pembahasan singkat tentang [materi X]" },
+{ kategori: "Edukasi", deskripsi: "Jelaskan materi seperti guru TikTok yang santai tapi ngena" },
+{ kategori: "Kreatif & Hiburan", deskripsi: "Buat cerita pendek thriller dengan twist mengejutkan" },
+{ kategori: "Kreatif & Hiburan", deskripsi: "Tuliskan puisi tentang jatuh cinta di zaman digital" },
+{ kategori: "Kreatif & Hiburan", deskripsi: "Simulasikan obrolan antara karakter anime dengan tokoh sejarah" },
+{ kategori: "Kreatif & Hiburan", deskripsi: "Tulis plot film horor 2 menit yang bisa viral di YouTube" },
+{ kategori: "Kreatif & Hiburan", deskripsi: "Tulis naskah drama 2 orang yang saling curhat di tengah malam" },
+{ kategori: "Kreatif & Hiburan", deskripsi: "Buat jokes receh tapi cerdas seputar [tema]" },
+{ kategori: "Kreatif & Hiburan", deskripsi: "Ciptakan karakter fiksi lengkap dengan latar belakang dan sifatnya" },
+{ kategori: "Kreatif & Hiburan", deskripsi: "Tulis lirik lagu cinta galau dengan gaya indie" },
+{ kategori: "Kreatif & Hiburan", deskripsi: "Tulis ide komik strip 3 panel yang relate dengan kehidupan kantor" },
+{ kategori: "Kreatif & Hiburan", deskripsi: "Jadikan fakta ilmiah ini sebagai cerita fiksi: [fakta]" },
+{ kategori: "Keuangan Pribadi", deskripsi: "Bantu hitung target omzet agar bisa dapat Rp10 juta/bulan dari [produk/jasa]" },
+{ kategori: "Keuangan Pribadi", deskripsi: "Buat strategi jualan modal Rp200 ribu sampai balik modal" },
+{ kategori: "Keuangan Pribadi", deskripsi: "Tulis cara memulai bisnis digital tanpa modal, cocok untuk pemula" },
+{ kategori: "Keuangan Pribadi", deskripsi: "Buat daftar pengeluaran harian dan filter pengeluaran tidak penting" },
+{ kategori: "Keuangan Pribadi", deskripsi: "Simulasikan saya jadi freelancer yang ingin mulai dari 0" },
+{ kategori: "Keuangan Pribadi", deskripsi: "Jelaskan perbedaan antara aset dan liabilitas pakai contoh sehari-hari" },
+{ kategori: "Keuangan Pribadi", deskripsi: "Tulis rencana 1 tahun untuk mencapai kebebasan finansial" },
+{ kategori: "Keuangan Pribadi", deskripsi: "Bantu saya membangun brand personal sebagai content creator" },
+{ kategori: "Keuangan Pribadi", deskripsi: "Jelaskan cara kerja affiliate marketing untuk pemula" },
+{ kategori: "Keuangan Pribadi", deskripsi: "Tulis strategi mengelola uang bulanan bagi yang baru mulai kerja" },
+{ kategori: "Strategi Bisnis", deskripsi: "Berikan 10 ide produk digital kekinian yang bisa dijual tanpa stok" },
+{ kategori: "Strategi Bisnis", deskripsi: "Tulis analisis SWOT bisnis [bisnis kamu]" },
+{ kategori: "Strategi Bisnis", deskripsi: "Buat 3 persona pelanggan ideal untuk produk [nama produk]" },
+{ kategori: "Strategi Bisnis", deskripsi: "Simulasikan ide bisnis saya seandainya dijalankan full online" },
+{ kategori: "Strategi Bisnis", deskripsi: "Tulis roadmap bisnis dari nol sampai omset 100 juta" },
+{ kategori: "Strategi Bisnis", deskripsi: "Buat strategi peluncuran produk baru tanpa budget iklan" },
+{ kategori: "Strategi Bisnis", deskripsi: "Tulis perbedaan mendasar antara jualan dan branding" },
+{ kategori: "Strategi Bisnis", deskripsi: "Buat strategi kolaborasi untuk bisnis makanan rumahan" },
+{ kategori: "Strategi Bisnis", deskripsi: "Tulis ide campaign viral untuk brand kopi lokal" },
+{ kategori: "Strategi Bisnis", deskripsi: "Jelaskan cara bangun database customer dari nol" },
+{ kategori: "AI & Teknologi", deskripsi: "Buat prompt MidJourney untuk desain poster modern tema [X]" },
+{ kategori: "AI & Teknologi", deskripsi: "Tulis prompt ChatGPT untuk menghasilkan artikel SEO tentang [topik]" },
+{ kategori: "AI & Teknologi", deskripsi: "Simulasikan penggunaan Notion sebagai dashboard bisnis pribadi" },
+{ kategori: "AI & Teknologi", deskripsi: "Buat template content planner di Google Sheets" },
+{ kategori: "AI & Teknologi", deskripsi: "Tulis perintah Python sederhana untuk [task harian]" },
+{ kategori: "AI & Teknologi", deskripsi: "Jelaskan fungsi tool AI terbaru untuk content creator" },
+{ kategori: "AI & Teknologi", deskripsi: "Tulis cara pakai ChatGPT untuk customer service otomatis" },
+{ kategori: "AI & Teknologi", deskripsi: "Buat prompt AI untuk generate suara iklan produk" },
+{ kategori: "AI & Teknologi", deskripsi: "Ubah data Excel ini menjadi analisis visual: [paste data]" },
+{ kategori: "AI & Teknologi", deskripsi: "Tulis workflow bisnis digital hanya dengan bantuan AI" },
+{ kategori: "Prompt Seru & Unik", deskripsi: "Kalau saya hidup di abad ke-17, profesi apa yang cocok buat saya?" },
+{ kategori: "Prompt Seru & Unik", deskripsi: "Buat ramalan horoskop fiktif tapi lucu dan relate" },
+{ kategori: "Prompt Seru & Unik", deskripsi: "Tulis surat cinta seolah saya AI jatuh cinta pada manusia" },
+{ kategori: "Prompt Seru & Unik", deskripsi: "Buat dialog karakter dari dunia game dan dunia nyata ketemu" },
+{ kategori: "Prompt Seru & Unik", deskripsi: "Tulis naskah iklan produk aneh: odol rasa rendang" },
+{ kategori: "Prompt Seru & Unik", deskripsi: "Buat teka-teki logika yang jawabannya tidak terduga" },
+{ kategori: "Prompt Seru & Unik", deskripsi: "Tuliskan alasan konyol kenapa alien belum datang ke bumi" },
+{ kategori: "Prompt Seru & Unik", deskripsi: "Buatkan skrip prank text yang lucu tapi tidak jahat" },
+{ kategori: "Prompt Seru & Unik", deskripsi: "Simulasikan kalau karakter favorit saya kerja di Indomaret" },
+{ kategori: "Prompt Seru & Unik", deskripsi: "Tulis parodi lagu terkenal tentang kehidupan mahasiswa" },
+{ kategori: "Bonus Viralitas", deskripsi: "Tulis konten storytelling dari sisi korban, penjahat, dan saksi" },
+{ kategori: "Bonus Viralitas", deskripsi: "Buat konten 'Before vs After' tentang perubahan hidup" },
+{ kategori: "Bonus Viralitas", deskripsi: "Tulis konten 'Jika saya mengulang usia 20 tahun…'" },
+{ kategori: "Bonus Viralitas", deskripsi: "Buat caption dengan gaya 3 pilihan: serius, santai, humor" },
+{ kategori: "Bonus Viralitas", deskripsi: "Tulis postingan 'Kenapa saya berhenti melakukan [X]'" },
+{ kategori: "Bonus Viralitas", deskripsi: "Buat konten 'kesalahan terbesar saya adalah…'" },
+{ kategori: "Bonus Viralitas", deskripsi: "Tulis konten 'Yang tidak pernah diajarkan sekolah tapi penting…'" },
+{ kategori: "Bonus Viralitas", deskripsi: "Buat konten 'Saya pernah gagal, dan inilah pelajarannya…'" },
+{ kategori: "Bonus Viralitas", deskripsi: "Buat konten 'Jika saya punya waktu 1 jam dengan [tokoh X]…'" },
+{ kategori: "Bonus Viralitas", deskripsi: "Tulis konten viral bertema nostalgia: [misalnya: masa kecil 90an]" },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Ide konten aesthetic untuk morning routine"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Tutorial membuat website portfolio dengan HTML & CSS"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Strategi soft selling di TikTok yang efektif"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Sistem Notion untuk perencanaan konten mingguan"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Trik mengoptimalkan waktu kerja dengan metode Pomodoro"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "Format konten edukasi yang disukai audiens Gen Z"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Trik mengoptimalkan waktu kerja dengan metode Pomodoro"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Langkah-langkah membuat podcast dari rumah"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Cara membuat video cinematic dengan HP"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Strategi soft selling di TikTok yang efektif"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Sistem Notion untuk perencanaan konten mingguan"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Panduan membuat thumbnail YouTube otomatis dengan AI"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "Ide konten YouTube untuk pemula dengan modal minim"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Template konten carousel yang menarik untuk Canva"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Konten tentang daily routine ala digital nomad"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "100 ide konten TikTok untuk niche kecantikan"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Tool AI untuk merancang logo profesional dalam hitungan menit"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Panduan membuat thumbnail YouTube otomatis dengan AI"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Cara mengedit foto ala selebgram dengan aplikasi gratis"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Desain feed Instagram yang clean dan konsisten"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Langkah-langkah membuat podcast dari rumah"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Tips viral untuk mempercepat pertumbuhan akun Instagram"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Template konten carousel yang menarik untuk Canva"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Gaya desain poster promo food & beverage"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Desain feed Instagram yang clean dan konsisten"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Panduan membuat email marketing yang diklik banyak orang"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Panduan membuat thumbnail YouTube otomatis dengan AI"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Tutorial menggunakan Midjourney untuk pemula"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Daftar tools AI gratis terbaik untuk kreator konten"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Tool gratis untuk manajemen tugas secara visual"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Desain feed Instagram yang clean dan konsisten"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Gambar kota masa depan dengan kendaraan terbang"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Desain feed Instagram yang clean dan konsisten"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Cara mengedit foto ala selebgram dengan aplikasi gratis"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Teknik copywriting untuk jualan produk digital"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "AI untuk mengubah naskah menjadi suara manusia"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "List kebiasaan produktif ala miliarder"
+  },
+  {
+    "kategori": "Motivasi",
+    "deskripsi": "Kata-kata penyemangat untuk kreator konten baru"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Konten tentang daily routine ala digital nomad"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Tutorial membuat website portfolio dengan HTML & CSS"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Rutinitas kreator sukses dalam mengelola waktu"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Cara membuat video cinematic dengan HP"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "List kebiasaan produktif ala miliarder"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Cara menggunakan ChatGPT untuk bikin caption menarik"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Langkah-langkah membuat podcast dari rumah"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Rutinitas kreator sukses dalam mengelola waktu"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Tool gratis untuk manajemen tugas secara visual"
+  },
+  {
+    "kategori": "Motivasi",
+    "deskripsi": "Kata-kata penyemangat untuk kreator konten baru"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Desain poster film dengan nuansa vintage"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Template konten carousel yang menarik untuk Canva"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Challenge 7 hari hidup minimalis untuk media sosial"
+  },
+  {
+    "kategori": "Motivasi",
+    "deskripsi": "Kata-kata penyemangat untuk kreator konten baru"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Panduan membuat thumbnail YouTube otomatis dengan AI"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Konten tentang daily routine ala digital nomad"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "List kebiasaan produktif ala miliarder"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Daftar tools AI gratis terbaik untuk kreator konten"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "Konten storytelling viral untuk Reels"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "100 ide konten TikTok untuk niche kecantikan"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Rekomendasi aplikasi life planner terbaik"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Color palette viral untuk brand tahun ini"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Teknik batching konten agar efisien"
+  },
+  {
+    "kategori": "Motivasi",
+    "deskripsi": "Quotes motivasi pagi untuk membuka hari dengan semangat"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "Format konten edukasi yang disukai audiens Gen Z"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Langkah-langkah membuat podcast dari rumah"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "100 ide konten TikTok untuk niche kecantikan"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "AI untuk mengubah naskah menjadi suara manusia"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Teknik batching konten agar efisien"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Trik mempercepat render video di Adobe Premiere"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "List kebiasaan produktif ala miliarder"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Teknik batching konten agar efisien"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Rutinitas kreator sukses dalam mengelola waktu"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Challenge 7 hari hidup minimalis untuk media sosial"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Strategi soft selling di TikTok yang efektif"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Rekomendasi aplikasi life planner terbaik"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Color palette viral untuk brand tahun ini"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "List kebiasaan produktif ala miliarder"
+  },
+  {
+    "kategori": "Motivasi",
+    "deskripsi": "Quotes motivasi pagi untuk membuka hari dengan semangat"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Cara menggunakan ChatGPT untuk bikin caption menarik"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "Konten storytelling viral untuk Reels"
+  },
+  {
+    "kategori": "Motivasi",
+    "deskripsi": "Motivasi visual: ilustrasi perjalanan hidup dalam 5 tahap"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Cara mengedit foto ala selebgram dengan aplikasi gratis"
+  },
+  {
+    "kategori": "Motivasi",
+    "deskripsi": "Motivasi visual: ilustrasi perjalanan hidup dalam 5 tahap"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Template konten carousel yang menarik untuk Canva"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Cara mengedit foto ala selebgram dengan aplikasi gratis"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Potret hyper-realistic selebriti di dunia futuristik"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Strategi soft selling di TikTok yang efektif"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "AI untuk mengubah naskah menjadi suara manusia"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "Kalender konten Instagram selama sebulan untuk brand fashion"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Cara membuat video cinematic dengan HP"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Tips viral untuk mempercepat pertumbuhan akun Instagram"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Teknik batching konten agar efisien"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "List kebiasaan produktif ala miliarder"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "100 ide konten TikTok untuk niche kecantikan"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "List kebiasaan produktif ala miliarder"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Cara menghindari burnout saat kerja remote"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Formula caption iklan yang menarik perhatian"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Cara menggunakan ChatGPT untuk bikin caption menarik"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "100 ide konten TikTok untuk niche kecantikan"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Gambar kota masa depan dengan kendaraan terbang"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Tutorial membuat website portfolio dengan HTML & CSS"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "AI untuk mengubah naskah menjadi suara manusia"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Rekomendasi aplikasi life planner terbaik"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Color palette viral untuk brand tahun ini"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Strategi soft selling di TikTok yang efektif"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Desain poster film dengan nuansa vintage"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Tool AI untuk merancang logo profesional dalam hitungan menit"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Panduan membuat thumbnail YouTube otomatis dengan AI"
+  },
+  {
+    "kategori": "Motivasi",
+    "deskripsi": "Motivasi visual: ilustrasi perjalanan hidup dalam 5 tahap"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Trik mempercepat render video di Adobe Premiere"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Ilustrasi karakter game RPG fantasi"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Tool AI untuk merancang logo profesional dalam hitungan menit"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Cara mengedit foto ala selebgram dengan aplikasi gratis"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Gambar kota masa depan dengan kendaraan terbang"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Strategi soft selling di TikTok yang efektif"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Tool AI untuk merancang logo profesional dalam hitungan menit"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "Format konten edukasi yang disukai audiens Gen Z"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Challenge 7 hari hidup minimalis untuk media sosial"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Gambar kota masa depan dengan kendaraan terbang"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Sistem Notion untuk perencanaan konten mingguan"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Ilustrasi gaya anime karakter di dunia sihir"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Ilustrasi gaya anime karakter di dunia sihir"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Tutorial menggunakan Midjourney untuk pemula"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Rekomendasi aplikasi life planner terbaik"
+  },
+  {
+    "kategori": "Motivasi",
+    "deskripsi": "Motivasi visual: ilustrasi perjalanan hidup dalam 5 tahap"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "Konten storytelling viral untuk Reels"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Tips viral untuk mempercepat pertumbuhan akun Instagram"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "AI untuk mengubah naskah menjadi suara manusia"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "Format konten edukasi yang disukai audiens Gen Z"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Ide konten aesthetic untuk morning routine"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Color palette viral untuk brand tahun ini"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Potret hyper-realistic selebriti di dunia futuristik"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Gambar kota masa depan dengan kendaraan terbang"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Panduan membuat email marketing yang diklik banyak orang"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Trik mengoptimalkan waktu kerja dengan metode Pomodoro"
+  },
+  {
+    "kategori": "Motivasi",
+    "deskripsi": "Cerita sukses dari nol yang bisa jadi inspirasi konten"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Tool gratis untuk manajemen tugas secara visual"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Rekomendasi aplikasi life planner terbaik"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Cara membuat video cinematic dengan HP"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Challenge 7 hari hidup minimalis untuk media sosial"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Tips menjaga konsistensi upload konten harian"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Rutinitas kreator sukses dalam mengelola waktu"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Tutorial menggunakan Midjourney untuk pemula"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Gambar kota masa depan dengan kendaraan terbang"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "List kebiasaan produktif ala miliarder"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Potret hyper-realistic selebriti di dunia futuristik"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Desain poster film dengan nuansa vintage"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Cara menghindari burnout saat kerja remote"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Rutinitas kreator sukses dalam mengelola waktu"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Cara menggunakan ChatGPT untuk bikin caption menarik"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Template konten carousel yang menarik untuk Canva"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Langkah-langkah membuat podcast dari rumah"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "Ide konten YouTube untuk pemula dengan modal minim"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Cara menghindari burnout saat kerja remote"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "List kebiasaan produktif ala miliarder"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Formula caption iklan yang menarik perhatian"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Sistem Notion untuk perencanaan konten mingguan"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Cara membuat video cinematic dengan HP"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Formula caption iklan yang menarik perhatian"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Teknik copywriting untuk jualan produk digital"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Challenge 7 hari hidup minimalis untuk media sosial"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Cara menghindari burnout saat kerja remote"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Gaya desain poster promo food & beverage"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Ilustrasi karakter game RPG fantasi"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Tutorial menggunakan Midjourney untuk pemula"
+  },
+  {
+    "kategori": "Motivasi",
+    "deskripsi": "Motivasi visual: ilustrasi perjalanan hidup dalam 5 tahap"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Langkah-langkah membuat podcast dari rumah"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Gambar kota masa depan dengan kendaraan terbang"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "Konten storytelling viral untuk Reels"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Ilustrasi karakter game RPG fantasi"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "100 ide konten TikTok untuk niche kecantikan"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Panduan membuat thumbnail YouTube otomatis dengan AI"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Tutorial menggunakan Midjourney untuk pemula"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Tool gratis untuk manajemen tugas secara visual"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Potret hyper-realistic selebriti di dunia futuristik"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Langkah-langkah membuat podcast dari rumah"
+  },
+  {
+    "kategori": "Motivasi",
+    "deskripsi": "Motivasi visual: ilustrasi perjalanan hidup dalam 5 tahap"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Tips menjaga konsistensi upload konten harian"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Tips menjaga konsistensi upload konten harian"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Formula caption iklan yang menarik perhatian"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Langkah-langkah membuat podcast dari rumah"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Rekomendasi aplikasi life planner terbaik"
+  },
+  {
+    "kategori": "Motivasi",
+    "deskripsi": "Quotes motivasi pagi untuk membuka hari dengan semangat"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Desain poster film dengan nuansa vintage"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Template konten carousel yang menarik untuk Canva"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Rutinitas kreator sukses dalam mengelola waktu"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Challenge 7 hari hidup minimalis untuk media sosial"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Tool AI untuk merancang logo profesional dalam hitungan menit"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Teknik copywriting untuk jualan produk digital"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Cara mengedit foto ala selebgram dengan aplikasi gratis"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Langkah-langkah membuat podcast dari rumah"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Tips menjaga konsistensi upload konten harian"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Rutinitas kreator sukses dalam mengelola waktu"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Tool AI untuk merancang logo profesional dalam hitungan menit"
+  },
+  {
+    "kategori": "Motivasi",
+    "deskripsi": "Motivasi visual: ilustrasi perjalanan hidup dalam 5 tahap"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Konten tentang daily routine ala digital nomad"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Potret hyper-realistic selebriti di dunia futuristik"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Gaya desain poster promo food & beverage"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Panduan membuat thumbnail YouTube otomatis dengan AI"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Desain poster film dengan nuansa vintage"
+  },
+  {
+    "kategori": "Motivasi",
+    "deskripsi": "Quotes motivasi pagi untuk membuka hari dengan semangat"
+  },
+  {
+    "kategori": "Motivasi",
+    "deskripsi": "Cerita sukses dari nol yang bisa jadi inspirasi konten"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Sistem Notion untuk perencanaan konten mingguan"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Tool gratis untuk manajemen tugas secara visual"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Template konten carousel yang menarik untuk Canva"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Cara membangun brand personal dengan konten rutin"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Ide konten aesthetic untuk morning routine"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Potret hyper-realistic selebriti di dunia futuristik"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Konten tentang daily routine ala digital nomad"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Sistem Notion untuk perencanaan konten mingguan"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Tutorial menggunakan Midjourney untuk pemula"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Tips viral untuk mempercepat pertumbuhan akun Instagram"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Sistem Notion untuk perencanaan konten mingguan"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Cara menggunakan ChatGPT untuk bikin caption menarik"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Gaya desain poster promo food & beverage"
+  },
+  {
+    "kategori": "Motivasi",
+    "deskripsi": "Motivasi visual: ilustrasi perjalanan hidup dalam 5 tahap"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "AI untuk mengubah naskah menjadi suara manusia"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Tool AI untuk merancang logo profesional dalam hitungan menit"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Checklist harian agar tetap fokus bekerja"
+  },
+  {
+    "kategori": "Motivasi",
+    "deskripsi": "Kutipan populer yang bisa kamu jadikan konten carousel"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Color palette viral untuk brand tahun ini"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Gambar kota masa depan dengan kendaraan terbang"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Teknik copywriting untuk jualan produk digital"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Cara mengedit foto ala selebgram dengan aplikasi gratis"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Cara mengedit foto ala selebgram dengan aplikasi gratis"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Color palette viral untuk brand tahun ini"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Gambar kota masa depan dengan kendaraan terbang"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Challenge 7 hari hidup minimalis untuk media sosial"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Color palette viral untuk brand tahun ini"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Trik mengoptimalkan waktu kerja dengan metode Pomodoro"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "List kebiasaan produktif ala miliarder"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Cara menggunakan ChatGPT untuk bikin caption menarik"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Tool gratis untuk manajemen tugas secara visual"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Inspirasi UI/UX app e-commerce modern"
+  },
+  {
+    "kategori": "Motivasi",
+    "deskripsi": "Kata-kata penyemangat untuk kreator konten baru"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Panduan membuat email marketing yang diklik banyak orang"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Konten tentang daily routine ala digital nomad"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Trik mengoptimalkan waktu kerja dengan metode Pomodoro"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "AI untuk mengubah naskah menjadi suara manusia"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Gambar kota masa depan dengan kendaraan terbang"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Challenge 7 hari hidup minimalis untuk media sosial"
+  },
+  {
+    "kategori": "Motivasi",
+    "deskripsi": "Cerita sukses dari nol yang bisa jadi inspirasi konten"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Cara menghindari burnout saat kerja remote"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Cara mengedit foto ala selebgram dengan aplikasi gratis"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Challenge 7 hari hidup minimalis untuk media sosial"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Cara menghindari burnout saat kerja remote"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Inspirasi UI/UX app e-commerce modern"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Potret hyper-realistic selebriti di dunia futuristik"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Daftar tools AI gratis terbaik untuk kreator konten"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "List kebiasaan produktif ala miliarder"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Tool gratis untuk manajemen tugas secara visual"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "Kalender konten Instagram selama sebulan untuk brand fashion"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Teknik batching konten agar efisien"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Panduan membuat email marketing yang diklik banyak orang"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Gaya desain poster promo food & beverage"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "AI untuk mengubah naskah menjadi suara manusia"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Tool gratis untuk manajemen tugas secara visual"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Panduan membuat thumbnail YouTube otomatis dengan AI"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Cara membangun brand personal dengan konten rutin"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Konten tentang daily routine ala digital nomad"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Formula caption iklan yang menarik perhatian"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Tutorial menggunakan Midjourney untuk pemula"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "AI untuk mengubah naskah menjadi suara manusia"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Cara membangun brand personal dengan konten rutin"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Checklist harian agar tetap fokus bekerja"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Gaya desain poster promo food & beverage"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Konten tentang daily routine ala digital nomad"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Trik mempercepat render video di Adobe Premiere"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "Format konten edukasi yang disukai audiens Gen Z"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Ilustrasi karakter game RPG fantasi"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Challenge 7 hari hidup minimalis untuk media sosial"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Potret hyper-realistic selebriti di dunia futuristik"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Desain poster film dengan nuansa vintage"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "Ide konten YouTube untuk pemula dengan modal minim"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Cara membuat video cinematic dengan HP"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Rutinitas kreator sukses dalam mengelola waktu"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Tool gratis untuk manajemen tugas secara visual"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Panduan membuat email marketing yang diklik banyak orang"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Checklist harian agar tetap fokus bekerja"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Tool AI untuk merancang logo profesional dalam hitungan menit"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Tips viral untuk mempercepat pertumbuhan akun Instagram"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Strategi soft selling di TikTok yang efektif"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "100 ide konten TikTok untuk niche kecantikan"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Langkah-langkah membuat podcast dari rumah"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Panduan membuat thumbnail YouTube otomatis dengan AI"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Challenge 7 hari hidup minimalis untuk media sosial"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "Konten storytelling viral untuk Reels"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Tips menjaga konsistensi upload konten harian"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Checklist harian agar tetap fokus bekerja"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Panduan membuat thumbnail YouTube otomatis dengan AI"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Formula caption iklan yang menarik perhatian"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Panduan membuat thumbnail YouTube otomatis dengan AI"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "Konten storytelling viral untuk Reels"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Color palette viral untuk brand tahun ini"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Strategi soft selling di TikTok yang efektif"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Ide konten aesthetic untuk morning routine"
+  },
+  {
+    "kategori": "Motivasi",
+    "deskripsi": "Motivasi visual: ilustrasi perjalanan hidup dalam 5 tahap"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Trik mempercepat render video di Adobe Premiere"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Trik mempercepat render video di Adobe Premiere"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Cara membuat video cinematic dengan HP"
+  },
+  {
+    "kategori": "Motivasi",
+    "deskripsi": "Cerita sukses dari nol yang bisa jadi inspirasi konten"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Cara membangun brand personal dengan konten rutin"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Teknik batching konten agar efisien"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Tips menjaga konsistensi upload konten harian"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Tips viral untuk mempercepat pertumbuhan akun Instagram"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "Kalender konten Instagram selama sebulan untuk brand fashion"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "Ide konten YouTube untuk pemula dengan modal minim"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Sistem Notion untuk perencanaan konten mingguan"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Panduan membuat thumbnail YouTube otomatis dengan AI"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Checklist harian agar tetap fokus bekerja"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "Ide konten YouTube untuk pemula dengan modal minim"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Potret hyper-realistic selebriti di dunia futuristik"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Tips viral untuk mempercepat pertumbuhan akun Instagram"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Langkah-langkah membuat podcast dari rumah"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Tutorial membuat website portfolio dengan HTML & CSS"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Tips menjaga konsistensi upload konten harian"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Color palette viral untuk brand tahun ini"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Formula caption iklan yang menarik perhatian"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Tips viral untuk mempercepat pertumbuhan akun Instagram"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "Ide konten YouTube untuk pemula dengan modal minim"
+  },
+  {
+    "kategori": "Motivasi",
+    "deskripsi": "Motivasi visual: ilustrasi perjalanan hidup dalam 5 tahap"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Tutorial membuat website portfolio dengan HTML & CSS"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Sistem Notion untuk perencanaan konten mingguan"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Inspirasi UI/UX app e-commerce modern"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Teknik copywriting untuk jualan produk digital"
+  },
+  {
+    "kategori": "Motivasi",
+    "deskripsi": "Quotes motivasi pagi untuk membuka hari dengan semangat"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Cara membuat video cinematic dengan HP"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Tips viral untuk mempercepat pertumbuhan akun Instagram"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Tips menjaga konsistensi upload konten harian"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Langkah-langkah membuat podcast dari rumah"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Konten tentang daily routine ala digital nomad"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Trik mempercepat render video di Adobe Premiere"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Desain feed Instagram yang clean dan konsisten"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Tool gratis untuk manajemen tugas secara visual"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Tips viral untuk mempercepat pertumbuhan akun Instagram"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Teknik copywriting untuk jualan produk digital"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Teknik copywriting untuk jualan produk digital"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Cara membangun brand personal dengan konten rutin"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Tutorial membuat website portfolio dengan HTML & CSS"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Template konten carousel yang menarik untuk Canva"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Rekomendasi aplikasi life planner terbaik"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Panduan membuat thumbnail YouTube otomatis dengan AI"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Rutinitas kreator sukses dalam mengelola waktu"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "Kalender konten Instagram selama sebulan untuk brand fashion"
+  },
+  {
+    "kategori": "Motivasi",
+    "deskripsi": "Quotes motivasi pagi untuk membuka hari dengan semangat"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "Ide konten YouTube untuk pemula dengan modal minim"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Teknik copywriting untuk jualan produk digital"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Trik mempercepat render video di Adobe Premiere"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Panduan membuat email marketing yang diklik banyak orang"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Tool AI untuk merancang logo profesional dalam hitungan menit"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Desain feed Instagram yang clean dan konsisten"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Rekomendasi aplikasi life planner terbaik"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Rutinitas kreator sukses dalam mengelola waktu"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Checklist harian agar tetap fokus bekerja"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Rutinitas kreator sukses dalam mengelola waktu"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Tips viral untuk mempercepat pertumbuhan akun Instagram"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Strategi soft selling di TikTok yang efektif"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Trik mempercepat render video di Adobe Premiere"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Ilustrasi gaya anime karakter di dunia sihir"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Desain feed Instagram yang clean dan konsisten"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Cara membuat video cinematic dengan HP"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Strategi soft selling di TikTok yang efektif"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Inspirasi UI/UX app e-commerce modern"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "Ide konten YouTube untuk pemula dengan modal minim"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Checklist harian agar tetap fokus bekerja"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Gaya desain poster promo food & beverage"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Trik mempercepat render video di Adobe Premiere"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Panduan membuat email marketing yang diklik banyak orang"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Challenge 7 hari hidup minimalis untuk media sosial"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Trik mengoptimalkan waktu kerja dengan metode Pomodoro"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Tips viral untuk mempercepat pertumbuhan akun Instagram"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Ilustrasi karakter game RPG fantasi"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Daftar tools AI gratis terbaik untuk kreator konten"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Cara menggunakan ChatGPT untuk bikin caption menarik"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Tool AI untuk merancang logo profesional dalam hitungan menit"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Potret hyper-realistic selebriti di dunia futuristik"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Langkah-langkah membuat podcast dari rumah"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Panduan membuat email marketing yang diklik banyak orang"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "List kebiasaan produktif ala miliarder"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Challenge 7 hari hidup minimalis untuk media sosial"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Color palette viral untuk brand tahun ini"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Potret hyper-realistic selebriti di dunia futuristik"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Ide konten aesthetic untuk morning routine"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Rutinitas kreator sukses dalam mengelola waktu"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Panduan membuat email marketing yang diklik banyak orang"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Langkah-langkah membuat podcast dari rumah"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Ilustrasi gaya anime karakter di dunia sihir"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "List kebiasaan produktif ala miliarder"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Panduan membuat email marketing yang diklik banyak orang"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Tool gratis untuk manajemen tugas secara visual"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Rekomendasi aplikasi life planner terbaik"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Panduan membuat thumbnail YouTube otomatis dengan AI"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Konten tentang daily routine ala digital nomad"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "AI untuk mengubah naskah menjadi suara manusia"
+  },
+  {
+    "kategori": "Motivasi",
+    "deskripsi": "Cerita sukses dari nol yang bisa jadi inspirasi konten"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Teknik batching konten agar efisien"
+  },
+  {
+    "kategori": "Motivasi",
+    "deskripsi": "Motivasi visual: ilustrasi perjalanan hidup dalam 5 tahap"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "Konten storytelling viral untuk Reels"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Rutinitas kreator sukses dalam mengelola waktu"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Tool gratis untuk manajemen tugas secara visual"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Sistem Notion untuk perencanaan konten mingguan"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Gaya desain poster promo food & beverage"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Color palette viral untuk brand tahun ini"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Tutorial menggunakan Midjourney untuk pemula"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Tutorial membuat website portfolio dengan HTML & CSS"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "Ide konten YouTube untuk pemula dengan modal minim"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Challenge 7 hari hidup minimalis untuk media sosial"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Desain feed Instagram yang clean dan konsisten"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Panduan membuat email marketing yang diklik banyak orang"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "100 ide konten TikTok untuk niche kecantikan"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Tool gratis untuk manajemen tugas secara visual"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Inspirasi UI/UX app e-commerce modern"
+  },
+  {
+    "kategori": "Motivasi",
+    "deskripsi": "Kutipan populer yang bisa kamu jadikan konten carousel"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Gaya desain poster promo food & beverage"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Tips viral untuk mempercepat pertumbuhan akun Instagram"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Checklist harian agar tetap fokus bekerja"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "Format konten edukasi yang disukai audiens Gen Z"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Cara mengedit foto ala selebgram dengan aplikasi gratis"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Formula caption iklan yang menarik perhatian"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Tool gratis untuk manajemen tugas secara visual"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Tool gratis untuk manajemen tugas secara visual"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "Kalender konten Instagram selama sebulan untuk brand fashion"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Strategi soft selling di TikTok yang efektif"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Template konten carousel yang menarik untuk Canva"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Cara membangun brand personal dengan konten rutin"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Potret hyper-realistic selebriti di dunia futuristik"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Teknik copywriting untuk jualan produk digital"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "AI untuk mengubah naskah menjadi suara manusia"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Sistem Notion untuk perencanaan konten mingguan"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Cara menggunakan ChatGPT untuk bikin caption menarik"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Desain feed Instagram yang clean dan konsisten"
+  },
+  {
+    "kategori": "Motivasi",
+    "deskripsi": "Kutipan populer yang bisa kamu jadikan konten carousel"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Panduan membuat thumbnail YouTube otomatis dengan AI"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Challenge 7 hari hidup minimalis untuk media sosial"
+  },
+  {
+    "kategori": "Lifestyle",
+    "deskripsi": "Rekomendasi aplikasi life planner terbaik"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Rutinitas kreator sukses dalam mengelola waktu"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Potret hyper-realistic selebriti di dunia futuristik"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "Kalender konten Instagram selama sebulan untuk brand fashion"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "Kalender konten Instagram selama sebulan untuk brand fashion"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Gaya desain poster promo food & beverage"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Tutorial membuat website portfolio dengan HTML & CSS"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "Format konten edukasi yang disukai audiens Gen Z"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Strategi soft selling di TikTok yang efektif"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Tips menjaga konsistensi upload konten harian"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Cara menghindari burnout saat kerja remote"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Ilustrasi karakter game RPG fantasi"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Panduan membuat thumbnail YouTube otomatis dengan AI"
+  },
+  {
+    "kategori": "Motivasi",
+    "deskripsi": "Quotes motivasi pagi untuk membuka hari dengan semangat"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Potret hyper-realistic selebriti di dunia futuristik"
+  },
+  {
+    "kategori": "Motivasi",
+    "deskripsi": "Cerita sukses dari nol yang bisa jadi inspirasi konten"
+  },
+  {
+    "kategori": "Motivasi",
+    "deskripsi": "Kata-kata penyemangat untuk kreator konten baru"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Teknik copywriting untuk jualan produk digital"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Potret hyper-realistic selebriti di dunia futuristik"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Trik mempercepat render video di Adobe Premiere"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "Kalender konten Instagram selama sebulan untuk brand fashion"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Rutinitas kreator sukses dalam mengelola waktu"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Cara membuat video cinematic dengan HP"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Checklist harian agar tetap fokus bekerja"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Tips menjaga konsistensi upload konten harian"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Panduan membuat email marketing yang diklik banyak orang"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Panduan membuat thumbnail YouTube otomatis dengan AI"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Tool AI untuk merancang logo profesional dalam hitungan menit"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Tutorial membuat website portfolio dengan HTML & CSS"
+  },
+  {
+    "kategori": "Motivasi",
+    "deskripsi": "Cerita sukses dari nol yang bisa jadi inspirasi konten"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Trik mempercepat render video di Adobe Premiere"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Tool AI untuk merancang logo profesional dalam hitungan menit"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Trik mempercepat render video di Adobe Premiere"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Desain poster film dengan nuansa vintage"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Strategi soft selling di TikTok yang efektif"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Sistem Notion untuk perencanaan konten mingguan"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "AI untuk mengubah naskah menjadi suara manusia"
+  },
+  {
+    "kategori": "Ide Konten",
+    "deskripsi": "100 ide konten TikTok untuk niche kecantikan"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Inspirasi UI/UX app e-commerce modern"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Cara membangun brand personal dengan konten rutin"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Strategi soft selling di TikTok yang efektif"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Tips viral untuk mempercepat pertumbuhan akun Instagram"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Cara menggunakan ChatGPT untuk bikin caption menarik"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Cara mengedit foto ala selebgram dengan aplikasi gratis"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Checklist harian agar tetap fokus bekerja"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Tutorial menggunakan Midjourney untuk pemula"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Desain poster film dengan nuansa vintage"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Inspirasi UI/UX app e-commerce modern"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Rutinitas kreator sukses dalam mengelola waktu"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Daftar tools AI gratis terbaik untuk kreator konten"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Checklist harian agar tetap fokus bekerja"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Tool AI untuk merancang logo profesional dalam hitungan menit"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Langkah-langkah membuat podcast dari rumah"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Color palette viral untuk brand tahun ini"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Teknik batching konten agar efisien"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Cara mengedit foto ala selebgram dengan aplikasi gratis"
+  },
+  {
+    "kategori": "Marketing",
+    "deskripsi": "Panduan membuat email marketing yang diklik banyak orang"
+  },
+  {
+    "kategori": "Generate Gambar",
+    "deskripsi": "Ilustrasi gaya anime karakter di dunia sihir"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Template konten carousel yang menarik untuk Canva"
+  },
+  {
+    "kategori": "Motivasi",
+    "deskripsi": "Cerita sukses dari nol yang bisa jadi inspirasi konten"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Tutorial membuat website portfolio dengan HTML & CSS"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Daftar tools AI gratis terbaik untuk kreator konten"
+  },
+  {
+    "kategori": "Produktivitas",
+    "deskripsi": "Tool gratis untuk manajemen tugas secara visual"
+  },
+  {
+    "kategori": "Tutorial",
+    "deskripsi": "Tutorial membuat website portfolio dengan HTML & CSS"
+  },
+  {
+    "kategori": "Desain",
+    "deskripsi": "Template konten carousel yang menarik untuk Canva"
+  },
+  {
+    "kategori": "Tips & Trik",
+    "deskripsi": "Trik mempercepat render video di Adobe Premiere"
+  },
+  {
+    "kategori": "AI Tools",
+    "deskripsi": "Panduan membuat thumbnail YouTube otomatis dengan AI"
+  }
+          ].map((item, index) => `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${item.kategori}</td>
+            <td class="deskripsi" id="desc-${index}">${item.deskripsi}</td>
+            <td>
+              <button class="copy-btn" onclick="copyText('desc-${index}')">
+                <i class="fas fa-copy"></i> Salin
+              </button>
+            </td>
+          </tr>`).join("")}
+        </tbody>
+      </table>
+    </section>
+  </section>`;
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+}
+
+if (page === 'promptgeminiveo3') { 
+  content = `<section style="padding: 2rem;">
+    <h2 style="font-size: 2rem; color: var(--text-color);">🔥 500+ Prompt Gemini Veo3 Terbaik</h2>
+    <section style="padding: 2rem; overflow-x: auto;">
+      <h3>🔥 500+ Prompt Gemini VEO3 Siap Pakai</h3>
+      <table class="announcement-table" style="min-width: 1000px;">
+        <thead>
+          <tr>
+            <th>No</th>
+            <th>Kategori</th> 
+            <th>Deskripsi</th>
+            <th>Salin</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${[
+            { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" },
+  { kategori: "Motivational", deskripsi: "Make a video with theme: motivational speech, with background in a dense jungle with natural lighting, use voice over in English, make a visual cinematic with warm lighting" },
+  { kategori: "Adventure", deskripsi: "Create a cinematic video of a solo traveler hiking in the Himalayas, with drone shots and ambient sound" },
+  { kategori: "Technology", deskripsi: "Generate a video showcasing futuristic AI technology in a sleek modern lab environment, glowing interfaces, and robotic arms" },
+  { kategori: "Business", deskripsi: "Make a corporate explainer video in a modern office setting, with clean infographic overlays and professional narration" },
+  { kategori: "Education", deskripsi: "Produce a visual explainer video for 'Photosynthesis', using animated diagrams, voiceover in a clear tone, and soft background music" },
+  { kategori: "Fantasy", deskripsi: "Create a magical forest scene with glowing trees and floating orbs, with fantasy-style music and no dialogue" },
+  { kategori: "Sci-Fi", deskripsi: "Visualize a space station orbiting Saturn with astronauts working outside, cinematic angle, dark ambient music" },
+  { kategori: "Travel", deskripsi: "Make a travel vlog style video in Venice, with gondola rides, narrow alleyways, and romantic sunset lighting" },
+  { kategori: "Food", deskripsi: "Show a high-speed video of a gourmet chef preparing sushi in a luxurious kitchen, with macro close-ups and upbeat background music" },
+  { kategori: "Fitness", deskripsi: "Generate a morning workout montage in a city park, with runners, stretching, slow motion push-ups, and motivational background music" }
+          ].map((item, index) => `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${item.kategori}</td>
+            <td class="deskripsi" id="desc-${index}">${item.deskripsi}</td>
+            <td>
+              <button class="copy-btn" onclick="copyText('desc-${index}')">
+                <i class="fas fa-copy"></i> Salin
+              </button>
+            </td>
+          </tr>`).join("")}
+        </tbody>
+      </table>
+    </section>
+  </section>`;
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+}
+
+if (page === 'danakaget') {
+  content = `
+    <section class="gift-container">
+      <h2 style="text-align:center;">🎁 Dana Kaget</h2>
+      <div class="gift-box neon-blue" id="giftBox">
+        <img src="https://cdn-icons-png.flaticon.com/512/4193/4193253.png" alt="Gift Box" class="gift-img" />
+      </div>
+      <div class="result-box" id="resultBox">💸 Hadiah akan muncul di sini!</div>
+      <button id="openGiftBtn" class="open-gift-btn">🎉 Buka Hadiah</button>
+    </section>
+  `;
+
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+  generateDanaKaget();
+}
+}
+
+/////// PISAHIN //////
+
+function salinPrompt(id) {
+        const text = document.getElementById(id).innerText;
+        navigator.clipboard.writeText(text).then(() => {
+          alert("✅ Prompt berhasil disalin!");
+        }).catch(err => {
+          alert("❌ Gagal menyalin prompt.");
+        });
+      }
+
+function generateDanaKaget() {
+  const btn = document.getElementById("openGiftBtn");
+  const box = document.getElementById("giftBox");
+  const result = document.getElementById("resultBox");
+
+  const isGiftEnabled = true; // Admin toggle
+  const jumlahUserTerbuka = 10; // <- Ganti sesuai jumlah user yang diaktifkan
+
+  const hadiahList = [
+    { nama: "Rp2.000", link: "" },
+    { nama: "Rp5.000", link: "" },
+    { nama: "Rp10.000", link: "" },
+    { nama: "Rp15.000", link: "" },
+    { nama: "Rp20.000", link: "" },
+    { nama: "Rp25.000", link: "" },
+    { nama: "Rp30.000", link: "" },
+    { nama: "Rp35.000", link: "" },
+    { nama: "Rp40.000", link: "" },
+    { nama: "Rp45.000", link: "" },
+    { nama: "Rp50.000", link: "" }
+  ];
+
+  const hadiahFix = hadiahList[0];
+  let hasClaimed = false;
+
+  if (!isGiftEnabled) {
+    btn.disabled = true;
+    btn.textContent = "🎉 Buka Hadiah";
+    result.innerHTML = "🔒 Dana Kaget belum dibuka. Tunggu aktivasi dari admin.";
+    return;
+  }
+
+  // Jika aktif
+  btn.disabled = false;
+  btn.textContent = "🎉 Buka Hadiah";
+  result.innerHTML = `✅ Dana Kaget sudah dibuka untuk <strong>${jumlahUserTerbuka}</strong> orang!`;
+
+  btn.onclick = () => {
+    if (hasClaimed) {
+      if (hadiahFix.link) window.open(hadiahFix.link, "_blank");
+      btn.disabled = false;
+      btn.textContent = "✅ Sudah Diklaim";
+      result.innerHTML = "💬 Kamu sudah claim Dana Kaget minggu ini.<br/>Tunggu minggu depan ya!";
+      return;
+    }
+
+    btn.disabled = true;
+    box.classList.add("shake");
+    result.textContent = "🔄 Mengacak hadiah...";
+
+    let count = 0;
+    const interval = setInterval(() => {
+      const random = hadiahList[Math.floor(Math.random() * hadiahList.length)];
+      result.innerHTML = `🎲 Mengacak: <strong>${random.nama}</strong>`;
+      count++;
+
+      if (count >= 30) {
+        clearInterval(interval);
+        box.classList.remove("shake");
+
+        result.innerHTML = `🎉 Kamu mendapatkan: <strong>${hadiahFix.nama}</strong>`;
+        btn.textContent = "🎁 Ambil Hadiah";
+        btn.disabled = false;
+        hasClaimed = true;
+      }
+    }, 100);
+  };
 }
 
 
@@ -1640,7 +4777,7 @@ function initBook() {
       page.classList.toggle('active', index === currentPage);
     });
 
-    pageNumber.textContent = `Halaman ${currentPage + 1} / ${pages.length}`;
+    pageNumber.textContent = `${currentPage + 1} / ${pages.length}`;
     prevBtn.disabled = currentPage === 0;
     nextBtn.disabled = currentPage === pages.length - 1;
   }
@@ -1684,10 +4821,9 @@ function getLastUpdateTime(index) {
 function generateCheatList() {
   const cheats = [
     ["ml", "https://img.utdstc.com/icon/78d/66f/78d66ff1ab1bd23f7fd6d9cdb93854881cb8f0b69e8a301faaf4f4eab058d19e:200", "Mobile Legends", "active", "", "https://cdn.unipin.com/images/icon_product_pages/1735814979-icon-Image_20250102184102.jpg"],
-    ["pb", "https://example.com/pb-cheat", "Point Blank", "maintenance", "24/06 jam 06.01", "https://cdn.unipin.com/images/icon_product_pages/1571814027-icon-1559011491-icon-1557743544-icon-point_blank.jpg"],
-    ["ff", "https://example.com/ff-cheat", "Free Fire", "error", "24/06 jam 12.01", "https://cdn.unipin.com/images/icon_product_pages/1658817763-icon-200x200_icon%20ff.jpg"],
-    ["pubgm", "https://example.com/pubgm-cheat", "PUBG Mobile", "active", "", "https://cdn.unipin.com/images/icon_product_pages/1592228250-icon-pubgm.jpg"],
-    ["codm", "https://example.com/codm-cheat", "Call of Duty Mobile", "active", "", "https://cdn.unipin.com/images/icon_product_pages/1633599388-icon-Icon_1024.jpg"]
+    ["pb", "https://example.com/pb-cheat", "Point Blank", "error", "24/06 Jam 12.00", "https://cdn.unipin.com/images/icon_product_pages/1571814027-icon-1559011491-icon-1557743544-icon-point_blank.jpg"],
+    ["ff", "https://example.com/ff-cheat", "Free Fire", "error", "24/06 Jam 06.00", "https://cdn.unipin.com/images/icon_product_pages/1658817763-icon-200x200_icon%20ff.jpg"],
+    ["pubgm", "https://example.com/pubgm-cheat", "PUBG Mobile", "error", "Jam 18.00", "https://cdn.unipin.com/images/icon_product_pages/1592228250-icon-pubgm.jpg"],
   ];
 
   const descList = {
@@ -1695,7 +4831,6 @@ function generateCheatList() {
     "pb": "Wallhack, Aimlock, Fast Reload",
     "ff": "Headshot Auto, Antiban, ESP",
     "pubgm": "Wallhack, No Recoil, Antiban",
-    "codm": "Radar Hack, Aimbot, ESP"
   };
 
   const badgeStyle = {
@@ -1708,6 +4843,11 @@ function generateCheatList() {
     const status = item[3];
     const updateTime = status === 'active' ? getLastUpdateTime(i) : item[4];
     const iconUrl = item[5];
+    const isDisabled = status === "error";
+
+    const downloadButton = isDisabled
+      ? `<button class="dl-btn" disabled title="Cheat sedang error">🔒 Download</button>`
+      : `<a href="${item[1]}" target="_blank" class="dl-btn"><i class="fa fa-download"></i> Download</a>`;
 
     return `
       <div class="cheat-card">
@@ -1717,9 +4857,7 @@ function generateCheatList() {
             <p><strong>📅 Update:</strong> ${updateTime}</p>
             <p><strong>🧩 Fitur:</strong> ${descList[item[0]]}</p>
             <div class="cheat-buttons">
-              <a href="${item[1]}" target="_blank" class="dl-btn">
-                <i class="fa fa-download"></i> Download
-              </a>
+              ${downloadButton}
               <button class="report-btn" onclick="laporkanKeTelegram('${item[1]}', '${item[2]}', 'link')">
                 ⚠️ Laporkan
               </button>
