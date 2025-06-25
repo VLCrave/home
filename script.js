@@ -4772,63 +4772,6 @@ main.innerHTML = content;
   document.getElementById("sidebar").classList.remove("active");
 }
 
-function generateUcapanLink() {
-  const dari = document.getElementById("adminDari").value.trim();
-  const nama = document.getElementById("adminNama").value.trim();
-  const gender = document.getElementById("adminGender").value;
-  const hubungan = document.getElementById("adminHubungan").value;
-  const tema = document.getElementById("adminTema").value;
-  const pesan = document.getElementById("adminPesan").value.trim();
-  const wa = document.getElementById("adminWa").value.trim();
-
-  if (!dari || !nama || !wa || !tema) {
-    alert("Mohon lengkapi semua data wajib: Dari, Kepada, Nomor WhatsApp, dan Tema.");
-    return;
-  }
-
-  // Validasi isi pesan minimal 3 baris jika tidak kosong
-  const pesanLines = pesan.split("\n").filter(line => line.trim() !== "");
-  if (pesan && pesanLines.length < 3) {
-    alert("Pesan harus minimal 3 baris jika ingin diisi.");
-    return;
-  }
-
-  // Pesan default berdasarkan tema
-  const defaultPesan = {
-    ulangtahun: `Selamat ulang tahun ${nama}! 🎉\nSemoga panjang umur dan sehat selalu.\nTetap jadi ${hubungan} terbaik ya!`,
-    mintamaaf: `Aku minta maaf ya ${nama} 🙏\nAku sadar aku salah dan ingin memperbaiki semuanya.\nSemoga kamu bisa maafin aku.`,
-    weekend: `Selamat menikmati weekend, ${nama}! 😄\nSemoga akhir pekanmu menyenangkan.\nJangan lupa istirahat ya.`,
-    dating: `Hai ${nama} 💕\nKamu sibuk gak hari ini?\nAku pengen ajak kamu jalan bareng...`,
-    dinner: `Malam ini kita dinner bareng yuk? 🍽️\nAku yang traktir deh hehe\nTemenin aku ya ${nama}!`
-  };
-
-  // Jika tidak ada pesan manual, gunakan default berdasarkan tema
-  let finalPesan = pesan;
-  if (!pesan) {
-    finalPesan = defaultPesan[tema] || `Hai ${nama}, ini pesan dari ${dari}. Semoga harimu menyenangkan!`;
-  }
-
-  // Buat URL Link Ucapan
-  const baseLink = `https://vlcrave.github.io/home/ucapan.html`;
-  const fullLink = `${baseLink}?tema=${encodeURIComponent(tema)}&nama=${encodeURIComponent(nama)}&dari=${encodeURIComponent(dari)}&pesan=${encodeURIComponent(finalPesan)}&wa=${encodeURIComponent(wa)}`;
-
-  // Tampilkan hasil
-  document.getElementById("adminResult").style.display = "block";
-  document.getElementById("adminLink").innerText = fullLink;
-
-  // Buat QR Code
-  if (typeof QRCode !== 'undefined') {
-    document.getElementById("adminQrCode").innerHTML = "";
-    new QRCode(document.getElementById("adminQrCode"), {
-      text: fullLink,
-      width: 160,
-      height: 160,
-      colorDark: "#000000",
-      colorLight: "#ffffff"
-    });
-  }
-
-
 
 if (page === 'danakaget') {
   content = `
@@ -4854,90 +4797,108 @@ if (page === 'danakaget') {
 
 
 
-function generateUcapanLink() {
-  const dari = document.getElementById("adminDari").value.trim();
-  const nama = document.getElementById("adminNama").value.trim();
-  const gender = document.getElementById("adminGender").value;
-  const hubungan = document.getElementById("adminHubungan").value;
-  const tema = document.getElementById("adminTema").value;
-  const pesan = document.getElementById("adminPesan").value.trim();
-  const wa = document.getElementById("adminWa").value.trim();
+  const params = new URLSearchParams(window.location.search);
+  const tema = params.get("tema") || "default";
+  const nama = params.get("nama") || "Kamu";
+  const dari = params.get("dari") || "Seseorang";
+  const wa = params.get("wa") || "";
 
-  // Validasi wajib
-  if (!dari || !nama || !wa || !tema) {
-    alert("Mohon lengkapi semua data wajib: Dari, Kepada, Nomor WhatsApp, dan Tema.");
-    return;
-  }
+  // Pesan dari URL (jika ada)
+  const pesanRaw = params.get("pesan");
 
-  // Validasi isi pesan jika ada
-  const pesanLines = pesan.split("\n").filter(line => line.trim() !== "");
-  if (pesan && pesanLines.length < 3) {
-    alert("Pesan harus minimal 3 baris jika ingin diisi.");
-    return;
-  }
+  // Warna tema background chat
+  const temaWarna = {
+    ulangtahun: "#1a2a6c",
+    mintamaaf: "#2b2d42",
+    weekend: "#153b50",
+    dating: "#3d1f4e",
+    dinner: "#2c3e50",
+    roomwangi: "#0c1932",
+    motivasi: "#1b2735",
+    default: "#12163a"
+  };
+  document.getElementById("chatBox").style.background = temaWarna[tema] || temaWarna.default;
 
-  // Template pesan berdasarkan tema (fallback otomatis)
+  // Musik sesuai tema
+  const lagu = {
+    ulangtahun: "https://example.com/happy.mp3",
+    mintamaaf: "https://example.com/maaf.mp3",
+    weekend: "https://example.com/weekend.mp3",
+    dating: "https://example.com/date.mp3",
+    dinner: "https://example.com/dinner.mp3",
+    roomwangi: "https://example.com/roomwangi.mp3",
+    motivasi: "https://example.com/motivasi.mp3"
+  };
+  document.getElementById("musicSource").src = lagu[tema] || "";
+  document.getElementById("bgMusic").load();
+
+  // Fallback pesan jika pesan kosong
   const defaultPesan = {
-    ulangtahun: `Selamat ulang tahun ${nama}! 🎉\nSemoga panjang umur dan sehat selalu.\nTetap jadi ${hubungan} terbaik ya!`,
+    ulangtahun: `Selamat ulang tahun ${nama}! 🎉\nSemoga panjang umur dan sehat selalu.\nTetap jadi yang terbaik ya!`,
     mintamaaf: `Aku minta maaf ya ${nama} 🙏\nAku sadar aku salah dan ingin memperbaiki semuanya.\nSemoga kamu bisa maafin aku.`,
     weekend: `Selamat menikmati weekend, ${nama}! 😄\nSemoga akhir pekanmu menyenangkan.\nJangan lupa istirahat ya.`,
     dating: `Hai ${nama} 💕\nKamu sibuk gak hari ini?\nAku pengen ajak kamu jalan bareng...`,
     dinner: `Malam ini kita dinner bareng yuk? 🍽️\nAku yang traktir deh hehe\nTemenin aku ya ${nama}!`,
     roomwangi: `Buat kamu, ${nama}, si pemilik room paling wangi 💐\nJangan kasih musuh napas malam ini!\nAyo gas bareng ML malam ini!`,
     motivasi: `Halo ${nama},\nKamu hebat dan punya potensi besar 💪\nTerus semangat dan jangan menyerah ya!`,
-    random: `Hai ${nama}, ada pesan spesial buat kamu 🎁\nSemoga hari ini membawa senyuman\nDari: ${dari}`
+    default: `Halo ${nama}, ini pesan spesial dari ${dari}.\nSemoga harimu menyenangkan!`
   };
 
-  // Pilih pesan final
-  const finalPesan = pesan || defaultPesan[tema] || `Halo ${nama}, ini pesan spesial dari ${dari}. Semoga harimu menyenangkan!`;
+  // Proses pesan menjadi array baris
+  const pesan = (pesanRaw && pesanRaw.trim() !== "" ? pesanRaw : defaultPesan[tema] || defaultPesan.default).split("\n");
 
-  // Buat link ucapan
-  const baseUrl = "https://vlcrave.github.io/home/ucapan.html";
-  const query = `?tema=${tema}&nama=${encodeURIComponent(nama)}&dari=${encodeURIComponent(dari)}&pesan=${encodeURIComponent(finalPesan)}&wa=${wa}`;
-  const link = `${baseUrl}${query}`;
+  document.getElementById("pengirimNotif").innerText = dari;
 
-  // Tampilkan hasil
-  document.getElementById("adminResult").style.display = "block";
-  document.getElementById("adminLink").innerText = link;
+  let index = 0;
+  let isStarted = false;
 
-  // Generate QR Code
-  if (typeof QRCode !== 'undefined') {
-    document.getElementById("adminQrCode").innerHTML = "";
-    new QRCode(document.getElementById("adminQrCode"), {
-      text: link,
-      width: 160,
-      height: 160,
-      colorDark: "#000000",
-      colorLight: "#ffffff"
-    });
+  function mulaiPesan() {
+    if (isStarted) return;
+    isStarted = true;
+    document.getElementById("notifPopup").style.display = "none";
+    document.getElementById("mainContent").classList.remove("blur");
+    tampilkanBubbleSatuPerSatu();
   }
 
-  // Kirim ke Telegram
-  const token = "7922409540:AAFitc5JFHh9Xs2omx8HqTgJ2d9qE_hN7Kw";
-  const chatId = "6046360096";
-  const telegramMsg = `📥 *Database Whatsapp dari Generator Ucapan*\n\n👤 Nama: ${nama}\n📱 Nomor WhatsApp: ${wa}\n\n🔗 Link:\n${link}`;
+  function tampilkanBubbleSatuPerSatu() {
+    if (index < pesan.length) {
+      const typingDiv = document.createElement("div");
+      typingDiv.className = "typing";
+      typingDiv.innerHTML = `
+        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScsg7vbHBvu5Lu2SYjgSPtVaLc_fCfScFftw&s" alt="anon">
+        <span class="dotdotdot">Sedang mengetik</span>
+      `;
+      const chatBox = document.getElementById("chatBox");
+      chatBox.appendChild(typingDiv);
+      chatBox.scrollTop = chatBox.scrollHeight;
 
-  fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      chat_id: chatId,
-      text: telegramMsg,
-      parse_mode: "Markdown"
-    })
-  });
-}
+      setTimeout(() => {
+        typingDiv.remove();
+        const div = document.createElement("div");
+        div.className = "bubble";
+        div.innerHTML = `
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScsg7vbHBvu5Lu2SYjgSPtVaLc_fCfScFftw&s" alt="anon">
+          <div class="bubble-text">${pesan[index]}</div>
+        `;
+        chatBox.appendChild(div);
+        chatBox.scrollTop = chatBox.scrollHeight;
+        index++;
+        setTimeout(tampilkanBubbleSatuPerSatu, 1000);
+      }, 800);
+    } else {
+      document.getElementById("balasContainer").style.display = "flex";
+    }
+  }
 
-function copyAdminLink() {
-  const link = document.getElementById("adminLink").innerText;
-  navigator.clipboard.writeText(link).then(() => alert("Link berhasil disalin!"));
-}
-
-function shareToWhatsApp() {
-  const link = document.getElementById("adminLink").innerText;
-  const text = `Hai, ini ada ucapan spesial buat kamu:\n${link}`;
-  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
-}
+  function kirimKeWA() {
+    const isi = document.getElementById("balasPesan").value.trim();
+    if (!isi) {
+      alert("Pesan tidak boleh kosong.");
+      return;
+    }
+    const pesanWa = `Hai ${dari}, ini balasanku atas pesan kamu:\n\n"${isi}"`;
+    window.open(`https://wa.me/${wa}?text=${encodeURIComponent(pesanWa)}`, "_blank");
+  }
 
 
 
