@@ -212,7 +212,18 @@
   document.getElementById("musicSource").src = lagu[tema] || "";
   document.getElementById("bgMusic").load();
 
-  // Default pesan berdasarkan tema (digunakan jika tidak ada param pesan)
+  // Tentukan waktu salam
+  function getSalamWaktu() {
+    const jam = new Date().getHours();
+    if (jam >= 5 && jam < 11) return "pagi";
+    if (jam >= 11 && jam < 15) return "siang";
+    if (jam >= 15 && jam < 18) return "sore";
+    return "malam";
+  }
+
+  const salamWaktu = getSalamWaktu();
+
+  // Default pesan berdasarkan tema
   const defaultPesan = {
     ulangtahun: `Selamat ulang tahun ${nama}! 🎉\nSemoga panjang umur dan sehat selalu.\nTetap jadi yang terbaik ya!`,
     mintamaaf: `Aku minta maaf ya ${nama} 🙏\nAku sadar aku salah dan ingin memperbaiki semuanya.\nSemoga kamu bisa maafin aku.`,
@@ -221,11 +232,19 @@
     dinner: `Malam ini kita dinner bareng yuk? 🍽️\nAku yang traktir deh hehe\nTemenin aku ya ${nama}!`,
     roomwangi: `Buat kamu, ${nama}, si pemilik room paling wangi 💐\nJangan kasih musuh napas malam ini!\nAyo gas bareng ML malam ini!`,
     motivasi: `Halo ${nama},\nKamu hebat dan punya potensi besar 💪\nTerus semangat dan jangan menyerah ya!`,
-    default: `Halo ${nama}, ini pesan spesial dari ${dari}.\nSemoga harimu menyenangkan!`
+    default: `Halo ${nama}, ini pesan spesial dari ${dari}.\nSemoga harimu menyenangkan!`,
+    personal: `Halo ${nama}, Selamat ${salamWaktu}, terima kasih telah meluangkan waktu untuk membuka pesan yang ${dari} sampaikan.`
   };
 
-  // Gunakan pesan dari param jika ada, jika tidak pakai default
-  const pesan = pesanParam ? pesanParam.split("\n") : defaultPesan[tema]?.split("\n") || defaultPesan.default.split("\n");
+  // Menentukan isi pesan
+  const pesan = [];
+  if (pesanParam) {
+    pesan.push(...pesanParam.split("\n"));
+  } else if (defaultPesan[tema]) {
+    pesan.push(defaultPesan.personal, ...defaultPesan[tema].split("\n"));
+  } else {
+    pesan.push(defaultPesan.personal);
+  }
 
   document.getElementById("pengirimNotif").innerText = dari;
 
@@ -280,6 +299,7 @@
     window.open(`https://wa.me/${wa}?text=${encodeURIComponent(pesanWa)}`, "_blank");
   }
 </script>
+
 
 
 </body>
