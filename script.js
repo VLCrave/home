@@ -6,10 +6,11 @@ const accessCodes = {
 };
 
 const chatId = "6046360096"; // VL
-const botToken = "7779001668:AAEB4B53mzpfR54aO6TgXTsq4I_rLgjOLrY";
+const botToken = "7989080902:AAGd4PZjKZGlaqtad3VEo11M-krHUNGNgp4";
 
 // === Session Timeout (30 Menit) ===
 const SESSION_EXPIRE_TIME = 30 * 60 * 1000;
+const REQUEST_IP_COOLDOWN = 24 * 60 * 60 * 1000; // 24 jam
 
 function isSessionValid() {
   const savedTime = localStorage.getItem("sessionStartTime");
@@ -50,24 +51,6 @@ setInterval(() => {
   }
 }, 1000);
 
-// === Kirim Notifikasi Akses Login Baru ===
-async function sendAccessRequestToTelegram(ip, kode) {
-  const now = new Date();
-  const time = now.toLocaleString();
-  const message = `🟡 *Permintaan Akses Login Baru*\nIP: \`${ip}\`\nKode: \`${kode}\`\nWaktu: \`${time}\``;
-
-  const telegramURL = `https://api.telegram.org/bot${botToken}/sendMessage`;
-  await fetch(telegramURL, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      chat_id: chatId,
-      text: message,
-      parse_mode: "Markdown"
-    })
-  });
-}
-
 // === Kirim Permintaan Request IP Baru ===
 async function sendRequestIPToTelegram(ip, kode) {
   const now = new Date();
@@ -84,6 +67,13 @@ async function sendRequestIPToTelegram(ip, kode) {
       parse_mode: "Markdown"
     })
   });
+  localStorage.setItem("lastRequestIPTime", Date.now().toString());
+}
+
+function canRequestIP() {
+  const lastTime = localStorage.getItem("lastRequestIPTime");
+  if (!lastTime) return true;
+  return Date.now() - parseInt(lastTime) > REQUEST_IP_COOLDOWN;
 }
 
 // === Login & Session Validation ===
@@ -99,7 +89,6 @@ window.addEventListener("DOMContentLoaded", () => {
   const requestIPBtn = document.getElementById("request-ip");
   const requestIPContainer = document.getElementById("request-ip-container");
 
-  // Cek session
   if (!isSessionValid()) {
     clearSession();
     document.body.classList.add("popup-active");
@@ -139,7 +128,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
       if (accessCodes[kode]) {
         if (accessCodes[kode].includes(userIP)) {
-          // ✅ Akses valid
           localStorage.setItem("userAccessCode", kode);
           localStorage.setItem("userIP", userIP);
           localStorage.setItem("sessionStartTime", Date.now().toString());
@@ -151,37 +139,31 @@ window.addEventListener("DOMContentLoaded", () => {
             document.body.classList.remove("popup-active");
           }, 1000);
         } else {
-          // ✅ Kode benar, IP tidak cocok
-          await sendRequestIPToTelegram(userIP, kode);
-          alert("🔒 Kode benar, tapi IP Anda belum didaftarkan.");
-
-          crossIcon.style.display = "block";
-          requestIPContainer.style.display = "block";
+          alert("🔒 IP Anda belum didaftarkan untuk kode ini, Silahkan Request IP Terlebih dahulu.");
+          requestIPContainer.style.display = canRequestIP() ? "block" : "none";
+          requestIPBtn.disabled = !canRequestIP();
           purchaseLink.style.display = "none";
-
-          setTimeout(() => {
-            crossIcon.style.display = "none";
-          }, 3000);
         }
       } else {
-        // ❌ Kode salah
-        crossIcon.style.display = "block";
+        alert("❌ Kode akses tidak terdaftar.");
         purchaseLink.style.display = "inline-block";
         requestIPContainer.style.display = "none";
-
-        setTimeout(() => {
-          crossIcon.style.display = "none";
-        }, 3000);
       }
 
       closeBtn.disabled = false;
     }, 2000);
   });
 
-  // Tombol Request IP manual
   requestIPBtn.addEventListener("click", async (e) => {
     e.preventDefault();
     const kode = accessCodeInput.value.trim().toUpperCase();
+
+    if (!canRequestIP()) {
+      const lastTime = parseInt(localStorage.getItem("lastRequestIPTime"));
+      const nextTime = new Date(lastTime + REQUEST_IP_COOLDOWN).toLocaleString();
+      alert(`⏳ Anda sudah mengirim request IP. Coba lagi setelah: ${nextTime}`);
+      return;
+    }
 
     try {
       const res = await fetch('https://api.ipify.org?format=json');
@@ -189,13 +171,14 @@ window.addEventListener("DOMContentLoaded", () => {
       const ip = data.ip;
 
       await sendRequestIPToTelegram(ip, kode);
-      alert("✅ Permintaan IP Anda telah dikirim ke Admin.");
+      alert("✅ Permintaan IP Anda telah dikirim, Mohon ditunggu!.");
+      requestIPBtn.disabled = true;
       requestIPContainer.style.display = "none";
     } catch (err) {
       alert("❌ Gagal mengirim permintaan IP.");
     }
   });
-}); 
+});
 
 
     function toggleSidebar() {
@@ -4769,6 +4752,103 @@ if (page === 'promptgeminiveo3') {
   document.getElementById("sidebar").classList.remove("active");
 }
 
+if (page === 'shorturl') {
+  content = `
+    <section class="shorturl-container">
+      <div class="shorturl-box">
+        <h2 class="shorturl-title">🔗 Short URL Generator</h2>
+        <input type="text" id="longUrl" placeholder="Masukkan URL panjang..." class="shorturl-input" />
+        <button class="shorturl-btn" onclick="generateShortUrl()">Shorten URL</button>
+        
+        <div id="shortResult" class="shorturl-result" style="display: none;">
+          <p>✅ URL berhasil disingkat:</p>
+          <div id="shortUrlText" class="shorturl-output"></div>
+          <button class="shorturl-copy-btn" onclick="copyShortUrl()">Salin</button>
+        </div>
+      </div>
+    </section>
+  `;
+main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+}
+
+if (page === 'adminucapan') {
+  content = `
+    <section class="adminucapan-container">
+      <div class="adminucapan-box">
+        <h2 class="adminucapan-title">🎁 Generator Link Ucapan</h2>
+
+        <label>Dari:</label>
+        <input type="text" id="adminDari" class="adminucapan-input" placeholder="Contoh: Vicky / Kak Vicky / Secret Admirer">
+
+        <label>Kepada:</label>
+        <input type="text" id="adminNama" class="adminucapan-input" placeholder="Masukkan nama penerima...">
+
+        <label>Jenis Kelamin:</label>
+        <select id="adminGender" class="adminucapan-input">
+          <option value="pria">Pria</option>
+          <option value="wanita">Wanita</option>
+        </select>
+
+        <label>Hubungan:</label>
+        <select id="adminHubungan" class="adminucapan-input">
+          <option value="adik">Adik</option>
+          <option value="kakak">Kakak</option>
+          <option value="saudara">Saudara</option>
+          <option value="sepupu">Sepupu</option>
+          <option value="pacar">Pacar</option>
+          <option value="hts">HTS</option>
+          <option value="teman dekat">Teman Dekat</option>
+          <option value="rekan kerja">Rekan Kerja</option>
+          <option value="gebetan">Gebetan</option>
+          <option value="mantan">Mantan</option>
+          <option value="dll">Lainnya</option>
+        </select>
+
+        <label>Tema Ucapan:</label>
+        <select id="adminTema" class="adminucapan-input">
+          <option value="ulangtahun">Ulang Tahun</option>
+          <option value="mintamaaf">Minta Maaf</option>
+          <option value="weekend">Weekend</option>
+          <option value="dating">Dating</option>
+          <option value="dinner">Dinner</option>
+        </select>
+
+        <label>Pesan (Opsional):</label>
+        <textarea id="adminPesan" class="adminucapan-input" placeholder="Kosongkan jika ingin auto generate..."></textarea>
+
+        <button class="adminucapan-btn" onclick="generateUcapanLink()">Buat Ucapan</button>
+
+        <div id="adminResult" class="adminucapan-result" style="display: none;">
+          <p>✅ Link Ucapan:</p>
+          <div id="adminLink" class="adminucapan-link"></div>
+          <button onclick="copyAdminLink()">Salin Link</button>
+
+          <div style="margin-top: 1.2rem;">
+            <p style="margin-bottom: 0.5rem;">📱 Scan QR Code:</p>
+            <div id="adminQrCode"></div>
+          </div>
+
+          <div style="margin-top: 1.2rem;">
+            <button onclick="shareToWhatsApp()" style="margin-top: 1rem; background: #25D366; color: white; padding: 0.6rem 1.2rem; border-radius: 0.5rem; border: none; cursor: pointer;">
+              💬 Kirim Lewat WhatsApp
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+  `;
+
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+
+  const qrScript = document.createElement("script");
+  qrScript.src = "https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js";
+  document.body.appendChild(qrScript);
+}
+
+
+
 if (page === 'danakaget') {
   content = `
     <section class="gift-container">
@@ -4787,7 +4867,129 @@ if (page === 'danakaget') {
 }
 }
 
+
+
 /////// PISAHIN //////
+
+function generateUcapanLink() {
+  const dariRaw = document.getElementById("adminDari").value.trim() || "Seseorang";
+  const namaRaw = document.getElementById("adminNama").value.trim() || "Seseorang";
+  const gender = document.getElementById("adminGender").value;
+  const hubungan = document.getElementById("adminHubungan").value;
+  const tema = document.getElementById("adminTema").value;
+  let pesan = document.getElementById("adminPesan").value.trim();
+
+  // Auto-generate pesan jika tidak diisi
+  if (!pesan) {
+    if (tema === 'ulangtahun') {
+      if (hubungan === 'adik') {
+        pesan = gender === 'pria'
+          ? "🎉 Selamat ulang tahun, dek! Semoga makin pintar dan sehat selalu 💪"
+          : "🎂 Happy birthday, adikku tersayang! Semoga hidupmu selalu penuh warna 🌈";
+      } else if (['pacar', 'gebetan', 'hts'].includes(hubungan)) {
+        pesan = gender === 'pria'
+          ? "💖 Happy birthday, cintaku! Semoga tahun ini penuh kebahagiaan dan hal indah bareng kita."
+          : "🎉 Selamat ulang tahun, sayang! Makasih udah hadir dan bikin hidupku lebih berwarna.";
+      } else {
+        pesan = "🎉 Selamat ulang tahun! Semoga sehat, bahagia, dan semua harapanmu terkabul ya 🙏";
+      }
+    } else if (tema === 'mintamaaf') {
+      pesan = ['pacar', 'gebetan'].includes(hubungan)
+        ? "🙏 Aku tahu aku salah. Aku nggak mau kehilangan kamu cuma karena hal sepele. Maafin aku ya 💔"
+        : "🙏 Maaf ya kalau aku sempat mengecewakan. Aku bener-bener pengen memperbaiki semuanya.";
+    } else if (tema === 'weekend') {
+      pesan = hubungan === 'rekan kerja'
+        ? "☀️ Happy weekend! Semoga bisa recharge dan kembali produktif minggu depan 💼"
+        : "🍃 Selamat weekend! Waktunya istirahat dan nikmati hari tanpa beban yaa 😌";
+    } else if (tema === 'dating') {
+      pesan = ['pacar', 'gebetan', 'hts'].includes(hubungan)
+        ? "💌 Aku pengen quality time sama kamu hari ini. Gimana kalau kita jalan berdua?"
+        : "😅 Aku pengen ngajak kamu keluar hari ini. Santai aja, kayaknya bakal seru bareng kamu.";
+    } else if (tema === 'dinner') {
+      pesan = ['pacar', 'hts'].includes(hubungan)
+        ? "🍽️ Makan malam bareng yuk? Nggak perlu mewah, yang penting kamu di sebelahku ❤️"
+        : "🍴 Dinner bareng malam ini? Sekalian ngobrol dan ketawa bareng kayak dulu 😄";
+    }
+  }
+
+  const finalLink = `https://vlcrave.github.io/home/ucapan/${tema}.html?nama=${encodeURIComponent(namaRaw)}&pesan=${encodeURIComponent(pesan)}`;
+  document.getElementById("adminLink").innerText = finalLink;
+  document.getElementById("adminResult").style.display = "block";
+
+  // Generate QR Code
+  const qrContainer = document.getElementById("adminQrCode");
+  qrContainer.innerHTML = "";
+  new QRCode(qrContainer, {
+    text: finalLink,
+    width: 160,
+    height: 160,
+    colorDark: "#38bdf8",
+    colorLight: "#ffffff",
+    correctLevel: QRCode.CorrectLevel.H
+  });
+
+  // Simpan data "Dari" untuk digunakan di shareToWhatsApp()
+  document.getElementById("adminResult").dataset.nama = namaRaw;
+  document.getElementById("adminResult").dataset.dari = dariRaw;
+  document.getElementById("adminResult").dataset.pesan = pesan;
+}
+
+function shareToWhatsApp() {
+  const link = document.getElementById("adminLink").innerText;
+  const nama = document.getElementById("adminResult").dataset.nama || "Seseorang";
+  const dari = document.getElementById("adminResult").dataset.dari || "Seseorang";
+  const pesan = document.getElementById("adminResult").dataset.pesan || "Ada ucapan spesial buat kamu!";
+
+  const finalMessage = `Hai ${nama}! Aku punya ucapan spesial buat kamu nih 🥰\n\n${pesan}\n\nCek di sini ya 👉 ${link}\n\n— Dari ${dari}`;
+  const waUrl = `https://wa.me/?text=${encodeURIComponent(finalMessage)}`;
+
+  window.open(waUrl, "_blank");
+}
+
+
+function generateShortUrl() {
+  let longUrl = document.getElementById('longUrl').value.trim();
+  if (!longUrl) return alert("Masukkan URL terlebih dahulu.");
+
+  if (!/^https?:\/\//i.test(longUrl)) {
+    longUrl = 'https://' + longUrl;
+  }
+
+  fetch("https://api.tinyurl.com/create", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer 06oJiNLFzLQoWVGtOIvImWW1pHUhXI7bDrnSYVjkQcjU7PMmZx8XYsoNynkO"
+    },
+    body: JSON.stringify({
+      url: longUrl,
+      domain: "tinyurl.com"
+    })
+  })
+    .then(res => res.json())
+    .then(data => {
+      console.log("RESPON API:", data); // Debug
+      if (data.data && data.data.tiny_url) {
+        document.getElementById("shortUrlText").innerText = data.data.tiny_url;
+        document.getElementById("shortResult").style.display = "block";
+      } else {
+        const pesanError = data.errors?.[0]?.message || "Tidak diketahui";
+        alert("Gagal membuat short URL.\nPesan: " + pesanError);
+      }
+    })
+    .catch(error => {
+      console.error("TinyURL Error:", error);
+      alert("Terjadi kesalahan saat menghubungi TinyURL API.");
+    });
+}
+
+
+
+function copyShortUrl() {
+  const text = document.getElementById('shortUrlText').innerText;
+  navigator.clipboard.writeText(text).then(() => alert("URL berhasil disalin!"));
+}
+
 
 function salinPrompt(id) {
         const text = document.getElementById(id).innerText;
@@ -4803,8 +5005,9 @@ function generateDanaKaget() {
   const box = document.getElementById("giftBox");
   const result = document.getElementById("resultBox");
 
-  const isGiftEnabled = true; // Admin toggle
-  const jumlahUserTerbuka = 10; // <- Ganti sesuai jumlah user yang diaktifkan
+  const isGiftEnabled = false; // Admin toggle
+  const jumlahUserTerbuka = 10;
+  const cooldownTime = 24 * 60 * 60 * 7 * 1000; // 7 Hari ja
 
   const hadiahList = [
     { nama: "Rp2.000", link: "" },
@@ -4821,7 +5024,21 @@ function generateDanaKaget() {
   ];
 
   const hadiahFix = hadiahList[0];
-  let hasClaimed = false;
+  const lastClaimTime = parseInt(localStorage.getItem("danaKagetClaimedTime"));
+  const now = Date.now();
+
+  if (lastClaimTime && now - lastClaimTime < cooldownTime) {
+    const nextTime = new Date(lastClaimTime + cooldownTime).toLocaleString();
+    btn.disabled = true;
+    btn.textContent = "✅ Sudah Diklaim";
+    result.innerHTML = `💬 Kamu sudah claim Dana Kaget minggu ini.<br/>Coba lagi setelah: <strong>${nextTime}</strong>`;
+    return;
+  }
+
+  // Jika kadaluarsa, hapus waktu claim
+  if (lastClaimTime && now - lastClaimTime >= cooldownTime) {
+    localStorage.removeItem("danaKagetClaimedTime");
+  }
 
   if (!isGiftEnabled) {
     btn.disabled = true;
@@ -4830,20 +5047,12 @@ function generateDanaKaget() {
     return;
   }
 
-  // Jika aktif
+  // Aktif
   btn.disabled = false;
   btn.textContent = "🎉 Buka Hadiah";
   result.innerHTML = `✅ Dana Kaget sudah dibuka untuk <strong>${jumlahUserTerbuka}</strong> orang!`;
 
   btn.onclick = () => {
-    if (hasClaimed) {
-      if (hadiahFix.link) window.open(hadiahFix.link, "_blank");
-      btn.disabled = false;
-      btn.textContent = "✅ Sudah Diklaim";
-      result.innerHTML = "💬 Kamu sudah claim Dana Kaget minggu ini.<br/>Tunggu minggu depan ya!";
-      return;
-    }
-
     btn.disabled = true;
     box.classList.add("shake");
     result.textContent = "🔄 Mengacak hadiah...";
@@ -4859,9 +5068,9 @@ function generateDanaKaget() {
         box.classList.remove("shake");
 
         result.innerHTML = `🎉 Kamu mendapatkan: <strong>${hadiahFix.nama}</strong>`;
-        btn.textContent = "🎁 Ambil Hadiah";
-        btn.disabled = false;
-        hasClaimed = true;
+        btn.textContent = "✅ Sudah Diklaim";
+        localStorage.setItem("danaKagetClaimedTime", Date.now().toString());
+        btn.disabled = true;
       }
     }, 100);
   };

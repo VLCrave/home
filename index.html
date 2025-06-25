@@ -11,29 +11,41 @@
 <div id="popup-greeting">
   <h2>Selamat Datang!</h2>
   <p class="terms-box">
-    Sebelum masuk ke dalam website <strong>silahkan masukkan Kode Akses</strong> yang berlaku.
+    Sebelum masuk ke dalam website <strong>silakan masukkan Kode Akses</strong> yang berlaku.
   </p>
+
   <label class="check-label">
     <input type="checkbox" checked disabled />
     Silakan masukkan kode akses terlebih dahulu.
   </label>
+
   <input id="access-code" placeholder="Masukkan kode akses..." type="password" />
+
   <br />
+
   <button id="close-popup">Masuk</button>
-  <div id="loading-spinner" style="display:none;">⏳</div>
-  <div class="result-icon success" id="checkmark" style="display:none;">
+
+  <div id="loading-spinner" style="display: none;">⏳</div>
+
+  <div class="result-icon success" id="checkmark" style="display: none;">
     <i class="fas fa-check-circle"></i>
   </div>
-  <div class="result-icon error" id="crossmark" style="display:none;">
+
+  <div class="result-icon error" id="crossmark" style="display: none;">
     <i class="fas fa-times-circle"></i>
   </div>
-  <div id="purchase-link" style="display:none;">
-  <a href="https://lynk.id/vickysatrialindy/rr13vjv48rq9/checkout?token=..." target="_blank" class="access-btn">Beli Kode Akses</a>
-</div>
 
-<div id="request-ip-container" style="display:none;">
-  <a href="#" id="request-ip" class="access-btn">Request IP</a>
-</div>
+  <!-- Tombol Beli Kode Akses -->
+  <div id="purchase-link" style="display: none;">
+    <a href="https://lynk.id/vickysatrialindy/rr13vjv48rq9/checkout?token=..." target="_blank" class="access-btn">
+      Beli Kode Akses
+    </a>
+  </div>
+
+  <!-- Tombol Request IP -->
+  <div id="request-ip-container" style="display: none;">
+    <a href="#" id="request-ip" class="access-btn">Request IP</a>
+  </div>
 </div>
 </head>
 <body>
@@ -48,6 +60,7 @@
 <ul>
 <li><a onclick="loadContent('dashboard')"><i class="fas fa-chart-line"></i> Dashboard</a></li>
 <li><a onclick="loadContent('cheatgame')"><i class="fas fa-gamepad"></i> Cheat Game</a></li>
+<li><a onclick="loadContent('adminucapan')"><i class="fas fa-gift"></i> Ucapan Generator</a></li>
 <li><a onclick="loadContent('promptchatgpt')"><i class="fas fa-book"></i> Prompt ChatGPT</a></li>
 <li><a onclick="loadContent('promptgeminiveo3')"><i class="fas fa-book"></i> Prompt Gemini VEO3</a></li>
 <li class="has-submenu">
@@ -113,6 +126,7 @@
 <li><a onclick="loadContent('submenu2')">BMI Calculator</a></li>
 <li><a onclick="loadContent('submenu3')">HPP Caculator</a></li>
 <li><a onclick="loadContent('qrgenerator')">QR Generator</a></li>
+<li><a onclick="loadContent('shorturl')">URL Shortner</a></li>
 </ul>
 </li>
 </ul>
