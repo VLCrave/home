@@ -225,6 +225,11 @@ window.addEventListener("DOMContentLoaded", () => {
         <tr><th><i class="fas fa-calendar-alt"></i> Tanggal</th><th><i class="fas fa-info-circle"></i> Deskripsi</th></tr>
       </thead>
       <tbody>
+	<tr><td>25-06-2025</td><td>Penambahan Fitur <i class="fas fa-book"></i>  Prompt Gemini VEO3  <span class="badge new">  NEW</span></td></tr>
+	<tr><td>25-06-2025</td><td>Penambahan Fitur <i class="fas fa-book"></i>  Prompt ChatGPT  <span class="badge new">  NEW</span></td></tr>
+	<tr><td>25-06-2025</td><td>Penambahan Fitur <b>Gemini VEO3</b> pada Menu <i class="fas fa-book"></i>  Tips  <span class="badge new">  NEW</span></td></tr>
+	<tr><td>25-06-2025</td><td>Penambahan Fitur <b>Ucapan Generator</b> pada Menu <i class="fas fa-gift"></i>  Ucapan Generator  <span class="badge new">  NEW</span></td></tr>
+	<tr><td>25-06-2025</td><td>Penambahan Fitur <b>Short URL Generator</b> pada Menu <i class="fas fa-tools"></i>  Tools  <span class="badge new">  NEW</span></td></tr>
 	<tr><td>25-06-2025</td><td>Penambahan Fitur <b>Room Bot Alltier</b> pada Menu <i class="fas fa-gamepad"></i>  Special MLBB  <span class="badge new">  NEW</span></td></tr>
 	<tr><td>25-06-2025</td><td>Penambahan Fitur <b>Room Wangi</b> pada Menu <i class="fas fa-gamepad"></i>  Special MLBB  <span class="badge new">  NEW</span></td></tr>
 	<tr><td>25-06-2025</td><td>Penambahan Fitur <b>Bug Room Wangi</b> pada Menu <i class="fas fa-gamepad"></i>  Special MLBB  <span class="badge new">  NEW</span></td></tr>
@@ -4814,24 +4819,18 @@ if (page === 'adminucapan') {
           <option value="dinner">Dinner</option>
         </select>
 
-        <label>Pesan (Opsional):</label>
+        <label>Pesan:</label>
         <textarea id="adminPesan" class="adminucapan-input" rows="3" style="min-height: 80px;" placeholder="Isi minimal 3 baris..."></textarea>
 
         <label>Nomor WhatsApp Penerima:</label>
-        <input type="text" id="adminWa" class="adminucapan-input" placeholder="Contoh: 6281234567890">
+        <input type="number" id="adminWa" class="adminucapan-input" placeholder="Contoh: 6281234567890">
 
         <button class="adminucapan-btn" onclick="generateUcapanLink()">Buat Ucapan</button>
 
         <div id="adminResult" class="adminucapan-result" style="display: none;">
           <p>✅ Link Ucapan:</p>
-          <div id="adminLink" class="adminucapan-link"></div>
-          <button onclick="copyAdminLink()">Salin Link</button>
-
-          <div style="margin-top: 1.2rem;">
-            <p style="margin-bottom: 0.5rem;">📱 Scan QR Code:</p>
-            <div id="adminQrCode"></div>
-          </div>
-
+         <div id="adminLink" class="adminucapan-link"></div>
+<button class="adminucapan-salin-btn" onclick="copyAdminLink()">Salin Link</button>
           <div style="margin-top: 1.2rem;">
             <button onclick="shareToWhatsApp()" style="margin-top: 1rem; background: #25D366; color: white; padding: 0.6rem 1.2rem; border-radius: 0.5rem; border: none; cursor: pointer;">
               💬 Kirim Lewat WhatsApp
