@@ -1,3 +1,13 @@
+const menuToggle = document.getElementById('menuToggle');
+const mainNav = document.getElementById('mainNav');
+
+menuToggle.addEventListener('click', () => {
+  mainNav.classList.toggle('active');
+  menuToggle.classList.toggle('menu-open');
+});
+
+
+
 // === Format angka ribuan (locale Indonesia) ===
 function formatNumber(num) {
   return num.toLocaleString('id-ID');

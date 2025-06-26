@@ -4,26 +4,30 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VL - Project Landing Page</title>
+  <title>VLCrave - Dashboard</title>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
   <link href="style_landingpage.css" rel="stylesheet" />
 </head>
 <body>
   <header>
-    <div class="logo">VL Project</div>
-    <nav>
-  <a href="#statistic">Statistic</a>
-  <a href="#ctaSection">Price</a>
-  <a href="#fitur-unggulan">Fitur</a>
-  <a href="#testimonial">Testimonial</a>
-  <a href="#faq">FAQ</a>
-</nav>
+  <div class="logo">VL Project</div>
+  <div class="menu-toggle" id="menuToggle">
+    <i class="fas fa-bars"></i>
+  </div>
+  <nav id="mainNav">
+    <a href="#statistic">Statistic</a>
+    <a href="#fitur-unggulan">Fitur</a>
+    <a href="#ctaSection">Price</a>
+    <a href="#testimonial">Testimonial</a>
+    <a href="#faq">FAQ</a>
+  </nav>
+</header>
 
-  </header>
+
 <main class="container">
 
-<section class="section-box" id="statistic">
-  <h2 class="statistik-title">📊 Statistik</h2>
+ <section class="section-box statistik-section" id="statistic">
+  <center><h2 class="statistik-title">📊 Statistik</h2></center>
   <div class="stat-box">
     <div class="stat-item">
       <div class="stat-icon"><i class="fas fa-users"></i></div>
@@ -45,16 +49,14 @@
 
 
 
-     <section id="fitur-unggulan" class="section-box">
+      <section class="section-box" id="fitur-unggulan">
       <h2 class="section-title">🚀 Fitur Unggulan</h2>
       <div class="feature-slider-container">
-  <button class="feature-btn prev" onclick="prevSlide()">◀</button>
-  <button class="feature-btn next" onclick="nextSlide()">▶</button>
   <div class="feature-slider" id="featureSlider"></div>
 </div>
     </section>
 
- <section id="ctaSection" class="section-box">
+  <section class="section-box cta-section" id="ctaSection">
   <center><h2 class="cta-title">🚀 Upgrade Sekarang & Nikmati Semua Fitur Premium!</h2>
   <p class="cta-subtitle">Berikut fitur lengkap yang akan kamu dapatkan:</p></center>
 
@@ -97,7 +99,7 @@
 
 
 
-<section class="testimonial-section" id="testimonial">
+  <section class="section-box testimonial-section" id="testimonial">
   <h2 style="text-align:center; color:#00f7ff">Testimoni Member</h2>
   <div class="testimonial-slider-container">
   <div class="testimonial-slider" id="testimonialSlider"></div>
@@ -107,7 +109,7 @@
 
 
 
-<section class="section-box faq-section" id="faq">
+  <section class="section-box faq-section" id="faq">
   <h2 style="text-align:center; color:#00f7ff;">❓ Pertanyaan Umum</h2>
 
 <div class="faq-item">
@@ -175,8 +177,8 @@
 </section>
 
 
-<section class="section-box neon-form" id="formPesan"
-  <h3>📩 Kirim Pertanyaan / Pesan</h3>
+  <section class="section-box neon-form" id="formPesan">
+  <center><h3>📩 Kirim Pertanyaan / Pesan</h3></center
 <div class="form-wrapper">
   <form id="pesanForm">
     <label for="nama">Nama</label>
@@ -197,9 +199,10 @@
 </section>
 
 
-  <footer>
-    &copy; 2025 VLCrave Project. All Rights Reserved.
-  </footer>
+</main>
+<footer>
+  &copy; 2025 VLCrave Project. All Rights Reserved.
+</footer>
 
   <script src="script_landingpage.js"></script>
 </body>
