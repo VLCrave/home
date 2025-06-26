@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pesan Untukmu 💌</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #0d0f2b;
+      color: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    .blur {
+      filter: blur(4px);
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .chat-container,
+    .reply-row {
+      max-width: 400px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .chat-container {
+      background: #12163a;
+      padding: 20px;
+      height: 360px;
+      overflow-y: auto;
+      border-radius: 15px;
+      box-shadow: 0 0 15px #00f7ff44;
+    }
+
+    .bubble {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 15px;
+      animation: fadeIn 0.6s ease-in;
+    }
+
+    .bubble img,
+    .typing img {
+      width: 40px;
+      height: 40px;
+      margin-right: 10px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .bubble-text {
+      background: #202861;
+      padding: 10px 15px;
+      border-radius: 15px;
+      max-width: 80%;
+      word-wrap: break-word;
+    }
+
+    .reply-row {
+      display: none;
+      margin-top: 20px;
+    }
+
+    .reply-wrapper {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      gap: 10px;
+    }
+
+    #balasPesan {
+      flex: 1;
+      height: 40px;
+      padding: 6px 14px;
+      border-radius: 20px;
+      border: none;
+      font-size: 0.95rem;
+      background: white;
+      color: #0f1330;
+      box-sizing: border-box;
+      resize: none;
+      overflow: hidden;
+      line-height: 1.4;
+    }
+
+    #kirimBalasan {
+      width: 40px;
+      height: 40px;
+      background: #25D366;
+      border: none;
+      border-radius: 50%;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    #notifPopup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background: #12163a;
+      border: 2px solid #00f7ff;
+      padding: 20px 25px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px #00f7ff;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      font-size: 1rem;
+      max-width: 90%;
+    }
+
+    .lanjut-btn {
+      background: #00f7ff;
+      color: #000;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .typing {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      animation: fadeIn 0.4s ease-in;
+    }
+
+    .typing span {
+      background: #202861;
+      color: #ccc;
+      padding: 8px 12px;
+      border-radius: 15px;
+      font-style: italic;
+    }
+
+    .dotdotdot::after {
+      content: '...';
+      animation: dots 1.2s infinite steps(3, end);
+    }
+
+    @keyframes dots {
+      0%   { content: ''; }
+      33%  { content: '.'; }
+      66%  { content: '..'; }
+      100% { content: '...'; }
+    }
+
+    @media only screen and (max-width: 450px) {
+      .chat-container,
+      .reply-row {
+        max-width: 85%;
+      }
+
+      .chat-container {
+        padding: 15px;
+        height: 300px;
+      }
+
+      .bubble-text,
+      #balasPesan {
+        font-size: 0.9rem;
+      }
+
+      #kirimBalasan {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+      }
+
+      .bubble img,
+      .typing img {
+        width: 32px;
+        height: 32px;
+      }
+
+      .lanjut-btn {
+        font-size: 0.95rem;
+        padding: 8px 15px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div id="notifPopup">
+    <p>📩 Pesan masuk dari <span id="pengirimNotif" style="color: #00f7ff; font-weight: bold;"></span></p>
+    <button onclick="mulaiPesan()" class="lanjut-btn">Klik di sini untuk membuka pesan</button>
+  </div>
+
+  <div id="mainContent">
+    <div class="chat-container" id="chatBox"></div>
+
+    <div id="balasContainer" class="reply-row">
+      <div class="reply-wrapper">
+        <textarea id="balasPesan" placeholder="Tulis balasanmu di sini..."></textarea>
+        <button id="kirimBalasan" onclick="kirimKeWA()">➤</button>
+      </div>
+    </div>
+  </div>
+
+  <audio id="bgMusic" autoplay loop>
+    <source src="" type="audio/mpeg">
+  </audio>
+
+  <script>
+    const dari = "Owner VLCrave";
+    document.getElementById("pengirimNotif").innerText = dari;
+
+    const pesan = [
+      "Selamat datang di VLCrave Project! 👋",
+      "Tahukah kamu kalau semua fitur ini kalau dibeli satu per satu harganya bisa bikin dompet jebol?",
+      "",
+      "💸 Total Harga Satuan Pasaran:",
+      "- Cheat Game Online: Rp100.000",
+      "- Ucapan Generator: Rp50.000",
+      "- 600+ Prompt ChatGPT: Rp70.000",
+      "- Prompt Gemini VEO3: Rp50.000",
+      "- Tips Gemini: Rp20.000",
+      "- Room Wangi MLBB: Rp75.000",
+      "- Room Bot Alltier: Rp75.000",
+      "- Bug Room Wangi: Rp60.000",
+      "- Ebook Affiliator, Konten Kreator, Branding, dll: Rp210.000",
+      "- Promosi: Rp90.000",
+      "- Template Canva Premium: Rp75.000",
+      "- Aplikasi Premium, Game Original/Mod: Rp160.000",
+      "- Tools & Hiburan: Rp130.000",
+      "",
+      "📌 Total jika beli satuan: ~~Rp1.320.000~~ ❌",
+      "📌 Harga Khusus VLCrave Access: ~~Rp499.000~~ ❌",
+      "📌 PROMO HARI INI: CUMA Rp89.000 ✅",
+      "",
+      "💥 Dapatkan akses ke semua fitur eksklusif hanya dengan satu harga!",
+      "",
+      "📦 Bonus spesial:",
+      "- Hak Jual Kode Akses Ulang: cukup beli ke admin Rp49.000, kamu jual berapa aja sisanya 100% milikmu.",
+      "- Hak Jual Ulang Fitur VLCrave: 100% profit milik kamu.",
+      "",
+      "Kamu bisa jadikan ini sebagai penghasilan tambahan juga!",
+      "Klik tombol balas di bawah ini jika kamu tertarik atau punya pertanyaan.",
+      "Terima kasih telah membaca 💖"
+    ];
+
+    let index = 0;
+    let isStarted = false;
+
+    function mulaiPesan() {
+      if (isStarted) return;
+      isStarted = true;
+      document.getElementById("notifPopup").style.display = "none";
+      tampilkanBubbleSatuPerSatu();
+    }
+
+    function tampilkanBubbleSatuPerSatu() {
+      if (index < pesan.length) {
+        const typingDiv = document.createElement("div");
+        typingDiv.className = "typing";
+        typingDiv.innerHTML = `
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScsg7vbHBvu5Lu2SYjgSPtVaLc_fCfScFftw&s" alt="anon">
+          <span class="dotdotdot">Sedang mengetik</span>
+        `;
+        const chatBox = document.getElementById("chatBox");
+        chatBox.appendChild(typingDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        setTimeout(() => {
+          typingDiv.remove();
+          const div = document.createElement("div");
+          div.className = "bubble";
+          div.innerHTML = `
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcScsg7vbHBvu5Lu2SYjgSPtVaLc_fCfScFftw&s" alt="anon">
+            <div class="bubble-text">${pesan[index]}</div>
+          `;
+          chatBox.appendChild(div);
+          chatBox.scrollTop = chatBox.scrollHeight;
+          index++;
+          setTimeout(tampilkanBubbleSatuPerSatu, 1000);
+        }, 800);
+      } else {
+        document.getElementById("balasContainer").style.display = "flex";
+      }
+    }
+
+    function kirimKeWA() {
+      const isi = document.getElementById("balasPesan").value.trim();
+      if (!isi) {
+        alert("Pesan tidak boleh kosong.");
+        return;
+      }
+      const pesanWa = `Hai ${dari}, ini balasanku atas pesan kamu:\n\n"${isi}"`;
+      window.open(`https://wa.me/6285709458101?text=${encodeURIComponent(pesanWa)}`, "_blank");
+    }
+  </script>
+</body>
+</html>
