@@ -86,13 +86,13 @@ const fiturList = [
     img: 'https://images.ctfassets.net/4cd45et68cgf/Rx83JoRDMkYNlMC9MKzcB/2b14d5a59fc3937afd3f03191e19502d/Netflix-Symbol.png?w=700&h=456',
     title: 'Aplikasi Premium',
     desc: 'Total 50+ Aplikasi berbayar Subscription setiap bulan yang dapat kamu akses secara Gratis.',
-    price: 'Rp1.000.000'
+    price: 'Rp500.000'
   },
 {
     img: 'https://www.pngarts.com/files/4/Minecraft-Logo-PNG-Image.png',
     title: 'Aplikasi Original',
     desc: 'Total 50+ Aplikasi berbayar yang dapat kamu unduh dalam satu klik secara Gratis.',
-    price: 'Rp1.000.000'
+    price: 'Rp500.000'
   },
 {
     img: 'https://cdn.freebiesupply.com/logos/large/2x/ebook-logo-svg-vector.svg',

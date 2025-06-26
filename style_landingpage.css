@@ -163,6 +163,11 @@ section {
   }
 }
 
+ .cta-feature-list li {
+    font-size: 0.9rem;
+  }
+}
+
 
 /* === STAT BOX === */
 
@@ -177,6 +182,8 @@ section {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  min-width: 320px;
+  word-break: break-word;
 }
 
 
