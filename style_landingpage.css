@@ -1,0 +1,966 @@
+/* === BASE === */
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #050d1f;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+/* === HEADER === */
+header {
+  background: #0f1c3f;
+  padding: 1rem 2rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 0 15px #00f7ff44;
+  position: sticky;
+  top: 0;
+  z-index: 999;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+
+header .logo {
+  font-size: 1.7rem;
+  color: #00f7ff;
+  font-weight: bold;
+}
+
+nav a {
+  color: #00f7ff;
+  margin: 0 1rem;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+nav a:hover {
+  color: #ffffff;
+}
+
+/* === MAIN === */
+main {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: auto;
+}
+
+section {
+  margin-top: 2rem;
+  background: #0c1a37;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 0 20px #00f7ff22;
+}
+
+/* === STAT BOX === */
+
+#fiturListContainer li {
+  background: #061528; /* biru tua klasik */
+  /* atau coba ini jika mau lebih pekat biru: #061528 */
+  color: white;
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  border-left: 3px solid #00f7ff;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+.fitur-nama {
+  display: flex;
+  align-items: center;
+  gap: 8px; /* jarak antara title dan badge */
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.badge-premium {
+  background: linear-gradient(135deg, #FFD700, #FFA500);
+  color: #000;
+  font-weight: bold;
+  font-size: 0.7rem;
+  padding: 2px 6px;
+  border-radius: 6px;
+  box-shadow: 0 0 6px #ffa50088;
+  text-transform: uppercase;
+}
+
+.price {
+  font-weight: bold;
+  color: #ff6666;
+  font-size: 1rem;
+}
+
+.price-promo-box {
+  position: relative;
+  background: #061528; /* ✅ Ubah warna latar di sini */
+  color: #00f7ff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 0 15px #00f7ff55;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+
+.discount-inside {
+  font-size: 0.75rem;
+  background: #FFD700;
+  color: #000;
+  padding: 4px 8px;
+  border-radius: 6px;
+  margin-top: 6px;
+  font-weight: bold;
+  box-shadow: 0 0 8px #ffa50077;
+}
+
+.price-promo-box {
+  background: #061528; /* ✅ biru tua */
+  color: #00f7ff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  text-align: center;
+  box-shadow: 0 0 15px #00f7ff55;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+
+.price-promo-amount {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.price-original-inside {
+  font-size: 0.9rem;
+  color: #ffaaaa;
+}
+
+.badge-floating {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: #FFD700;
+  color: #000;
+  font-weight: bold;
+  font-size: 0.7rem;
+  padding: 5px 8px;
+  border-radius: 8px;
+  box-shadow: 0 0 6px #ffa500aa;
+}
+
+
+
+.statistik-section {
+  background: #0c1a37;
+  padding: 2rem 1rem;
+  border-radius: 15px;
+  box-shadow: 0 0 20px #00f7ff22;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.statistik-title {
+  color: #00f7ff;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+}
+
+.stat-box {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: stretch;
+  gap: 1.5rem;
+  margin: 2rem auto;
+  max-width: 1000px;
+  text-align: center;
+  padding: 0 1rem;
+}
+
+.stat-item {
+  flex: 1 1 calc(33.333% - 1rem); /* 3 box di desktop */
+  background: #011225;
+  border: 1px solid #00f7ff66;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 0 15px #00f7ff22;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.3s ease;
+  min-width: 220px;
+}
+
+.stat-item:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 25px #00f7ff55;
+}
+
+.stat-icon {
+  font-size: 2rem;
+  color: #00f7ff;
+  margin-bottom: 0.5rem;
+}
+
+.stat-number {
+  font-size: 1.6rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+.stat-item small {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #ccc;
+
+}
+.cta-bottom-box {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem; /* mengatur jarak vertikal lebih rapat */
+}
+
+.countdown-label {
+  font-size: 1rem;
+  color: #00f7ff;
+  font-weight: 600;
+}
+
+.countdown-box {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.time-segment {
+  background: #021323;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 0 8px #00f7ff33;
+}
+
+.time-digit {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: #00f7ff;
+}
+
+.cta-wrapper {
+  margin-top: 0.5rem; /* kecilkan jarak tombol */
+}
+
+.cta-button-neon {
+  background: #00f7ff;
+  color: #000;
+  font-weight: bold;
+  padding: 12px 24px;
+  border-radius: 8px;
+  text-decoration: none;
+  box-shadow: 0 0 10px #00f7ff88;
+  transition: transform 0.2s;
+}
+
+.cta-button-neon:hover {
+  transform: scale(1.05);
+}
+
+
+/* === FITUR PRICE BOX === */
+.feature-slider-container {
+  overflow: hidden;
+  position: relative;
+  padding: 2rem 1rem;
+}
+
+
+.feature-slider {
+  display: flex;
+  gap: 2rem;
+  overflow-x: scroll;
+  scroll-behavior: smooth;
+  padding: 2rem 1rem;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.feature-slider::-webkit-scrollbar {
+  display: none;
+}
+
+.feature-item {
+  flex: 0 0 250px;
+  border: 1px solid #00f7ff44;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #071326 0%, #0d1f3b 100%);
+  padding: 1rem;
+  text-align: center;
+  transition: all 0.4s ease-in-out;
+  position: relative;
+  opacity: 0.5;
+  transform: scale(0.95);
+  filter: blur(2px);
+  scroll-snap-align: center;
+}
+
+
+.feature-item.active {
+  opacity: 1;
+  transform: scale(1.1);
+  filter: none;
+  z-index: 2;
+  box-shadow: 0 0 20px #00f7ff66;
+}
+
+.feature-item img {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 1rem;
+}
+
+.feature-item h4 {
+  color: #00f7ff;
+  margin-bottom: 0.5rem;
+}
+
+.feature-price {
+  margin-top: 1rem;
+  font-weight: bold;
+  color: #ff8888;
+}
+
+.feature-controls {
+  text-align: center;
+  margin-top: 1rem;
+}
+
+.feature-controls button {
+  background: #00f7ff;
+  color: #000;
+  border: none;
+  padding: 0.5rem 1rem;
+  margin: 0 0.5rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.feature-controls button:hover {
+  background: #00b8cc;
+}
+
+.feature-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #00f7ff;
+  color: #000;
+  border: none;
+  padding: 0.7rem 1rem;
+  font-size: 1.5rem;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 0 10px #00f7ff55;
+  z-index: 2;
+  transition: background 0.3s, transform 0.3s;
+}
+
+.feature-btn:hover {
+  background: #00b8cc;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.feature-btn.prev {
+  left: 10px;
+}
+
+.feature-btn.next {
+  right: 10px;
+}
+
+
+/* === PRICE BOX === */
+
+.price-box .price-cta {
+  margin-top: 1.5rem;
+  background: #00f7ff;
+  color: #000;
+  border: none;
+  padding: 1rem 2rem;
+  font-size: 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: 0.3s ease;
+  box-shadow: 0 0 10px #00f7ff88;
+}
+
+.price-box .price-cta:hover {
+  background: #00d4e0;
+  transform: scale(1.05);
+  box-shadow: 0 0 20px #00f7ff;
+}
+
+.price-box {
+  background: #011225;
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  border: 1px solid #00f7ff66;
+}
+
+.price-box del {
+  color: red;
+  font-size: 1.1rem;
+}
+
+.price-box h2 {
+  color: #00f7ff;
+  margin: 1rem 0;
+  font-size: 2rem;
+}
+
+/* === CTA === */
+.cta {
+  text-align: center;
+  margin: 3rem 0;
+}
+
+.cta-wrapper {
+  text-align: center;
+  margin-top: 1rem; /* Sebelumnya mungkin terlalu besar seperti 2rem atau lebih */
+  margin-bottom: 1.5rem;
+}
+
+.cta-button-neon {
+  display: inline-block;
+  background-color: #00bfff;
+  color: #000;
+  padding: 14px 28px;
+  border-radius: 10px;
+  font-weight: bold;
+  font-size: 1.1rem;
+  text-decoration: none;
+  box-shadow: 0 0 15px #00bfff;
+  transition: all 0.3s ease;
+}
+
+.cta-button-neon:hover {
+  background-color: #00aaff;
+  box-shadow: 0 0 25px #00bfff, 0 0 40px #00bfff;
+  color: #fff;
+}
+
+
+
+
+.cta-section {
+  background: #0c1a37;
+  padding: 2rem 1rem;
+  border-radius: 15px;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 0 25px #00f7ff22;
+  margin-top: 3rem;
+  border: 1px solid #00f7ff44;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cta-title {
+  font-size: 1.8rem;
+  color: #00f7ff;
+  margin-bottom: 0.5rem;
+}
+
+.cta-subtitle {
+  font-size: 1rem;
+  margin-bottom: 1.5rem;
+  color: #ccc;
+}
+
+.cta-feature-list {
+  list-style: none;
+  padding: 0;
+  margin: 0 auto 1.5rem;
+  max-width: 480px;
+  text-align: left;
+  color: #fff;
+}
+
+.cta-feature-list li {
+  background: #07162b;
+  border-left: 4px solid #00f7ff;
+  padding: 0.8rem 1rem;
+  margin-bottom: 0.7rem;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.cta-feature-list .price {
+  color: #ff9999;
+  font-weight: bold;
+}
+
+.cta-price-box {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.price-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+}
+
+.price-original {
+  font-size: 1rem;
+  color: #ff6b6b;
+  opacity: 0.8;
+  text-decoration: line-through;
+}
+
+.price-promo {
+  font-size: 2.4rem;
+  font-weight: bold;
+  color: #00f7ff;
+  background: #061528;
+  padding: 0.5rem 1.5rem;
+  border-radius: 12px;
+  box-shadow: 0 0 18px #00f7ff55;
+}
+
+.discount-badge {
+  display: inline-block;
+  margin-top: 0.6rem;
+  font-size: 1rem;
+  background: #ffcc00;
+  color: #000;
+  font-weight: bold;
+  padding: 0.4rem 1rem;
+  border-radius: 8px;
+  box-shadow: 0 0 8px #ffcc0055;
+}
+
+
+.discount-info {
+  font-size: 1rem;
+  color: #ffcc00;
+  margin-top: 0.2rem;
+  background: #261800;
+  padding: 0.3rem 0.8rem;
+  border-radius: 6px;
+  display: inline-block;
+  border: 1px solid #ffcc00;
+  box-shadow: 0 0 6px #ffcc0066;
+}
+
+
+.discount-info::before {
+  content: "💥 ";
+}
+
+
+
+.countdown-wrapper {
+  margin-top: 1.5rem;
+  text-align: center;
+}
+
+.countdown-label {
+  font-size: 1rem;
+  color: #ffcc00;
+  margin-bottom: 0.5rem;
+}
+
+.countdown-box {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.time-segment {
+  background: #041527;
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  border: 1px solid #00f7ff55;
+  box-shadow: 0 0 10px #00f7ff22;
+  text-align: center;
+  min-width: 60px;
+}
+
+.time-digit {
+  font-size: 1.4rem;
+  font-weight: bold;
+  color: #00f7ff;
+}
+
+.combined-price {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.combined-price .original del {
+  font-size: 1rem;
+  color: #ff6666;
+  opacity: 0.7;
+}
+
+.combined-price .promo {
+  font-size: 1.8rem;
+  color: #00f7ff;
+  font-weight: bold;
+  background: #001d2b;
+  padding: 0.4rem 1rem;
+  border-radius: 8px;
+  box-shadow: 0 0 12px #00f7ff66;
+}
+
+.original-price-top {
+  font-size: 1rem;
+  color: #ff6666;
+  margin-bottom: 0.2rem;
+  opacity: 0.75;
+}
+
+.original-price-top del {
+  text-decoration: line-through;
+}
+
+.promo-price-bottom {
+  font-size: 2rem;
+  color: #00f7ff;
+  font-weight: bold;
+  background: #001d2b;
+  padding: 0.5rem 1.2rem;
+  border-radius: 10px;
+  display: inline-block;
+  box-shadow: 0 0 15px #00f7ff44;
+  margin-bottom: 0.5rem;
+}
+
+.discount-info {
+  font-size: 1rem;
+  color: #ffcc00;
+}
+
+
+/* Responsive optimization */
+@media (max-width: 600px) {
+  .cta-title {
+    font-size: 1.5rem;
+  }
+
+  .cta-feature-list li {
+    font-size: 0.9rem;
+    padding: 0.7rem;
+  }
+
+  .promo-price {
+    font-size: 1.4rem;
+  }
+
+  .cta-button,
+  .cta button {
+    font-size: 1rem;
+    padding: 0.6rem 1.2rem;
+  }
+}
+
+
+
+/* === TESTIMONIAL SECTION === */
+
+.testimonial-section {
+  position: relative;
+  background: #0c1a37;
+  padding: 2rem 1rem;
+  border-radius: 15px;
+  box-shadow: 0 0 20px #00f7ff22;
+  margin-top: 3rem;
+  overflow: hidden;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.testimonial-slider-container {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.testimonial-slider {
+  display: flex;
+  transition: transform 0.6s ease-in-out;
+  pointer-events: none;
+  width: 100%; /* JANGAN gunakan 100vw */
+}
+
+.testimonial-item {
+  flex: 0 0 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 2rem;
+  text-align: center;
+  background: #0b1f36;
+  color: #fff;
+  border-radius: 12px;
+  border: 1px solid #00f7ff33;
+  box-shadow: 0 0 10px #00f7ff22;
+  margin-right: 0; /* Pastikan tidak ada spasi kanan */
+}
+
+.testimonial-item img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  margin-bottom: 1rem;
+}
+
+.testimonial-item h4 {
+  color: #00f7ff;
+  margin: 0.5rem 0 0.2rem;
+  font-size: 1.1rem;
+}
+
+.testimonial-item small {
+  color: #aaa;
+  font-size: 0.9rem;
+}
+
+.testimonial-item p {
+  margin-top: 1rem;
+  color: #eee;
+  font-style: italic;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.testimonial-date {
+  margin-top: 1.2rem;
+  font-size: 0.85rem;
+  color: #aaa;
+  text-align: center;
+  font-style: italic;
+}
+
+/* Responsive padding */
+@media (max-width: 768px) {
+  .testimonial-item {
+    padding: 1.2rem;
+  }
+}
+
+
+
+/* === FAQ === */
+
+.faq-section {
+  margin-top: 3rem;
+  background: #0b1c33;
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 0 20px #00f7ff22;
+}
+
+.faq-item {
+  margin-bottom: 1rem;
+  border: 1px solid #00f7ff44;
+  border-radius: 10px;
+  overflow: hidden;
+  background: #001529;
+  transition: all 0.3s ease;
+}
+
+.faq-question {
+  padding: 1rem 1.2rem;
+  background-color: #001d3d;
+  color: #00f7ff;
+  font-weight: 600;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.05rem;
+}
+
+.faq-question:hover {
+  background-color: #00264d;
+}
+
+.faq-question i {
+  color: #00f7ff;
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  padding: 0 1.2rem;
+  background-color: #000f22;
+  color: #ddd;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  transition: max-height 0.4s ease, padding 0.3s ease;
+}
+
+.faq-item.active .faq-answer {
+  padding: 1rem 1.2rem;
+  max-height: 500px;
+}
+
+/* === FORM PESAN === */
+
+.form-wrapper {
+  max-width: 500px;
+  margin: 0 auto; /* Pusatkan */
+  padding: 1rem;
+}
+
+#pesanForm input,
+#pesanForm textarea {
+  width: 100%;
+  box-sizing: border-box; /* Hindari overflow karena padding */
+}
+
+
+.neon-form {
+  background: #0a0f2c;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 0 25px rgba(0, 183, 255, 0.3);
+  color: #fff;
+  max-width: 600px;
+  margin: 3rem auto;
+}
+
+.neon-form label {
+  display: block;
+  margin: 1rem 0 0.4rem;
+  color: #00b7ff;
+  font-weight: bold;
+}
+
+.neon-form input,
+.neon-form textarea {
+  width: 100%;
+  padding: 10px 15px;
+  background: #101840;
+  border: 1px solid #00b7ff;
+  border-radius: 8px;
+  color: #fff;
+  font-family: inherit;
+  outline: none;
+  transition: box-shadow 0.3s;
+}
+
+.neon-form input:focus,
+.neon-form textarea:focus {
+  box-shadow: 0 0 8px #00b7ff;
+}
+
+.btn-kirim-neon {
+  margin-top: 1.5rem;
+  background-color: transparent;
+  border: 2px solid #00b7ff;
+  padding: 10px 20px;
+  color: #00b7ff;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  text-transform: uppercase;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+.btn-kirim-neon:hover {
+  background: #00b7ff;
+  color: #000;
+  box-shadow: 0 0 10px #00b7ff;
+}
+
+#statusKirim {
+  margin-top: 1rem;
+  font-size: 0.95rem;
+  text-align: center;
+}
+
+/* Tombol CTA Neon */
+.cta-button-neon {
+  background: #00b7ff;
+  color: #000;
+  padding: 12px 24px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 1.1rem;
+  box-shadow: 0 0 15px #00b7ff;
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+.cta-button-neon:hover {
+  background: #0095cc;
+  box-shadow: 0 0 25px #00b7ff;
+}
+
+.section-title {
+  font-size: 1.8rem;
+  color: #00f7ff;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+.section-box {
+  width: 100%;
+  max-width: 900px;
+  margin: 3rem auto;
+  background: #0c1a37;
+  padding: 2rem 1rem;
+  border-radius: 15px;
+  box-shadow: 0 0 20px #00f7ff22;
+}
+
+
+/* === FOOTER === */
+footer {
+  background: #03101e;
+  color: #ccc;
+  text-align: center;
+  padding: 2rem;
+  margin-top: 4rem;
+  border-top: 1px solid #00f7ff33;
+}
+
+/* === RESPONSIVE === */
+@media only screen and (max-width: 600px) {
+  nav a {
+    margin: 0 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .price-box h2 {
+    font-size: 1.5rem;
+  }
+}

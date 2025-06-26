@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+
+<html lang="id">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>VL - Personal Profile</title>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
+<link href="style.css" rel="stylesheet" />
+<div id="popup-overlay"></div>
+<div id="popup-greeting">
+  <h2>Selamat Datang!</h2>
+  <p class="terms-box">
+    Sebelum masuk ke dalam website <strong>silakan masukkan Kode Akses</strong> yang berlaku.
+  </p>
+
+  <label class="check-label">
+    <input type="checkbox" checked disabled />
+    Silakan masukkan kode akses terlebih dahulu.
+  </label>
+
+  <input id="access-code" placeholder="Masukkan kode akses..." type="password" />
+
+  <br />
+
+  <button id="close-popup">Masuk</button>
+
+  <div id="loading-spinner" style="display: none;">⏳</div>
+
+  <div class="result-icon success" id="checkmark" style="display: none;">
+    <i class="fas fa-check-circle"></i>
+  </div>
+
+  <div class="result-icon error" id="crossmark" style="display: none;">
+    <i class="fas fa-times-circle"></i>
+  </div>
+
+  <!-- Tombol Beli Kode Akses -->
+  <div id="purchase-link" style="display: none;">
+    <a href="https://lynk.id/vickysatrialindy/rr13vjv48rq9/checkout?token=..." target="_blank" class="access-btn">
+      Beli Kode Akses
+    </a>
+  </div>
+
+  <!-- Tombol Request IP -->
+  <div id="request-ip-container" style="display: none;">
+    <a href="#" id="request-ip" class="access-btn">Request IP</a>
+  </div>
+</div>
+</head>
+<body>
+<header>
+  <h1 class="logo">VL Profile</h1>
+  <button id="sidebarToggle" class="menu-toggle" onclick="toggleSidebar()">☰</button>
+</header>
+
+<aside class="sidebar" id="sidebar">
+<h1>Menu</h1>
+<nav>
+<ul>
+<li><a onclick="loadContent('dashboard')"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+<li><a onclick="loadContent('cheatgame')"><i class="fas fa-gamepad"></i> Cheat Game</a></li>
+<li><a onclick="loadContent('adminucapan')"><i class="fas fa-gift"></i> Ucapan Generator</a></li>
+<li><a onclick="loadContent('promptchatgpt')"><i class="fas fa-book"></i> Prompt ChatGPT</a></li>
+<li><a onclick="loadContent('promptgeminiveo3')"><i class="fas fa-book"></i> Prompt Gemini VEO3</a></li>
+<li class="has-submenu">
+<a onclick="toggleSubmenu(this)"><i class="fas fa-book"></i> Tips ▾</a>
+<ul>
+<li><a onclick="loadContent('veo3')">Gemini VEO3</a></li>
+</ul>
+</li>
+<li class="has-submenu">
+<a onclick="toggleSubmenu(this)"><i class="fas fa-gamepad"></i> Special▾<span class="badge-exclusive">Exclusive</span></a>
+<ul>
+<li><a onclick="loadContent('roomwangi')">Room Wangi</a></li>
+<li><a onclick="loadContent('roombot')">Room Bot Alltier</a></li>
+<li><a onclick="loadContent('bugroomwangi')">Bug Room Wangi</a></li>
+</ul>
+</li>
+<li class="has-submenu">
+<a onclick="toggleSubmenu(this)"><i class="fas fa-book"></i> Edukasi ▾<span class="badge-exclusive">Exclusive</span></a>
+<ul>
+<li><a onclick="loadContent('affiliator')">3 Bulan Jadi Affiliator</a></li>
+<li><a onclick="loadContent('contentcreator')">6 Bulan Jadi Konten Kreator</a></li>
+<li><a onclick="loadContent('personalbranding')">Membangun Personal Branding</a></li>
+<li><a onclick="loadContent('jualcepat')">Jualan Dalam 3 Menit</a></li>
+</ul>
+</li>
+<li class="has-submenu">
+<a onclick="toggleSubmenu(this)"><i class="fas fa-book"></i> Marketing ▾</a>
+<ul>
+<li><a onclick="loadContent('promosiapk')">Promosi Aplikasi Premium</a></li>
+<li><a onclick="loadContent('promosigame')">Promosi Topup Game</a></li>
+<li><a onclick="loadContent('promosiJasa')">Promosi Jasa</a></li>
+</ul>
+</li>
+<li class="has-submenu">
+<a onclick="toggleSubmenu(this)"><i class="fas fa-download"></i> Template ▾</a>
+<ul>
+<li><a onclick="loadContent('templatecanva')">Template Canva Premium</a></li>
+</ul>
+</li>
+<li class="has-submenu">
+<a onclick="toggleSubmenu(this)"><i class="fas fa-download"></i> Aplikasi Premium ▾</a>
+<ul>
+<li><a onclick="loadContent('appspremium')">Streaming, AI, Music Pro</a></li>
+<li><a onclick="loadContent('appsoriginal')">Game Original</a></li>
+<li><a onclick="loadContent('appsmod')">Game Mod</a></li>
+</ul>
+</li>
+<li class="has-submenu">
+<a onclick="toggleSubmenu(this)"><i class="fas fa-gamepad"></i> Hiburan ▾</a>
+<ul>
+<li><a onclick="loadContent('cekmbti')">Cek Kepribadian Zodiac</a></li>
+<li><a onclick="loadContent('nontonfilm')">Cek Film Sesuai Mood</a></li>
+<li><a onclick="loadContent('gombal')">Yuk Gombal!</a></li>
+<li><a onclick="loadContent('ytnonton')">Nonton Youtube</a></li>
+</ul>
+</li>
+<li class="has-submenu">
+<a onclick="toggleSubmenu(this)"><i class="fas fa-tools"></i> Tools ▾</a>
+<ul>
+<li><a onclick="loadContent('submenu1')">Winrate Calculator</a></li>
+<li><a onclick="loadContent('submenu2')">BMI Calculator</a></li>
+<li><a onclick="loadContent('submenu3')">HPP Caculator</a></li>
+<li><a onclick="loadContent('qrgenerator')">QR Generator</a></li>
+<li><a onclick="loadContent('shorturl')">URL Shortner</a></li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><a onclick="loadContent('bantuan')"><i class="fas fa-envelope"></i> Bantuan</a></li>
+<li><a onclick="loadContent('danakaget')"><i class="fas fa-gift"></i> Dana Kaget</a></li>
+</ul>
+</nav>
+</aside>
+<main id="main-content">
+<section style="padding: 2rem; text-align: center;">
+<div id="">
+<h2>Selamat Datang!</h2>
+<p class="terms-box">
+<strong>Syarat &amp; Ketentuan VL-PROJECT</strong><br/><br/>
+  1. Kode akses hanya berlaku untuk <strong>1 pengguna</strong> dan <u>tidak boleh diperjualbelikan kembali</u> dalam bentuk apapun.<br/>
+  2. Akses bersifat <strong>seumur hidup</strong> selama platform VL-PROJECT aktif dan dikelola.<br/>
+  3. Anda <strong>diizinkan menjual kembali konten</strong> seperti video, teks promosi, prompt, atau materi lainnya, untuk keperluan pribadi maupun komersial.<br/>
+  4. Seluruh konten dapat diperbarui, diganti, atau dihapus sewaktu-waktu demi menjaga kualitas dan legalitas.<br/>
+  5. Penggunaan untuk tujuan ilegal atau yang melanggar hukum dilarang.<br/>
+  6. Tidak ada pengembalian dana (<strong>no refund</strong>) setelah kode akses diberikan, kecuali kesalahan dari sistem kami.<br/>
+  7. Komisi affiliate sebesar <strong>20%</strong> akan diberikan untuk setiap penjualan yang valid melalui link afiliasi pengguna.<br/>
+  8. Dilarang membagikan akses Anda secara publik atau menggunakan 1 akun untuk banyak orang.<br/>
+  9. Pengguna bertanggung jawab penuh atas keamanan akun dan datanya.<br/>
+  10. Dengan melanjutkan, Anda menyatakan telah membaca, memahami, dan menyetujui seluruh syarat &amp; ketentuan ini.
+</p>
+<button onclick="loadContent('dashboard')" style="
+    padding: 12px 30px;
+    font-size: 16px;
+    border: none;
+    background-color: #007bff;
+    color: #fff;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  ">
+<i class="fas fa-play-circle"></i> Lanjutkan ke Dashboard
+  </button>
+</div></section>
+</main>
+
+<script src="script.js"></script></body>
+</html>

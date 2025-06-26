@@ -1,7 +1,9 @@
 // === Data akses & IP yang diizinkan ===
 const accessCodes = {
-  "PREMIUM": ["125.167.48.16", "111.111.111.111"],
+  "PREMIUM": ["111.111.111.111","125.167.48.16"],
   "TESTER": ["111.111.111.112"],
+  "VICKY": ["111.111.111.112"],
+  "TRIAL": ["111.111.111.112"],
   "ADMIN": ["123.123.123.123"]
 };
 
@@ -206,10 +208,10 @@ window.addEventListener("DOMContentLoaded", () => {
         <h4><i class="fas fa-puzzle-piece"></i> Total Fitur</h4>
         <p id="totalFitur">--</p>
       </div>
-      <div class="info-box">
-        <h4><i class="fas fa-users"></i> Total User</h4>
-        <p>150</p>
-      </div>
+ <div class="info-box">
+  <h4><i class="fas fa-users"></i> Total User</h4>
+  <p id="totalUser"></p>
+</div>
       <div class="info-box">
         <h4><i class="fas fa-sync-alt"></i> Last Update</h4>
         <p id="lastUpdate">--</p>
@@ -220,31 +222,95 @@ window.addEventListener("DOMContentLoaded", () => {
       </div>
     </div>
     <h3><i class="fas fa-bullhorn"></i> Pengumuman</h3>
-    <table class="announcement-table">
-      <thead>
-        <tr><th><i class="fas fa-calendar-alt"></i> Tanggal</th><th><i class="fas fa-info-circle"></i> Deskripsi</th></tr>
-      </thead>
-      <tbody>
-	<tr><td>25-06-2025</td><td>Penambahan Fitur <i class="fas fa-book"></i>  Prompt Gemini VEO3  <span class="badge new">  NEW</span></td></tr>
-	<tr><td>25-06-2025</td><td>Penambahan Fitur <i class="fas fa-book"></i>  Prompt ChatGPT  <span class="badge new">  NEW</span></td></tr>
-	<tr><td>25-06-2025</td><td>Penambahan Fitur <b>Gemini VEO3</b> pada Menu <i class="fas fa-book"></i>  Tips  <span class="badge new">  NEW</span></td></tr>
-	<tr><td>25-06-2025</td><td>Penambahan Fitur <b>Ucapan Generator</b> pada Menu <i class="fas fa-gift"></i>  Ucapan Generator  <span class="badge new">  NEW</span></td></tr>
-	<tr><td>25-06-2025</td><td>Penambahan Fitur <b>Short URL Generator</b> pada Menu <i class="fas fa-tools"></i>  Tools  <span class="badge new">  NEW</span></td></tr>
-	<tr><td>25-06-2025</td><td>Penambahan Fitur <b>Room Bot Alltier</b> pada Menu <i class="fas fa-gamepad"></i>  Special MLBB  <span class="badge new">  NEW</span></td></tr>
-	<tr><td>25-06-2025</td><td>Penambahan Fitur <b>Room Wangi</b> pada Menu <i class="fas fa-gamepad"></i>  Special MLBB  <span class="badge new">  NEW</span></td></tr>
-	<tr><td>25-06-2025</td><td>Penambahan Fitur <b>Bug Room Wangi</b> pada Menu <i class="fas fa-gamepad"></i>  Special MLBB  <span class="badge new">  NEW</span></td></tr>
-	<tr><td>24-06-2025</td><td>Penambahan Menu <i class="fas fa-gift"></i> DANA KAGET Akan aktif setiap seminggu sekali.  <span class="badge new">  NEW</span></td></tr>
-	<tr><td>24-06-2025</td><td>Penambahan Fitur <b>Jualan Dalam 3 Menit</b> pada Menu <i class="fas fa-book"></i> Edukasi  <span class="badge new">  NEW</span></td></tr>
-	<tr><td>24-06-2025</td><td>Penambahan Fitur <b>Membangun Personal Branding</b> pada Menu <i class="fas fa-book"></i>  Edukasi  <span class="badge new">  NEW</span></td></tr>
-	<tr><td>24-06-2025</td><td>Penambahan Fitur <b>6 Bulan Jadi Konten Kreator</b> pada Menu <i class="fas fa-book"></i>  Edukasi  <span class="badge new">  NEW</span></td></tr>
-	<tr><td>24-06-2025</td><td>Penambahan Fitur <b>3 Bulan Jadi Affiliator</b> pada Menu <i class="fas fa-book"></i>  Edukasi  <span class="badge new">  NEW</span></td></tr>
-      </tbody>
-    </table>
+<table class="announcement-table">
+  <thead>
+    <tr>
+      <th><i class="fas fa-calendar-alt"></i> Tanggal</th>
+      <th><i class="fas fa-info-circle"></i> Deskripsi</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td data-label="Tanggal">25-06-2025</td>
+      <td data-label="Deskripsi">Penambahan Fitur <i class="fas fa-book"></i> Prompt Gemini VEO3 <span class="badge new">NEW</span></td>
+    </tr>
+    <tr>
+      <td data-label="Tanggal">25-06-2025</td>
+      <td data-label="Deskripsi">Penambahan Fitur <i class="fas fa-book"></i> Prompt ChatGPT <span class="badge new">NEW</span></td>
+    </tr>
+    <tr>
+      <td data-label="Tanggal">25-06-2025</td>
+      <td data-label="Deskripsi">Penambahan Fitur <b>Gemini VEO3</b> pada Menu <i class="fas fa-book"></i> Tips <span class="badge new">NEW</span></td>
+    </tr>
+    <tr>
+      <td data-label="Tanggal">25-06-2025</td>
+      <td data-label="Deskripsi">Penambahan Fitur <b>Ucapan Generator</b> pada Menu <i class="fas fa-gift"></i> Ucapan Generator <span class="badge new">NEW</span></td>
+    </tr>
+    <tr>
+      <td data-label="Tanggal">25-06-2025</td>
+      <td data-label="Deskripsi">Penambahan Fitur <b>Short URL Generator</b> pada Menu <i class="fas fa-tools"></i> Tools <span class="badge new">NEW</span></td>
+    </tr>
+    <tr>
+      <td data-label="Tanggal">25-06-2025</td>
+      <td data-label="Deskripsi">Penambahan Fitur <b>Room Bot Alltier</b> pada Menu <i class="fas fa-gamepad"></i> Special MLBB <span class="badge new">NEW</span></td>
+    </tr>
+    <tr>
+      <td data-label="Tanggal">25-06-2025</td>
+      <td data-label="Deskripsi">Penambahan Fitur <b>Room Wangi</b> pada Menu <i class="fas fa-gamepad"></i> Special MLBB <span class="badge new">NEW</span></td>
+    </tr>
+    <tr>
+      <td data-label="Tanggal">25-06-2025</td>
+      <td data-label="Deskripsi">Penambahan Fitur <b>Bug Room Wangi</b> pada Menu <i class="fas fa-gamepad"></i> Special MLBB <span class="badge new">NEW</span></td>
+    </tr>
+    <tr>
+      <td data-label="Tanggal">24-06-2025</td>
+      <td data-label="Deskripsi">Penambahan Menu <i class="fas fa-gift"></i> DANA KAGET Akan aktif setiap seminggu sekali. <span class="badge new">NEW</span></td>
+    </tr>
+    <tr>
+      <td data-label="Tanggal">24-06-2025</td>
+      <td data-label="Deskripsi">Penambahan Fitur <b>Jualan Dalam 3 Menit</b> pada Menu <i class="fas fa-book"></i> Edukasi <span class="badge new">NEW</span></td>
+    </tr>
+    <tr>
+      <td data-label="Tanggal">24-06-2025</td>
+      <td data-label="Deskripsi">Penambahan Fitur <b>Membangun Personal Branding</b> pada Menu <i class="fas fa-book"></i> Edukasi <span class="badge new">NEW</span></td>
+    </tr>
+    <tr>
+      <td data-label="Tanggal">24-06-2025</td>
+      <td data-label="Deskripsi">Penambahan Fitur <b>6 Bulan Jadi Konten Kreator</b> pada Menu <i class="fas fa-book"></i> Edukasi <span class="badge new">NEW</span></td>
+    </tr>
+    <tr>
+      <td data-label="Tanggal">24-06-2025</td>
+      <td data-label="Deskripsi">Penambahan Fitur <b>3 Bulan Jadi Affiliator</b> pada Menu <i class="fas fa-book"></i> Edukasi <span class="badge new">NEW</span></td>
+    </tr>
+  </tbody>
+</table>
+
   </section>`;
 main.innerHTML = content;
   document.getElementById("sidebar").classList.remove("active");
 
   // Fungsi-fungsi untuk last visit dan last update
+
+ // Set jumlah user awal dan waktu mulai (misalnya 1 Januari 2024)
+  const baseUser = 1000;
+  const startTime = new Date('2025-06-26T00:00:00');
+
+  function updateUserCount() {
+    const now = new Date();
+    const diffMs = now - startTime;
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const currentUser = baseUser + diffHours;
+
+    document.getElementById('totalUser').textContent = currentUser.toLocaleString('id-ID');
+  }
+
+  // Update saat halaman dimuat
+  updateUserCount();
+
+  // Cek dan update setiap 1 menit (opsional, agar lebih dinamis)
+  setInterval(updateUserCount, 60000);
+
+
   function updateLastVisit() {
     const now = new Date();
     const waktu = now.toLocaleString("id-ID", {
@@ -2094,7 +2160,7 @@ if (page === 'promptchatgpt') {
       <h3>🔥 600+ Prompt ChatGPT Siap Pakai</h3>
       <table class="announcement-table" style="min-width: 1000px;">
         <thead>
-          <tr>
+       <tr>
             <th>No</th>
             <th>Kategori</th> 
             <th>Deskripsi</th>

@@ -203,6 +203,7 @@ main {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
+  color: #fff;
 }
 
 .announcement-table th,
@@ -215,6 +216,62 @@ main {
 .announcement-table th {
   background: #0c1b33;
 }
+
+/* Badge */
+.badge.new {
+  background: #00ffff;
+  color: #000;
+  padding: 2px 6px;
+  border-radius: 5px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  margin-left: 5px;
+}
+
+/* Responsive Table for Mobile */
+@media (max-width: 768px) {
+  .announcement-table, 
+  .announcement-table thead, 
+  .announcement-table tbody, 
+  .announcement-table th, 
+  .announcement-table td, 
+  .announcement-table tr {
+    display: block;
+    width: 100%;
+  }
+
+  .announcement-table thead {
+    display: none;
+  }
+
+  .announcement-table tr {
+    margin-bottom: 1.2rem;
+    border-bottom: 2px solid #00ffff33;
+    background: #081427;
+    border-radius: 10px;
+    padding: 0.5rem;
+  }
+
+  .announcement-table td {
+    text-align: right;
+    padding-left: 50%;
+    position: relative;
+    border: none;
+    border-bottom: 1px solid #00ffff33;
+  }
+
+  .announcement-table td::before {
+    content: attr(data-label);
+    position: absolute;
+    left: 1rem;
+    top: 0.75rem;
+    font-weight: bold;
+    color: #00ffff;
+    text-align: left;
+  }
+}
+
+
 
 .badge {
   padding: 4px 8px;
