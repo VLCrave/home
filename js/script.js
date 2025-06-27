@@ -1,8 +1,10 @@
 // === Data akses & IP yang diizinkan ===
 const accessCodes = {
-  "PREMIUM": ["125.167.48.16"],
-  "RESELLER": ["111.111.111.112"],
-  "TRIAL": ["111.111.111.112","125.167.51.76"]
+  "PREMIUM": ["111.111.111.111","125.167.48.16"],
+  "TESTER": ["111.111.111.112"],
+  "VICKY": ["111.111.111.112"],
+  "TRIAL": ["111.111.111.112"],
+  "ADMIN": ["123.123.123.123"]
 };
 
 const chatId = "6046360096"; // VL
@@ -3539,6 +3541,1595 @@ if (page === 'dropship101') {
 }
 
 
+if (page === 'bukukripto') {
+  content = `
+    <section class="book-container">
+      <div class="book-content" id="bookContent">
+
+        <div class="page active" data-page="1">
+          <h2>📘 Crypto Starter Book</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/7736/7736928.png" alt="Crypto Book" class="page-img" />
+          <p><strong>Kategori:</strong> Keuangan Digital</p>
+          <p><strong>Deskripsi:</strong> Buku ini akan membimbingmu memahami dasar-dasar dunia cryptocurrency dengan cara simpel. Cocok untuk pemula yang ingin tahu sebelum investasi.</p>
+        </div>
+
+        <div class="page" data-page="2">
+          <h2>📌 Bab 1: Apa Itu Cryptocurrency?</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/2910/2910791.png" alt="Crypto Intro" class="page-img" />
+          <p>Cryptocurrency adalah mata uang digital yang menggunakan teknologi blockchain dan tidak dikontrol oleh bank pusat.</p>
+          <br>
+          <h4>Contoh:</h4>
+          <p>Bitcoin, Ethereum, dan Solana adalah contoh cryptocurrency. Kamu bisa membeli sebagian kecil, misalnya 0.001 BTC.</p>
+        </div>
+
+        <div class="page" data-page="3">
+          <h2>📌 Bab 2: Cara Kerja Blockchain</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/9524/9524677.png" alt="Blockchain" class="page-img" />
+          <p>Blockchain adalah sistem database terdesentralisasi yang mencatat transaksi secara permanen dan transparan.</p>
+          <br>
+          <h4>Contoh:</h4>
+          <p>Jika kamu transfer Bitcoin, datanya masuk ke blockchain dan bisa dilihat publik, tapi tetap anonim.</p>
+        </div>
+
+        <div class="page" data-page="4">
+          <h2>📌 Bab 3: Exchange & Dompet Kripto</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/10423/10423783.png" alt="Crypto Wallet" class="page-img" />
+          <p>Exchange adalah tempat beli/jual kripto. Wallet adalah tempat menyimpan asetmu secara digital.</p>
+          <br>
+          <h4>Contoh:</h4>
+          <p>Kamu bisa pakai Tokocrypto atau Binance untuk beli kripto, dan simpan di Trust Wallet atau MetaMask.</p>
+        </div>
+
+        <div class="page" data-page="5">
+          <h2>📌 Bab 4: Risiko & Keamanan</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/8649/8649264.png" alt="Crypto Risk" class="page-img" />
+          <p>Kripto bersifat fluktuatif dan tidak dijamin negara. Kamu harus paham risiko sebelum investasi.</p>
+          <br>
+          <h4>Contoh:</h4>
+          <p>Harga Bitcoin bisa naik 30% dalam seminggu, tapi juga bisa turun drastis. Jangan pernah simpan password wallet di HP!</p>
+        </div>
+
+        <div class="page" data-page="6">
+          <h2>📌 Bab 5: Strategi Pemula</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/7165/7165786.png" alt="Crypto Strategy" class="page-img" />
+          <p>Mulai dari nominal kecil, gunakan strategi DCA (Dollar Cost Averaging), dan jangan FOMO saat harga naik tajam.</p>
+          <br>
+          <h4>Contoh:</h4>
+          <p>Beli Bitcoin Rp100.000 setiap minggu, tanpa peduli naik-turun harga. Ini menghindari beli di harga tertinggi sekaligus.</p>
+        </div>
+
+        <div class="page" data-page="7">
+          <h2>📌 Bab 6: Dunia DeFi & NFT</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/9684/9684909.png" alt="DeFi & NFT" class="page-img" />
+          <p>DeFi (Decentralized Finance) adalah layanan keuangan tanpa bank. NFT (Non Fungible Token) adalah aset digital unik di blockchain.</p>
+          <br>
+          <h4>Contoh:</h4>
+          <p>Kamu bisa staking kripto untuk dapat bunga pasif, atau membeli NFT seperti gambar digital yang punya sertifikat kepemilikan.</p>
+        </div>
+
+      </div>
+      <div class="book-footer">
+        <button id="prevBtn" class="nav-btn" disabled>⬅️ Kembali</button>
+        <span id="pageNumber" class="page-number">1 / 7</span>
+        <button id="nextBtn" class="nav-btn">Lanjut ➡️</button>
+      </div>
+    </section>
+  `;
+
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+  initBook(); // Inisialisasi sistem buku
+}
+
+if (page === 'bukukriptolanjutan') {
+  content = `
+    <section class="book-container">
+      <div class="book-content" id="bookContent">
+
+        <div class="page active" data-page="1">
+          <h2>📘 Crypto Level Intermediate</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/11893/11893039.png" alt="Crypto Lanjutan" class="page-img" />
+          <p><strong>Kategori:</strong> Keuangan Digital - Level Menengah</p>
+          <p><strong>Deskripsi:</strong> Lanjutan dari Crypto Starter Book. Panduan ini membahas strategi, keamanan lanjutan, hingga manajemen portofolio kripto secara lebih serius dan terstruktur.</p>
+        </div>
+
+        <div class="page" data-page="2">
+          <h2>📌 Bab 1: Analisis Fundamental Kripto</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/7861/7861294.png" alt="Fundamental" class="page-img" />
+          <p>Pahami apa yang membuat sebuah koin/token bernilai: tim pengembang, utilitas proyek, roadmap, partner, dan komunitas.</p>
+          <br>
+          <h4>Contoh:</h4>
+          <p>Bandingkan: Token A dengan whitepaper jelas & didukung Binance vs token B tanpa roadmap. Token A lebih layak dikoleksi.</p>
+        </div>
+
+        <div class="page" data-page="3">
+          <h2>📌 Bab 2: Analisis Teknikal Dasar</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/2920/2920080.png" alt="Chart Analysis" class="page-img" />
+          <p>Gunakan grafik harga untuk memprediksi arah pasar. Pelajari support-resistance, candlestick, dan indikator MACD/RSI.</p>
+          <br>
+          <h4>Contoh:</h4>
+          <p>Saat harga Bitcoin menyentuh support kuat dan RSI oversold, kemungkinan besar akan naik → peluang beli.</p>
+        </div>
+
+        <div class="page" data-page="4">
+          <h2>📌 Bab 3: Manajemen Portofolio</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/11538/11538213.png" alt="Portfolio Management" class="page-img" />
+          <p>Jangan all-in pada 1 koin. Diversifikasi jadi strategi wajib agar risiko kerugian tidak terlalu besar jika 1 koin turun tajam.</p>
+          <br>
+          <h4>Contoh:</h4>
+          <p>60% BTC, 20% ETH, 10% altcoin besar, 10% stablecoin → seimbang antara pertumbuhan dan kestabilan.</p>
+        </div>
+
+        <div class="page" data-page="5">
+          <h2>📌 Bab 4: Mengenal Stablecoin & Risiko Depeg</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/8868/8868935.png" alt="Stablecoin" class="page-img" />
+          <p>Stablecoin adalah kripto yang nilainya dipatok ke USD (seperti USDT, USDC). Namun risiko depeg bisa terjadi jika tidak didukung aset nyata.</p>
+          <br>
+          <h4>Contoh:</h4>
+          <p>UST (Terra) pernah jatuh dari $1 ke $0.02 karena gagal menjaga cadangan. Hindari stablecoin algoritmis yang tidak transparan.</p>
+        </div>
+
+        <div class="page" data-page="6">
+          <h2>📌 Bab 5: Staking, Farming & Passive Income</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/9505/9505261.png" alt="Crypto Passive Income" class="page-img" />
+          <p>Staking adalah mengunci kripto untuk mendapat reward. Yield farming menawarkan bunga lebih besar, tapi risiko lebih tinggi.</p>
+          <br>
+          <h4>Contoh:</h4>
+          <p>Staking ETH di Lido bisa hasilkan 4-6% per tahun. Farming di DEX bisa hasilkan 20-40%, tapi dengan risiko impermanent loss.</p>
+        </div>
+
+        <div class="page" data-page="7">
+          <h2>📌 Bab 6: Tips Keamanan Lanjutan</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/6147/6147214.png" alt="Security" class="page-img" />
+          <p>Gunakan wallet non-custodial, aktifkan 2FA, jangan pernah klik link airdrop sembarangan, dan simpan seed phrase offline.</p>
+          <br>
+          <h4>Contoh:</h4>
+          <p>Gunakan MetaMask + Ledger (hardware wallet) dan jangan simpan seed phrase di Google Drive atau galeri HP.</p>
+        </div>
+
+      </div>
+      <div class="book-footer">
+        <button id="prevBtn" class="nav-btn" disabled>⬅️ Kembali</button>
+        <span id="pageNumber" class="page-number">1 / 7</span>
+        <button id="nextBtn" class="nav-btn">Lanjut ➡️</button>
+      </div>
+    </section>
+  `;
+
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+  initBook(); // Inisialisasi sistem buku
+}
+
+if (page === 'bukukriptoexpert') {
+  content = `
+    <section class="book-container">
+      <div class="book-content" id="bookContent">
+
+        <div class="page active" data-page="1">
+          <h2>📘 Crypto Expert Book</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/11893/11893261.png" alt="Crypto Expert" class="page-img" />
+          <p><strong>Kategori:</strong> Keuangan Digital - Expert</p>
+          <p><strong>Deskripsi:</strong> Buku level mahir ini dirancang untuk kamu yang ingin serius cuan dari dunia kripto. Mulai dari analisa tingkat lanjut, psikologi market, hingga strategi tokenomics.</p>
+        </div>
+
+        <div class="page" data-page="2">
+          <h2>📌 Bab 1: Analisis On-Chain</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/7737/7737747.png" alt="Onchain Analysis" class="page-img" />
+          <p>Analisa on-chain menggunakan data blockchain seperti jumlah wallet aktif, volume transfer, dan aliran whale untuk memprediksi tren market.</p>
+          <br>
+          <h4>Contoh:</h4>
+          <p>Jika banyak whale mentransfer Bitcoin ke exchange, bisa jadi sinyal jual besar-besaran akan terjadi.</p>
+        </div>
+
+        <div class="page" data-page="3">
+          <h2>📌 Bab 2: Psikologi Market & FOMO</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/11893/11893365.png" alt="Market Psychology" class="page-img" />
+          <p>Emosi seperti fear dan greed menggerakkan pasar. Trader pro tahu kapan publik sedang FOMO atau panik dan memanfaatkannya.</p>
+          <br>
+          <h4>Contoh:</h4>
+          <p>Saat Fear & Greed Index menunjukan "Extreme Greed", justru waktu tepat untuk jual sebagian aset.</p>
+        </div>
+
+        <div class="page" data-page="4">
+          <h2>📌 Bab 3: Tokenomics & Sirkulasi Koin</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/620/620851.png" alt="Tokenomics" class="page-img" />
+          <p>Pelajari struktur supply koin: total supply, burned token, unlock schedule, dan distribusi ke tim/developer.</p>
+          <br>
+          <h4>Contoh:</h4>
+          <p>Token X punya unlock token besar di bulan depan → potensi harga turun karena suplai bertambah.</p>
+        </div>
+
+        <div class="page" data-page="5">
+          <h2>📌 Bab 4: Teknik Entry & Exit</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/7613/7613611.png" alt="Entry Exit Strategy" class="page-img" />
+          <p>Gunakan strategi entry bertahap (scaling in) dan exit bertahap (scaling out) untuk mengurangi risiko timing yang buruk.</p>
+          <br>
+          <h4>Contoh:</h4>
+          <p>Beli BTC di 3 titik: Rp600jt, Rp580jt, Rp550jt. Jual sebagian saat naik 10%, sisanya saat naik 20%.</p>
+        </div>
+
+        <div class="page" data-page="6">
+          <h2>📌 Bab 5: Sistem Trading Bot</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/9602/9602037.png" alt="Bot Trading" class="page-img" />
+          <p>Gunakan bot seperti 3Commas, Pionex, atau Grid Bot untuk auto buy-sell berdasarkan logika teknikal.</p>
+          <br>
+          <h4>Contoh:</h4>
+          <p>Bot Grid di ETH: beli otomatis saat turun 2%, jual saat naik 2%. Cuan kecil tapi konsisten tanpa pantau manual.</p>
+        </div>
+
+        <div class="page" data-page="7">
+          <h2>📌 Bab 6: Risiko Hidden & Sinyal Penipuan</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/9533/9533924.png" alt="Scam Token" class="page-img" />
+          <p>Token abal-abal sering pakai pump & dump, fake volume, dan manipulasi chart. Hindari koin dengan tokenomics aneh & komunitas agresif.</p>
+          <br>
+          <h4>Contoh:</h4>
+          <p>Koin “ABC” naik 1000% dalam sehari, tapi volume tidak alami dan didominasi wallet baru → potensi scam tinggi.</p>
+        </div>
+
+        <div class="page" data-page="8">
+          <h2>📌 Bab 7: Strategi Long-Term & Exit Plan</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/10047/10047823.png" alt="Exit Plan" class="page-img" />
+          <p>Tanpa exit plan, kamu bisa terjebak hold forever. Tetapkan target profit, batas cut loss, dan tujuan akhir investasi.</p>
+          <br>
+          <h4>Contoh:</h4>
+          <p>Target: profit 300% → realisasikan 70% dan pindahkan ke stablecoin. Sisa 30% biarkan “moon bag” untuk cuan tambahan.</p>
+        </div>
+
+      </div>
+      <div class="book-footer">
+        <button id="prevBtn" class="nav-btn" disabled>⬅️ Kembali</button>
+        <span id="pageNumber" class="page-number">1 / 8</span>
+        <button id="nextBtn" class="nav-btn">Lanjut ➡️</button>
+      </div>
+    </section>
+  `;
+
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+  initBook(); // Inisialisasi sistem buku
+}
+
+if (page === 'ternakuang') {
+  content = `
+    <section class="book-container">
+      <div class="book-content" id="bookContent">
+
+        <div class="page active" data-page="1">
+          <h2>📘 Tangga Ternak Uang</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Ternak Uang" class="page-img" />
+          <p><strong>Kategori:</strong> Finansial Pribadi</p>
+          <p><strong>Deskripsi:</strong> Panduan berjenjang mengelola keuangan secara bertahap untuk mencapai kebebasan finansial. Cocok untuk pemula yang ingin hidup bebas utang dan punya sistem ternak uang yang sehat.</p>
+        </div>
+
+        <div class="page" data-page="2">
+          <h2>📌 Tahap 1: Menabung Modal Awal</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/8083/8083194.png" alt="Menabung" class="page-img" />
+          <p>Bangun kebiasaan menabung dengan target awal, misalnya Rp10 juta. Ini menjadi dasar pengelolaan keuangan sehat dan bukti disiplin finansial.</p>
+          <h4>Contoh:</h4>
+          <p>Setiap bulan sisihkan Rp500.000 dari penghasilanmu, tanpa diutak-atik, hingga terkumpul Rp10 juta.</p>
+        </div>
+
+        <div class="page" data-page="3">
+          <h2>📌 Tahap 2: Lunasi Hutang Konsumtif</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/9496/9496907.png" alt="Lunasi Utang" class="page-img" />
+          <p>Hapus utang-utang kecil dan konsumtif (kartu kredit, paylater, pinjaman teman) agar tidak membebani cashflow. Kecuali KPR, semua utang wajib lunas dulu.</p>
+          <h4>Contoh:</h4>
+          <p>Bayar lunas cicilan smartphone Rp500 ribu/bulan daripada terus menambah bunga.</p>
+        </div>
+
+        <div class="page" data-page="4">
+          <h2>📌 Tahap 3: Bangun Dana Darurat</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/1843/1843107.png" alt="Dana Darurat" class="page-img" />
+          <p>Siapkan dana darurat sebesar 3–6 kali pengeluaran bulanan, untuk keadaan tak terduga: PHK, sakit, dll.</p>
+          <h4>Contoh:</h4>
+          <p>Jika pengeluaran bulananmu Rp2 juta, maka target dana darurat adalah Rp6–12 juta.</p>
+        </div>
+
+        <div class="page" data-page="5">
+          <h2>📌 Tahap 4: Mulai Investasi Rutin</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/2331/2331970.png" alt="Investasi" class="page-img" />
+          <p>Sisihkan minimal 20% penghasilan untuk investasi ke produk seperti reksadana, saham indeks, atau emas. Pilih yang sesuai profil risiko.</p>
+          <h4>Contoh:</h4>
+          <p>Setiap bulan beli reksadana pasar uang senilai Rp200.000 dari gaji Rp2 juta.</p>
+        </div>
+
+        <div class="page" data-page="6">
+          <h2>📌 Tahap 5: Siapkan Dana Pendidikan</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/8705/8705641.png" alt="Pendidikan" class="page-img" />
+          <p>Rancang dana untuk pendidikan anak atau pendidikan pribadi (kursus, skill). Jangan biarkan pendidikan jadi utang di masa depan.</p>
+          <h4>Contoh:</h4>
+          <p>Investasi di SBN atau reksadana campuran untuk dana kuliah anak 5–10 tahun mendatang.</p>
+        </div>
+
+        <div class="page" data-page="7">
+          <h2>📌 Tahap 6: Percepat Pelunasan KPR</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/3094/3094853.png" alt="Pelunasan KPR" class="page-img" />
+          <p>Jika dana darurat dan investasi aman, mulai percepat cicilan KPR agar bisa bebas beban bunga dalam jangka panjang.</p>
+          <h4>Contoh:</h4>
+          <p>Tambahkan Rp500.000 ke cicilan KPR setiap bulan untuk mempersingkat tenor dan hemat bunga total puluhan juta.</p>
+        </div>
+
+        <div class="page" data-page="8">
+          <h2>📌 Tahap 7: Bangun Kekayaan & Berbagi</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/6193/6193634.png" alt="Kekayaan & Berbagi" class="page-img" />
+          <p>Setelah keuangan mapan, fokus pada pertumbuhan aset, bisnis, dan kontribusi sosial. Inilah fase ternak uang berjalan otomatis.</p>
+          <h4>Contoh:</h4>
+          <p>Gunakan sebagian keuntungan investasi untuk membuka usaha kecil + donasi rutin ke yayasan sosial.</p>
+        </div>
+
+      </div>
+      <div class="book-footer">
+        <button id="prevBtn" class="nav-btn" disabled>⬅️ Kembali</button>
+        <span id="pageNumber" class="page-number">1 / 8</span>
+        <button id="nextBtn" class="nav-btn">Lanjut ➡️</button>
+      </div>
+    </section>
+  `;
+
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+  initBook(); // Inisialisasi sistem buku
+}
+
+if (page === 'investormind') {
+  content = `
+    <section class="book-container">
+      <div class="book-content" id="bookContent">
+
+        <div class="page active" data-page="1">
+          <h2>📘 The Investor’s Mind</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/6507/6507517.png" alt="Investor Mind" class="page-img" />
+          <p><strong>Kategori:</strong> Mindset & Investasi</p>
+          <p><strong>Deskripsi:</strong> Panduan tentang cara berpikir ala investor legendaris seperti Warren Buffett, Charlie Munger, dan Benjamin Graham. Cocok untuk pemula yang ingin investasi dengan tenang dan jangka panjang.</p>
+        </div>
+
+        <div class="page" data-page="2">
+          <h2>📌 Bab 1: Filosofi Menunggu Kesempatan Emas</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/6101/6101612.png" alt="Wait Opportunity" class="page-img" />
+          <p>Investor hebat tidak tergesa-gesa. Mereka menunggu momen terbaik untuk masuk, seperti pemukul bisbol yang hanya memukul bola terbaik.</p>
+          <h4>Contoh:</h4>
+          <p>Alih-alih beli saham tiap minggu, Buffett menunggu peluang diskon besar seperti saat krisis. Investor sabar = investor menang.</p>
+        </div>
+
+        <div class="page" data-page="3">
+          <h2>📌 Bab 2: Mengenal Batasan dan Pengetahuan Diri</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/10559/10559832.png" alt="Self Knowledge" class="page-img" />
+          <p>Pahami apa yang kamu tahu dan tidak tahu. Jangan paksakan investasi di bidang yang tidak kamu mengerti.</p>
+          <h4>Contoh:</h4>
+          <p>Jangan ikut-ikutan crypto atau saham teknologi jika kamu tidak memahami fundamentalnya. Fokus pada zona aman pengetahuanmu.</p>
+        </div>
+
+        <div class="page" data-page="4">
+          <h2>📌 Bab 3: Fokus pada Circle of Competence</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/8290/8290536.png" alt="Circle of Competence" class="page-img" />
+          <p>Hanya investasikan uang di area yang kamu pahami betul. Ini adalah prinsip Warren Buffett yang paling penting.</p>
+          <h4>Contoh:</h4>
+          <p>Jika kamu paham industri retail, maka fokus di saham retail seperti UNIQLO, bukan sektor yang kamu belum kenal.</p>
+        </div>
+
+        <div class="page" data-page="5">
+          <h2>📌 Bab 4: Bias Kognitif yang Menghancurkan Investor</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/10426/10426058.png" alt="Cognitive Bias" class="page-img" />
+          <p>Investor sering kalah bukan karena kurang pintar, tapi karena bias psikologis seperti FOMO, overconfidence, atau anchoring.</p>
+          <h4>Contoh:</h4>
+          <p>Jangan beli saham hanya karena “lagi rame” di TikTok. Itu FOMO. Analisa fundamental tetap nomor satu.</p>
+        </div>
+
+        <div class="page" data-page="6">
+          <h2>📌 Bab 5: Hindari Keserakahan dalam Investasi</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/8669/8669934.png" alt="Greed" class="page-img" />
+          <p>Greed adalah musuh terbesar. Keinginan untung cepat justru bikin rugi.</p>
+          <h4>Contoh:</h4>
+          <p>Target 10% per tahun lebih sehat daripada berharap 100% dalam seminggu. Investasi adalah maraton, bukan sprint.</p>
+        </div>
+
+        <div class="page" data-page="7">
+          <h2>📌 Bab 6: Mental Model ala Charlie Munger</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/10200/10200100.png" alt="Mental Model" class="page-img" />
+          <p>Gunakan kombinasi model berpikir dari berbagai disiplin ilmu: psikologi, ekonomi, matematika, hukum.</p>
+          <h4>Contoh:</h4>
+          <p>Sebelum invest, tanyakan: Apakah ini masuk logika ekonomi? Apakah ada hukum permintaan-penawaran yang bekerja?</p>
+        </div>
+
+        <div class="page" data-page="8">
+          <h2>📌 Bab 7: Nilai vs Harga</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/4783/4783683.png" alt="Value vs Price" class="page-img" />
+          <p>Harga adalah apa yang kamu bayar. Nilai adalah apa yang kamu dapat. Jangan tertipu harga murah kalau nilainya rendah.</p>
+          <h4>Contoh:</h4>
+          <p>Saham A harganya Rp1.000 tapi nilainya Rp500 = overvalued. Saham B harganya Rp5.000 tapi nilainya Rp10.000 = undervalued.</p>
+        </div>
+
+        <div class="page" data-page="9">
+          <h2>📌 Bab 8: Margin of Safety ala Benjamin Graham</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/10200/10200163.png" alt="Margin of Safety" class="page-img" />
+          <p>Beli saham dengan diskon besar dari nilai wajarnya. Jadi walaupun prediksimu sedikit meleset, tetap aman.</p>
+          <h4>Contoh:</h4>
+          <p>Jika nilai wajar saham Rp10.000, beli di Rp6.000 = margin of safety 40%. Ini prinsip utama value investing.</p>
+        </div>
+
+        <div class="page" data-page="10">
+          <h2>📌 Bab 9: Seni Berpikir Jangka Panjang</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/6659/6659940.png" alt="Long Term Thinking" class="page-img" />
+          <p>Investor besar berpikir 5-10 tahun ke depan, bukan 5 hari. Mereka tidak terganggu oleh fluktuasi jangka pendek.</p>
+          <h4>Contoh:</h4>
+          <p>Alih-alih menjual saat harga turun 10%, investor sukses justru beli lebih banyak jika fundamental tetap bagus.</p>
+        </div>
+
+      </div>
+      <div class="book-footer">
+        <button id="prevBtn" class="nav-btn" disabled>⬅️ Kembali</button>
+        <span id="pageNumber" class="page-number">1 / 10</span>
+        <button id="nextBtn" class="nav-btn">Lanjut ➡️</button>
+      </div>
+    </section>
+  `;
+
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+  initBook(); // Inisialisasi sistem buku
+}
+
+if (page === 'wealthblueprint') {
+  content = `
+    <section class="book-container">
+      <div class="book-content" id="bookContent">
+
+        <div class="page active" data-page="1">
+          <h2>📘 The Wealth Blueprint</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/4139/4139951.png" alt="Wealth Blueprint" class="page-img" />
+          <p><strong>Kategori:</strong> Mindset & Keuangan</p>
+          <p><strong>Deskripsi:</strong> Panduan mental, strategi, dan sistem untuk membangun kekayaan secara bertahap namun pasti. Cocok untuk kamu yang ingin lepas dari siklus gaji dan mulai membangun pondasi finansial jangka panjang.</p>
+        </div>
+
+        <div class="page" data-page="2">
+          <h2>📌 Bab 1: Pola Pikir Orang Kaya vs Orang Biasa</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/924/924915.png" alt="Mindset Comparison" class="page-img" />
+          <p>Orang kaya memikirkan aset & leverage, orang biasa fokus pada pengeluaran & gaji tetap. Wealth starts in the mind.</p>
+          <br><h4>Contoh:</h4>
+          <p>Orang biasa bertanya: “Berapa gaji saya bulan ini?” <br>Orang kaya bertanya: “Bagaimana saya bisa buat uang bekerja untuk saya?”</p>
+        </div>
+
+        <div class="page" data-page="3">
+          <h2>📌 Bab 2: 3 Sumber Penghasilan Sejati</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/2942/2942882.png" alt="Income Streams" class="page-img" />
+          <p>Sumber kekayaan jangka panjang berasal dari: penghasilan aktif, penghasilan pasif, dan penghasilan portofolio (investasi).</p>
+          <br><h4>Contoh:</h4>
+          <p>Punya skill freelance (aktif), bangun produk digital (pasif), dan invest reksadana/saham (portofolio).</p>
+        </div>
+
+        <div class="page" data-page="4">
+          <h2>📌 Bab 3: Sistem Keuangan 4-20-30-20-10-10</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/1589/1589331.png" alt="Money Allocation" class="page-img" />
+          <p>Bagi income kamu jadi 6 pos: kebutuhan, cicilan, investasi, dana darurat, sedekah, dan self-reward.</p>
+          <br><h4>Contoh:</h4>
+          <p>Dari gaji Rp5 juta: Rp2juta kebutuhan, Rp1juta cicilan, Rp1juta investasi, Rp500k darurat, Rp300k sedekah, Rp200k reward.</p>
+        </div>
+
+        <div class="page" data-page="5">
+          <h2>📌 Bab 4: Aset Produktif vs Konsumtif</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/2830/2830485.png" alt="Assets" class="page-img" />
+          <p>Aset produktif menghasilkan uang. Aset konsumtif justru menyedot uang. Fokus kamu harus ke produktif!</p>
+          <br><h4>Contoh:</h4>
+          <p>Beli kamera (produktif) untuk konten YouTube vs beli HP mahal hanya untuk gaya (konsumtif).</p>
+        </div>
+
+        <div class="page" data-page="6">
+          <h2>📌 Bab 5: Skill Kaya yang Harus Dimiliki</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/4359/4359957.png" alt="High Income Skills" class="page-img" />
+          <p>Skill yang membuka pintu income besar: copywriting, marketing, desain, public speaking, dan leadership.</p>
+          <br><h4>Contoh:</h4>
+          <p>Belajar copywriting → bikin landing page → jualan digital product → cuan tanpa stok barang.</p>
+        </div>
+
+        <div class="page" data-page="7">
+          <h2>📌 Bab 6: Strategi Bangun Aset Digital</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/11666/11666166.png" alt="Digital Asset" class="page-img" />
+          <p>Buat produk sekali, jual berkali-kali. Digital asset seperti e-book, course, desain, tool, atau template bisa jadi passive income.</p>
+          <br><h4>Contoh:</h4>
+          <p>Buat e-book "Tips IG Growth", upload di platform, hasilkan Rp500k–Rp2jt per bulan secara otomatis.</p>
+        </div>
+
+        <div class="page" data-page="8">
+          <h2>📌 Bab 7: Investasi yang Ramah Pemula</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/7317/7317874.png" alt="Investasi Pemula" class="page-img" />
+          <p>Mulai dari reksadana, emas digital, dan saham bluechip. Kuncinya bukan cepat, tapi rutin dan konsisten.</p>
+          <br><h4>Contoh:</h4>
+          <p>Invest Rp500k/bulan di indeks saham IDX30 → 5 tahun lagi bisa jadi Rp40–60 juta.</p>
+        </div>
+
+        <div class="page" data-page="9">
+          <h2>📌 Penutup: Kekayaan Butuh Waktu & Konsistensi</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/10590/10590530.png" alt="Wealth Takes Time" class="page-img" />
+          <p>Tidak ada kekayaan instan. Yang ada: mindset yang benar, langkah yang konsisten, dan sistem yang terarah.</p>
+          <br><h4>Contoh:</h4>
+          <p>Setiap hari, ambil satu langkah kecil: belajar, posting, menjual, menabung. 1 tahun = 365 langkah lebih kaya.</p>
+        </div>
+
+      </div>
+      <div class="book-footer">
+        <button id="prevBtn" class="nav-btn" disabled>⬅️ Kembali</button>
+        <span id="pageNumber" class="page-number">1 / 9</span>
+        <button id="nextBtn" class="nav-btn">Lanjut ➡️</button>
+      </div>
+    </section>
+  `;
+
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+  initBook(); // Inisialisasi sistem buku
+}
+
+if (page === 'capitalmarket') {
+  content = `
+    <section class="book-container">
+      <div class="book-content" id="bookContent">
+
+        <div class="page active" data-page="1">
+          <h2>📘 Capital Market Mastery</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/6221/6221394.png" alt="Capital Market" class="page-img" />
+          <p><strong>Kategori:</strong> Investasi & Pasar Modal</p>
+          <p><strong>Deskripsi:</strong> Modul lengkap untuk memahami pasar modal secara komprehensif, mulai dari pengenalan instrumen hingga strategi investasi ala profesional.</p>
+        </div>
+
+        <div class="page" data-page="2">
+          <h2>📌 Bab 1: Pengantar Pasar Modal</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/5612/5612924.png" alt="Intro" class="page-img" />
+          <p>Pasar modal adalah tempat jual beli instrumen keuangan seperti saham, obligasi, reksa dana, dan lainnya. Tujuannya untuk menghimpun dana jangka panjang.</p>
+          <br><h4>Contoh:</h4>
+          <p>Perusahaan seperti Telkom dan Bank BCA menerbitkan saham untuk menghimpun dana dari publik melalui Bursa Efek Indonesia (BEI).</p>
+        </div>
+
+        <div class="page" data-page="3">
+          <h2>📌 Bab 2: Jenis Instrumen Pasar Modal</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/6103/6103754.png" alt="Instrumen" class="page-img" />
+          <p>Instrumen utama di pasar modal: saham, obligasi, reksa dana, derivatif, dan ETF. Masing-masing memiliki karakter dan risiko berbeda.</p>
+          <br><h4>Contoh:</h4>
+          <p>Investor konservatif memilih reksa dana pasar uang. Sedangkan investor agresif cenderung memilih saham atau ETF sektor teknologi.</p>
+        </div>
+
+        <div class="page" data-page="4">
+          <h2>📌 Bab 3: Cara Membeli Saham Pertama Kali</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/5656/5656825.png" alt="Buy Saham" class="page-img" />
+          <p>Langkah awal: buka rekening efek di sekuritas, setor dana, analisis emiten, lalu beli saham via aplikasi (misal: Ajaib, Bibit, IndoPremier).</p>
+          <br><h4>Contoh:</h4>
+          <p>Daftar di Ajaib, setor Rp100.000, lalu beli saham PT Unilever Indonesia (UNVR) sebagai permulaan.</p>
+        </div>
+
+        <div class="page" data-page="5">
+          <h2>📌 Bab 4: Analisis Fundamental</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/9573/9573416.png" alt="Fundamental" class="page-img" />
+          <p>Analisis fundamental melibatkan laporan keuangan, rasio PE, PBV, ROE, dan kondisi industri untuk menilai nilai intrinsik saham.</p>
+          <br><h4>Contoh:</h4>
+          <p>Jika PT XYZ punya ROE 20% dan pertumbuhan laba stabil, maka sahamnya menarik untuk jangka panjang.</p>
+        </div>
+
+        <div class="page" data-page="6">
+          <h2>📌 Bab 5: Analisis Teknikal</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/6993/6993910.png" alt="Teknikal" class="page-img" />
+          <p>Teknikal fokus pada pergerakan harga & volume. Gunakan indikator seperti MA, RSI, MACD untuk menentukan timing beli & jual.</p>
+          <br><h4>Contoh:</h4>
+          <p>Harga saham membentuk pola “double bottom” + RSI oversold → sinyal beli potensial.</p>
+        </div>
+
+        <div class="page" data-page="7">
+          <h2>📌 Bab 6: Strategi Investasi Jangka Panjang</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/8050/8050935.png" alt="Long Term" class="page-img" />
+          <p>Strategi ala Warren Buffett: beli saham bagus di harga murah, tahan dalam jangka panjang (value investing).</p>
+          <br><h4>Contoh:</h4>
+          <p>Beli saham BBRI saat turun karena sentimen jangka pendek, lalu hold selama 5 tahun.</p>
+        </div>
+
+        <div class="page" data-page="8">
+          <h2>📌 Bab 7: Risiko dan Psikologi Investasi</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/8381/8381766.png" alt="Psikologi" class="page-img" />
+          <p>Investor pemula sering panik saat market turun. Kunci sukses ada di pengendalian emosi & diversifikasi portofolio.</p>
+          <br><h4>Contoh:</h4>
+          <p>Saat IHSG turun 5%, tetap tenang karena portofolio kamu terdiversifikasi ke 10 emiten dari sektor berbeda.</p>
+        </div>
+
+        <div class="page" data-page="9">
+          <h2>📌 Bab 8: Mengenal Dividen dan Capital Gain</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/7763/7763771.png" alt="Dividen" class="page-img" />
+          <p>Dividen adalah pembagian laba kepada pemegang saham. Capital gain adalah keuntungan dari selisih beli–jual saham.</p>
+          <br><h4>Contoh:</h4>
+          <p>Beli saham UNVR di Rp4.000 dan jual di Rp5.000 → capital gain Rp1.000 + dividen tahunan Rp150/saham.</p>
+        </div>
+
+        <div class="page" data-page="10">
+          <h2>📌 Penutup: Konsisten & Terus Belajar</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/11320/11320937.png" alt="Closing" class="page-img" />
+          <p>Pasar modal bukan tempat cari kaya cepat, tapi tempat tumbuh bersama pengetahuan. Belajar → Praktik → Evaluasi.</p>
+          <br><h4>Contoh:</h4>
+          <p>Buat jurnal investasi: kapan beli, kenapa beli, hasilnya gimana. Pelajari pola kamu sendiri.</p>
+        </div>
+
+      </div>
+      <div class="book-footer">
+        <button id="prevBtn" class="nav-btn" disabled>⬅️ Kembali</button>
+        <span id="pageNumber" class="page-number">1 / 10</span>
+        <button id="nextBtn" class="nav-btn">Lanjut ➡️</button>
+      </div>
+    </section>
+  `;
+
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+  initBook(); // Inisialisasi sistem buku
+}
+
+if (page === 'kebiasaanmenabung') {
+  content = `
+    <section class="book-container">
+      <div class="book-content" id="bookContent">
+
+        <div class="page active" data-page="1">
+          <h2>📘 Kebiasaan Menabung</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/3467/3467835.png" alt="Menabung" class="page-img" />
+          <p><strong>Kategori:</strong> Keuangan Pribadi</p>
+          <p><strong>Deskripsi:</strong> E-book ini membantu kamu membangun kebiasaan menabung yang konsisten dan efektif, meskipun penghasilan pas-pasan. Dilengkapi strategi praktis & studi kasus sederhana.</p>
+        </div>
+
+        <div class="page" data-page="2">
+          <h2>📌 Bab 1: Kenapa Harus Menabung?</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/9511/9511113.png" alt="Kenapa Menabung" class="page-img" />
+          <p>Menabung bukan soal jumlah, tapi soal kebiasaan. Menabung memberikan rasa aman finansial dan menjadi fondasi hidup tenang.</p>
+          <br><h4>Contoh:</h4>
+          <p>Ada kejadian darurat (HP rusak, keluarga sakit) → tabungan jadi penyelamat agar tidak berutang.</p>
+        </div>
+
+        <div class="page" data-page="3">
+          <h2>📌 Bab 2: Mulai dari Kecil, Tapi Konsisten</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/10848/10848647.png" alt="Konsisten Menabung" class="page-img" />
+          <p>Tak perlu menunggu gaji besar. Cukup mulai dari Rp5.000–Rp10.000/hari secara rutin, lama-lama akan terkumpul besar.</p>
+          <br><h4>Contoh:</h4>
+          <p>Menabung Rp10.000/hari selama 1 tahun = Rp3.650.000, cukup untuk darurat atau modal usaha kecil.</p>
+        </div>
+
+        <div class="page" data-page="4">
+          <h2>📌 Bab 3: Teknik Amplop & Tabungan Otomatis</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/3829/3829986.png" alt="Amplop Tabungan" class="page-img" />
+          <p>Pakai sistem amplop untuk pisahkan pengeluaran & tabungan. Gunakan fitur autodebet agar tabungan langsung tersimpan di awal gajian.</p>
+          <br><h4>Contoh:</h4>
+          <p>Gaji masuk ke rekening → otomatis Rp300.000 langsung masuk ke tabungan digital khusus tanpa harus ingat.</p>
+        </div>
+
+        <div class="page" data-page="5">
+          <h2>📌 Bab 4: Menabung Sesuai Tujuan</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/7891/7891463.png" alt="Tujuan Tabungan" class="page-img" />
+          <p>Menabung tanpa tujuan membuatmu mudah tergoda. Tetapkan target: dana darurat, gadget, liburan, atau modal usaha.</p>
+          <br><h4>Contoh:</h4>
+          <p>Tulis di tabungan: "Dana Motor Baru - Target 6 juta dalam 6 bulan" → jadi lebih termotivasi dan terarah.</p>
+        </div>
+
+        <div class="page" data-page="6">
+          <h2>📌 Bab 5: Hindari 3 Kesalahan Ini!</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/9251/9251369.png" alt="Kesalahan Menabung" class="page-img" />
+          <p>Kesalahan umum: menabung sisa uang, tabungan digabung dengan rekening utama, dan sering tarik tabungan karena tidak disiplin.</p>
+          <br><h4>Contoh:</h4>
+          <p>Jika selalu menabung di akhir bulan dari sisa gaji → biasanya tidak ada yang tersisa. Solusi: tabung dulu di awal gajian.</p>
+        </div>
+
+        <div class="page" data-page="7">
+          <h2>📌 Bab 6: Bikin Menabung Jadi Menyenangkan</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/7794/7794840.png" alt="Fun Saving" class="page-img" />
+          <p>Gunakan tantangan visual (habit tracker), tabungan koin, atau fitur gamifikasi dari aplikasi keuangan untuk bikin seru & konsisten.</p>
+          <br><h4>Contoh:</h4>
+          <p>Cetak tabel tabungan 52 minggu → setiap minggu simpan jumlah tertentu & centang → jadi tantangan dan kebanggaan!</p>
+        </div>
+
+        <div class="page" data-page="8">
+          <h2>📌 Penutup: Menabung adalah Gaya Hidup</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/9139/9139683.png" alt="Lifestyle Saving" class="page-img" />
+          <p>Menabung bukan cuma keuangan, tapi mindset. Mulai dari kecil, disiplin, dan terarah → kamu akan lebih siap menghadapi masa depan.</p>
+          <br><h4>Contoh:</h4>
+          <p>“Gue nggak kaya, tapi punya tabungan yang bikin tenang.” – itulah kekayaan sejati.</p>
+        </div>
+
+      </div>
+      <div class="book-footer">
+        <button id="prevBtn" class="nav-btn" disabled>⬅️ Kembali</button>
+        <span id="pageNumber" class="page-number">1 / 8</span>
+        <button id="nextBtn" class="nav-btn">Lanjut ➡️</button>
+      </div>
+    </section>
+  `;
+
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+  initBook(); // Inisialisasi sistem buku
+}
+
+if (page === 'danadarurat') {
+  content = `
+    <section class="book-container">
+      <div class="book-content" id="bookContent">
+
+        <div class="page active" data-page="1">
+          <h2>📘 Dimana Menyimpan Dana Darurat?</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/3652/3652191.png" alt="Dana Darurat" class="page-img" />
+          <p><strong>Kategori:</strong> Manajemen Keuangan</p>
+          <p><strong>Deskripsi:</strong> E-book ini membahas strategi menyimpan dana darurat secara aman, likuid, dan tetap menguntungkan. Cocok untuk siapa pun yang ingin finansialnya lebih siap menghadapi kejadian tak terduga.</p>
+        </div>
+
+        <div class="page" data-page="2">
+          <h2>📌 Bab 1: Apa Itu Dana Darurat?</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/11790/11790941.png" alt="Definisi Dana Darurat" class="page-img" />
+          <p>Dana darurat adalah uang yang disimpan khusus untuk keadaan mendesak seperti sakit, kehilangan pekerjaan, atau kecelakaan.</p>
+          <br><h4>Contoh:</h4>
+          <p>Misal kamu kehilangan pekerjaan mendadak, dana darurat bisa menopang hidup selama 3–6 bulan ke depan tanpa utang.</p>
+        </div>
+
+        <div class="page" data-page="3">
+          <h2>📌 Bab 2: Berapa Jumlah Ideal Dana Darurat?</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/4727/4727294.png" alt="Jumlah Ideal" class="page-img" />
+          <p>Idealnya, dana darurat = 3–6 kali pengeluaran bulanan. Jika kamu single: 3x. Jika sudah menikah/berkeluarga: 6–12x.</p>
+          <br><h4>Contoh:</h4>
+          <p>Pengeluaran Rp3 juta/bulan → target dana darurat minimal Rp9 juta – Rp18 juta.</p>
+        </div>
+
+        <div class="page" data-page="4">
+          <h2>📌 Bab 3: Syarat Tempat Menyimpan Dana Darurat</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/2956/2956725.png" alt="Syarat Tempat Aman" class="page-img" />
+          <p>Pilih tempat yang <strong>aman</strong>, <strong>likuid</strong> (mudah dicairkan), dan <strong>tidak mudah tergoda diambil</strong>.</p>
+          <br><h4>Contoh:</h4>
+          <p>Rekening khusus tanpa kartu ATM lebih aman daripada gabung dengan rekening utama.</p>
+        </div>
+
+        <div class="page" data-page="5">
+          <h2>📌 Bab 4: Rekomendasi Tempat Menyimpan Dana Darurat</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/1532/1532556.png" alt="Tempat Dana" class="page-img" />
+          <ul>
+            <li>✅ Rekening tabungan terpisah</li>
+            <li>✅ E-wallet dengan bunga (DANA, ShopeePay Later Investment, dll)</li>
+            <li>✅ Deposito jangka pendek (1–3 bulan)</li>
+            <li>✅ Reksadana Pasar Uang</li>
+          </ul>
+          <br><h4>Contoh:</h4>
+          <p>Kamu simpan Rp10 juta di Reksadana Pasar Uang → tetap bisa dicairkan dalam 1–2 hari & dapat bunga 4–6% per tahun.</p>
+        </div>
+
+        <div class="page" data-page="6">
+          <h2>📌 Bab 5: Tempat yang Harus Dihindari</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/992/992651.png" alt="Jangan Taruh Di Sini" class="page-img" />
+          <p>Hindari menyimpan dana darurat di:</p>
+          <ul>
+            <li>❌ Saham atau crypto (terlalu fluktuatif)</li>
+            <li>❌ Bisnis teman (tidak likuid & berisiko)</li>
+            <li>❌ Rekening utama yang sering kamu pakai</li>
+          </ul>
+          <br><h4>Contoh:</h4>
+          <p>Menaruh dana darurat di crypto → saat butuh mendadak, nilai bisa turun drastis. Risiko tinggi = bukan pilihan tepat untuk darurat.</p>
+        </div>
+
+        <div class="page" data-page="7">
+          <h2>📌 Penutup: Dana Darurat Adalah Fondasi</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/3262/3262964.png" alt="Dana Aman" class="page-img" />
+          <p>Sebelum investasi atau beli aset, pastikan dana darurat kamu aman. Ini adalah pondasi agar kamu tidak panik saat krisis.</p>
+          <br><h4>Contoh:</h4>
+          <p>Investor cerdas punya strategi, tapi yang punya dana darurat, punya ketenangan.</p>
+        </div>
+
+      </div>
+      <div class="book-footer">
+        <button id="prevBtn" class="nav-btn" disabled>⬅️ Kembali</button>
+        <span id="pageNumber" class="page-number">1 / 7</span>
+        <button id="nextBtn" class="nav-btn">Lanjut ➡️</button>
+      </div>
+    </section>
+  `;
+
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+  initBook(); // Inisialisasi sistem buku
+}
+
+if (page === 'caradanaDarurat') {
+  content = `
+    <section class="book-container">
+      <div class="book-content" id="bookContent">
+
+        <div class="page active" data-page="1">
+          <h2>📘 Cara Menentukan Dana Darurat</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/4350/4350053.png" alt="Tentukan Dana Darurat" class="page-img" />
+          <p><strong>Kategori:</strong> Manajemen Keuangan</p>
+          <p><strong>Deskripsi:</strong> Panduan praktis untuk menghitung dan menetapkan jumlah dana darurat berdasarkan kebutuhan personal dan kondisi hidup. Wajib dibaca bagi siapa pun yang ingin stabil secara finansial.</p>
+        </div>
+
+        <div class="page" data-page="2">
+          <h2>📌 Bab 1: Kenapa Dana Darurat Itu Penting?</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/5826/5826276.png" alt="Kenapa Dana Darurat" class="page-img" />
+          <p>Dana darurat mencegah kamu terjebak utang saat menghadapi kondisi tak terduga seperti PHK, kecelakaan, atau kebutuhan mendesak lainnya.</p>
+          <br><h4>Contoh:</h4>
+          <p>Tanpa dana darurat, kamu mungkin harus ambil pinjaman bunga tinggi untuk biaya rumah sakit.</p>
+        </div>
+
+        <div class="page" data-page="3">
+          <h2>📌 Bab 2: Rumus Umum Dana Darurat</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/4753/4753110.png" alt="Rumus Dana Darurat" class="page-img" />
+          <p>Gunakan rumus:
+            <br><strong>Dana Darurat = Pengeluaran Bulanan x Durasi Aman</strong>
+            <br>Durasi aman tergantung status pribadi:
+            <ul>
+              <li>Single: 3–6 bulan</li>
+              <li>Menikah: 6–9 bulan</li>
+              <li>Menikah + anak: 9–12 bulan</li>
+            </ul>
+          </p>
+          <br><h4>Contoh:</h4>
+          <p>Pengeluaran Rp4 juta/bulan, menikah + anak → 4 juta x 12 = Rp48 juta target dana darurat.</p>
+        </div>
+
+        <div class="page" data-page="4">
+          <h2>📌 Bab 3: Komponen Pengeluaran yang Harus Dihitung</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/4149/4149647.png" alt="Pengeluaran" class="page-img" />
+          <p>Hitung hanya pengeluaran wajib seperti:
+            <ul>
+              <li>🛒 Makan dan kebutuhan harian</li>
+              <li>🏠 Sewa/kredit rumah</li>
+              <li>🚗 Transportasi</li>
+              <li>🍼 Biaya anak (jika ada)</li>
+              <li>💡 Listrik, air, internet</li>
+            </ul>
+          </p>
+          <br><h4>Contoh:</h4>
+          <p>Jangan masukkan liburan, beli baju, atau ngopi. Fokus hanya yang perlu untuk bertahan hidup.</p>
+        </div>
+
+        <div class="page" data-page="5">
+          <h2>📌 Bab 4: Evaluasi & Revisi Berkala</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/4369/4369762.png" alt="Evaluasi Dana Darurat" class="page-img" />
+          <p>Kondisi hidup berubah → dana darurat juga harus dievaluasi minimal tiap 6 bulan sekali.</p>
+          <br><h4>Contoh:</h4>
+          <p>Dulu pengeluaran Rp3 juta, sekarang Rp5 juta. Dana darurat juga harus ditambah sesuai kondisi terbaru.</p>
+        </div>
+
+        <div class="page" data-page="6">
+          <h2>📌 Penutup: Dana Darurat = Pondasi Finansial</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/4076/4076506.png" alt="Penutup Dana" class="page-img" />
+          <p>Sebelum kamu investasi, belanja besar, atau mulai bisnis, pastikan kamu punya dana darurat. Ini adalah tameng utama dari stres finansial dan ketidaksiapan.</p>
+          <br><h4>Contoh:</h4>
+          <p>“Uangmu bukan uangmu jika kamu nggak punya dana darurat.”</p>
+        </div>
+
+      </div>
+      <div class="book-footer">
+        <button id="prevBtn" class="nav-btn" disabled>⬅️ Kembali</button>
+        <span id="pageNumber" class="page-number">1 / 6</span>
+        <button id="nextBtn" class="nav-btn">Lanjut ➡️</button>
+      </div>
+    </section>
+  `;
+
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+  initBook(); // Inisialisasi sistem buku
+}
+
+if (page === 'gayahidupkredit') {
+  content = `
+    <section class="book-container">
+      <div class="book-content" id="bookContent">
+
+        <div class="page active" data-page="1">
+          <h2>📘 Bahaya Cicilan & Gaya Hidup Kredit</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/1164/1164544.png" alt="Cicilan Kredit" class="page-img" />
+          <p><strong>Kategori:</strong> Literasi Keuangan</p>
+          <p><strong>Deskripsi:</strong> E-book ini membahas jebakan gaya hidup kredit, bahaya cicilan konsumtif, dan bagaimana mengelola keuangan dengan sehat tanpa tergantung pada utang. Cocok bagi siapa pun yang ingin merdeka secara finansial.</p>
+        </div>
+
+        <div class="page" data-page="2">
+          <h2>📌 Bab 1: Gaya Hidup Kredit di Era Digital</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/4236/4236541.png" alt="Gaya Hidup Kredit" class="page-img" />
+          <p>PayLater, cicilan 0%, dan kartu kredit jadi gaya hidup baru. Sayangnya, ini membuat banyak orang merasa mampu beli sesuatu yang sebenarnya belum mampu.</p>
+          <br><h4>Contoh:</h4>
+          <p>Beli HP 15 juta pakai cicilan 24 bulan. Setiap bulan merasa “mampu”, tapi tabungan nggak pernah nambah.</p>
+        </div>
+
+        <div class="page" data-page="3">
+          <h2>📌 Bab 2: Bahaya Cicilan Konsumtif</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/2740/2740654.png" alt="Bahaya Cicilan" class="page-img" />
+          <p>Cicilan untuk barang konsumtif (bukan produktif) hanya menggerogoti pemasukan. Tidak menghasilkan uang, hanya menambah beban.</p>
+          <br><h4>Contoh:</h4>
+          <p>Cicilan motor mahal hanya untuk gaya. Setelah lunas, motor rusak dan nilainya turun drastis.</p>
+        </div>
+
+        <div class="page" data-page="4">
+          <h2>📌 Bab 3: Ilusi Kemampuan Finansial</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/8788/8788777.png" alt="Ilusi Mampu" class="page-img" />
+          <p>Dengan cicilan, orang merasa mampu karena “cuma 300 ribu per bulan”. Padahal penghasilan belum stabil dan darurat tidak siap.</p>
+          <br><h4>Contoh:</h4>
+          <p>Gaji Rp4 juta, cicilan total Rp2 juta. Sisa Rp2 juta harus cukup untuk semua kebutuhan. Rawan stres & gali lubang tutup lubang.</p>
+        </div>
+
+        <div class="page" data-page="5">
+          <h2>📌 Bab 4: Tips Keluar dari Gaya Hidup Kredit</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/4687/4687030.png" alt="Keluar Cicilan" class="page-img" />
+          <p>
+            <ul>
+              <li>Stop cicilan baru</li>
+              <li>Cicil bayar utang paling besar dulu (metode avalanche)</li>
+              <li>Bangun dana darurat</li>
+              <li>Pakai sistem amplop untuk kebutuhan harian</li>
+              <li>Upgrade gaya hidup terakhir, bukan pertama</li>
+            </ul>
+          </p>
+          <br><h4>Contoh:</h4>
+          <p>Gunakan bonus akhir tahun untuk lunasi cicilan, bukan beli barang baru.</p>
+        </div>
+
+        <div class="page" data-page="6">
+          <h2>📌 Penutup: Kaya Itu Bukan dari Barang, Tapi Kendali</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/3246/3246776.png" alt="Mandiri Finansial" class="page-img" />
+          <p>Tujuan finansial bukan sekadar terlihat kaya, tapi benar-benar merdeka dari beban utang. Gaya hidup bebas cicilan membuat kamu punya kontrol atas hidupmu.</p>
+          <br><h4>Contoh:</h4>
+          <p>“Kalau bisa beli tanpa cicilan, itu baru tanda mampu.”</p>
+        </div>
+
+      </div>
+      <div class="book-footer">
+        <button id="prevBtn" class="nav-btn" disabled>⬅️ Kembali</button>
+        <span id="pageNumber" class="page-number">1 / 6</span>
+        <button id="nextBtn" class="nav-btn">Lanjut ➡️</button>
+      </div>
+    </section>
+  `;
+
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+  initBook(); // Inisialisasi sistem buku
+}
+
+if (page === 'snowballvavalache') {
+  content = `
+    <section class="book-container">
+      <div class="book-content" id="bookContent">
+
+        <div class="page active" data-page="1">
+          <h2>📘 Snowball vs Avalanche: Strategi Melunasi Utang</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/2773/2773180.png" alt="Debt Strategy" class="page-img" />
+          <p><strong>Kategori:</strong> Manajemen Utang & Finansial</p>
+          <p><strong>Deskripsi:</strong> E-book ini membahas dua strategi populer dalam melunasi utang: Snowball dan Avalanche. Kamu akan belajar cara kerja masing-masing metode, kelebihan, kekurangan, dan kapan sebaiknya digunakan.</p>
+        </div>
+
+        <div class="page" data-page="2">
+          <h2>📌 Bab 1: Kenapa Strategi Bayar Utang Itu Penting?</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/1482/1482832.png" alt="Urgensi Utang" class="page-img" />
+          <p>Tanpa strategi yang tepat, utang bisa menumpuk dan membuat kamu stuck dalam siklus gali lubang tutup lubang. Maka, perlu sistem yang terukur dan terarah.</p>
+          <br><h4>Contoh:</h4>
+          <p>Seseorang punya 4 utang, tapi karena tidak pakai metode, hanya bayar minimum semuanya → total bunga makin besar tiap bulan.</p>
+        </div>
+
+        <div class="page" data-page="3">
+          <h2>📌 Bab 2: Apa Itu Metode Snowball?</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/3891/3891607.png" alt="Snowball" class="page-img" />
+          <p>Snowball = fokus melunasi utang dari yang terkecil ke terbesar, tanpa peduli bunga. Tujuannya membangun momentum dan rasa percaya diri.</p>
+          <br><h4>Contoh:</h4>
+          <p>Utang A: Rp500.000, Utang B: Rp1 juta, Utang C: Rp2 juta  
+          → Fokus lunasi A dulu, lalu lanjut ke B, dan seterusnya.</p>
+        </div>
+
+        <div class="page" data-page="4">
+          <h2>📌 Bab 3: Kapan Gunakan Metode Snowball?</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/2038/2038854.png" alt="Snowball Kapan" class="page-img" />
+          <p>Metode ini cocok jika kamu:
+            <ul>
+              <li>Mudah kehilangan motivasi</li>
+              <li>Suka lihat hasil cepat</li>
+              <li>Punya banyak utang kecil</li>
+            </ul>
+          </p>
+          <br><h4>Contoh:</h4>
+          <p>Seseorang melunasi 2 utang kecil dalam 1 bulan → merasa lebih ringan dan semangat bayar yang besar.</p>
+        </div>
+
+        <div class="page" data-page="5">
+          <h2>📌 Bab 4: Apa Itu Metode Avalanche?</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/4052/4052984.png" alt="Avalanche" class="page-img" />
+          <p>Avalanche = fokus bayar utang dengan bunga tertinggi dulu → efisien secara matematis karena mengurangi total bunga.</p>
+          <br><h4>Contoh:</h4>
+          <p>Utang A: Rp1 juta (bunga 25%), Utang B: Rp2 juta (bunga 10%)  
+          → Fokus lunasi A dulu meskipun nominalnya lebih kecil dari B.</p>
+        </div>
+
+        <div class="page" data-page="6">
+          <h2>📌 Bab 5: Kapan Gunakan Metode Avalanche?</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/1900/1900599.png" alt="Avalanche Strategy" class="page-img" />
+          <p>Metode ini cocok jika kamu:
+            <ul>
+              <li>Punya utang bunga tinggi (kartu kredit, pinjol)</li>
+              <li>Fokus pada penghematan jangka panjang</li>
+              <li>Suka perhitungan rasional daripada emosional</li>
+            </ul>
+          </p>
+          <br><h4>Contoh:</h4>
+          <p>Dalam 1 tahun, metode avalanche bisa menghemat bunga hingga Rp2 juta dibanding snowball, tergantung utang.</p>
+        </div>
+
+        <div class="page" data-page="7">
+          <h2>📌 Bab 6: Mana yang Terbaik Untukmu?</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/1995/1995671.png" alt="Pilih Strategi" class="page-img" />
+          <p>
+            Tidak ada metode yang salah. Pilih sesuai dengan kepribadian dan kondisi keuanganmu:
+            <ul>
+              <li>Snowball = cepat merasa berhasil</li>
+              <li>Avalanche = lebih hemat secara total</li>
+            </ul>
+          </p>
+          <br><h4>Contoh:</h4>
+          <p>Gabungkan keduanya: mulai dengan snowball → setelah dapat semangat, lanjutkan dengan avalanche.</p>
+        </div>
+
+      </div>
+      <div class="book-footer">
+        <button id="prevBtn" class="nav-btn" disabled>⬅️ Kembali</button>
+        <span id="pageNumber" class="page-number">1 / 7</span>
+        <button id="nextBtn" class="nav-btn">Lanjut ➡️</button>
+      </div>
+    </section>
+  `;
+
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+  initBook(); // Inisialisasi sistem buku
+}
+
+if (page === 'kartukreditbijak') {
+  content = `
+    <section class="book-container">
+      <div class="book-content" id="bookContent">
+
+        <div class="page active" data-page="1">
+          <h2>📘 Cara Gunakan Kartu Kredit Secara Bijak</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/7203/7203996.png" alt="Kartu Kredit" class="page-img" />
+          <p><strong>Kategori:</strong> Manajemen Keuangan</p>
+          <p><strong>Deskripsi:</strong> E-book ini mengajarkan cara menggunakan kartu kredit dengan cerdas tanpa terjerat utang. Cocok untuk pemula maupun pengguna aktif yang ingin lebih bijak secara finansial.</p>
+        </div>
+
+        <div class="page" data-page="2">
+          <h2>📌 Bab 1: Apa Itu Kartu Kredit?</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/4334/4334566.png" alt="Definisi Kartu Kredit" class="page-img" />
+          <p>Kartu kredit adalah alat pembayaran yang memungkinkan kamu bertransaksi terlebih dahulu, lalu membayar belakangan sesuai tagihan.</p>
+          <br><h4>Contoh:</h4>
+          <p>Kamu belanja Rp500.000 dengan kartu kredit hari ini, tapi bayar tagihannya bulan depan ke bank penerbit kartu.</p>
+        </div>
+
+        <div class="page" data-page="3">
+          <h2>📌 Bab 2: Manfaat Kartu Kredit Jika Digunakan Bijak</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/6555/6555997.png" alt="Manfaat" class="page-img" />
+          <p>Manfaat kartu kredit antara lain:
+            <ul>
+              <li>Cashback & poin reward</li>
+              <li>Diskon eksklusif</li>
+              <li>Bayar belakangan tanpa bunga (jika lunas tepat waktu)</li>
+            </ul>
+          </p>
+          <br><h4>Contoh:</h4>
+          <p>Pakai kartu kredit untuk beli tiket Rp1 juta, dapat cashback 5% = hemat Rp50.000 jika dilunasi di bulan yang sama.</p>
+        </div>
+
+        <div class="page" data-page="4">
+          <h2>📌 Bab 3: Risiko Jika Tidak Bijak</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/7165/7165792.png" alt="Risiko Kartu Kredit" class="page-img" />
+          <p>Kartu kredit bisa jadi jebakan jika:
+            <ul>
+              <li>Hanya bayar minimum payment</li>
+              <li>Belanja impulsif tanpa kontrol</li>
+              <li>Tidak tahu tanggal jatuh tempo</li>
+            </ul>
+          </p>
+          <br><h4>Contoh:</h4>
+          <p>Tagihan Rp3 juta → hanya bayar minimum Rp300.000 → sisanya berbunga hingga puluhan % per tahun.</p>
+        </div>
+
+        <div class="page" data-page="5">
+          <h2>📌 Bab 4: Tips Menggunakan Kartu Kredit dengan Bijak</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/984/984228.png" alt="Tips Bijak" class="page-img" />
+          <p>
+            <ul>
+              <li>Lunasi 100% tagihan sebelum jatuh tempo</li>
+              <li>Gunakan hanya untuk kebutuhan, bukan gaya hidup</li>
+              <li>Catat semua transaksi harian</li>
+              <li>Batasi penggunaan maksimal 30% dari limit</li>
+            </ul>
+          </p>
+          <br><h4>Contoh:</h4>
+          <p>Limit kamu Rp10 juta → batasi belanja maksimal Rp3 juta untuk jaga rasio kredit tetap sehat.</p>
+        </div>
+
+        <div class="page" data-page="6">
+          <h2>📌 Bab 5: Apakah Semua Orang Perlu Kartu Kredit?</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/631/631165.png" alt="Perlu atau Tidak" class="page-img" />
+          <p>Tidak semua orang perlu kartu kredit. Gunakan jika:
+            <ul>
+              <li>Sudah punya penghasilan tetap</li>
+              <li>Bisa mengelola keuangan dengan disiplin</li>
+              <li>Tahu cara kerja dan risikonya</li>
+            </ul>
+          </p>
+          <br><h4>Contoh:</h4>
+          <p>Pelajar atau mahasiswa lebih baik menunggu sampai punya income rutin sebelum menggunakan kartu kredit.</p>
+        </div>
+
+      </div>
+      <div class="book-footer">
+        <button id="prevBtn" class="nav-btn" disabled>⬅️ Kembali</button>
+        <span id="pageNumber" class="page-number">1 / 6</span>
+        <button id="nextBtn" class="nav-btn">Lanjut ➡️</button>
+      </div>
+    </section>
+  `;
+
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+  initBook(); // Inisialisasi sistem buku
+}
+
+if (page === 'utangproduktif') {
+  content = `
+    <section class="book-container">
+      <div class="book-content" id="bookContent">
+
+        <div class="page active" data-page="1">
+          <h2>📘 Utang Produktif vs Konsumtif</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/10396/10396183.png" alt="Utang" class="page-img" />
+          <p><strong>Kategori:</strong> Edukasi Finansial</p>
+          <p><strong>Deskripsi:</strong> Pelajari perbedaan antara utang produktif yang bisa mempercepat tujuan finansial, dan utang konsumtif yang justru bisa menyeret kamu ke dalam masalah keuangan.</p>
+        </div>
+
+        <div class="page" data-page="2">
+          <h2>📌 Bab 1: Apa Itu Utang Produktif?</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/9068/9068784.png" alt="Utang Produktif" class="page-img" />
+          <p>Utang produktif adalah utang yang digunakan untuk hal yang menghasilkan atau meningkatkan aset/pendapatan.</p>
+          <br><h4>Contoh:</h4>
+          <p>Pinjaman modal usaha, cicilan alat kerja (kamera untuk freelancer), atau KPR rumah sewa yang bisa disewakan kembali.</p>
+        </div>
+
+        <div class="page" data-page="3">
+          <h2>📌 Bab 2: Apa Itu Utang Konsumtif?</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/6591/6591534.png" alt="Utang Konsumtif" class="page-img" />
+          <p>Utang konsumtif adalah utang yang digunakan untuk membeli barang/jasa yang habis pakai dan tidak menghasilkan nilai tambah.</p>
+          <br><h4>Contoh:</h4>
+          <p>Pinjaman paylater untuk beli baju, cicilan HP terbaru untuk gengsi, atau kredit liburan tanpa ada manfaat jangka panjang.</p>
+        </div>
+
+        <div class="page" data-page="4">
+          <h2>📌 Bab 3: Tanda Kamu Terjebak Utang Konsumtif</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/9267/9267078.png" alt="Tanda Bahaya" class="page-img" />
+          <ul>
+            <li>Selalu cicil barang konsumtif</li>
+            <li>Sering ambil paylater untuk hal tidak penting</li>
+            <li>Gaji habis hanya untuk bayar utang bulanan</li>
+          </ul>
+          <br><h4>Contoh:</h4>
+          <p>Gaji Rp4 juta, tapi harus bayar cicilan gadget, fashion, dan makan online sampai Rp3,5 juta.</p>
+        </div>
+
+        <div class="page" data-page="5">
+          <h2>📌 Bab 4: Kapan Utang Produktif Menjadi Berbahaya?</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/8981/8981111.png" alt="Risiko" class="page-img" />
+          <p>Utang produktif bisa menjadi beban jika:</p>
+          <ul>
+            <li>Tanpa perhitungan cash flow</li>
+            <li>Bisnis yang dibiayai gagal</li>
+            <li>Utang terlalu besar dibanding penghasilan</li>
+          </ul>
+          <br><h4>Contoh:</h4>
+          <p>Pinjam Rp50 juta untuk usaha tanpa riset pasar → bisnis gagal → utang tetap harus dibayar dengan gaji bulanan.</p>
+        </div>
+
+        <div class="page" data-page="6">
+          <h2>📌 Bab 5: Cara Bijak Mengelola Utang</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/8373/8373622.png" alt="Kelola Utang" class="page-img" />
+          <ul>
+            <li>Pastikan rasio utang maksimal 30% dari penghasilan</li>
+            <li>Bedakan kebutuhan vs keinginan sebelum ambil cicilan</li>
+            <li>Gunakan utang untuk hal yang bisa balik modal atau hasil</li>
+          </ul>
+          <br><h4>Contoh:</h4>
+          <p>Punya gaji Rp5 juta → maksimal total cicilan sebaiknya Rp1,5 juta per bulan agar tetap sehat secara finansial.</p>
+        </div>
+
+      </div>
+      <div class="book-footer">
+        <button id="prevBtn" class="nav-btn" disabled>⬅️ Kembali</button>
+        <span id="pageNumber" class="page-number">1 / 6</span>
+        <button id="nextBtn" class="nav-btn">Lanjut ➡️</button>
+      </div>
+    </section>
+  `;
+
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+  initBook(); // Inisialisasi sistem buku
+}
+
+
+if (page === 'tingkatpenghasilan') {
+  content = `
+    <section class="book-container">
+      <div class="book-content" id="bookContent">
+
+        <div class="page active" data-page="1">
+          <h2>📘 Strategi Tingkatkan Penghasilan</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/4213/4213099.png" alt="Income Growth" class="page-img" />
+          <p><strong>Kategori:</strong> Finansial & Produktivitas</p>
+          <p><strong>Deskripsi:</strong> Panduan langkah demi langkah untuk menaikkan penghasilan lewat pekerjaan utama, side hustle, skill baru, dan mindset yang tepat.</p>
+        </div>
+
+        <div class="page" data-page="2">
+          <h2>📌 Bab 1: Evaluasi Sumber Penghasilan Saat Ini</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/12519/12519689.png" alt="Evaluate Income" class="page-img" />
+          <p>Sebelum meningkatkan, pahami dulu dari mana saja penghasilanmu saat ini, dan apakah bisa dimaksimalkan lebih jauh.</p>
+          <br><h4>Contoh:</h4>
+          <p>Kamu kerja sebagai CS, tapi juga jago desain. Apakah kamu bisa mulai tawarkan jasa desain untuk tambahan income?</p>
+        </div>
+
+        <div class="page" data-page="3">
+          <h2>📌 Bab 2: Naikkan Value di Pekerjaan Utama</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/9609/9609237.png" alt="Naik Gaji" class="page-img" />
+          <p>Cara tercepat untuk meningkatkan penghasilan adalah dengan meningkatkan value kamu di tempat kerja saat ini.</p>
+          <br><h4>Contoh:</h4>
+          <p>Upgrade skill Excel, ambil tanggung jawab baru, dan tunjukkan kontribusi nyata → ini bisa jadi dasar negosiasi kenaikan gaji.</p>
+        </div>
+
+        <div class="page" data-page="4">
+          <h2>📌 Bab 3: Bangun Income Sampingan</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/1055/1055666.png" alt="Side Hustle" class="page-img" />
+          <p>Jangan hanya mengandalkan 1 sumber penghasilan. Mulai dari jasa freelance, jualan digital, atau afiliasi.</p>
+          <br><h4>Contoh:</h4>
+          <p>Buka jasa edit video, jual template desain, atau join program affiliate seperti Shopee/Tokopedia.</p>
+        </div>
+
+        <div class="page" data-page="5">
+          <h2>📌 Bab 4: Investasi pada Skill Bernilai Tinggi</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/11728/11728947.png" alt="Invest Skill" class="page-img" />
+          <p>Skill seperti desain, copywriting, coding, dan digital marketing bisa langsung diuangkan dan dicari pasar global.</p>
+          <br><h4>Contoh:</h4>
+          <p>Belajar dasar UI/UX, buat portofolio di Behance, lalu tawarkan jasamu di Fiverr/Upwork.</p>
+        </div>
+
+        <div class="page" data-page="6">
+          <h2>📌 Bab 5: Manfaatkan Platform Digital</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/11685/11685626.png" alt="Platform" class="page-img" />
+          <p>Gunakan media sosial, marketplace, atau platform freelance untuk menjual skill/produk digital kamu.</p>
+          <br><h4>Contoh:</h4>
+          <p>Buat konten edukasi di TikTok, arahkan audiens ke link jualan digitalmu (template, e-book, jasa, dsb).</p>
+        </div>
+
+        <div class="page" data-page="7">
+          <h2>📌 Bab 6: Bangun Portofolio & Jejak Digital</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/5953/5953396.png" alt="Portofolio" class="page-img" />
+          <p>Portofolio online & jejak digital akan mempermudah kamu dalam mendapatkan klien atau tawaran kerja.</p>
+          <br><h4>Contoh:</h4>
+          <p>Upload hasil desainmu di Instagram + Notion. Saat ditanya client, kamu tinggal kirim link portofolio online.</p>
+        </div>
+
+        <div class="page" data-page="8">
+          <h2>📌 Bab 7: Ubah Mindset dari Konsumtif ke Produktif</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/8146/8146710.png" alt="Mindset" class="page-img" />
+          <p>Peningkatan penghasilan tidak akan terasa kalau gaya hidup boros. Fokuslah pada penggunaan uang yang memperbesar potensi earning-mu.</p>
+          <br><h4>Contoh:</h4>
+          <p>Daripada beli gadget baru tiap tahun, alokasikan Rp300.000/bulan untuk kursus skill yang bisa menghasilkan lebih besar.</p>
+        </div>
+
+      </div>
+      <div class="book-footer">
+        <button id="prevBtn" class="nav-btn" disabled>⬅️ Kembali</button>
+        <span id="pageNumber" class="page-number">1 / 8</span>
+        <button id="nextBtn" class="nav-btn">Lanjut ➡️</button>
+      </div>
+    </section>
+  `;
+
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+  initBook(); // Inisialisasi sistem buku
+}
+
+if (page === 'kebocorankeuangan') {
+  content = `
+    <section class="book-container">
+      <div class="book-content" id="bookContent">
+
+        <div class="page active" data-page="1">
+          <h2>📘 Membongkar Kebocoran Keuangan</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/9917/9917124.png" alt="Leak Money" class="page-img" />
+          <p><strong>Kategori:</strong> Manajemen Keuangan</p>
+          <p><strong>Deskripsi:</strong> E-book ini membahas kebocoran keuangan yang sering terjadi tanpa disadari, bagaimana mengenalinya, menghitungnya, dan menutupnya untuk mengembalikan kestabilan finansial pribadi.</p>
+        </div>
+
+        <div class="page" data-page="2">
+          <h2>📌 Bab 1: Apa Itu Kebocoran Keuangan?</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/9980/9980542.png" alt="Definition" class="page-img" />
+          <p>Kebocoran keuangan adalah pengeluaran kecil namun konsisten yang tidak disadari dan merusak cash flow bulanan.</p>
+          <br><h4>Contoh:</h4>
+          <p>Langganan yang tidak digunakan, jajan harian kecil, dan biaya transfer antar bank bisa jadi ‘kebocoran’ rutin.</p>
+        </div>
+
+        <div class="page" data-page="3">
+          <h2>📌 Bab 2: Jenis Kebocoran yang Umum Terjadi</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/4341/4341139.png" alt="Types" class="page-img" />
+          <p>Termasuk biaya impulsif, gaya hidup digital (game, top-up, streaming), dan pengeluaran ‘tidak terasa’ seperti ojek online & kopi harian.</p>
+          <br><h4>Contoh:</h4>
+          <p>Beli kopi Rp25.000 setiap hari kerja = Rp500.000 per bulan.</p>
+        </div>
+
+        <div class="page" data-page="4">
+          <h2>📌 Bab 3: Cara Mengidentifikasi Kebocoran</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/10526/10526599.png" alt="Detect" class="page-img" />
+          <p>Catat semua pengeluaran kecil selama 30 hari, kelompokkan berdasarkan kategori, dan evaluasi pengeluaran yang tidak penting.</p>
+          <br><h4>Contoh:</h4>
+          <p>Gunakan aplikasi catatan keuangan seperti Money Lover atau spreadsheet harian untuk tracking.</p>
+        </div>
+
+        <div class="page" data-page="5">
+          <h2>📌 Bab 4: Menutup Kebocoran Secara Bertahap</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/11768/11768271.png" alt="Fix Leak" class="page-img" />
+          <p>Kurangi atau hentikan langganan, atur limit belanja impulsif, dan buat sistem notifikasi atau reminder pengeluaran.</p>
+          <br><h4>Contoh:</h4>
+          <p>Langganan 3 platform streaming? Pilih 1 saja dan hemat Rp100.000-Rp150.000 per bulan.</p>
+        </div>
+
+        <div class="page" data-page="6">
+          <h2>📌 Bab 5: Ubah Kebocoran Jadi Tabungan</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/10792/10792633.png" alt="Convert" class="page-img" />
+          <p>Setiap pengeluaran yang berhasil dihemat bisa langsung dialihkan ke tabungan atau dana darurat untuk memperbaiki kondisi finansial.</p>
+          <br><h4>Contoh:</h4>
+          <p>Berhasil menghemat Rp300.000 per bulan? Simpan otomatis ke rekening berbeda setiap tanggal gajian.</p>
+        </div>
+
+        <div class="page" data-page="7">
+          <h2>📌 Penutup: Kecil Tapi Berbahaya</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/9471/9471839.png" alt="Conclusion" class="page-img" />
+          <p>Kebocoran keuangan ibarat lubang kecil di kapal. Tak terlihat, tapi jika dibiarkan bisa tenggelamkan semuanya. Sadari, atasi, dan ubah jadi kekuatan finansial.</p>
+          <br><h4>Contoh:</h4>
+          <p>Dari pengeluaran kecil tak terasa, kamu bisa menyisihkan hingga jutaan per tahun untuk investasi atau dana darurat.</p>
+        </div>
+
+      </div>
+      <div class="book-footer">
+        <button id="prevBtn" class="nav-btn" disabled>⬅️ Kembali</button>
+        <span id="pageNumber" class="page-number">1 / 7</span>
+        <button id="nextBtn" class="nav-btn">Lanjut ➡️</button>
+      </div>
+    </section>
+  `;
+
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+  initBook(); // Inisialisasi sistem buku
+}
+
+if (page === 'aturgajieffektif') {
+  content = `
+    <section class="book-container">
+      <div class="book-content" id="bookContent">
+
+        <div class="page active" data-page="1">
+          <h2>📘 Mengatur Gaji Secara Efektif</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/4357/4357761.png" alt="Manage Salary" class="page-img" />
+          <p><strong>Kategori:</strong> Manajemen Keuangan Pribadi</p>
+          <p><strong>Deskripsi:</strong> Pelajari cara mengelola gaji agar tidak habis di tengah bulan. Panduan ini mencakup teknik alokasi, strategi menabung, dan tips pengeluaran cerdas agar kamu bisa mencapai tujuan finansial.</p>
+        </div>
+
+        <div class="page" data-page="2">
+          <h2>📌 Bab 1: Kenapa Gaji Selalu Habis?</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/9923/9923997.png" alt="Salary Gone" class="page-img" />
+          <p>Banyak orang merasa gaji ‘tidak cukup’ padahal masalah utamanya bukan jumlah, tapi cara kelola yang tidak terencana.</p>
+          <br><h4>Contoh:</h4>
+          <p>Tanpa perencanaan, gaji langsung habis untuk kebutuhan konsumtif, cicilan, atau nongkrong tanpa batasan.</p>
+        </div>
+
+        <div class="page" data-page="3">
+          <h2>📌 Bab 2: Sistem 50/30/20</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/2329/2329085.png" alt="Budgeting Rule" class="page-img" />
+          <p>Gunakan metode alokasi: 50% kebutuhan, 30% keinginan, 20% tabungan/investasi.</p>
+          <br><h4>Contoh:</h4>
+          <p>Gaji Rp5 juta: Rp2,5 juta untuk kebutuhan, Rp1,5 juta untuk keinginan, Rp1 juta untuk tabungan atau investasi.</p>
+        </div>
+
+        <div class="page" data-page="4">
+          <h2>📌 Bab 3: Pisahkan Rekening Gaji & Tabungan</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/2971/2971300.png" alt="Bank Split" class="page-img" />
+          <p>Miliki minimal 2 rekening: satu untuk pengeluaran harian dan satu khusus tabungan agar tidak tercampur.</p>
+          <br><h4>Contoh:</h4>
+          <p>Setiap gajian langsung transfer 20% ke rekening khusus yang tidak memiliki kartu ATM.</p>
+        </div>
+
+        <div class="page" data-page="5">
+          <h2>📌 Bab 4: Otomatiskan Pengeluaran Penting</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/4743/4743275.png" alt="Automation" class="page-img" />
+          <p>Atur pembayaran otomatis untuk cicilan, tagihan, dan tabungan agar tidak lupa dan dana tidak terpakai duluan.</p>
+          <br><h4>Contoh:</h4>
+          <p>Gunakan fitur auto-debit untuk menabung atau bayar cicilan tiap tanggal 1 agar aman dan teratur.</p>
+        </div>
+
+        <div class="page" data-page="6">
+          <h2>📌 Bab 5: Hindari Gaya Hidup Inflasi</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/10415/10415008.png" alt="Lifestyle Trap" class="page-img" />
+          <p>Naik gaji bukan berarti naik gaya hidup. Tambah tabungan, bukan konsumsi.</p>
+          <br><h4>Contoh:</h4>
+          <p>Gaji naik Rp500.000, tetap hidup seperti sebelumnya dan tambahkan nominal tabungan dari selisih kenaikan itu.</p>
+        </div>
+
+        <div class="page" data-page="7">
+          <h2>📌 Penutup: Gaji Bukan untuk Dihabiskan</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/9917/9917159.png" alt="Closing" class="page-img" />
+          <p>Kamu bekerja keras untuk gaji bulanan, jadi pastikan uangmu bekerja juga untuk kamu. Rencanakan, alokasikan, dan nikmati hasilnya dengan cerdas.</p>
+          <br><h4>Contoh:</h4>
+          <p>Dengan strategi yang tepat, gaji Rp3 juta pun bisa mencukupi kebutuhan, menabung, bahkan investasi.</p>
+        </div>
+
+      </div>
+      <div class="book-footer">
+        <button id="prevBtn" class="nav-btn" disabled>⬅️ Kembali</button>
+        <span id="pageNumber" class="page-number">1 / 7</span>
+        <button id="nextBtn" class="nav-btn">Lanjut ➡️</button>
+      </div>
+    </section>
+  `;
+
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+  initBook(); // Inisialisasi sistem buku
+}
+
+if (page === 'anggaranbulanan') {
+  content = `
+    <section class="book-container">
+      <div class="book-content" id="bookContent">
+
+        <div class="page active" data-page="1">
+          <h2>📘 Cara Membuat Anggaran Bulanan</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/4974/4974980.png" alt="Monthly Budget" class="page-img" />
+          <p><strong>Kategori:</strong> Manajemen Keuangan Pribadi</p>
+          <p><strong>Deskripsi:</strong> Pelajari langkah-langkah membuat anggaran bulanan yang realistis, fleksibel, dan sesuai kebutuhan. Cocok untuk kamu yang ingin lebih disiplin dalam mengatur keuangan pribadi maupun rumah tangga.</p>
+        </div>
+
+        <div class="page" data-page="2">
+          <h2>📌 Bab 1: Kenapa Anggaran Itu Penting?</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/9971/9971931.png" alt="Why Budget" class="page-img" />
+          <p>Anggaran membantu kamu mengendalikan pengeluaran, mencapai tujuan keuangan, dan menghindari gaya hidup boros.</p>
+          <br><h4>Contoh:</h4>
+          <p>Tanpa anggaran, kamu bisa menghabiskan uang untuk hal tidak penting dan kehabisan saat tagihan datang.</p>
+        </div>
+
+        <div class="page" data-page="3">
+          <h2>📌 Bab 2: Catat Semua Penghasilan</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/2843/2843649.png" alt="Income" class="page-img" />
+          <p>Langkah awal membuat anggaran: tulis semua sumber penghasilan tetap maupun tidak tetap setiap bulan.</p>
+          <br><h4>Contoh:</h4>
+          <p>Gaji bulanan, bonus, hasil freelance, atau uang tambahan dari jualan online.</p>
+        </div>
+
+        <div class="page" data-page="4">
+          <h2>📌 Bab 3: Kelompokkan Pengeluaran</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/3794/3794486.png" alt="Expenses" class="page-img" />
+          <p>Bagi pengeluaran menjadi: kebutuhan pokok, tagihan, tabungan, cicilan, dan hiburan. Gunakan persentase atau nominal tetap.</p>
+          <br><h4>Contoh:</h4>
+          <p>Rp1 juta untuk makan, Rp700 ribu untuk transport, Rp500 ribu untuk tabungan, Rp300 ribu untuk hiburan.</p>
+        </div>
+
+        <div class="page" data-page="5">
+          <h2>📌 Bab 4: Gunakan Metode Amplop atau Aplikasi</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/4462/4462864.png" alt="Budget Method" class="page-img" />
+          <p>Pilih metode sesuai gaya hidupmu: sistem amplop (uang fisik), spreadsheet, atau aplikasi keuangan digital.</p>
+          <br><h4>Contoh:</h4>
+          <p>Gunakan aplikasi seperti DompetKu atau Money Manager untuk mencatat real-time semua transaksi harianmu.</p>
+        </div>
+
+        <div class="page" data-page="6">
+          <h2>📌 Bab 5: Sisihkan untuk Dana Tak Terduga</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/6484/6484656.png" alt="Emergency Fund" class="page-img" />
+          <p>Selalu sediakan alokasi untuk kebutuhan mendadak seperti servis kendaraan, obat, atau keperluan mendesak lainnya.</p>
+          <br><h4>Contoh:</h4>
+          <p>Alokasikan Rp200.000/bulan sebagai dana darurat kecil agar tidak mengganggu pos lainnya.</p>
+        </div>
+
+        <div class="page" data-page="7">
+          <h2>📌 Bab 6: Evaluasi Setiap Akhir Bulan</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/9744/9744296.png" alt="Evaluate Budget" class="page-img" />
+          <p>Cek kembali pengeluaranmu. Apakah sesuai rencana atau ada yang bocor? Ini akan bantu perbaikan bulan depan.</p>
+          <br><h4>Contoh:</h4>
+          <p>Bulan ini kamu lebih boros di makanan online → bulan depan tetapkan batas maksimal atau buat meal plan harian.</p>
+        </div>
+
+        <div class="page" data-page="8">
+          <h2>📌 Penutup: Anggaran Bukan Pembatas, Tapi Pengarah</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/6956/6956676.png" alt="Guide" class="page-img" />
+          <p>Anggaran memberi kamu arah, bukan larangan. Dengan kontrol yang baik, kamu bisa hidup nyaman tanpa khawatir keuangan bocor di tengah bulan.</p>
+          <br><h4>Contoh:</h4>
+          <p>Dengan budget, kamu tetap bisa nongkrong dan beli yang kamu mau, asal sudah dialokasikan di awal.</p>
+        </div>
+
+      </div>
+      <div class="book-footer">
+        <button id="prevBtn" class="nav-btn" disabled>⬅️ Kembali</button>
+        <span id="pageNumber" class="page-number">1 / 8</span>
+        <button id="nextBtn" class="nav-btn">Lanjut ➡️</button>
+      </div>
+    </section>
+  `;
+
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+  initBook(); // Inisialisasi sistem buku
+}
+
+if (page === 'richvspoor') {
+  content = `
+    <section class="book-container">
+      <div class="book-content" id="bookContent">
+
+        <div class="page active" data-page="1">
+          <h2>📘 Rich vs Poor Mindset</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/3829/3829578.png" alt="Mindset Cover" class="page-img" />
+          <p><strong>Kategori:</strong> Mindset & Finansial</p>
+          <p><strong>Deskripsi:</strong> Bedah perbedaan pola pikir orang kaya dan orang miskin. Kenali kebiasaan, cara mengambil keputusan, hingga cara memandang uang agar kamu bisa mulai membentuk pola pikir yang mengarah ke kebebasan finansial.</p>
+        </div>
+
+        <div class="page" data-page="2">
+          <h2>📌 Bab 1: Fokus pada Peluang vs Masalah</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/684/684908.png" alt="Opportunity vs Problem" class="page-img" />
+          <p>Orang kaya fokus mencari solusi & peluang. Orang miskin seringkali terjebak dalam masalah dan rasa takut gagal.</p>
+          <br><h4>Contoh:</h4>
+          <p>Situasi krisis: Si A (mindset kaya) buka layanan online, Si B (mindset miskin) hanya mengeluh kehilangan pekerjaan.</p>
+        </div>
+
+        <div class="page" data-page="3">
+          <h2>📌 Bab 2: Investasi vs Konsumsi</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/11104/11104901.png" alt="Invest vs Spend" class="page-img" />
+          <p>Mindset kaya menempatkan uang pada aset yang tumbuh. Mindset miskin fokus pada belanja barang konsumtif yang menyusut nilainya.</p>
+          <br><h4>Contoh:</h4>
+          <p>Uang Rp1 juta → Mindset kaya beli Reksadana. Mindset miskin beli sepatu mahal tanpa kebutuhan.</p>
+        </div>
+
+        <div class="page" data-page="4">
+          <h2>📌 Bab 3: Bertumbuh Lewat Ilmu</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/9433/9433650.png" alt="Learning" class="page-img" />
+          <p>Orang kaya haus ilmu dan berani bayar mahal untuk belajar. Orang miskin merasa belajar itu buang waktu atau terlalu mahal.</p>
+          <br><h4>Contoh:</h4>
+          <p>Mindset kaya ikut kelas bisnis online. Mindset miskin tunggu gratisan atau bilang “nggak perlu belajar, cukup kerja.”</p>
+        </div>
+
+        <div class="page" data-page="5">
+          <h2>📌 Bab 4: Networking vs Kompetisi</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/2674/2674418.png" alt="Networking" class="page-img" />
+          <p>Mindset kaya bangun koneksi, kolaborasi. Mindset miskin iri, bersaing tanpa arah, dan takut berbagi ilmu.</p>
+          <br><h4>Contoh:</h4>
+          <p>Mindset kaya gabung komunitas bisnis. Mindset miskin takut ditiru atau menganggap semua saingan.</p>
+        </div>
+
+        <div class="page" data-page="6">
+          <h2>📌 Bab 5: Jangka Panjang vs Instan</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/9743/9743867.png" alt="Long Term" class="page-img" />
+          <p>Orang kaya siap sabar menanam dan menunggu hasil. Orang miskin ingin hasil cepat meski tanpa fondasi kuat.</p>
+          <br><h4>Contoh:</h4>
+          <p>Mindset kaya mulai investasi rutin. Mindset miskin cari “cuan cepat” dari pinjol atau trading tanpa ilmu.</p>
+        </div>
+
+        <div class="page" data-page="7">
+          <h2>📌 Penutup: Mindset Bisa Diubah</h2>
+          <img src="https://cdn-icons-png.flaticon.com/512/11041/11041609.png" alt="Mindset Growth" class="page-img" />
+          <p>Kaya atau miskin bukan hanya soal uang, tapi soal cara berpikir. Ubah pola pikir hari ini, dan masa depanmu akan berubah.</p>
+          <br><h4>Contoh:</h4>
+          <p>Mulai dari hal kecil: alih-alih beli kopi mahal tiap hari, sisihkan dan belajar investasi. Itu langkah awal mindset kaya.</p>
+        </div>
+
+      </div>
+      <div class="book-footer">
+        <button id="prevBtn" class="nav-btn" disabled>⬅️ Kembali</button>
+        <span id="pageNumber" class="page-number">1 / 7</span>
+        <button id="nextBtn" class="nav-btn">Lanjut ➡️</button>
+      </div>
+    </section>
+  `;
+
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+  initBook(); // Inisialisasi sistem buku
+}
 
 if (page === 'promptchatgpt') { 
   content = `<section style="padding: 2rem;">
@@ -6230,6 +7821,238 @@ main.innerHTML = content;
   document.getElementById("sidebar").classList.remove("active");
 }
 
+if (page === 'calculatorDanaDarurat') {
+  content = `
+    <section class="shorturl-container">
+      <div class="shorturl-box">
+        <h2 class="shorturl-title">🧮 Kalkulator Dana Darurat</h2>
+        <label for="pengeluaranBulanan">Pengeluaran Bulanan (Rp):</label>
+        <input type="number" id="pengeluaranBulanan" placeholder="Contoh: 3000000" class="shorturl-input" />
+
+        <label for="jumlahTanggungan">Jumlah Tanggungan:</label>
+        <select id="jumlahTanggungan" class="shorturl-input">
+          <option value="1">1 Orang</option>
+          <option value="2">2 Orang</option>
+          <option value="3">3 Orang</option>
+          <option value="4">4 Orang</option>
+          <option value="5">5 Orang</option>
+          <option value="6">6 Orang</option>
+        </select>
+
+        <button class="shorturl-btn" onclick="hitungDanaDarurat()">Hitung Dana Darurat</button>
+        
+        <div id="hasilDanaDarurat" class="shorturl-result" style="display: none;">
+          <p>💡 Dana Darurat yang disarankan:</p>
+          <div id="danaDaruratText" class="shorturl-output"></div>
+        </div>
+      </div>
+    </section>
+  `;
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+}
+
+if (page === 'kalkulatorgaji') {
+  content = `
+    <section class="gaji-container">
+      <div class="gaji-box">
+        <h2 class="gaji-title">📊 Kalkulator Pembagian Gaji</h2>
+        
+        <label for="totalGaji">Total Gaji (Rp)</label>
+        <input type="number" id="totalGaji" placeholder="Contoh: 5000000" />
+
+        <div class="checkbox-sandwich">
+          <input type="checkbox" id="isSandwich" onchange="toggleOrtuField()" />
+          <label for="isSandwich">Saya termasuk Generasi Sandwich</label>
+        </div>
+
+        <div id="ortuField" style="display: none;">
+          <label for="biayaOrtu">
+            Biaya untuk Orang Tua (Rp) <span style="font-size: 0.9rem; color: #888;">(opsional)</span>
+          </label>
+          <input type="number" id="biayaOrtu" placeholder="Contoh: 1000000" />
+        </div>
+
+        <button class="shorturl-btn" onclick="hitungPembagianGaji()">Hitung</button>
+
+        <div id="hasilGaji" class="shorturl-result" style="display: none; margin-top: 20px;"></div>
+      </div>
+    </section>
+  `;
+
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+}
+
+
+if (page === 'kalkulatorpendidikan') {
+  content = `
+    <section class="pendidikan-container">
+      <div class="pendidikan-box">
+        <h2>🎓 Kalkulator Pendidikan Anak</h2>
+
+        <label for="tahunKelahiranAnak">Tahun Kelahiran Anak</label>
+        <input type="number" id="tahunKelahiranAnak" placeholder="Contoh: 2018" class="pendidikan-input" />
+
+        <label for="tempatTinggal">Tempat Tinggal</label>
+        <select id="tempatTinggal" class="pendidikan-input">
+          <option value="desa">Desa</option>
+          <option value="kota">Kota</option>
+          <option value="pusat">Pusat Kota</option>
+        </select>
+
+        <label>
+          <input type="checkbox" id="lanjutKuliahCheckbox" onchange="toggleJurusan()"> Saya ingin melanjutkan ke kuliah
+        </label>
+
+        <div id="jurusanKuliahBox" style="display:none; margin-top: 10px;">
+          <label for="jurusanKuliah">Pilih Jurusan Kuliah</label>
+          <select id="jurusanKuliah" class="pendidikan-input">
+            <optgroup label="🧪 Sains & Teknologi">
+              <option value="Matematika">Matematika</option>
+              <option value="Fisika">Fisika</option>
+              <option value="Kimia">Kimia</option>
+              <option value="Biologi">Biologi</option>
+              <option value="Statistika">Statistika</option>
+              <option value="Informatika / Ilmu Komputer">Informatika / Ilmu Komputer</option>
+              <option value="Teknik Elektro">Teknik Elektro</option>
+              <option value="Teknik Mesin">Teknik Mesin</option>
+              <option value="Teknik Sipil">Teknik Sipil</option>
+              <option value="Teknik Kimia">Teknik Kimia</option>
+              <option value="Teknik Industri">Teknik Industri</option>
+              <option value="Teknik Perkapalan">Teknik Perkapalan</option>
+              <option value="Teknik Geologi">Teknik Geologi</option>
+              <option value="Teknik Lingkungan">Teknik Lingkungan</option>
+              <option value="Teknik Material">Teknik Material</option>
+              <option value="Teknik Pangan">Teknik Pangan</option>
+              <option value="Teknik Perminyakan">Teknik Perminyakan</option>
+              <option value="Teknik Kehutanan">Teknik Kehutanan</option>
+              <option value="Teknik Metalurgi">Teknik Metalurgi</option>
+            </optgroup>
+            <optgroup label="💼 Ekonomi, Bisnis & Manajemen">
+              <option value="Ekonomi">Ekonomi</option>
+              <option value="Manajemen">Manajemen</option>
+              <option value="Akuntansi">Akuntansi</option>
+              <option value="Keuangan / Finance">Keuangan / Finance</option>
+              <option value="Perbankan">Perbankan</option>
+              <option value="Ekonomi Pembangunan">Ekonomi Pembangunan</option>
+              <option value="Bisnis Digital">Bisnis Digital</option>
+              <option value="Entrepreneurship">Entrepreneurship</option>
+            </optgroup>
+            <optgroup label="🏥 Kesehatan & Kedokteran">
+              <option value="Kedokteran">Kedokteran</option>
+              <option value="Kedokteran Gigi">Kedokteran Gigi</option>
+              <option value="Keperawatan">Keperawatan</option>
+              <option value="Farmasi">Farmasi</option>
+              <option value="Kebidanan">Kebidanan</option>
+              <option value="Kesehatan Masyarakat">Kesehatan Masyarakat</option>
+              <option value="Gizi">Gizi</option>
+              <option value="Fisioterapi">Fisioterapi</option>
+              <option value="Radiologi">Radiologi</option>
+            </optgroup>
+            <optgroup label="💡 Humaniora, Sosial & Pendidikan">
+              <option value="Psikologi">Psikologi</option>
+              <option value="Sosiologi">Sosiologi</option>
+              <option value="Antropologi">Antropologi</option>
+              <option value="Ilmu Politik">Ilmu Politik</option>
+              <option value="Hubungan Internasional">Hubungan Internasional</option>
+              <option value="Ilmu Komunikasi">Ilmu Komunikasi</option>
+              <option value="Jurnalistik">Jurnalistik</option>
+              <option value="Pendidikan">Pendidikan (Umum)</option>
+              <option value="Pendidikan Anak Usia Dini">Pendidikan Anak Usia Dini</option>
+              <option value="Pendidikan Bahasa dan Sastra">Pendidikan Bahasa & Sastra</option>
+              <option value="Pendidikan Matematika">Pendidikan Matematika</option>
+              <option value="Pendidikan IPA">Pendidikan IPA</option>
+              <option value="Pendidikan IPS">Pendidikan IPS</option>
+              <option value="Pendidikan Bahasa Inggris">Pendidikan Bahasa Inggris</option>
+            </optgroup>
+            <optgroup label="🎨 Desain, Seni & Budaya">
+              <option value="Desain Komunikasi Visual">Desain Komunikasi Visual</option>
+              <option value="Desain Interior">Desain Interior</option>
+              <option value="Desain Produk">Desain Produk</option>
+              <option value="Arsitektur">Arsitektur</option>
+              <option value="Seni Rupa">Seni Rupa</option>
+              <option value="Seni Musik">Seni Musik</option>
+              <option value="Seni Tari">Seni Tari</option>
+              <option value="Seni Teater">Seni Teater</option>
+              <option value="Film & Televisi">Film & Televisi</option>
+            </optgroup>
+            <optgroup label="⚖️ Hukum & Ilmu Keamanan">
+              <option value="Hukum">Hukum</option>
+              <option value="Kriminologi">Kriminologi</option>
+              <option value="Ilmu Kepolisian">Ilmu Kepolisian</option>
+              <option value="Pertahanan & Keamanan">Pertahanan & Keamanan</option>
+            </optgroup>
+            <optgroup label="🌏 Pertanian, Marine & Kehutanan">
+              <option value="Agribisnis">Agribisnis</option>
+              <option value="Agronomi">Agronomi</option>
+              <option value="Peternakan">Peternakan</option>
+              <option value="Perikanan">Perikanan</option>
+              <option value="Teknologi Hasil Perikanan">Teknologi Hasil Perikanan</option>
+              <option value="Teknologi benih">Teknologi Benih</option>
+              <option value="Kehutanan">Kehutanan</option>
+            </optgroup>
+            <optgroup label="🚌 Transport & Logistik">
+              <option value="Manajemen Transport & Logistik">Manajemen Transport & Logistik</option>
+              <option value="Teknik Transportasi">Teknik Transportasi</option>
+            </optgroup>
+            <optgroup label="🌐 Lain-lain / Interdisipliner">
+              <option value="Ilmu Lingkungan">Ilmu Lingkungan</option>
+              <option value="Geografi">Geografi</option>
+              <option value="Ilmu Data (Data Science)">Ilmu Data (Data Science)</option>
+              <option value="Teknologi Informasi">Teknologi Informasi</option>
+              <option value="Multimedia">Multimedia</option>
+              <option value="Kedokteran Hewan">Kedokteran Hewan</option>
+            </optgroup>
+          </select>
+        </div>
+
+        <button class="pendidikan-btn" onclick="hitungPendidikan()">Hitung Pendidikan</button>
+
+        <div id="hasilPendidikan" class="pendidikan-result" style="display:none;"></div>
+      </div>
+    </section>
+  `;
+
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+}
+
+if (page === 'toolstranslate') {
+  content = `
+  <section class="translate-container">
+    <h2>🌍 Tools Translate Dunia</h2>
+    <label for="inputText">Masukkan Teks:</label>
+    <textarea id="inputText" rows="5" placeholder="Contoh: Saya ingin makan."></textarea>
+
+    <div class="select-box">
+      <label for="fromLang">Dari:</label>
+      <select id="fromLang">
+        ${generateLanguageOptions()}
+      </select>
+
+      <label for="toLang">Ke:</label>
+      <select id="toLang">
+        ${generateLanguageOptions()}
+      </select>
+    </div>
+
+    <button onclick="translateText()">Terjemahkan</button>
+
+    <div id="resultBox" class="result-box">
+      <h3>Hasil Terjemahan:</h3>
+      <p id="translatedText">-</p>
+      <button id="copyBtn" onclick="copyTranslation()">Salin</button>
+    </div>
+  </section>
+  `;
+
+  main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+}
+
+
+
 if (page === 'adminucapan') {
   content = `
     <section class="adminucapan-container">
@@ -6237,7 +8060,7 @@ if (page === 'adminucapan') {
         <h2 class="adminucapan-title">🎁 Generator Link Ucapan</h2>
 
         <label>Dari:</label>
-        <input type="text" id="adminDari" class="adminucapan-input" placeholder="Contoh: Vicky / Kak Vicky / Secret Admirer">
+        <input type="text" id="adminDari" class="adminucapan-input" placeholder="Contoh: Seseorang / Budi">
 
         <label>Kepada:</label>
         <input type="text" id="adminNama" class="adminucapan-input" placeholder="Masukkan nama penerima...">
@@ -6302,6 +8125,30 @@ if (page === 'adminucapan') {
   document.body.appendChild(qrScript);
 }
 
+if (page === 'lovecalculator') {
+  content = `
+  <section class="love-container">
+  <h2>💘 Love Calculator</h2>
+  <input type="text" id="yourName" placeholder="Nama Kamu" />
+  <input type="text" id="crushName" placeholder="Nama Dia" />
+  <button onclick="hitungCinta()">Hitung Cinta</button>
+  <button id="resetBtn" onclick="resetCinta()" style="margin-top: 10px;">Reset</button>
+
+  <div id="hasilCinta" class="hasil-cinta" style="display: none;">
+    <h3 id="namaHasil"></h3>
+    <div class="progress-container">
+      <div class="progress-bar" id="progressBar"></div>
+    </div>
+    <p id="skorText"></p>
+    <p id="pesanText"></p>
+  </div>
+</section>
+
+  `;
+ main.innerHTML = content;
+  document.getElementById("sidebar").classList.remove("active");
+}
+
 
 if (page === 'danakaget') {
   content = `
@@ -6325,6 +8172,369 @@ if (page === 'danakaget') {
 
 /////// PISAHIN //////
 
+function hitungCinta() {
+  const yourName = document.getElementById("yourName").value.trim();
+  const crushName = document.getElementById("crushName").value.trim();
+  const button = document.querySelector(".love-container button");
+  const resetBtn = document.getElementById("resetBtn");
+
+  if (!yourName || !crushName) {
+    alert("Isi kedua nama terlebih dahulu!");
+    return;
+  }
+
+  const skor = Math.floor(Math.random() * 51) + 50; // 50 - 100
+  let pesan = "";
+  if (skor < 60) {
+    pesan = "💔 Cinta kalian penuh tantangan. Tapi cinta sejati tak mudah, kan?";
+  } else if (skor < 75) {
+    pesan = "💞 Kalian cocok! Tinggal lebih sering ngobrol dan saling terbuka.";
+  } else if (skor < 90) {
+    pesan = "💖 Wah, hampir sempurna! Cinta kalian kuat dan penuh chemistry.";
+  } else {
+    pesan = "💘 Jodoh dari semesta! Segera ajak dia ngedate ya 😉";
+  }
+
+  // Tampilkan hasil box & reset progress
+  const hasilBox = document.getElementById("hasilCinta");
+  const progressBar = document.getElementById("progressBar");
+  const skorText = document.getElementById("skorText");
+  const pesanText = document.getElementById("pesanText");
+
+  document.getElementById("namaHasil").innerHTML = `❤️ ${yourName} + ${crushName}`;
+  hasilBox.style.display = "block";
+  progressBar.style.width = "0%";
+  skorText.innerHTML = "0%";
+  pesanText.innerHTML = "";
+
+  // Disable tombol hitung dan enable reset
+  button.disabled = true;
+  button.style.opacity = 0.6;
+  resetBtn.disabled = true;
+
+  let width = 0;
+  let persentase = 0;
+
+  const loading = setInterval(() => {
+    if (width >= skor) {
+      clearInterval(loading);
+      skorText.innerHTML = `Skor Cinta: <strong>${skor}%</strong>`;
+      pesanText.innerHTML = pesan;
+      button.disabled = false;
+      button.style.opacity = 1;
+      resetBtn.disabled = false;
+    } else {
+      width++;
+      persentase++;
+      progressBar.style.width = width + "%";
+      skorText.innerHTML = persentase + "%";
+    }
+  }, 50);
+}
+
+function resetCinta() {
+  document.getElementById("yourName").value = "";
+  document.getElementById("crushName").value = "";
+  document.getElementById("hasilCinta").style.display = "none";
+}
+
+
+
+function generateLanguageOptions() {
+  const languages = {
+    af: "Afrikaans", sq: "Albanian", am: "Amharic", ar: "Arabic", hy: "Armenian", az: "Azerbaijani",
+    eu: "Basque", be: "Belarusian", bn: "Bengali", bs: "Bosnian", bg: "Bulgarian", ca: "Catalan",
+    ceb: "Cebuano", ny: "Chichewa", zh: "Chinese (Simplified)", "zh-TW": "Chinese (Traditional)",
+    co: "Corsican", hr: "Croatian", cs: "Czech", da: "Danish", nl: "Dutch", en: "English",
+    eo: "Esperanto", et: "Estonian", tl: "Filipino", fi: "Finnish", fr: "French", fy: "Frisian",
+    gl: "Galician", ka: "Georgian", de: "German", el: "Greek", gu: "Gujarati", ht: "Haitian Creole",
+    ha: "Hausa", haw: "Hawaiian", iw: "Hebrew", hi: "Hindi", hmn: "Hmong", hu: "Hungarian",
+    is: "Icelandic", ig: "Igbo", id: "Indonesian", ga: "Irish", it: "Italian", ja: "Japanese",
+    jw: "Javanese", su: "Sundanese", kn: "Kannada", kk: "Kazakh", km: "Khmer", ko: "Korean",
+    ku: "Kurdish", ky: "Kyrgyz", lo: "Lao", la: "Latin", lv: "Latvian", lt: "Lithuanian",
+    lb: "Luxembourgish", mk: "Macedonian", mg: "Malagasy", ms: "Malay", ml: "Malayalam",
+    mt: "Maltese", mi: "Maori", mr: "Marathi", mn: "Mongolian", my: "Myanmar (Burmese)",
+    ne: "Nepali", no: "Norwegian", ps: "Pashto", fa: "Persian", pl: "Polish", pt: "Portuguese",
+    pa: "Punjabi", ro: "Romanian", ru: "Russian", sm: "Samoan", gd: "Scots Gaelic", sr: "Serbian",
+    st: "Sesotho", sn: "Shona", sd: "Sindhi", si: "Sinhala", sk: "Slovak", sl: "Slovenian",
+    so: "Somali", es: "Spanish", sw: "Swahili", sv: "Swedish", tg: "Tajik", ta: "Tamil",
+    te: "Telugu", th: "Thai", tr: "Turkish", uk: "Ukrainian", ur: "Urdu", uz: "Uzbek",
+    vi: "Vietnamese", cy: "Welsh", xh: "Xhosa", yi: "Yiddish", yo: "Yoruba", zu: "Zulu",
+
+    // 🔽 Bahasa Daerah Indonesia (Sebagian hanya dummy)
+    jv: "Jawa", su: "Sunda", ban: "Bali (eksperimen)", bug: "Bugis (eksperimen)",
+    min: "Minangkabau (eksperimen)", bbc: "Batak Toba (eksperimen)"
+  };
+
+  return Object.entries(languages)
+    .map(([code, name]) => `<option value="${code}">${name}</option>`)
+    .join('');
+}
+
+// === Fungsi: Translate via Google Translate API (public endpoint) ===
+function translateText() {
+  const text = document.getElementById('inputText').value.trim();
+  const from = document.getElementById('fromLang').value;
+  const to = document.getElementById('toLang').value;
+
+  if (!text) {
+    alert("Teks tidak boleh kosong!");
+    return;
+  }
+
+  const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=${from}&tl=${to}&dt=t&q=${encodeURIComponent(text)}`;
+
+  fetch(url)
+    .then(res => res.json())
+    .then(data => {
+      const translated = data[0].map(item => item[0]).join('');
+      document.getElementById('translatedText').innerText = translated;
+    })
+    .catch(() => {
+      document.getElementById('translatedText').innerText =
+        "❌ Bahasa ini mungkin belum didukung Google Translate atau terjadi kesalahan jaringan.";
+    });
+}
+
+function copyTranslation() {
+  const text = document.getElementById('translatedText')?.innerText || '';
+  const btn = document.getElementById('copyBtn');
+
+  if (text && text !== '-') {
+    navigator.clipboard.writeText(text)
+      .then(() => {
+        btn.innerText = "✅ Disalin!";
+        setTimeout(() => btn.innerText = "Salin", 2000);
+      })
+      .catch(() => {
+        btn.innerText = "❌ Gagal Menyalin";
+        setTimeout(() => btn.innerText = "Salin", 2000);
+      });
+  } else {
+    alert("Belum ada hasil terjemahan untuk disalin.");
+  }
+}
+
+
+// ===== Data Biaya Pendidikan per Jenjang & Jurusan =====
+const biayaPendidikan = {
+  negeri: {
+    SD: { spp: 0, seragam: 800000, jajan: 10000, kegiatan: 750000, lama: 6 },
+    SMP: { spp: 0, seragam: 1000000, jajan: 12000, kegiatan: 1000000, lama: 3 },
+    SMA: { spp: 0, seragam: 1200000, jajan: 15000, kegiatan: 1500000, lama: 3 },
+    kuliah: {
+      masuk: 5000000,
+      lainnya: 8000000,
+      jajan: 20000,
+      lama: 4
+    }
+  },
+  swasta: {
+    SD: { spp: 2300000, seragam: 2500000, jajan: 12000, kegiatan: 5750000, lama: 6 },
+    SMP: { spp: 3000000, seragam: 1500000, jajan: 15000, kegiatan: 5500000, lama: 3 },
+    SMA: { spp: 3500000, seragam: 2000000, jajan: 20000, kegiatan: 6000000, lama: 3 },
+    kuliah: {
+      pangkal: 30000000,
+      masuk: 1000000,
+      lainnya: 10000000,
+      jajan: 25000,
+      lama: 4
+    }
+  }
+};
+
+const uktNegeriJurusan = {
+  Kedokteran: 8000000,
+  Psikologi: 4000000,
+  Teknik: 5000000,
+  Ekonomi: 3000000,
+  Komunikasi: 2000000
+};
+
+const sppSwastaJurusan = {
+  Kedokteran: 30000000,
+  Psikologi: 20000000,
+  Teknik: 8000000,
+  Ekonomi: 6000000,
+  Komunikasi: 4000000
+};
+
+const biayaPerSKS = 500000;
+const praktikPerSemester = {
+  Kedokteran: 3000000,
+  Psikologi: 2000000,
+  Teknik: 2500000,
+  Ekonomi: 1500000,
+  Komunikasi: 1000000,
+  default: 1000000
+};
+
+const lokasiKoefisien = {
+  desa: 0.9,
+  kota: 1,
+  pusat: 1.2
+};
+
+const hariAktif = 220;
+const inflasi = 0.05;
+
+function formatRupiah(angka) {
+  return angka.toLocaleString("id-ID", { style: "currency", currency: "IDR" });
+}
+
+function hitungPendidikan() {
+  const tahunLahir = parseInt(document.getElementById("tahunKelahiranAnak").value);
+  const tempat = document.getElementById("tempatTinggal").value;
+  const jurusan = document.getElementById("jurusanKuliah").value;
+  const lanjutKuliah = document.getElementById("lanjutKuliahCheckbox").checked;
+
+  if (!tahunLahir || !tempat) return alert("Lengkapi semua data!");
+
+  const tahunSekarang = new Date().getFullYear();
+  const usiaMasukSD = 6;
+
+  const tahunMasuk = {
+    SD: tahunLahir + usiaMasukSD,
+    SMP: tahunLahir + usiaMasukSD + 6,
+    SMA: tahunLahir + usiaMasukSD + 9,
+    kuliah: tahunLahir + usiaMasukSD + 12
+  };
+
+  let html = "<h3>📘 Estimasi Biaya Pendidikan</h3>";
+
+  html += `<p style="background:#021d2e;padding:10px;border-left:4px solid #00f7ff;color:#bdeeff;margin-bottom:1rem;"><b>Catatan:</b> Ini hanya estimasi saja, biaya dapat berubah tergantung lokasi daerah dan tahun sesuai kebijakan sekolah/universitas.</p>`;
+
+  ["SD", "SMP", "SMA"].forEach((jenjang) => {
+    ["negeri", "swasta"].forEach((tipe) => {
+      const d = biayaPendidikan[tipe][jenjang];
+      const thn = tahunMasuk[jenjang];
+      const inflator = Math.pow(1 + inflasi, thn - tahunSekarang);
+      const koef = lokasiKoefisien[tempat];
+
+      const total = ((d.spp || 0) * 12 * d.lama + d.seragam + d.kegiatan + (d.jajan * hariAktif * d.lama)) * inflator * koef;
+
+      html += `<div class="${tipe}"><b>${jenjang} ${tipe.toUpperCase()} (Masuk ${thn})</b><ul>
+        ${d.spp ? `<li>SPP: ${formatRupiah(d.spp * 12)} x ${d.lama} tahun</li>` : "<li>SPP: Gratis</li>"}
+        <li>Seragam: ${formatRupiah(d.seragam)}</li>
+        <li>Kegiatan: ${formatRupiah(d.kegiatan)}</li>
+        <li>Uang Jajan: ${formatRupiah(d.jajan * hariAktif * d.lama)}</li>
+        <li><b>Total:</b> ${formatRupiah(total)}</li>
+      </ul></div>`;
+    });
+  });
+
+  if (lanjutKuliah && jurusan) {
+    ["negeri", "swasta"].forEach((tipe) => {
+      const d = biayaPendidikan[tipe].kuliah;
+      const thn = tahunMasuk.kuliah;
+      const inflator = Math.pow(1 + inflasi, thn - tahunSekarang);
+      const koef = lokasiKoefisien[tempat];
+      const totalSem = d.lama * 2;
+
+      const biayaSem = tipe === "negeri"
+        ? (uktNegeriJurusan[jurusan] || uktNegeriJurusan["Teknik"])
+        : (sppSwastaJurusan[jurusan] || sppSwastaJurusan["Teknik"]);
+
+      const uktsppTotal = biayaSem * totalSem * inflator * koef;
+      const sks = biayaPerSKS * 20 * totalSem * inflator * koef;
+      const praktik = (praktikPerSemester[jurusan] || praktikPerSemester.default) * totalSem * inflator * koef;
+      const pangkal = (d.pangkal || 0) * inflator * koef;
+      const masuk = d.masuk * inflator * koef;
+      const lain = d.lainnya * inflator * koef;
+      const jajan = d.jajan * hariAktif * d.lama * inflator * koef;
+
+      const total = uktsppTotal + sks + praktik + pangkal + masuk + lain + jajan;
+
+      html += `<div class="${tipe}"><b>Kuliah (${jurusan}) ${tipe.toUpperCase()} (Masuk ${thn})</b><ul>
+        ${pangkal ? `<li>Uang Pangkal: ${formatRupiah(pangkal)}</li>` : ""}
+        <li>UKT/SPP (${totalSem} sem): ${formatRupiah(uktsppTotal)}</li>
+        <li>SKS (20/sm): ${formatRupiah(sks)}</li>
+        <li>Praktikum: ${formatRupiah(praktik)}</li>
+        <li>Uang Masuk: ${formatRupiah(masuk)}</li>
+        <li>Biaya Lainnya: ${formatRupiah(lain)}</li>
+        <li>Uang Jajan: ${formatRupiah(jajan)}</li>
+        <li><b>Total Kuliah:</b> ${formatRupiah(total)}</li>
+      </ul></div>`;
+    });
+  }
+
+  document.getElementById("hasilPendidikan").innerHTML = html;
+  document.getElementById("hasilPendidikan").style.display = "block";
+}
+
+function toggleJurusan() {
+  const box = document.getElementById("jurusanKuliahBox");
+  const check = document.getElementById("lanjutKuliahCheckbox");
+  box.style.display = check.checked ? "block" : "none";
+}
+
+
+
+function toggleOrtuField() {
+  const isSandwich = document.getElementById("isSandwich").checked;
+  document.getElementById("ortuField").style.display = isSandwich ? "block" : "none";
+}
+
+function hitungPembagianGaji() {
+  const total = parseFloat(document.getElementById("totalGaji").value);
+  const ortu = parseFloat(document.getElementById("biayaOrtu").value) || 0;
+  const hasilDiv = document.getElementById("hasilGaji");
+
+  if (isNaN(total) || total <= 0) {
+    hasilDiv.innerHTML = "<p>⚠️ Mohon masukkan total gaji yang valid.</p>";
+    hasilDiv.style.display = "block";
+    return;
+  }
+
+  const sisagaji = total - ortu;
+
+  const hasil = `
+    <p>📤 Total Gaji: <strong>Rp${total.toLocaleString('id-ID')}</strong></p>
+    ${ortu > 0 ? `<p>👨‍👩‍👧‍👦 Biaya Orang Tua: <strong>Rp${ortu.toLocaleString('id-ID')}</strong></p>` : ""}
+    <p>💡 Sisa Gaji Dibagi:</p>
+    <ul style="padding-left: 1rem;">
+      <li>🔸 50% Kebutuhan Pokok: <strong>Rp${(sisagaji * 0.5).toLocaleString('id-ID')}</strong></li>
+      <li>🔸 40% Investasi / Tabungan: <strong>Rp${(sisagaji * 0.4).toLocaleString('id-ID')}</strong></li>
+      <li>🔸 30% Hiburan / Lifestyle: <strong>Rp${(sisagaji * 0.3).toLocaleString('id-ID')}</strong></li>
+      <li>🔸 20% Dana Darurat: <strong>Rp${(sisagaji * 0.2).toLocaleString('id-ID')}</strong></li>
+      <li>🔸 10% Sedekah / Donasi: <strong>Rp${(sisagaji * 0.1).toLocaleString('id-ID')}</strong></li>
+    </ul>
+  `;
+
+  hasilDiv.innerHTML = hasil;
+  hasilDiv.style.display = "block";
+}
+
+
+
+function hitungDanaDarurat() {
+  const pengeluaran = parseInt(document.getElementById("pengeluaranBulanan").value);
+  const tanggungan = parseInt(document.getElementById("jumlahTanggungan").value);
+
+  if (isNaN(pengeluaran) || pengeluaran <= 0) {
+    alert("Masukkan pengeluaran bulanan yang valid.");
+    return;
+  }
+
+  // Rumus: 1 orang = 6 bulan, 2 = 7, ..., 6 = 11, >6 = 12 bulan
+  let bulanIdeal = 6 + (tanggungan - 1);
+  if (bulanIdeal > 12) bulanIdeal = 12;
+
+  const totalDana = pengeluaran * bulanIdeal;
+
+  document.getElementById("hasilDanaDarurat").style.display = "block";
+document.getElementById("danaDaruratText").innerHTML = `
+  <strong>Estimasi Dana Darurat:</strong><br>
+  Rp <strong>${totalDana.toLocaleString("id-ID")}</strong> 
+  (setara <strong>${bulanIdeal} bulan</strong> pengeluaran bulanan)<br><br>
+
+  <div class="catatan-box">
+    <strong>Catatan:</strong><br>
+    Dana darurat disiapkan untuk menghadapi situasi tak terduga seperti <strong>sakit, kehilangan pekerjaan, motor masuk bengkel, kebutuhan mendadak keluarga</strong>, dan lainnya. 
+  </div>
+`;
+
+}
 
 
 function generateUcapanLink() {
