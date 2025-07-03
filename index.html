@@ -1,209 +1,161 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>VLCrave - Dashboard</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>VLCrave Express</title>
+  <link rel="icon" type="image/png" href="./img/icon.png" />
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
-  <link href="css/style_landingpage.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+  <link href="css/style.css" rel="stylesheet" />
 </head>
-<body>
-  <header>
-  <div class="logo">VL Project</div>
-  <div class="menu-toggle" id="menuToggle">
-    <i class="fas fa-bars"></i>
+<body class="popup-active">
+
+  <!-- Popup -->
+  <div id="popup-overlay"></div>
+  <div id="popup-greeting">
+    <img id="popup-img" src="" alt="Status Layanan" />
+    <div id="popup-text"></div>
+    <button id="close-popup">Tutup</button>
   </div>
-  <nav id="mainNav">
-    <a href="#statistic">Statistic</a>
-    <a href="#fitur-unggulan">Fitur</a>
-    <a href="#ctaSection">Price</a>
-    <a href="#testimonial">Testimonial</a>
-    <a href="#faq">FAQ</a>
-  </nav>
-</header>
 
-
-<main class="container">
-
- <section class="section-box statistik-section" id="statistic">
-  <center><h2 class="statistik-title">📊 Statistik</h2></center>
-  <div class="stat-box">
-    <div class="stat-item">
-      <div class="stat-icon"><i class="fas fa-users"></i></div>
-      <div class="stat-number" id="totalUser">0</div>
-      <small>Pengguna Bergabung</small>
-    </div>
-    <div class="stat-item">
-      <div class="stat-icon"><i class="fas fa-eye"></i></div>
-      <div class="stat-number" id="totalVisit">0</div>
-      <small>Total Kunjungan</small>
-    </div>
-    <div class="stat-item">
-      <div class="stat-icon"><i class="fas fa-cogs"></i></div>
-      <div class="stat-number" id="totalFeature">0</div>
-      <small>Fitur Tersedia</small>
-    </div>
-  </div>
-</section>
-
-
-
-      <section class="section-box" id="fitur-unggulan">
-      <h2 class="section-title">🚀 Fitur Unggulan</h2>
-      <div class="feature-slider-container">
-  <div class="feature-slider" id="featureSlider"></div>
-</div>
-    </section>
-
-  <section class="section-box cta-section" id="ctaSection">
-  <center><h2 class="cta-title">🚀 Upgrade Sekarang & Nikmati Semua Fitur Premium!</h2>
-  <p class="cta-subtitle">Berikut fitur lengkap yang akan kamu dapatkan:</p></center>
-
-  <ul class="cta-feature-list" id="fiturListContainer"></ul>
-
-  <div class="cta-price-box">
-  <div class="price-wrapper">
-    <div class="price-promo-box">
-  <div class="badge-floating">🔥 Hemat 96%</div>
-  <div class="price-promo-amount">Rp89.000</div>
-  <div class="price-original-inside"><del>Rp2.085.000</del></div>
-</div>
-  <div class="cta-wrapper">
-    <a href="http://lynk.id/vlcrave/j2j50r5eeyyr/checkout" target="_blank" class="cta-button-neon">
-      🎁 Dapatkan Akses Sekarang
+  <!-- Header -->
+  <header class="produk-header" style="display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 12px;">
+    <input id="search-input" type="text" placeholder="Cari produk atau toko..." oninput="filterProduk()" style="flex: 1 1 auto; min-width: 0; padding: 10px 14px; font-size: 14px; border-radius: 8px; border: 1px solid #ccc;" />
+    <a onclick="loadContent('checkout')" style="position: relative; display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; background: #eee; border-radius: 50%;">
+      <i class="fas fa-shopping-cart footer-cart-icon" style="font-size: 18px; color: #333;"></i>
+      <span class="cart-badge">0</span>
     </a>
-  </div>
-  <div class="countdown-label">⏳ Promo Berakhir Dalam:</div>
-  <div class="countdown-box" id="countdownBox">
-    <div class="time-segment">
-      <div class="time-digit" id="days">00</div>
-      <small>Hari</small>
-    </div>
-    <div class="time-segment">
-      <div class="time-digit" id="hours">00</div>
-      <small>Jam</small>
-    </div>
-    <div class="time-segment">
-      <div class="time-digit" id="minutes">00</div>
-      <small>Menit</small>
-    </div>
-    <div class="time-segment">
-      <div class="time-digit" id="seconds">00</div>
-      <small>Detik</small>
-    </div>
-  </div>
-</div>
+  </header>
 
-</section>
+  <!-- Konten Dinamis -->
+  <main id="page-container"></main>
 
-
-
-  <section class="section-box testimonial-section" id="testimonial">
-  <h2 style="text-align:center; color:#00f7ff">Testimoni Member</h2>
-  <div class="testimonial-slider-container">
-  <div class="testimonial-slider" id="testimonialSlider"></div>
-</div>
-
-</section>
-
-
-
-  <section class="section-box faq-section" id="faq">
-  <h2 style="text-align:center; color:#00f7ff;">❓ Pertanyaan Umum</h2>
-
-<div class="faq-item">
-  <div class="faq-question"><i class="fas fa-handshake"></i> Apakah Ada Akses Hak untuk Jual Kembali Fitur?</div>
-  <div class="faq-answer">
-    Ya, tentu saja! Selama kamu sudah bergabung, kamu bebas menggunakan dan menjual ulang semua fitur yang tersedia tanpa batas. Cocok untuk kamu yang ingin bangun bisnis digital sendiri.
-  </div>
-</div>
-
-  <div class="faq-item">
-    <div class="faq-question"><i class="fas fa-cogs"></i> Bagaimana Cara Bekerjanya?</div>
-    <div class="faq-answer">
-      Setelah Anda bergabung, Anda akan mendapatkan akses ke semua fitur premium kami. Cukup pilih fitur yang ingin digunakan, dan nikmati layanan secara instan tanpa batas.
-    </div>
+  <!-- Form Tambah Alamat -->
+  <div id="form-alamat" style="display: none; padding: 1rem;">
+    <form id="alamat-form">
+      <input type="text" id="nama" placeholder="Nama Lengkap" required />
+      <input type="text" id="wa" placeholder="Nomor WhatsApp" required />
+      <textarea id="alamat" placeholder="Alamat Lengkap" required></textarea>
+      <textarea id="catatan" placeholder="Catatan (Opsional)"></textarea>
+      <button type="submit">Simpan Alamat</button>
+    </form>
   </div>
 
-  <div class="faq-item">
-    <div class="faq-question"><i class="fas fa-coins"></i> Bagaimana Cara Mendapatkan Pendapatan Tambahan?</div>
-    <div class="faq-answer">
-      Anda bisa menjadi reseller atau menggunakan sistem afiliasi. Setiap orang yang Anda ajak bergabung bisa menghasilkan komisi, dan Anda pun mendapatkan penghasilan pasif berkelanjutan.
-    </div>
-  </div>
+  <!-- Footer Dinamis -->
+  <footer class="footer-bottom-nav" id="footer-nav"></footer>
 
-  <div class="faq-item">
-    <div class="faq-question"><i class="fas fa-gift"></i> Apa yang Saya Dapat Ketika Join?</div>
-    <div class="faq-answer">
-      Anda langsung mendapatkan akses ke semua tools premium, template, aplikasi, fitur otomatisasi, dan event-event mingguan seperti DanaKaget tanpa biaya tambahan.
-    </div>
-  </div>
+  <!-- Hidden -->
+  <div style="display:none;"><span id="checkout-total">Rp0</span></div>
 
-  <div class="faq-item">
-    <div class="faq-question"><i class="fas fa-user-plus"></i> Bagaimana Cara Joinnya?</div>
-    <div class="faq-answer">
-      Cukup klik tombol “Dapatkan Akses”, lakukan pembayaran satu kali, dan Anda akan menerima kode akses melalui email. Masukkan kode tersebut untuk membuka semua fitur.
-    </div>
-  </div>
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
 
-  <div class="faq-item">
-    <div class="faq-question"><i class="fas fa-star"></i> Apakah Ini Cocok untuk Pemula?</div>
-    <div class="faq-answer">
-      Sangat cocok! Semua fitur dirancang agar mudah digunakan, bahkan untuk yang belum pernah mencoba sebelumnya. Tersedia panduan dan support gratis kapan pun dibutuhkan.
-    </div>
-  </div>
+  <!-- Leaflet -->
+  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
 
-  <div class="faq-item">
-    <div class="faq-question"><i class="fas fa-sync"></i> Apakah Fitur Akan Terus Diupdate?</div>
-    <div class="faq-answer">
-      Ya, kami melakukan update fitur setiap hari. Anda juga dapat request fitur baru secara gratis kapan pun, dan kami akan buatkan untuk Anda tanpa biaya tambahan.
-    </div>
-  </div>
+  <!-- Script Utama -->
+  <script src="js/script.js"></script>
+  <script src="js/alamat.js"></script>
 
-  <div class="faq-item">
-    <div class="faq-question"><i class="fas fa-shield-alt"></i> Apakah Ini Aman?</div>
-    <div class="faq-answer">
-      Sangat aman. Semua sistem kami dilengkapi dengan enkripsi dan tidak menyimpan data pribadi sensitif. Kami juga tidak pernah menyalahgunakan data pengguna.
-    </div>
-  </div>
+  <!-- Role & Footer Dinamis -->
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAfBzoX9kUwUTWfQYT6QLndd_mP03__8Wo",
+      authDomain: "vlcrave-express.firebaseapp.com",
+      projectId: "vlcrave-express",
+      storageBucket: "vlcrave-express.appspot.com",
+      messagingSenderId: "609330453287",
+      appId: "1:609330453287:web:5280b9ec5c0d435518e702",
+      measurementId: "G-X528QKSC88"
+    };
+    firebase.initializeApp(firebaseConfig);
 
-  <div class="faq-item">
-    <div class="faq-question"><i class="fas fa-hand-holding-usd"></i> Apakah Cukup Bayar Sekali?</div>
-    <div class="faq-answer">
-      Betul! Anda hanya perlu membayar satu kali seumur hidup, dan bisa menikmati seluruh fitur premium selamanya tanpa biaya bulanan atau tahunan.
-    </div>
-  </div>
-</section>
+    firebase.auth().onAuthStateChanged(async user => {
+      if (!user) {
+        window.location.href = "login.html";
+        return;
+      }
 
+      const db = firebase.firestore();
+      const doc = await db.collection("users").doc(user.uid).get();
+      if (!doc.exists) return;
 
-  <section class="section-box neon-form" id="formPesan">
-  <center><h3>📩 Kirim Pertanyaan / Pesan</h3></center
-<div class="form-wrapper">
-  <form id="pesanForm">
-    <label for="nama">Nama</label>
-    <input type="text" id="nama" required>
+      const role = (doc.data().role || "").toLowerCase();
+      const footer = document.getElementById("footer-nav");
+      if (!footer) return;
 
-    <label for="email">Email</label>
-    <input type="email" id="email" required>
+      let html = "";
 
-    <label for="nomor">Nomor HP</label>
-    <input type="tel" id="nomor" required>
+      if (role === "admin") {
+        html = `
+          <a onclick="loadContent('productlist')"><i class="fas fa-home"></i> Beranda</a>
+          <a onclick="loadContent('riwayat')"><i class="fas fa-store"></i> Transaksi</a>
+          <a onclick="loadContent('user')"><i class="fas fa-user"></i> Akun</a>
+          <a onclick="loadContent('admin-user')"><i class="fas fa-tools"></i> Admin</a>
+          <a onclick="loadContent('driver-dashboard')"><i class="fas fa-motorcycle"></i> Driver</a>
+          <a onclick="loadContent('seller-dashboard')"><i class="fas fa-store"></i> Toko Saya</a>
+          <a onclick="loadContent('alamat')"><i class="fas fa-location-dot"></i> Alamat</a>
+        `;
+      } else if (role === "seller") {
+        html = `
+          <a onclick="loadContent('seller-dashboard')"><i class="fas fa-store"></i> Toko Saya</a>
+          <a onclick="loadContent('user')"><i class="fas fa-user"></i> Akun</a>
+        `;
+      } else if (role === "driver") {
+        html = `
+          <a onclick="loadContent('driver-dashboard')"><i class="fas fa-motorcycle"></i> Driver</a>
+          <a onclick="loadContent('user')"><i class="fas fa-user"></i> Akun</a>
+        `;
+      } else {
+        html = `
+          <a onclick="loadContent('productlist')"><i class="fas fa-home"></i> Beranda</a>
+          <a onclick="loadContent('checkout')"><i class="fas fa-shopping-cart"></i> Keranjang</a>
+          <a onclick="loadContent('alamat')"><i class="fas fa-location-dot"></i> Alamat</a>
+          <a onclick="loadContent('user')"><i class="fas fa-user"></i> Akun</a>
+        `;
+      }
 
-    <label for="pesan">Pesan</label>
-    <textarea id="pesan" rows="5" required></textarea>
+      footer.innerHTML = html;
+    });
+  </script>
 
-    <button type="submit" class="btn-kirim-neon">Kirim Pesan</button>
-    <p id="statusKirim"></p>
-  </form>
-</section>
+  <!-- Firebase Messaging untuk ambil Token -->
+  <script type="module">
+    import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js";
+    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
+    const messaging = getMessaging();
+    const db = getFirestore();
+    const auth = getAuth();
 
-</main>
-<footer>
-  &copy; 2025 VLCrave Project. All Rights Reserved.
-</footer>
+    Notification.requestPermission().then(permission => {
+      if (permission === "granted") {
+        getToken(messaging, {
+          vapidKey: "BLonv1vVmUKPHiz3xqDyJ_8a9QhiuDugvCMnK9HYKgd6NlytGPNCVuFuuBOqQQKbSw7NK0ASxAGr_LUVs1PsY0Q"
+        }).then(token => {
+          if (token) {
+            console.log("✅ Token FCM:", token);
 
-  <script src="js/script_landingpage.js"></script>
+            onAuthStateChanged(auth, user => {
+              if (user) {
+                setDoc(doc(db, "users", user.uid), { tokenFCM: token }, { merge: true });
+              }
+            });
+
+          } else {
+            console.warn("❌ Token kosong.");
+          }
+        }).catch(err => {
+          console.error("❌ Gagal ambil token:", err);
+        });
+      } else {
+        console.warn("❌ Izin notifikasi ditolak.");
+      }
+    });
+  </script>
 </body>
 </html>

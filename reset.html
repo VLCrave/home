@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reset Password - VLCrave Express</title>
+  <link rel="icon" type="image/png" href="./img/icon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="css/login.css" />
+</head>
+<body>
+
+  <div class="login-box">
+    <img src="./img/icon.png" alt="Logo" class="login-logo" />
+    <h2>Reset Password</h2>
+    <input type="email" id="reset-email" placeholder="Masukkan Email" required />
+    <button id="reset-btn">Kirim Link Reset</button>
+    <p id="reset-msg"></p>
+
+    <div class="login-footer">
+      Sudah punya akun? <a href="login.html">Masuk</a>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import { getAuth, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAfBzoX9kUwUTWfQYT6QLndd_mP03__8Wo",
+      authDomain: "vlcrave-express.firebaseapp.com",
+      projectId: "vlcrave-express",
+      storageBucket: "vlcrave-express.appspot.com",
+      messagingSenderId: "609330453287",
+      appId: "1:609330453287:web:5280b9ec5c0d435518e702"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    document.getElementById("reset-btn").addEventListener("click", async () => {
+      const email = document.getElementById("reset-email").value.trim();
+      const msg = document.getElementById("reset-msg");
+
+      if (!email) {
+        msg.innerText = "❌ Email tidak boleh kosong.";
+        return;
+      }
+
+      try {
+        await sendPasswordResetEmail(auth, email);
+        msg.innerText = "✅ Link reset telah dikirim ke email.";
+      } catch (error) {
+        msg.innerText = "❌ " + error.message;
+      }
+    });
+  </script>
+</body>
+</html>

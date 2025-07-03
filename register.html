@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Daftar - VLCrave Express</title>
+  <link rel="icon" href="./img/icon.png">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="css/login.css" />
+</head>
+<body>
+
+  <div class="login-box">
+    <img src="./img/icon.png" alt="Logo" class="login-logo" />
+    <h2>Daftar Akun Baru</h2>
+
+    <input type="text" id="register-nama" placeholder="Nama Lengkap" required />
+    <input type="tel" id="register-hp" placeholder="Nomor HP" required />
+    <input type="email" id="register-email" placeholder="Email" required />
+    <input type="password" id="register-password" placeholder="Password" required />
+    <input type="password" id="register-pin" placeholder="PIN 6 Digit" maxlength="6" required />
+
+    <button id="register-btn">Daftar</button>
+    <p id="register-msg"></p>
+
+    <div class="login-footer">
+      Sudah punya akun? <a href="login.html">Masuk</a>
+    </div>
+  </div>
+
+  <!-- Firebase Register Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+    import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAfBzoX9kUwUTWfQYT6QLndd_mP03__8Wo",
+      authDomain: "vlcrave-express.firebaseapp.com",
+      projectId: "vlcrave-express",
+      storageBucket: "vlcrave-express.appspot.com",
+      messagingSenderId: "609330453287",
+      appId: "1:609330453287:web:5280b9ec5c0d435518e702"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    document.getElementById("register-btn").addEventListener("click", async () => {
+      const nama = document.getElementById("register-nama").value.trim();
+      const hp = document.getElementById("register-hp").value.trim();
+      const email = document.getElementById("register-email").value.trim();
+      const password = document.getElementById("register-password").value;
+      const pin = document.getElementById("register-pin").value.trim();
+      const msg = document.getElementById("register-msg");
+
+      if (!nama || !hp || !email || !password || !pin) {
+        msg.innerText = "❌ Semua field wajib diisi.";
+        return;
+      }
+
+      if (pin.length !== 6 || isNaN(pin)) {
+        msg.innerText = "❌ PIN harus 6 digit angka.";
+        return;
+      }
+
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const uid = userCredential.user.uid;
+
+        await setDoc(doc(db, "users", uid), {
+          namaLengkap: nama,
+          nomorHp: parseInt(hp),
+          email,
+          username: "",
+          pin: pin,
+          role: "user",
+          saldo: 0,
+          photoURL: "https://cdn-icons-png.flaticon.com/512/149/149071.png",
+          createdAt: serverTimestamp()
+        });
+
+        msg.innerText = "✅ Akun berhasil dibuat! Mengalihkan...";
+        setTimeout(() => {
+          window.location.href = "index.html";
+        }, 1500);
+
+      } catch (error) {
+        msg.innerText = "❌ " + error.message;
+      }
+    });
+  </script>
+</body>
+</html>

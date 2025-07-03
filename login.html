@@ -1,224 +1,118 @@
 <!DOCTYPE html>
-
 <html lang="id">
 <head>
-<meta charset="utf-8"/>
-<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-<title>VL - Personal Profile</title>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
-<link href="css/style.css" rel="stylesheet" />
-<div id="popup-overlay"></div>
-<div id="popup-greeting">
-  <h2>Selamat Datang!</h2>
-  <p class="terms-box">
-    Sebelum masuk ke dalam website <strong>silakan masukkan Kode Akses</strong> yang berlaku.
-  </p>
-
-  <label class="check-label">
-    <input type="checkbox" checked disabled />
-    Silakan masukkan kode akses terlebih dahulu.
-  </label>
-
-  <input id="access-code" placeholder="Masukkan kode akses..." type="password" />
-
-  <br />
-
-  <button id="close-popup">Masuk</button>
-
-  <div id="loading-spinner" style="display: none;">⏳</div>
-
-  <div class="result-icon success" id="checkmark" style="display: none;">
-    <i class="fas fa-check-circle"></i>
-  </div>
-
-  <div class="result-icon error" id="crossmark" style="display: none;">
-    <i class="fas fa-times-circle"></i>
-  </div>
-
-  <!-- Tombol Beli Kode Akses -->
-  <div id="purchase-link" style="display: none;">
-    <a href="https://lynk.id/vickysatrialindy/rr13vjv48rq9/checkout?token=..." target="_blank" class="access-btn">
-      Beli Kode Akses
-    </a>
-  </div>
-
-  <!-- Tombol Request IP -->
-  <div id="request-ip-container" style="display: none;">
-    <a href="#" id="request-ip" class="access-btn">Request IP</a>
-  </div>
-</div>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login - VLCrave Express</title>
+  <link rel="icon" type="image/png" href="./img/icon.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <link rel="stylesheet" href="css/login.css" />
 </head>
 <body>
-<header>
-  <h1 class="logo">VL Profile</h1>
-  <button id="sidebarToggle" class="menu-toggle" onclick="toggleSidebar()">☰</button>
-</header>
 
-<aside class="sidebar" id="sidebar">
-<h1>Menu</h1>
-<nav>
-<ul>
-<li><a onclick="loadContent('dashboard')"><i class="fas fa-chart-line"></i> Dashboard</a></li>
-<li><a onclick="loadContent('cheatgame')"><i class="fas fa-gamepad"></i> Cheat Game</a></li>
-<li class="has-submenu">
-<a onclick="toggleSubmenu(this)"><i class="fa-solid fa-sack-dollar"></i> Finance ▾</a>
-<ul>
-<li><a onclick="loadContent('ternakuang')">7 Tangga Pertama</a></li>
-<li><a onclick="loadContent('investormind')">The Investor’s Mind</a></li>
-<li><a onclick="loadContent('wealthblueprint')">The Wealth Blueprint</a></li>
-<li><a onclick="loadContent('capitalmarket')">Capital Market Mastery</a></li>
-<li><a onclick="loadContent('kebiasaanmenabung')">Kebiasaan Menabung</a></li>
-<li><a onclick="loadContent('danadarurat')">Dimana Menyimpan Dana Darurat?</a></li>
-<li><a onclick="loadContent('caradanaDarurat')">Cara Menentukan Dana Darurat</a></li>
-<li><a onclick="loadContent('gayahidupkredit')">Bahaya Cicilan & Gaya Hidup Kredit</a></li>
-<li><a onclick="loadContent('snowballvavalache')">Strategi Melunasi Utang</a></li>
-<li><a onclick="loadContent('kartukreditbijak')">Gunakan Kartu Kredit Secara Bijak</a></li>
-<li><a onclick="loadContent('utangproduktif')">Utang Produktif vs Konsumtif</a></li>
-<li><a onclick="loadContent('tingkatpenghasilan')">Strategi Tingkatkan Penghasilan</a></li>
-<li><a onclick="loadContent('kebocorankeuangan')">Membongkar Kebocoran Keuangan</a></li>
-<li><a onclick="loadContent('aturgajieffektif')">Mengatur Gaji Secara Efektif</a></li>
-<li><a onclick="loadContent('anggaranbulanan')">Cara Membuat Anggaran Bulanan</a></li>
-<li><a onclick="loadContent('tujuankeuangan')">Membuat Tujuan Keuangan</a></li>
-<li><a onclick="loadContent('richvspoor')">Rich vs Poor Mindset</a></li>
-<li><a onclick="loadContent('personalfinance')">Personal Finance</a></li>
-</ul>
-</li>
-<li class="has-submenu">
-<a onclick="toggleSubmenu(this)"><i class="fab fa-btc"></i> Crptocurrency ▾</a>
-<ul>
-<li><a onclick="loadContent('bukukripto')">Panduan Pemula Dunia Kripto</a></li>
-<li><a onclick="loadContent('bukukriptolanjutan')">Crypto Level Intermediate</a></li>
-<li><a onclick="loadContent('bukukriptoexpert')">Crypto Level Expert</a></li>
-</ul>
-</li>
-<li class="has-submenu">
-<a onclick="toggleSubmenu(this)"><i class="fas fa-microchip"></i> Prompt ▾</a>
-<ul>
-<li><a onclick="loadContent('promptchatgpt')">Prompt ChatGPT</a></li>
-<li><a onclick="loadContent('promptgeminiveo3')">Prompt Gemini VEO3</a></li>
-</ul>
-</li>
-<li class="has-submenu">
-<a onclick="toggleSubmenu(this)"><i class="fas fa-lightbulb"></i> Tips ▾</a>
-<ul>
-<li><a onclick="loadContent('veo3')">Gemini VEO3</a></li>
-<li><a onclick="loadContent('dapatklienfreelance')">Cara Dapet Klien Freelance</a></li>
-<li><a onclick="loadContent('softselling')">Teknik Soft Selling</a></li>
-</ul>
-</li>
-<li class="has-submenu">
-<a onclick="toggleSubmenu(this)"><i class="fas fa-gamepad"></i> Special▾</a>
-<ul>
-<li><a onclick="loadContent('roomwangi')">Room Wangi</a></li>
-<li><a onclick="loadContent('roombot')">Room Bot Alltier</a></li>
-<li><a onclick="loadContent('bugroomwangi')">Bug Room Wangi</a></li>
-</ul>
-</li>
-<li class="has-submenu">
-<a onclick="toggleSubmenu(this)"><i class="fas fa-book"></i> E-Book ▾</a>
-<ul>
-<li><a onclick="loadContent('affiliator')">3 Bulan Jadi Affiliator</a></li>
-<li><a onclick="loadContent('contentcreator')">6 Bulan Jadi Konten Kreator</a></li>
-<li><a onclick="loadContent('personalbranding')">Membangun Personal Branding</a></li>
-<li><a onclick="loadContent('jualcepat')">Jualan Dalam 3 Menit</a></li>
-<li><a onclick="loadContent('tipscopywriting')">Teknik Copy Writing</a></li>
-<li><a onclick="loadContent('masterinstagram')">Master Instagram Growth</a></li>
-<li><a onclick="loadContent('fyptiktok2025')">Strategi FYP TikTok 2025</a></li>
-<li><a onclick="loadContent('idekonten1tahun')">Ide Konten 1 Tahun Penuh</a></li>
-<li><a onclick="loadContent('mindsetdigitalcuan')">Mindset Digital Cuan</a></li>
-<li><a onclick="loadContent('hookctaviral')">Rahasia Hook & CTA Viral</a></li>
-<li><a onclick="loadContent('roadmapfreelancer')">Roadmap Jadi Freelancer Sukses</a></li>
-<li><a onclick="loadContent('bisnisdigital')">Bangun Bisnis Digital</a></li>
-<li><a onclick="loadContent('algoritmasosmed')">Algoritma TikTok & Instagram</a></li>
-<li><a onclick="loadContent('naikfollowers')">Strategi Naik Followers Aktif</a></li>
-<li><a onclick="loadContent('dropship101')">Dropship 101: Cara Mulai Tanpa Modal</a></li>
-</ul>
-</li>
-<li class="has-submenu">
-<a onclick="toggleSubmenu(this)"><i class="fas fa-dollar-sign"></i> Marketing ▾</a>
-<ul>
-<li><a onclick="loadContent('promosiapk')">Promosi Aplikasi Premium</a></li>
-<li><a onclick="loadContent('promosigame')">Promosi Topup Game</a></li>
-<li><a onclick="loadContent('promosiJasa')">Promosi Jasa</a></li>
-</ul>
-</li>
-<li class="has-submenu">
-<a onclick="toggleSubmenu(this)"><i class="fas fa-palette"></i> Template ▾</a>
-<ul>
-<li><a onclick="loadContent('templatecanva')">Template Canva Premium</a></li>
-</ul>
-</li>
-<li class="has-submenu">
-<a onclick="toggleSubmenu(this)"><i class="fas fa-download"></i> Aplikasi Premium ▾</a>
-<ul>
-<li><a onclick="loadContent('appspremium')">Streaming, AI, Music Pro</a></li>
-<li><a onclick="loadContent('appsoriginal')">Game Original</a></li>
-<li><a onclick="loadContent('appsmod')">Game Mod</a></li>
-</ul>
-</li>
-<li class="has-submenu">
-<a onclick="toggleSubmenu(this)"><i class="fas fa-gamepad"></i> Hiburan ▾</a>
-<ul>
-<li><a onclick="loadContent('cekmbti')">Cek Kepribadian Zodiac</a></li>
-<li><a onclick="loadContent('nontonfilm')">Cek Film Sesuai Mood</a></li>
-<li><a onclick="loadContent('gombal')">Yuk Gombal!</a></li>
-<li><a onclick="loadContent('ytnonton')">Nonton Youtube</a></li>
-<li><a onclick="loadContent('adminucapan')">Ucapan Generator</a></li>
-<li><a onclick="loadContent('lovecalculator')">Hitung Cinta</a></li>
-</ul>
-</li>
-<li class="has-submenu">
-<a onclick="toggleSubmenu(this)"><i class="fas fa-tools"></i> Tools ▾</a>
-<ul>
-<li><a onclick="loadContent('submenu1')">Winrate Calculator</a></li>
-<li><a onclick="loadContent('submenu2')">BMI Calculator</a></li>
-<li><a onclick="loadContent('submenu3')">HPP Caculator</a></li>
-<li><a onclick="loadContent('qrgenerator')">QR Generator</a></li>
-<li><a onclick="loadContent('shorturl')">URL Shortner</a></li>
-<li><a onclick="loadContent('calculatorDanaDarurat')">Dana Darurat</a></li>
-<li><a onclick="loadContent('kalkulatorgaji')">Pembagian Gaji</a></li>
-<li><a onclick="loadContent('kalkulatorpendidikan')">Biaya Pendidikan Anak</a></li>
-<li><a onclick="loadContent('toolstranslate')">Translate Bahasa</a></li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><a onclick="loadContent('bantuan')"><i class="fas fa-envelope"></i> Bantuan</a></li>
-<li><a onclick="loadContent('danakaget')"><i class="fas fa-gift"></i> Dana Kaget</a></li>
-</ul>
-</nav>
-</aside>
-<main id="main-content">
-<section style="padding: 2rem; text-align: center;">
-<div id="">
-<h2>Selamat Datang!</h2>
-<p class="terms-box">
-<strong>Syarat &amp; Ketentuan VL-PROJECT</strong><br/><br/>
-  1. Kode akses hanya berlaku untuk <strong>1 pengguna</strong> dan <u>tidak boleh diperjualbelikan kembali</u> dalam bentuk apapun.<br/>
-  2. Akses bersifat <strong>seumur hidup</strong> selama platform VL-PROJECT aktif dan dikelola.<br/>
-  3. Anda <strong>diizinkan menjual kembali konten</strong> seperti video, teks promosi, prompt, atau materi lainnya, untuk keperluan pribadi maupun komersial.<br/>
-  4. Seluruh konten dapat diperbarui, diganti, atau dihapus sewaktu-waktu demi menjaga kualitas dan legalitas.<br/>
-  5. Penggunaan untuk tujuan ilegal atau yang melanggar hukum dilarang.<br/>
-  6. Tidak ada pengembalian dana (<strong>no refund</strong>) setelah kode akses diberikan, kecuali kesalahan dari sistem kami.<br/>
-  7. Komisi affiliate sebesar <strong>20%</strong> akan diberikan untuk setiap penjualan yang valid melalui link afiliasi pengguna.<br/>
-  8. Dilarang membagikan akses Anda secara publik atau menggunakan 1 akun untuk banyak orang.<br/>
-  9. Pengguna bertanggung jawab penuh atas keamanan akun dan datanya.<br/>
-  10. Dengan melanjutkan, Anda menyatakan telah membaca, memahami, dan menyetujui seluruh syarat &amp; ketentuan ini.
-</p>
-<button onclick="loadContent('dashboard')" style="
-    padding: 12px 30px;
-    font-size: 16px;
-    border: none;
-    background-color: #007bff;
-    color: #fff;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background 0.3s ease;
-  ">
-<i class="fas fa-play-circle"></i> Lanjutkan ke Dashboard
-  </button>
-</div></section>
-</main>
+  <div class="login-box">
+    <img src="./img/icon.png" alt="Logo" class="login-logo" />
+    <h2>Masuk Akun</h2>
 
-<script src="js/script.js"></script></body>
+    <!-- Langkah 1: Login -->
+    <div id="step-login">
+      <input type="email" id="login-email" placeholder="Email" required />
+      <input type="password" id="login-password" placeholder="Password" required />
+      <button id="login-btn">Masuk</button>
+    </div>
+
+    <!-- Langkah 2: Verifikasi PIN -->
+    <div id="step-pin" style="display: none;">
+      <input type="password" id="pin-input" maxlength="6" placeholder="Masukkan PIN 6 digit" required />
+      <button id="pin-submit-btn">Verifikasi PIN</button>
+    </div>
+
+    <p id="login-msg"></p>
+
+    <div class="login-footer">
+      Belum punya akun? <a href="register.html">Daftar</a>
+    </div>
+  </div>
+
+  <!-- Firebase & Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+
+    // Konfigurasi Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyAfBzoX9kUwUTWfQYT6QLndd_mP03__8Wo",
+      authDomain: "vlcrave-express.firebaseapp.com",
+      projectId: "vlcrave-express",
+      storageBucket: "vlcrave-express.appspot.com",
+      messagingSenderId: "609330453287",
+      appId: "1:609330453287:web:5280b9ec5c0d435518e702"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    const loginBtn = document.getElementById("login-btn");
+    const pinBtn = document.getElementById("pin-submit-btn");
+    const msg = document.getElementById("login-msg");
+
+    let currentUserUID = null;
+
+    // Langkah 1: Login email dan password
+    loginBtn.addEventListener("click", async () => {
+      const email = document.getElementById("login-email").value.trim();
+      const password = document.getElementById("login-password").value;
+
+      if (!email || !password) {
+        msg.innerText = "❌ Email dan password wajib diisi.";
+        return;
+      }
+
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        currentUserUID = userCredential.user.uid;
+        msg.innerText = "✅ Login berhasil. Silakan verifikasi PIN.";
+        document.getElementById("step-login").style.display = "none";
+        document.getElementById("step-pin").style.display = "block";
+      } catch (error) {
+        msg.innerText = "❌ " + error.message;
+      }
+    });
+
+    // Langkah 2: Verifikasi PIN
+    pinBtn.addEventListener("click", async () => {
+      const pinInput = document.getElementById("pin-input").value.trim();
+
+      if (!pinInput || pinInput.length !== 6) {
+        msg.innerText = "❌ PIN harus 6 digit.";
+        return;
+      }
+
+      try {
+        const userDoc = await getDoc(doc(db, "users", currentUserUID));
+        if (!userDoc.exists()) {
+          msg.innerText = "❌ Data user tidak ditemukan.";
+          return;
+        }
+
+        const userData = userDoc.data();
+        const storedPin = userData.pin?.toString().padStart(6, "0");
+
+        if (pinInput === storedPin) {
+          msg.innerText = "✅ PIN benar. Mengalihkan...";
+          setTimeout(() => {
+            window.location.href = "index.html";
+          }, 1000);
+        } else {
+          msg.innerText = "❌ PIN salah.";
+        }
+
+      } catch (error) {
+        msg.innerText = "❌ " + error.message;
+      }
+    });
+  </script>
+</body>
 </html>
