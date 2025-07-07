@@ -55,6 +55,8 @@
       const pin = document.getElementById("register-pin").value.trim();
       const msg = document.getElementById("register-msg");
 
+      msg.innerText = "";
+
       if (!nama || !hp || !email || !password || !pin) {
         msg.innerText = "❌ Semua field wajib diisi.";
         return;
@@ -70,9 +72,10 @@
         const uid = userCredential.user.uid;
 
         await setDoc(doc(db, "users", uid), {
+          uid: uid, // ← Tambahan field UID di dalam dokumen
           namaLengkap: nama,
           nomorHp: parseInt(hp),
-          email,
+          email: email,
           username: "",
           pin: pin,
           role: "user",

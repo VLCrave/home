@@ -5,11 +5,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>VLCrave Express</title>
   <link rel="icon" type="image/png" href="./img/icon.png" />
+
+  <!-- Font Awesome -->
   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet" />
-  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+  <!-- Leaflet -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Custom Style -->
   <link href="css/style.css" rel="stylesheet" />
+
 </head>
 <body class="popup-active">
+  <div id="floating-alert"></div>
 
   <!-- Popup -->
   <div id="popup-overlay"></div>
@@ -22,45 +31,64 @@
   <!-- Header -->
   <header class="produk-header" style="display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 10px 12px;">
     <input id="search-input" type="text" placeholder="Cari produk atau toko..." oninput="filterProduk()" style="flex: 1 1 auto; min-width: 0; padding: 10px 14px; font-size: 14px; border-radius: 8px; border: 1px solid #ccc;" />
-    <a onclick="loadContent('checkout')" style="position: relative; display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; background: #eee; border-radius: 50%;">
-      <i class="fas fa-shopping-cart footer-cart-icon" style="font-size: 18px; color: #333;"></i>
-      <span class="cart-badge">0</span>
+    <a onclick="loadContent('daftar-chat-user')" style="position: relative; display: inline-flex; align-items: center; justify-content: center; width: 42px; height: 42px; background: #eee; border-radius: 50%;">
+      <i class="fa-solid fa-headset" style="font-size: 18px; color: #333;"></i>
+      <span class="cart-badge" id="badge-chat-unread">0</span>
     </a>
   </header>
 
   <!-- Konten Dinamis -->
   <main id="page-container"></main>
 
-  <!-- Form Tambah Alamat -->
-  <div id="form-alamat" style="display: none; padding: 1rem;">
-    <form id="alamat-form">
-      <input type="text" id="nama" placeholder="Nama Lengkap" required />
-      <input type="text" id="wa" placeholder="Nomor WhatsApp" required />
-      <textarea id="alamat" placeholder="Alamat Lengkap" required></textarea>
-      <textarea id="catatan" placeholder="Catatan (Opsional)"></textarea>
-      <button type="submit">Simpan Alamat</button>
-    </form>
-  </div>
+ <!-- Form Tambah Alamat -->
+<div id="form-alamat" class="card-alamat-container" style="display: none;">
+  <form id="alamat-form" class="card-alamat">
+    <h3>Tambah Alamat</h3>
+    <input type="text" id="nama" placeholder="Nama Lengkap" required />
+    <input type="text" id="wa" placeholder="Nomor WhatsApp" required />
+    <textarea id="alamat" placeholder="Alamat Lengkap" required></textarea>
+    <textarea id="catatan" placeholder="Detail"></textarea>
+    <button type="submit">Simpan Alamat</button>
+  </form>
+</div>
+
 
   <!-- Footer Dinamis -->
   <footer class="footer-bottom-nav" id="footer-nav"></footer>
 
-  <!-- Hidden -->
-  <div style="display:none;"><span id="checkout-total">Rp0</span></div>
+  <!-- Modal Detail -->
+  <div id="modal-detail" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#00000088; z-index:9999; justify-content:center; align-items:center;">
+    <div class="modal-content" style="background:#fff; padding:20px; max-width:500px; width:90%; border-radius:10px; box-shadow:0 4px 20px rgba(0,0,0,0.3); overflow-y:auto; max-height:90%;">
+      <div id="modal-isi-detail">Memuat detail...</div>
+      <div style="text-align:right; margin-top:20px;">
+        <button onclick="document.getElementById('modal-detail').style.display='none'">Tutup</button>
+      </div>
+    </div>
+  </div>
 
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
 
-  <!-- Leaflet -->
-  <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+  <!-- Leaflet Routing Machine -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
+  <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
 
   <!-- Script Utama -->
   <script src="js/script.js"></script>
   <script src="js/alamat.js"></script>
 
-  <!-- Role & Footer Dinamis -->
+  <script>
+    function tampilkanFloatingAlert(judul, pesan) {
+      const box = document.getElementById("floating-alert");
+      box.innerHTML = `<strong>${judul}</strong><br>${pesan}`;
+      box.classList.add("show");
+      setTimeout(() => box.classList.remove("show"), 8000);
+    }
+  </script>
+
+  <!-- Role & Footer Dinamis + Notif Global -->
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyAfBzoX9kUwUTWfQYT6QLndd_mP03__8Wo",
@@ -71,7 +99,12 @@
       appId: "1:609330453287:web:5280b9ec5c0d435518e702",
       measurementId: "G-X528QKSC88"
     };
+
     firebase.initializeApp(firebaseConfig);
+
+    if ("Notification" in window && Notification.permission !== "granted") {
+      Notification.requestPermission();
+    }
 
     firebase.auth().onAuthStateChanged(async user => {
       if (!user) {
@@ -91,70 +124,53 @@
 
       if (role === "admin") {
         html = `
-          <a onclick="loadContent('productlist')"><i class="fas fa-home"></i> Beranda</a>
-          <a onclick="loadContent('riwayat')"><i class="fas fa-store"></i> Transaksi</a>
-          <a onclick="loadContent('user')"><i class="fas fa-user"></i> Akun</a>
-          <a onclick="loadContent('admin-user')"><i class="fas fa-tools"></i> Admin</a>
-          <a onclick="loadContent('driver-dashboard')"><i class="fas fa-motorcycle"></i> Driver</a>
-          <a onclick="loadContent('seller-dashboard')"><i class="fas fa-store"></i> Toko Saya</a>
-          <a onclick="loadContent('alamat')"><i class="fas fa-location-dot"></i> Alamat</a>
+          <a onclick="loadContent('productlist')"><i class="fas fa-home"></i><span>Beranda</span></a>
+          <a onclick="loadContent('riwayat')"><i class="fas fa-receipt"></i><span>Transaksi</span></a>
+          <a onclick="loadContent('admin-user')"><i class="fas fa-tools"></i><span>Admin</span></a>
+          <a onclick="loadContent('driver-dashboard')"><i class="fas fa-motorcycle"></i><span>Driver</span></a>
+          <a onclick="loadContent('seller-dashboard')"><i class="fas fa-store"></i><span>Toko</span></a>
+          <a onclick="loadContent('alamat')"><i class="fas fa-location-dot"></i><span>Alamat</span></a>
+          <a onclick="loadContent('user')"><i class="fas fa-user"></i><span>Akun</span></a>
         `;
       } else if (role === "seller") {
         html = `
-          <a onclick="loadContent('seller-dashboard')"><i class="fas fa-store"></i> Toko Saya</a>
-          <a onclick="loadContent('user')"><i class="fas fa-user"></i> Akun</a>
+          <a onclick="loadContent('seller-dashboard')"><i class="fas fa-store"></i><span>Toko Saya</span></a>
+          <a onclick="loadContent('alamat')"><i class="fas fa-location-dot"></i><span>Alamat</span></a>
+          <a onclick="loadContent('user')"><i class="fas fa-user"></i><span>Akun</span></a>
         `;
       } else if (role === "driver") {
         html = `
-          <a onclick="loadContent('driver-dashboard')"><i class="fas fa-motorcycle"></i> Driver</a>
-          <a onclick="loadContent('user')"><i class="fas fa-user"></i> Akun</a>
+          <a onclick="loadContent('driver-dashboard')"><i class="fas fa-motorcycle"></i><span>Driver</span></a>
+          <a onclick="loadContent('user')"><i class="fas fa-user"></i><span>Akun</span></a>
         `;
       } else {
         html = `
-          <a onclick="loadContent('productlist')"><i class="fas fa-home"></i> Beranda</a>
-          <a onclick="loadContent('checkout')"><i class="fas fa-shopping-cart"></i> Keranjang</a>
-          <a onclick="loadContent('alamat')"><i class="fas fa-location-dot"></i> Alamat</a>
-          <a onclick="loadContent('user')"><i class="fas fa-user"></i> Akun</a>
+          <a onclick="loadContent('productlist')"><i class="fas fa-home"></i><span>Beranda</span></a>
+          <a onclick="loadContent('checkout')" class="footer-cart-icon">
+            <i class="fas fa-shopping-cart"></i>
+            <span>Keranjang</span>
+            <span id="cart-badge" class="badge-count">0</span>
+          </a>
+          <a onclick="loadContent('alamat')"><i class="fas fa-location-dot"></i><span>Alamat</span></a>
+          <a onclick="loadContent('user')"><i class="fas fa-user"></i><span>Akun</span></a>
         `;
       }
 
       footer.innerHTML = html;
-    });
-  </script>
 
-  <!-- Firebase Messaging untuk ambil Token -->
-  <script type="module">
-    import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-messaging.js";
-    import { getFirestore, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-    import { getAuth, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
-
-    const messaging = getMessaging();
-    const db = getFirestore();
-    const auth = getAuth();
-
-    Notification.requestPermission().then(permission => {
-      if (permission === "granted") {
-        getToken(messaging, {
-          vapidKey: "BLonv1vVmUKPHiz3xqDyJ_8a9QhiuDugvCMnK9HYKgd6NlytGPNCVuFuuBOqQQKbSw7NK0ASxAGr_LUVs1PsY0Q"
-        }).then(token => {
-          if (token) {
-            console.log("✅ Token FCM:", token);
-
-            onAuthStateChanged(auth, user => {
-              if (user) {
-                setDoc(doc(db, "users", user.uid), { tokenFCM: token }, { merge: true });
-              }
-            });
-
-          } else {
-            console.warn("❌ Token kosong.");
-          }
-        }).catch(err => {
-          console.error("❌ Gagal ambil token:", err);
+      // 🔔 Notifikasi floating dari admin (notifikasi_umum)
+      db.collection("notifikasi_umum")
+        .where("status", "==", "aktif")
+        .orderBy("createdAt", "desc")
+        .limit(1)
+        .onSnapshot(snapshot => {
+          snapshot.docChanges().forEach(change => {
+            const data = change.doc.data();
+            if (change.type === "added" && (data.tujuan === "all" || data.tujuan === role)) {
+              tampilkanFloatingAlert(data.judul || "📢 Info", data.pesan || "");
+            }
+          });
         });
-      } else {
-        console.warn("❌ Izin notifikasi ditolak.");
-      }
     });
   </script>
 </body>
