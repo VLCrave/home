@@ -7300,48 +7300,6 @@ form button:hover {
   background-color: #2980b9;
 }
 
-.card-list.-admin-pesanan {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  padding: 10px;
-}
-
-.pesanan-card.-admin-pesanan {
-  border: 1px solid #ddd;
-  border-left: 5px solid #007bff;
-  padding: 15px;
-  border-radius: 8px;
-  background: #f9f9f9;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
-  transition: 0.3s;
-}
-
-.pesanan-card.-admin-pesanan:hover {
-  background: #fff;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-}
-
-.pesanan-card.-admin-pesanan .card-header {
-  font-weight: bold;
-  font-size: 16px;
-  margin-bottom: 8px;
-  color: #333;
-}
-
-.pesanan-card.-admin-pesanan small {
-  color: gray;
-  font-size: 12px;
-}
-
-.pesanan-card.-admin-pesanan .card-actions {
-  margin-top: 12px;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-
 
 /* Wrapper untuk semua card */
 #card-list-fee-admin {
@@ -8344,3 +8302,68 @@ form button:hover {
 .card-alamat button:hover {
   background-color: #1a5edb;
 }
+
+.card-list.-riwayat-pesanan-admin {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.card.-riwayat-pesanan-admin {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  padding: 16px;
+  box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.badge-status {
+  padding: 2px 8px;
+  border-radius: 6px;
+  background-color: #eee;
+  font-size: 12px;
+  text-transform: capitalize;
+}
+
+.card-footer {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-action.-riwayat-pesanan-admin {
+  padding: 6px 12px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.btn-action.-riwayat-pesanan-admin:hover {
+  background-color: #0056b3;
+}
+
+.btn-action.-riwayat-pesanan-admin.danger {
+  background-color: crimson;
+}
+
+.badge-priority-reward {
+  display: inline-block;
+  background-color: #ffd700;
+  color: #000;
+  font-size: 12px;
+  font-weight: bold;
+  padding: 2px 6px;
+  border-radius: 8px;
+  margin-left: 8px;
+}
+
