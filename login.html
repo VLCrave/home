@@ -19,6 +19,12 @@
       <input type="email" id="login-email" placeholder="Email" required />
       <input type="password" id="login-password" placeholder="Password" required />
       <button id="login-btn">Masuk</button>
+
+      <div style="text-align: center; margin: 10px 0;">atau</div>
+      <button id="google-login-btn" style="background:#fff; border:1px solid #ccc; padding:10px; width:100%; display:flex; align-items:center; justify-content:center; gap:10px; cursor:pointer;">
+        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google" width="20">
+        <span>Masuk dengan Google</span>
+      </button>
     </div>
 
     <!-- Langkah 2: Verifikasi PIN -->
@@ -37,7 +43,12 @@
   <!-- Firebase & Logic -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+    import { 
+      getAuth, 
+      signInWithEmailAndPassword, 
+      GoogleAuthProvider, 
+      signInWithPopup 
+    } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
     import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
 
     // Konfigurasi Firebase
@@ -55,6 +66,7 @@
     const db = getFirestore(app);
 
     const loginBtn = document.getElementById("login-btn");
+    const googleBtn = document.getElementById("google-login-btn");
     const pinBtn = document.getElementById("pin-submit-btn");
     const msg = document.getElementById("login-msg");
 
@@ -107,6 +119,38 @@
           }, 1000);
         } else {
           msg.innerText = "❌ PIN salah.";
+        }
+
+      } catch (error) {
+        msg.innerText = "❌ " + error.message;
+      }
+    });
+
+    // Login Google
+    googleBtn.addEventListener("click", async () => {
+      const provider = new GoogleAuthProvider();
+      try {
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+        currentUserUID = user.uid;
+
+        // Cek apakah user punya PIN
+        const userDoc = await getDoc(doc(db, "users", currentUserUID));
+        if (!userDoc.exists()) {
+          msg.innerText = "❌ Data user tidak ditemukan.";
+          return;
+        }
+
+        const userData = userDoc.data();
+        if (userData.pin) {
+          msg.innerText = "✅ Login Google berhasil. Verifikasi PIN.";
+          document.getElementById("step-login").style.display = "none";
+          document.getElementById("step-pin").style.display = "block";
+        } else {
+          msg.innerText = "✅ Login Google berhasil. Mengalihkan...";
+          setTimeout(() => {
+            window.location.href = "index.html";
+          }, 1000);
         }
 
       } catch (error) {

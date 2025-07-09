@@ -134,12 +134,26 @@
         `;
       } else if (role === "seller") {
         html = `
-          <a onclick="loadContent('seller-dashboard')"><i class="fas fa-store"></i><span>Toko Saya</span></a>
-          <a onclick="loadContent('user-seller')"><i class="fas fa-user"></i><span>Akun</span></a>
+          <a onclick="loadContent('seller-dashboard')">
+  <i class="fas fa-store"></i><span>Toko Saya</span>
+</a>
+
+<a onclick="loadContent('riwayat-pesanan-seller')">
+  <i class="fas fa-receipt"></i><span>Riwayat</span>
+</a>
+
+
+<a onclick="loadContent('user-seller')">
+  <i class="fas fa-user"></i><span>Akun</span>
+</a>
+
         `;
       } else if (role === "driver") {
         html = `
           <a onclick="loadContent('driver-dashboard')"><i class="fas fa-motorcycle"></i><span>Driver</span></a>
+<a onclick="loadContent('riwayat-pesanan-driver')">
+  <i class="fas fa-receipt"></i><span>Riwayat</span>
+</a>
           <a onclick="loadContent('user-driver')"><i class="fas fa-user"></i><span>Akun</span></a>
         `;
       } else {
