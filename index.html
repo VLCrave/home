@@ -15,7 +15,6 @@
 
   <!-- Custom Style -->
   <link href="css/style.css" rel="stylesheet" />
-
 </head>
 <body class="popup-active">
   <div id="floating-alert"></div>
@@ -37,21 +36,11 @@
     </a>
   </header>
 
-  <!-- Konten Dinamis -->
+  <div id="home-banner-wrapper" style="display: none;"></div>
   <main id="page-container"></main>
 
- <!-- Form Tambah Alamat -->
-<div id="form-alamat" class="card-alamat-container" style="display: none;">
-  <form id="alamat-form" class="card-alamat">
-    <h3>Tambah Alamat</h3>
-    <input type="text" id="nama" placeholder="Nama Lengkap" required />
-    <input type="text" id="wa" placeholder="Nomor WhatsApp" required />
-    <textarea id="alamat" placeholder="Alamat Lengkap" required></textarea>
-    <textarea id="catatan" placeholder="Detail"></textarea>
-    <button type="submit">Simpan Alamat</button>
-  </form>
-</div>
-
+  <!-- Container Kategori -->
+  <div id="kategori-container" class="kategori-grid"></div>
 
   <!-- Footer Dinamis -->
   <footer class="footer-bottom-nav" id="footer-nav"></footer>
@@ -76,9 +65,9 @@
   <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
 
   <!-- Script Utama -->
-  <script src="js/script.js"></script>
   <script src="js/alamat.js"></script>
-
+  <script src="js/script.js"></script>
+  
   <script>
     function tampilkanFloatingAlert(judul, pesan) {
       const box = document.getElementById("floating-alert");
@@ -135,25 +124,21 @@
       } else if (role === "seller") {
         html = `
           <a onclick="loadContent('seller-dashboard')">
-  <i class="fas fa-store"></i><span>Toko Saya</span>
-</a>
-
-<a onclick="loadContent('riwayat-pesanan-seller')">
-  <i class="fas fa-receipt"></i><span>Riwayat</span>
-</a>
-
-
-<a onclick="loadContent('user-seller')">
-  <i class="fas fa-user"></i><span>Akun</span>
-</a>
-
+            <i class="fas fa-store"></i><span>Toko Saya</span>
+          </a>
+          <a onclick="loadContent('riwayat-pesanan-seller')">
+            <i class="fas fa-receipt"></i><span>Riwayat</span>
+          </a>
+          <a onclick="loadContent('user-seller')">
+            <i class="fas fa-user"></i><span>Akun</span>
+          </a>
         `;
       } else if (role === "driver") {
         html = `
           <a onclick="loadContent('driver-dashboard')"><i class="fas fa-motorcycle"></i><span>Driver</span></a>
-<a onclick="loadContent('riwayat-pesanan-driver')">
-  <i class="fas fa-receipt"></i><span>Riwayat</span>
-</a>
+          <a onclick="loadContent('riwayat-pesanan-driver')">
+            <i class="fas fa-receipt"></i><span>Riwayat</span>
+          </a>
           <a onclick="loadContent('user-driver')"><i class="fas fa-user"></i><span>Akun</span></a>
         `;
       } else {
@@ -162,7 +147,6 @@
           <a onclick="loadContent('checkout')" class="footer-cart-icon">
             <i class="fas fa-shopping-cart"></i>
             <span>Keranjang</span>
-            <span id="cart-badge" class="badge-count">0</span>
           </a>
           <a onclick="loadContent('alamat')"><i class="fas fa-location-dot"></i><span>Alamat</span></a>
           <a onclick="loadContent('user')"><i class="fas fa-user"></i><span>Akun</span></a>
@@ -171,7 +155,6 @@
 
       footer.innerHTML = html;
 
-      // 🔔 Notifikasi floating dari admin (notifikasi_umum)
       db.collection("notifikasi_umum")
         .where("status", "==", "aktif")
         .orderBy("createdAt", "desc")
@@ -180,7 +163,7 @@
           snapshot.docChanges().forEach(change => {
             const data = change.doc.data();
             if (change.type === "added" && (data.tujuan === "all" || data.tujuan === role)) {
-              tampilkanFloatingAlert(data.judul || "📢 Info", data.pesan || "");
+              tampilkanFloatingAlert(data.judul || "\ud83d\udce2 Info", data.pesan || "");
             }
           });
         });

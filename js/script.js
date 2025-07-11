@@ -1,160 +1,284 @@
-document.addEventListener("DOMContentLoaded", async () => {
-  // === Script kamu yang sudah ada ===
-  // ✅ Notifikasi awal
-  if ("Notification" in window && Notification.permission === "default") {
-    Notification.requestPermission().then(permission => {
-      if (permission === "granted") {
-        new Notification("🔔 Notifikasi Diaktifkan!", {
-          body: "Kami akan memberi tahu jika pesanan kamu dikirimkan.",
-          icon: "./img/icon.png"
+document.addEventListener("DOMContentLoaded", () => {
+  (async () => {
+    const isCapacitor = typeof window.Capacitor !== "undefined" && Capacitor.isNativePlatform?.();
+    const firebaseApp = typeof firebase !== "undefined" ? firebase : null;
+
+    if (!firebaseApp || !firebaseApp.firestore) {
+      console.error("❌ Firebase belum diinisialisasi.");
+      return;
+    }
+
+    if (isCapacitor && Capacitor.Plugins) {
+      const { PushNotifications, Geolocation } = Capacitor.Plugins;
+
+      try {
+        const perm = await PushNotifications.requestPermissions();
+        if (perm.receive === 'granted') {
+          await PushNotifications.register();
+          console.log("🔔 PushNotifications registered");
+
+          PushNotifications.addListener('registration', (token) => {
+            console.log('📲 Token FCM:', token.value);
+          });
+
+          PushNotifications.addListener('registrationError', (err) => {
+            console.error('❌ Gagal mendaftar FCM:', err);
+          });
+
+          PushNotifications.addListener('pushNotificationReceived', (notif) => {
+            console.log('📥 Notif diterima:', notif);
+            alert(`${notif.title}\n${notif.body}`);
+          });
+
+          PushNotifications.addListener('pushNotificationActionPerformed', (notif) => {
+            console.log('📬 User klik notifikasi:', notif.notification);
+            if (typeof loadContent === "function") {
+              loadContent("riwayat");
+            }
+          });
+        } else {
+          console.warn("⚠️ Izin notifikasi ditolak");
+        }
+      } catch (err) {
+        console.error("❌ Gagal minta izin notifikasi:", err);
+      }
+
+      try {
+        const geoPerm = await Geolocation.requestPermissions();
+        if (geoPerm.location === 'granted') {
+          console.log("📍 Izin lokasi diberikan");
+        } else {
+          console.warn("⚠️ Izin lokasi ditolak");
+        }
+      } catch (err) {
+        console.error("❌ Gagal minta izin lokasi:", err);
+      }
+    }
+
+    const popup = document.getElementById("popup-greeting");
+    const overlay = document.getElementById("popup-overlay");
+    const closeBtn = document.getElementById("close-popup");
+    const popupImg = document.getElementById("popup-img");
+    const popupText = document.getElementById("popup-text");
+    const checkoutBtn = document.querySelector(".checkout-btn-final");
+
+    if (!popup || !overlay || !closeBtn || !popupImg || !popupText) return;
+
+    let isOpen = true;
+    let jamBuka = "08:00", jamTutup = "22:00";
+
+    try {
+      const db = firebase.firestore();
+      const doc = await db.collection("pengaturan").doc("jam_layanan").get();
+      const data = doc.exists ? doc.data() : { buka: "08:00", tutup: "22:00", aktif: true, mode: "otomatis" };
+
+      jamBuka = data.buka || "08:00";
+      jamTutup = data.tutup || "22:00";
+
+      const now = new Date();
+      const hour = now.getHours();
+
+      const bukaHour = parseInt(jamBuka.split(":")[0]);
+      const tutupHour = parseInt(jamTutup.split(":")[0]);
+
+      isOpen = data.aktif && (data.mode === "otomatis" ? (hour >= bukaHour && hour < tutupHour) : true);
+
+      popup.style.display = "block";
+      overlay.style.display = "block";
+      document.body.classList.add("popup-active");
+
+      popupImg.src = isOpen ? "./img/open.png" : "./img/close.png";
+      popupText.innerHTML = isOpen
+        ? `<strong>✅ Layanan Aktif</strong><br>Selamat berbelanja!`
+        : `<strong>⛔ Layanan Tutup</strong><br>Buka setiap ${jamBuka} - ${jamTutup}`;
+
+      closeBtn.addEventListener("click", async () => {
+        popup.style.display = "none";
+        overlay.style.display = "none";
+        document.body.classList.remove("popup-active");
+
+        try {
+          const user = firebase.auth().currentUser;
+          let role = "";
+          if (user) {
+            const userDoc = await firebase.firestore().collection("users").doc(user.uid).get();
+            role = userDoc.exists ? (userDoc.data().role || "").toLowerCase() : "";
+          }
+
+          if (typeof loadContent === "function") {
+            if (role === "seller") loadContent("seller-dashboard");
+            else if (role === "driver") loadContent("driver-dashboard");
+            else loadContent("productlist");
+          }
+
+          if (!isOpen) {
+            alert(`⚠️ Layanan tutup.\nJam buka: ${jamBuka} - ${jamTutup}`);
+          }
+        } catch (err) {
+          console.error("❌ Gagal mendeteksi role user:", err);
+          if (typeof loadContent === "function") loadContent("productlist");
+        }
+      });
+
+      if (!isOpen && checkoutBtn) {
+        checkoutBtn.disabled = true;
+        checkoutBtn.textContent = "Layanan Tutup";
+        checkoutBtn.style.opacity = "0.6";
+        checkoutBtn.style.cursor = "not-allowed";
+      }
+
+    } catch (err) {
+      console.error("❌ Gagal mengambil jam layanan:", err);
+      alert("⚠️ Gagal memuat pengaturan layanan.");
+    }
+
+    if (typeof updateCartBadge === "function") {
+      updateCartBadge();
+    }
+
+    const page = localStorage.getItem("pageAktif") || "";
+    if (page === "riwayat" && typeof renderRiwayat === "function") {
+      renderRiwayat();
+      setInterval(() => {
+        if (document.getElementById("riwayat-list")) {
+          renderRiwayat();
+        }
+      }, 1000);
+    }
+
+    document.addEventListener("click", function (event) {
+      if (event.target.matches(".dropdown-toggle")) {
+        const dropdownContainer = event.target.closest(".dropdown-container");
+        if (!dropdownContainer) return;
+
+        const dropdownMenu = dropdownContainer.querySelector(".dropdown-menu");
+        if (!dropdownMenu) return;
+
+        const isShown = dropdownMenu.style.display === "block";
+        document.querySelectorAll(".dropdown-menu").forEach(menu => {
+          menu.style.display = "none";
+        });
+        dropdownMenu.style.display = isShown ? "none" : "block";
+        event.stopPropagation();
+      } else {
+        document.querySelectorAll(".dropdown-menu").forEach(menu => {
+          menu.style.display = "none";
         });
       }
     });
-  }
 
-  // ✅ DOM Element
-  const popup = document.getElementById("popup-greeting");
-  const overlay = document.getElementById("popup-overlay");
-  const closeBtn = document.getElementById("close-popup");
-  const popupImg = document.getElementById("popup-img");
-  const popupText = document.getElementById("popup-text");
-  const checkoutBtn = document.querySelector(".checkout-btn-final");
+    // ✅ Injected Listener Alamat Realtime
+    firebase.auth().onAuthStateChanged(user => {
+      if (!user) return;
 
-  if (!popup || !overlay || !closeBtn || !popupImg || !popupText) return;
+      const db = firebase.firestore();
+      db.collection("alamat").doc(user.uid).onSnapshot(doc => {
+        if (doc.exists && doc.data().lokasi) {
+          if (window.currentPage === "productlist" && typeof renderProductList === "function") {
+            console.log("📍 Lokasi berubah, update produk...");
+            renderProductList();
+          }
+        }
+      });
+    });
 
-  let isOpen = true;
-  let jamBuka = "08:00", jamTutup = "22:00";
-
-  try {
-    const db = firebase.firestore();
-    const doc = await db.collection("pengaturan").doc("jam_layanan").get();
-
-    const data = doc.exists ? doc.data() : { buka: "08:00", tutup: "22:00", aktif: true, mode: "otomatis" };
-    jamBuka = data.buka || "08:00";
-    jamTutup = data.tutup || "22:00";
-    const aktif = data.aktif !== false;
-    const mode = data.mode || "otomatis";
-
-    const now = new Date();
-    const hour = now.getHours();
-
-    if (mode === "otomatis") {
-      const buka = parseInt(jamBuka.split(":")[0]);
-      const tutup = parseInt(jamTutup.split(":")[0]);
-      isOpen = aktif && hour >= buka && hour < tutup;
-    } else {
-      isOpen = aktif;
-    }
-
-    // ✅ Tampilkan popup
-    popup.style.display = "block";
-    overlay.style.display = "block";
-    document.body.classList.add("popup-active");
-
-    popupImg.src = isOpen ? "./img/open.png" : "./img/close.png";
-    popupText.innerHTML = isOpen
-      ? `<strong>✅ Layanan Aktif</strong><br>Selamat berbelanja!`
-      : `<strong>⛔ Layanan Tutup</strong><br>Buka setiap ${jamBuka} - ${jamTutup}`;
-
-    // ✅ Tutup popup
-closeBtn.addEventListener("click", async () => {
-  popup.style.display = "none";
-  overlay.style.display = "none";
-  document.body.classList.remove("popup-active");
-
-  try {
-    const user = firebase.auth().currentUser;
-    if (user) {
-      const userDoc = await firebase.firestore().collection("users").doc(user.uid).get();
-      const role = userDoc.exists ? (userDoc.data().role || "").toLowerCase() : "";
-
-      if (role === "seller") {
-        loadContent("seller-dashboard");
-      } else if (role === "driver") {
-        loadContent("driver-dashboard");
-      } else {
-        loadContent("productlist");
-      }
-    } else {
-      loadContent("productlist");
-    }
-
-    if (!isOpen) {
-      alert(`⚠️ Layanan saat ini sedang tutup.\nJam buka: ${jamBuka} - ${jamTutup}`);
-    }
-
-  } catch (err) {
-    console.error("❌ Gagal mendeteksi role user:", err);
-    loadContent("productlist");
-  }
+  })();
 });
 
 
-    // ✅ Disable tombol checkout jika layanan tutup
-    if (!isOpen && checkoutBtn) {
-      checkoutBtn.disabled = true;
-      checkoutBtn.textContent = "Layanan Tutup";
-      checkoutBtn.style.opacity = "0.6";
-      checkoutBtn.style.cursor = "not-allowed";
-    }
-
-  } catch (err) {
-    console.error("❌ Gagal mengambil jam layanan:", err);
-    alert("⚠️ Gagal memuat pengaturan layanan. Silakan refresh halaman.");
-  }
-
-  // ✅ Update badge keranjang jika ada
-  if (typeof updateCartBadge === "function") {
-    updateCartBadge();
-  }
-
-  // ✅ Auto-refresh riwayat jika di halaman riwayat
-  const page = localStorage.getItem("pageAktif") || "";
-  if (page === "riwayat" && typeof renderRiwayat === "function") {
-    renderRiwayat();
-    setInterval(() => {
-      if (document.getElementById("riwayat-list")) {
-        renderRiwayat();
-        console.log("🔁 Riwayat diperbarui otomatis");
-      }
-    }, 1000);
-  }
-
-  // === Tambahan: Dropdown toggle handler ===
-  document.addEventListener("click", function(event) {
-    if (event.target.matches(".dropdown-toggle")) {
-      const dropdownContainer = event.target.closest(".dropdown-container");
-      if (!dropdownContainer) return;
-
-      const dropdownMenu = dropdownContainer.querySelector(".dropdown-menu");
-      if (!dropdownMenu) return;
-
-      const isShown = dropdownMenu.style.display === "block";
-
-      // Tutup semua dropdown menu lain
-      document.querySelectorAll(".dropdown-menu").forEach(menu => {
-        menu.style.display = "none";
-      });
-
-      // Toggle dropdown menu saat ini
-      dropdownMenu.style.display = isShown ? "none" : "block";
-
-      event.stopPropagation();
-    } else {
-      // Klik di luar tombol dropdown, tutup semua dropdown
-      document.querySelectorAll(".dropdown-menu").forEach(menu => {
-        menu.style.display = "none";
-      });
-    }
-  });
-
-});
 
 
 // === Fungsi Utama ===
 async function loadContent(page) {
+  window.currentPage = page;
+
   const main = document.getElementById("page-container");
+  const bannerDiv = document.getElementById("home-banner-wrapper");
   let content = '';
+
+  bannerDiv.innerHTML = "";
+  bannerDiv.style.display = "none";
+
+if (page === 'productlist') {
+  const homeBanner = `
+<section id="home-banner" class="banner-section orange-theme">
+  <div class="banner-container">
+    <div class="icon-circle">
+      <i class="fa-solid fa-utensils"></i>
+    </div>
+    <h1>Makan enak?<br><span>VLCrave Express-in aja</span></h1>
+    <p>
+      Pesen yang bikin perut nyaman langsung di sini, semudah di aplikasi.<br>
+      Sama cepetnya dan banyak pilihan restonya.
+    </p>
+
+    <div class="lokasi-wrapper">
+      <label for="lokasiSelect">Lokasimu</label>
+      <div class="lokasi-custom-select" id="lokasiSelectBox">
+        <i class="fa-solid fa-location-dot"></i>
+        <span id="lokasiSelectText">Pilih lokasi</span>
+        <i class="fa-solid fa-chevron-down dropdown-icon"></i>
+        <div id="lokasiDropdown" class="lokasi-dropdown">
+          <div id="lokasiTerkiniBtn">📍 Gunakan Lokasi Terkini</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="eksplor-btn" id="eksplorBtn">Eksplor</button>
+  </div>
+</section>
+  `;
+  bannerDiv.innerHTML = homeBanner;
+  bannerDiv.style.display = "block";
+
+  // === Konten Produk ===
+  content = `
+    <div class="productlist-wrapper">
+      <section>
+        <div id="produk-container" class="produk-list-container"></div>
+      </section>
+    </div>
+  `;
+  main.innerHTML = content;
+
+  // === Render produk & dropdown ===
+  renderProductList();
+  loadDropdownLokasi();
+
+  // === Event listener dinamis ===
+  requestAnimationFrame(() => {
+    const lokasiSelectBox = document.getElementById("lokasiSelectBox");
+    const lokasiTerkiniBtn = document.getElementById("lokasiTerkiniBtn");
+    const eksplorBtn = document.getElementById("eksplorBtn");
+
+    if (lokasiSelectBox) {
+      lokasiSelectBox.addEventListener("click", () => {
+        const dropdown = document.getElementById("lokasiDropdown");
+        if (dropdown) {
+          const isVisible = dropdown.style.display === "block";
+          dropdown.style.display = isVisible ? "none" : "block";
+        }
+      });
+    }
+
+    if (lokasiTerkiniBtn) {
+      lokasiTerkiniBtn.addEventListener("click", () => {
+        const lokasiText = document.getElementById("lokasiSelectText");
+        if (lokasiText) lokasiText.textContent = "📍 Lokasi Terkini Aktif";
+        const dropdown = document.getElementById("lokasiDropdown");
+        if (dropdown) dropdown.style.display = "none";
+      });
+    }
+
+    if (eksplorBtn) {
+      eksplorBtn.addEventListener("click", eksplorRestoran);
+    }
+  });
+
+  return;
+}
+
+
 
 if (page === 'alamat') {
   content = `
@@ -162,27 +286,44 @@ if (page === 'alamat') {
       <section>
         <h2>📍 Alamat Pengiriman</h2>
 
-        <div class="alamat-box address-box" id="address-display" style="display:none;">
-          <h3>Alamat Pengiriman:</h3>
-          <p id="saved-address">Alamat belum ditambahkan</p>
-          <p><strong>Catatan:</strong> <span id="saved-note">Tidak ada catatan</span></p>
-          <div style="margin-top:10px;">
-            <button onclick="toggleAddressForm(true)">✏️ Edit</button>
-            <button onclick="deleteAddress()">🗑️ Hapus</button>
-          </div>
-        </div>
+        <!-- Form Alamat -->
+        <div id="form-alamat" class="form-alamat-wrapper">
+          <form id="alamat-form" class="form-alamat-card" onsubmit="event.preventDefault(); saveAddress();">
 
-        <div class="alamat-box address-form-box" id="address-form" style="display:none;">
-          <h3 id="form-title">Tambah Alamat Pengiriman</h3>
-          <input type="text" id="full-name" placeholder="Nama Lengkap" />
-          <input type="text" id="phone-number" placeholder="Nomor HP" />
-          <input type="text" id="full-address" placeholder="Alamat Lengkap" />
-          <textarea id="courier-note" placeholder="Patokan" rows="3"></textarea>
-          <button class="add-address-btn" onclick="saveAddress()">Simpan Alamat</button>
-        </div>
+            <h2 class="form-title">Alamat Pengiriman</h2>
 
-        <div class="alamat-footer">
-          <button class="add-address-btn" onclick="toggleAddressForm()">Tambah Alamat</button>
+            <!-- Dropdown alamat tersimpan -->
+            <label for="alamatTersimpan">Pilih Alamat Tersimpan</label>
+            <select id="alamatTersimpan" onchange="isiDariAlamatCadangan(this.value)">
+              <option value="">-- Pilih Alamat Tersimpan --</option>
+            </select>
+
+            <!-- Tombol aksi -->
+            <div class="alamat-actions" style="display: flex; gap: 10px; margin: 10px 0;">
+              <button type="button" onclick="jadikanUtamaDariCadangan()" class="btn-jadikan-utama">Jadikan Alamat Utama</button>
+              <button type="button" onclick="hapusAlamatCadangan()" class="btn-hapus-cadangan">Hapus Alamat Ini</button>
+            </div>
+
+            <!-- Input Alamat Baru -->
+            <label for="full-name">Nama Lengkap</label>
+            <input type="text" id="full-name" placeholder="Nama lengkap penerima" required />
+
+            <label for="phone-number">Nomor WhatsApp</label>
+            <input type="tel" id="phone-number" placeholder="08xxxxxxxxxx" required />
+
+            <label for="full-address">Alamat Lengkap</label>
+            <textarea id="full-address" rows="3" placeholder="Nama jalan, nomor rumah, RT/RW, dll" required></textarea>
+
+            <label for="courier-note">Catatan Kurir</label>
+            <textarea id="courier-note" rows="2" placeholder="Contoh: Dekat warung, pagar hitam, dll"></textarea>
+
+            <label class="checkbox-label">
+              <input type="checkbox" id="set-primary" checked />
+              Jadikan sebagai alamat utama
+            </label>
+
+            <button type="submit" class="btn-simpan-alamat">Simpan Alamat</button>
+          </form>
         </div>
 
         <div id="map-container" style="height: 300px; margin: 10px 0;"></div>
@@ -192,8 +333,10 @@ if (page === 'alamat') {
 
   main.innerHTML = content;
   loadSavedAddress();
+  loadAlamatCadangan();
   initMap();
 }
+
 
 
 if (page === 'checkout') {
@@ -3549,23 +3692,209 @@ else if (page === "laporan-driver-admin") {
 }
 
 
-
-
- if (page === 'productlist') {
-  content = `
-    <div class="productlist-wrapper">
-      <section>
-        <div id="produk-container" class="produk-list-container"></div>
-      </section>
-    </div>`;
-    
-  main.innerHTML = content;
-  renderProductList();
-}
 }
 
 
 ///  BATAS  ////
+
+const GEOCODE_API_KEY = "c00bb655a8ab4a33adf7d27d2a904d8f";
+
+// Ambil lokasi dari dropdown alamat (utama atau cadangan)
+async function pilihLokasiDariDropdown(data) {
+  const lokasiText = document.getElementById("lokasiSelectText");
+  if (lokasiText) {
+    lokasiText.textContent = data.alamat || "Alamat dipilih";
+  }
+
+  customerLocation = {
+    lat: data.lokasi.latitude,
+    lng: data.lokasi.longitude
+  };
+
+  const user = firebase.auth().currentUser;
+  if (!user) return;
+
+  try {
+    await firebase.firestore()
+      .collection("alamat")
+      .doc(user.uid)
+      .set({
+        userId: user.uid,
+        nama: data.nama,
+        noHp: data.noHp,
+        alamat: data.alamat,
+        catatan: data.catatan || '',
+        lokasi: new firebase.firestore.GeoPoint(data.lokasi.latitude, data.lokasi.longitude),
+        updatedAt: new Date()
+      }, { merge: true });
+
+    console.log("✅ Alamat utama diperbarui dari dropdown.");
+    alert("✅ Alamat utama berhasil diubah.");
+    loadSavedAddress?.(); // Opsional: reload jika tersedia
+  } catch (err) {
+    console.error("❌ Gagal memperbarui alamat utama:", err);
+    alert("❌ Gagal memperbarui alamat utama.");
+  }
+
+  document.getElementById("lokasiDropdown")?.classList.remove("active");
+}
+
+// Gunakan lokasi terkini & simpan ke alamat utama
+async function pilihLokasiTerkini() {
+  try {
+    const posisi = await getCurrentPosition();
+    const lat = posisi.coords.latitude;
+    const lng = posisi.coords.longitude;
+
+    const alamatLengkap = await getAlamatDariKoordinat(lat, lng);
+    const user = firebase.auth().currentUser;
+    if (!user) return alert("❌ Silakan login dulu.");
+
+    await firebase.firestore().collection("alamat").doc(user.uid).set({
+      lokasi: new firebase.firestore.GeoPoint(lat, lng),
+      alamat: alamatLengkap,
+      updatedAt: new Date()
+    }, { merge: true });
+
+    customerLocation = { lat, lng };
+    const lokasiText = document.getElementById("lokasiSelectText");
+    if (lokasiText) lokasiText.textContent = alamatLengkap;
+
+    alert("✅ Lokasi terkini disimpan sebagai alamat utama!");
+    document.getElementById("lokasiDropdown")?.classList.remove("active");
+    loadSavedAddress?.();
+  } catch (err) {
+    console.error("❌ Gagal mengambil lokasi:", err);
+    alert("❌ Gagal mengambil lokasi. Pastikan GPS aktif.");
+  }
+}
+
+// Toggle dropdown lokasi
+function toggleLokasiDropdown() {
+  const dropdown = document.getElementById('lokasiDropdown');
+  dropdown.classList.toggle('active');
+}
+
+// Load semua alamat ke dropdown (utama + cadangan)
+async function loadDropdownLokasi() {
+  const user = firebase.auth().currentUser;
+  if (!user) return;
+
+  const lokasiDropdown = document.getElementById("lokasiDropdown");
+  if (!lokasiDropdown) return;
+
+  // Reset isi dropdown
+  lokasiDropdown.innerHTML = `<div onclick="pilihLokasiTerkini()">📍 Gunakan Lokasi Terkini</div>`;
+
+  const db = firebase.firestore();
+
+  // Ambil alamat utama
+  try {
+    const utamaDoc = await db.collection("alamat").doc(user.uid).get();
+    if (utamaDoc.exists) {
+      const data = utamaDoc.data();
+      const div = document.createElement("div");
+      div.textContent = `🏠 [UTAMA] ${data.nama || "Tanpa Nama"} - ${data.alamat?.substring(0, 40) || ''}`;
+      div.onclick = () => pilihLokasiDariDropdown(data);
+      lokasiDropdown.appendChild(div);
+    }
+  } catch (e) {
+    console.warn("❌ Gagal ambil alamat utama:", e);
+  }
+
+  // Ambil dari alamat cadangan
+  try {
+    const cadangan = await db.collection("alamat").doc(user.uid).collection("daftar").get();
+    cadangan.forEach(doc => {
+      const data = doc.data();
+      if (!data.lokasi || !data.lokasi.latitude || !data.lokasi.longitude) return;
+
+      const div = document.createElement("div");
+      div.textContent = `🏠 ${data.nama || "Tanpa Nama"} - ${data.alamat?.substring(0, 40) || ''}`;
+      div.onclick = () => pilihLokasiDariDropdown(data);
+      lokasiDropdown.appendChild(div);
+    });
+  } catch (err) {
+    console.error("❌ Gagal memuat alamat cadangan:", err);
+  }
+}
+
+// Ambil posisi GPS pengguna
+function getCurrentPosition() {
+  return new Promise((resolve, reject) => {
+    navigator.geolocation.getCurrentPosition(resolve, reject, {
+      enableHighAccuracy: true,
+      timeout: 10000
+    });
+  });
+}
+
+// Konversi lat,lng → alamat menggunakan OpenCage API
+async function getAlamatDariKoordinat(lat, lng) {
+  const url = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lng}&key=${GEOCODE_API_KEY}&language=id`;
+  const response = await fetch(url);
+  const data = await response.json();
+  return data.results[0]?.formatted || `Lat: ${lat}, Lng: ${lng}`;
+}
+
+
+
+// Fungsi eksplor restoran
+async function eksplorRestoran() {
+  const user = firebase.auth().currentUser;
+  if (!user) {
+    alert("❌ Silakan login terlebih dahulu.");
+    return;
+  }
+
+  const db = firebase.firestore();
+  try {
+    const alamatDoc = await db.collection("alamat").doc(user.uid).get();
+    if (!alamatDoc.exists || !alamatDoc.data().lokasi) {
+      alert("❌ Lokasi belum diatur. Silakan isi alamat terlebih dahulu.");
+      return;
+    }
+
+    // Scroll ke atas agar langsung lihat produk
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    // Filter produk dengan jarak terdekat
+    tampilkanProdukFilter("terdekat");
+
+  } catch (err) {
+    console.error("❌ Gagal memuat eksplor restoran:", err);
+    alert("❌ Terjadi kesalahan saat memuat produk terdekat.");
+  }
+}
+
+
+
+function hitungJarak(lat1, lon1, lat2, lon2) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) ** 2;
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  return R * c;
+}
+
+
+
+
+async function getAlamatDariKoordinat(lat, lng) {
+  const GEOCODE_API_KEY = "c00bb655a8ab4a33adf7d27d2a904d8f";
+  const url = `https://api.opencagedata.com/geocode/v1/json?q=${lat}+${lng}&key=${GEOCODE_API_KEY}&language=id`;
+  const response = await fetch(url);
+  const data = await response.json();
+  return data.results[0]?.formatted || `Lat: ${lat}, Lng: ${lng}`;
+}
+
+function toggleLokasiDropdown() {
+  const dropdown = document.getElementById("lokasiDropdown");
+  dropdown.classList.toggle("active");
+}
+
+
 
 function bukaModalPenolakan(docId, idPesanan) {
   const modal = document.getElementById("modal-detail");
@@ -5145,7 +5474,6 @@ async function konfirmasiPesanan(docId, idPesanan) {
       estimasiMasak = 0,
       estimasiTotal = 0,
       metode = "-",
-      namaPembeli = "Customer",
       noHpPembeli = "-",
       pengiriman = "-",
       subtotalProduk = 0,
@@ -5155,6 +5483,19 @@ async function konfirmasiPesanan(docId, idPesanan) {
       alamatPengiriman = "-",
       produk = []
     } = pesanan;
+
+    // Ambil nama pembeli dari pesanan utama (jika ada)
+    let namaPembeli = pesanan.namaPembeli || "Customer";
+
+    try {
+      const pesananUtama = await db.collection("pesanan").doc(idPesanan).get();
+      if (pesananUtama.exists) {
+        const dataUtama = pesananUtama.data();
+        namaPembeli = dataUtama.namaCustomer || dataUtama.namaPembeli || namaPembeli;
+      }
+    } catch (e) {
+      console.warn("❌ Tidak bisa ambil nama dari pesanan utama:", e);
+    }
 
     // ✅ Update status pesanan_penjual
     await db.collection("pesanan_penjual").doc(docId).update({
@@ -5202,6 +5543,7 @@ async function konfirmasiPesanan(docId, idPesanan) {
     alert("❌ Terjadi kesalahan saat konfirmasi pesanan.");
   }
 }
+
 
 
 
@@ -7875,7 +8217,7 @@ async function bukaDetailPesananDriver(docId) {
         <div id="map-detail" class="map-detail" style="height: 300px;"></div>
         <div style="margin-top: 10px; text-align: center;">
           <a id="gmaps-link" class="btn-next-status" style="text-decoration: none;" target="_blank">
-            📍 Buka Rute di Google Maps
+            📍 Lihat Rute
           </a>
         </div>
 
@@ -8796,81 +9138,86 @@ async function simpanProduk(event, idToko) {
   const db = firebase.firestore();
 
   // Ambil input
-  const namaProduk = document.getElementById("namaProduk").value;
+  const namaProduk = document.getElementById("namaProduk").value.trim();
   const harga = parseInt(document.getElementById("harga").value);
   const stok = parseInt(document.getElementById("stok").value);
   const estimasi = parseInt(document.getElementById("estimasi").value);
-  const deskripsi = document.getElementById("deskripsi").value;
-  const kategori = document.getElementById("kategori").value;
-  const file = document.getElementById("fileGambar").files[0];
-  const statusEl = document.getElementById("statusUpload");
+  const deskripsi = document.getElementById("deskripsi").value.trim();
+  const fileInput = document.getElementById("fileGambar");
+  const statusUpload = document.getElementById("statusUpload");
 
-  if (!file) {
-    alert("❌ Gambar belum dipilih.");
+  // Ambil kategori (checkbox)
+  const kategori = [...document.querySelectorAll('input[name="kategori"]:checked')].map(el => el.value);
+
+  // Validasi
+  if (!namaProduk || !harga || !stok || !estimasi || kategori.length === 0) {
+    alert("❌ Harap lengkapi semua data produk termasuk kategori.");
     return;
   }
 
-  // Upload gambar ke Cloudinary
+  // Upload gambar
+  const file = fileInput.files[0];
+  if (!file) {
+    alert("❌ Harap pilih gambar produk.");
+    return;
+  }
+
   let urlGambar = "";
-  statusEl.innerText = "⏳ Mengupload gambar...";
   try {
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", "VLCrave-Express");
-    formData.append("folder", "folder");
+    formData.append("upload_preset", "vlcravepreset"); // preset Cloudinary kamu
+    formData.append("folder", "produk");
 
-    const response = await fetch("https://api.cloudinary.com/v1_1/du8gsffhb/image/upload", {
+    statusUpload.textContent = "📤 Mengupload gambar ke Cloudinary...";
+    const res = await fetch("https://api.cloudinary.com/v1_1/du8gsffhb/image/upload", {
       method: "POST",
       body: formData
     });
+    const data = await res.json();
+    if (data.secure_url) {
+      urlGambar = data.secure_url;
+      statusUpload.textContent = "✅ Gambar berhasil diupload.";
+    } else {
+      throw new Error("Upload gagal, tidak ada secure_url.");
+    }
 
-    const result = await response.json();
-    if (!result.secure_url) throw new Error("Gagal mendapatkan URL gambar.");
+    // Ambil Add-On jika ada
+    const addonNodes = document.querySelectorAll(".addon-item");
+    const addOn = Array.from(addonNodes).map(node => {
+      return {
+        nama: node.querySelector('.addon-nama').value.trim(),
+        harga: parseInt(node.querySelector('.addon-harga').value)
+      };
+    }).filter(a => a.nama && a.harga);
 
-    urlGambar = result.secure_url;
-    statusEl.innerText = "✅ Gambar berhasil diupload.";
-  } catch (err) {
-    console.error("❌ Upload gagal:", err);
-    statusEl.innerText = "❌ Gagal upload gambar.";
-    alert("❌ Upload gambar gagal. Coba lagi.");
-    return;
-  }
+    // Buat data produk
+    const dataProduk = {
+      idToko,
+      namaProduk,
+      harga,
+      stok,
+      estimasi,
+      deskripsi,
+      kategori,
+      urlGambar,
+      addOn,
+      dibuat: firebase.firestore.FieldValue.serverTimestamp()
+    };
 
-  // Opsional: ambil nama toko dari Firestore
-  try {
-    const tokoDoc = await db.collection("toko").doc(idToko).get();
-    if (!tokoDoc.exists) throw new Error("Toko tidak ditemukan.");
-  } catch (err) {
-    console.warn("❗ Gagal ambil data toko:", err);
-  }
+    await db.collection("produk").add(dataProduk);
 
-  // Buat ID produk: VLC-1234
-  const angkaAcak = Math.floor(1000 + Math.random() * 9000);
-  const idProduk = `VLC-${angkaAcak}`;
-
-  // Siapkan data produk
-  const data = {
-    idProduk,       // ← Tambahkan ID produk ke field
-    idToko,
-    namaProduk,
-    harga,
-    stok,
-    estimasi,
-    deskripsi,
-    kategori,
-    urlGambar,
-    createdAt: new Date()
-  };
-
-  try {
-    await db.collection("produk").doc(idProduk).set(data);
     alert("✅ Produk berhasil ditambahkan!");
     kelolaProduk(idToko);
-  } catch (error) {
-    console.error("❌ Gagal menyimpan produk:", error);
-    alert("❌ Gagal menambahkan produk. Silakan coba lagi.");
+  } catch (err) {
+    console.error("❌ Gagal menyimpan produk:", err);
+    alert("❌ Gagal menyimpan produk.");
   }
 }
+
+
+
+
 
 
 
@@ -8892,39 +9239,52 @@ async function editProduk(docId, idToko) {
 
     const p = doc.data();
 
+    const semuaKategori = [
+      "Martabak", "Bakso", "Roti", "Jajanan", "Minuman", "Kue",
+      "Promo", "Terfavorit", "Hemat", "Terdekat", "Termurah",
+      "24jam", "Sehat", "Aneka Nasi", "Aneka Makanan", "Lauk",
+      "Sarapan", "Makan Siang", "Makan Malam"
+    ];
+
+    const checkboxKategoriHTML = semuaKategori.map(kat => `
+      <label class="kategori-item">
+        <input type="checkbox" name="kategori" value="${kat}" ${p.kategori?.includes(kat) ? "checked" : ""} />
+        ${kat}
+      </label>
+    `).join("");
+
     container.innerHTML = `
       <div class="form-box">
         <h2>✏️ Edit Produk</h2>
         <form id="editProdukForm" onsubmit="simpanEditProduk(event, '${docId}', '${idToko}')">
           <label>Nama Produk</label>
-          <input id="namaProduk" type="text" value="${p.namaProduk}" required />
+          <input id="namaProduk" type="text" value="${p.namaProduk || ''}" required />
 
           <label>Harga (Rp)</label>
-          <input id="harga" type="number" value="${p.harga}" required />
+          <input id="harga" type="number" value="${p.harga || 0}" required />
 
           <label>Stok</label>
-          <input id="stok" type="number" value="${p.stok}" required />
+          <input id="stok" type="number" value="${p.stok || 0}" required />
 
           <label>Deskripsi</label>
           <textarea id="deskripsi">${p.deskripsi || ""}</textarea>
 
-          <label>Gambar Produk</label>
+          <label>Estimasi Masak (menit)</label>
+          <input id="estimasi" type="number" value="${p.estimasi || 10}" required />
+
+          <label>Upload Gambar (opsional)</label>
           <input id="fileGambar" type="file" accept="image/*" />
           <p style="margin:0;">Gambar saat ini:</p>
           <img src="${p.urlGambar || ""}" alt="Preview Gambar" style="max-width:150px; margin-bottom:1rem;" />
           <p id="statusUpload" style="color:green;"></p>
 
-          <label>Estimasi (menit)</label>
-          <input id="estimasi" type="number" value="${p.estimasi || ""}" required />
-
-          <label>Kategori:</label>
-          <select id="kategori" required>
-            <option value="Makanan" ${p.kategori === "Makanan" ? "selected" : ""}>Makanan</option>
-            <option value="Minuman" ${p.kategori === "Minuman" ? "selected" : ""}>Minuman</option>
-            <option value="Snack" ${p.kategori === "Snack" ? "selected" : ""}>Snack</option>
-            <option value="Dessert" ${p.kategori === "Dessert" ? "selected" : ""}>Dessert</option>
-            <option value="Lainnya" ${p.kategori === "Lainnya" ? "selected" : ""}>Lainnya</option>
-          </select>
+          <label>Kategori Produk:</label>
+          <div class="kategori-toggle-container">
+            <button type="button" onclick="toggleKategoriForm()" class="kategori-toggle-btn">+ Lihat/Pilih Kategori</button>
+            <div id="kategoriChecklist" class="kategori-checklist hidden">
+              ${checkboxKategoriHTML}
+            </div>
+          </div>
 
           <button type="submit" class="btn-simpan">💾 Simpan Perubahan</button>
         </form>
@@ -8937,71 +9297,89 @@ async function editProduk(docId, idToko) {
   }
 }
 
+function toggleKategoriForm() {
+  document.getElementById("kategoriChecklist").classList.toggle("hidden");
+}
+
+
+
+
+function toggleFieldPromoEdit() {
+  const kategori = document.getElementById("kategori").value;
+  const promoFields = document.getElementById("promo-fields");
+  promoFields.style.display = kategori === "Promo" ? "block" : "none";
+}
+
 
 
 async function simpanEditProduk(event, docId, idToko) {
   event.preventDefault();
   const db = firebase.firestore();
 
-  const namaProduk = document.getElementById("namaProduk").value;
+  const namaProduk = document.getElementById("namaProduk").value.trim();
   const harga = parseInt(document.getElementById("harga").value);
   const stok = parseInt(document.getElementById("stok").value);
-  const deskripsi = document.getElementById("deskripsi").value;
   const estimasi = parseInt(document.getElementById("estimasi").value);
-  const kategori = document.getElementById("kategori").value;
-  const file = document.getElementById("fileGambar").files[0];
-  const statusEl = document.getElementById("statusUpload");
+  const deskripsi = document.getElementById("deskripsi").value.trim();
+  const fileInput = document.getElementById("fileGambar");
+  const statusUpload = document.getElementById("statusUpload");
 
-  let urlGambar = "";
+  const kategori = [...document.querySelectorAll('input[name="kategori"]:checked')].map(k => k.value);
 
-  if (file) {
-    const formData = new FormData();
-    formData.append("file", file);
-    formData.append("upload_preset", "VLCrave-Express"); // Preset kamu
-    formData.append("folder", "folder"); // Sesuaikan dengan folder kamu (opsional)
+  if (!namaProduk || !harga || !stok || !estimasi || kategori.length === 0) {
+    alert("❌ Harap lengkapi semua data termasuk kategori.");
+    return;
+  }
 
-    statusEl.innerText = "⏳ Mengupload gambar ke Cloudinary...";
+  try {
+    // Ambil data lama
+    const doc = await db.collection("produk").doc(docId).get();
+    const dataLama = doc.data();
+    let urlGambar = dataLama.urlGambar;
 
-    try {
-      const response = await fetch("https://api.cloudinary.com/v1_1/du8gsffhb/image/upload", {
+    const file = fileInput.files[0];
+    if (file) {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", "vlcravepreset"); // preset Cloudinary kamu
+      formData.append("folder", "produk");
+
+      statusUpload.textContent = "📤 Upload gambar ke Cloudinary...";
+      const res = await fetch("https://api.cloudinary.com/v1_1/du8gsffhb/image/upload", {
         method: "POST",
         body: formData
       });
-
-      const result = await response.json();
-
-      if (!result.secure_url) {
-        throw new Error("Gagal mendapatkan URL gambar.");
+      const data = await res.json();
+      if (data.secure_url) {
+        urlGambar = data.secure_url;
+        statusUpload.textContent = "✅ Gambar berhasil diupload.";
+      } else {
+        throw new Error("Upload gagal, tidak ada secure_url.");
       }
-
-      urlGambar = result.secure_url;
-      statusEl.innerText = "✅ Gambar berhasil diupload.";
-    } catch (err) {
-      console.error("❌ Upload gagal:", err);
-      statusEl.innerText = "❌ Gagal upload gambar.";
-      alert("❌ Upload gambar gagal. Coba lagi.");
-      return;
     }
-  } else {
-    // Jika tidak memilih gambar baru, ambil URL lama
-    const doc = await db.collection("produk").doc(docId).get();
-    urlGambar = doc.data().urlGambar || "";
+
+    const updateData = {
+      namaProduk,
+      harga,
+      stok,
+      estimasi,
+      deskripsi,
+      kategori,
+      urlGambar,
+      diupdate: firebase.firestore.FieldValue.serverTimestamp()
+    };
+
+    await db.collection("produk").doc(docId).update(updateData);
+    alert("✅ Produk berhasil diperbarui!");
+    kelolaProduk(idToko);
+  } catch (err) {
+    console.error("❌ Gagal update produk:", err);
+    alert("❌ Gagal menyimpan perubahan produk.");
   }
-
-  await db.collection("produk").doc(docId).update({
-    namaProduk,
-    harga,
-    stok,
-    deskripsi,
-    estimasi,
-    kategori,
-    urlGambar,
-    updatedAt: new Date()
-  });
-
-  alert("✅ Produk berhasil diperbarui!");
-  kelolaProduk(idToko);
 }
+
+
+
 
 
 
@@ -9160,6 +9538,7 @@ function formTambahProduk(idToko) {
     <div class="form-box">
       <h2>➕ Tambah Produk</h2>
       <form onsubmit="simpanProduk(event, '${idToko}')">
+
         <label for="namaProduk">Nama Produk:</label>
         <input id="namaProduk" type="text" required>
 
@@ -9179,14 +9558,25 @@ function formTambahProduk(idToko) {
         <input id="fileGambar" type="file" accept="image/*" required />
         <p id="statusUpload" style="color:green;"></p>
 
-        <label for="kategori">Kategori:</label>
-        <select id="kategori" required>
-          <option value="Makanan">Makanan</option>
-          <option value="Minuman">Minuman</option>
-          <option value="Snack">Snack</option>
-          <option value="Dessert">Dessert</option>
-          <option value="Lainnya">Lainnya</option>
-        </select>
+        <label>Kategori Produk:</label>
+        <div class="kategori-toggle-container">
+          <button type="button" onclick="toggleKategoriForm()" class="kategori-toggle-btn">+ Pilih Kategori Produk</button>
+          <div id="kategoriChecklist" class="kategori-checklist hidden">
+            ${[
+              "Martabak", "Bakso", "Roti", "Jajanan", "Minuman", "Kue",
+              "Promo", "Terfavorit", "Hemat", "Terdekat", "Termurah",
+              "24jam", "Sehat", "Aneka Nasi", "Aneka Makanan", "Lauk",
+              "Sarapan", "Makan Siang", "Makan Malam"
+            ]
+              .map(kat => `
+                <label class="kategori-item">
+                  <input type="checkbox" name="kategori" value="${kat}" />
+                  ${kat}
+                </label>
+              `)
+              .join("")}
+          </div>
+        </div>
 
         <hr>
         <h4>Tambah Add-On (Opsional)</h4>
@@ -9199,6 +9589,14 @@ function formTambahProduk(idToko) {
     </div>
   `;
 }
+
+function toggleKategoriForm() {
+  const box = document.getElementById("kategoriChecklist");
+  box.classList.toggle("hidden");
+}
+
+
+
 
 
 function tambahFieldAddon() {
@@ -10987,81 +11385,247 @@ function toggleDetail(index) {
 }
 
 function filterProduk() {
-  const keyword = document.getElementById("search-input").value.trim().toLowerCase();
-  const kategori = document.getElementById("filter-kategori").value;
-  const produkContainer = document.getElementById("produk-container");
+  const input = document.getElementById("search-input");
+  const wrapper = document.getElementById("produk-list-wrapper");
 
-  produkContainer.innerHTML = "";
+  if (!input || !wrapper || !Array.isArray(window.produkData)) return;
 
-  const now = new Date();
-  const jamSekarang = now.getHours();
-  const deliveryAktif = jamSekarang >= 8 && jamSekarang < 24;
+  const keyword = input.value.trim().toLowerCase();
 
-  const hasilFilter = produkData.filter(produk => {
-    const cocokKeyword =
-      produk.nama.toLowerCase().includes(keyword) ||
-      produk.toko.toLowerCase().includes(keyword);
-
-    const cocokKategori =
-      kategori === "all" ||
-      (kategori === "open" && jamSekarang >= produk.buka && jamSekarang < produk.tutup) ||
-      produk.kategori.toLowerCase() === kategori;
-
-    return cocokKeyword && cocokKategori;
-  });
+  const hasilFilter = window.produkData.filter(produk =>
+    (produk.namaProduk || "").toLowerCase().includes(keyword)
+  );
 
   if (hasilFilter.length === 0) {
-    produkContainer.innerHTML = "<p style='padding: 1rem; color: #999;'>Produk tidak ditemukan.</p>";
+    wrapper.innerHTML = `<p style="text-align:center; padding: 1rem; color: #888;">❌ Produk tidak ditemukan.</p>`;
     return;
   }
 
-  hasilFilter.forEach((produk, index) => {
-    const tokoBuka = jamSekarang >= produk.buka && jamSekarang < produk.tutup;
-    const tombolAktif = tokoBuka && deliveryAktif;
+  const hasilUrut = hasilFilter.sort((a, b) => {
+    const rA = parseFloat((a.ratingDisplay || "").replace(/[^\d.]/g, "")) || 0;
+    const rB = parseFloat((b.ratingDisplay || "").replace(/[^\d.]/g, "")) || 0;
+    return rB - rA;
+  });
 
-    const productCard = `
+  wrapper.innerHTML = hasilUrut.map((produk, index) => {
+    const stokHabis = (produk.stok || 0) <= 0;
+    const layananTidakTersedia = produk.jarakNumber > 20;
+    const disabledAttr = (!produk.isOpen || stokHabis || layananTidakTersedia) ? 'disabled' : '';
+    let btnText = 'Lihat Detail';
+    if (layananTidakTersedia) btnText = 'Layanan Tidak Tersedia';
+    else if (!produk.isOpen) btnText = 'Toko Tutup';
+    else if (stokHabis) btnText = 'Stok Habis';
+
+    return `
       <div class="produk-horizontal">
-        <div class="produk-toko-bar" onclick="renderTokoPage('${produk.toko.replace(/'/g, "\\'")}')">
+        <div class="produk-toko-bar" onclick="renderTokoPage('${produk.idToko}')">
           <i class="fa-solid fa-shop"></i>
-          <span class="produk-toko-nama">${produk.toko}</span>
+          <span class="produk-toko-nama">${produk.tokoNama}</span>
           <span class="produk-toko-arrow">›</span>
         </div>
         <div class="produk-body">
-          <img src="${produk.gambar}" alt="${produk.nama}" class="produk-img" />
+          <img src="${produk.urlGambar || './img/toko-pict.png'}" alt="${produk.namaProduk}" class="produk-img" />
           <div class="produk-info">
-            <h1 class="produk-nama">${produk.nama}</h1>
-            <p class="produk-meta">Kategori: ${produk.kategori}</p>
-            <p class="produk-meta">⭐ ${produk.rating} | ${produk.jarak} | ${produk.estimasi}</p>
+            <p class="produk-nama">${produk.namaProduk}</p>
+            <p class="produk-meta">Kategori: ${produk.kategori || '-'}</p>
+            <p class="produk-meta">
+              ${produk.ratingDisplay || '⭐ -'} |
+              ${produk.jarak || '-'} |
+              ${produk.estimasi || '-'} Menit
+            </p>
             <div class="produk-action">
-              <strong>Rp ${produk.harga.toLocaleString()}</strong>
-              <button class="beli-btn"
-                      data-index="${produkData.indexOf(produk)}"
-                      ${tombolAktif ? '' : 'disabled'}>
-                ${tombolAktif 
-                  ? 'Tambah ke Keranjang' 
-                  : (!deliveryAktif ? 'Delivery Tutup' : 'Toko Tutup')}
-              </button>
+              <strong>Rp ${Number(produk.harga || 0).toLocaleString()}</strong>
+              <button class="beli-btn" data-index="${index}" ${disabledAttr}>${btnText}</button>
             </div>
           </div>
         </div>
       </div>
     `;
-
-    produkContainer.innerHTML += productCard;
-  });
-
-  // Event handler tombol beli
-  document.querySelectorAll('.beli-btn').forEach(button => {
-    if (!button.disabled) {
-      const index = button.getAttribute('data-index');
-      button.addEventListener('click', () => tambahKeKeranjang(produkData[index]));
-    }
-  });
+  }).join("");
 }
 
 
 
+async function renderKategoriPage(kategori) {
+  const bannerWrapper = document.getElementById("home-banner-wrapper");
+  const container = document.getElementById("page-container");
+  const db = firebase.firestore();
+  const user = firebase.auth().currentUser;
+
+// Render banner kategori (di luar page-container)
+if (bannerWrapper) {
+  bannerWrapper.innerHTML = `
+    <div class="kategori-banner-wrapper">
+      <img src="./img/banner-bg.png" alt="Kategori Banner" class="kategori-banner" />
+    </div>
+    <div class="kategori-tittle">Home / Kategori / ${kategori}</div>
+  `;
+}
+
+
+
+  container.innerHTML = `<div class="loader">⏳ Memuat kategori <strong>${kategori}</strong>...</div>`;
+
+  if (!user) {
+    container.innerHTML = "<p>❌ Harap login terlebih dahulu.</p>";
+    return;
+  }
+
+  try {
+    const alamatDoc = await db.collection("alamat").doc(user.uid).get();
+    if (!alamatDoc.exists || !alamatDoc.data().lokasi) {
+      container.innerHTML = "<p>❌ Lokasi pengguna tidak ditemukan.</p>";
+      return;
+    }
+
+    const { latitude: lat1, longitude: lon1 } = alamatDoc.data().lokasi;
+    const produkSnapshot = await db.collection("produk").get();
+    const tokoSnapshot = await db.collection("toko").get();
+
+    const tokoMap = {};
+    tokoSnapshot.docs.forEach(doc => {
+      const data = doc.data();
+      tokoMap[doc.id] = {
+        namaToko: data.namaToko || 'Toko',
+        isOpen: data.isOpen ?? false,
+        koordinat: data.koordinat?.latitude ? {
+          lat: data.koordinat.latitude,
+          lng: data.koordinat.longitude
+        } : { lat: 0, lng: 0 }
+      };
+    });
+
+    const hitungJarak = (lat1, lon1, lat2, lon2) => {
+      const R = 6371;
+      const dLat = (lat2 - lat1) * Math.PI / 180;
+      const dLon = (lon2 - lon1) * Math.PI / 180;
+      const a = Math.sin(dLat / 2) ** 2 +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+        Math.sin(dLon / 2) ** 2;
+      return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    };
+
+    const produkGabung = [];
+
+    for (const doc of produkSnapshot.docs) {
+      const produk = doc.data();
+      const id = doc.id;
+      const toko = tokoMap[produk.idToko] || {
+        namaToko: 'Toko',
+        isOpen: false,
+        koordinat: { lat: 0, lng: 0 }
+      };
+
+      const jarakKm = hitungJarak(lat1, lon1, toko.koordinat.lat, toko.koordinat.lng);
+
+      const ratingSnap = await db.collection("produk").doc(id).collection("rating").get();
+      let total = 0, count = 0;
+      ratingSnap.forEach(r => {
+        const d = r.data();
+        if (typeof d.rating === "number") {
+          total += d.rating;
+          count++;
+        }
+      });
+
+      const cocok = (
+        kategori.toLowerCase() === "terdekat" ||
+        (kategori.toLowerCase() === "bestseller" && produk.totalTerjual > 0) ||
+        (kategori.toLowerCase() === "promo" && (produk.promo || produk.diskon > 0)) ||
+        (kategori.toLowerCase() === "hemat" && (produk.harga || 0) <= 10000) ||
+        (kategori.toLowerCase() === (produk.kategori || "").toLowerCase()) ||
+        kategori.toLowerCase() === "all"
+      );
+
+      if (cocok) {
+        produkGabung.push({
+          id,
+          ...produk,
+          jarak: `${jarakKm.toFixed(2)} km`,
+          jarakNumber: jarakKm,
+          tokoNama: toko.namaToko,
+          isOpen: toko.isOpen,
+          ratingDisplay: count > 0 ? `⭐ ${(total / count).toFixed(1)} <span style="color:#888;">(${count})</span>` : "⭐ -",
+          urlGambar: produk.urlGambar || "./img/toko-pict.png"
+        });
+      }
+    }
+
+    if (kategori === "terdekat") produkGabung.sort((a, b) => a.jarakNumber - b.jarakNumber);
+    if (kategori === "bestseller") produkGabung.sort((a, b) => (b.totalTerjual || 0) - (a.totalTerjual || 0));
+
+    let html = `
+        </div>
+    `;
+
+    if (produkGabung.length === 0) {
+      html += `<p>❌ Tidak ada produk ditemukan.</p>`;
+    } else {
+      produkGabung.forEach((produk, i) => {
+        const stokHabis = (produk.stok || 0) <= 0;
+        const layananTidakTersedia = produk.jarakNumber > 20;
+        const disabledAttr = (!produk.isOpen || stokHabis || layananTidakTersedia) ? 'disabled' : '';
+        let btnText = 'Lihat Detail';
+        if (layananTidakTersedia) btnText = 'Layanan Tidak Tersedia';
+        else if (!produk.isOpen) btnText = 'Toko Tutup';
+        else if (stokHabis) btnText = 'Stok Habis';
+
+        html += `
+          <div class="produk-horizontal">
+            <div class="produk-toko-bar" onclick="renderTokoPage('${produk.idToko}')">
+              <i class="fa-solid fa-shop"></i>
+              <span class="produk-toko-nama">${produk.tokoNama}</span>
+              <span class="produk-toko-arrow">›</span>
+            </div>
+            <div class="produk-body">
+              <img src="${produk.urlGambar}" alt="${produk.namaProduk}" class="produk-img" />
+              <div class="produk-info">
+                <p class="produk-nama">${produk.namaProduk}</p>
+                <p class="produk-meta">${produk.ratingDisplay} | ${produk.jarak} | ${produk.estimasi || '-'} Menit</p>
+                <div class="produk-action">
+                  <strong>Rp ${Number(produk.harga || 0).toLocaleString()}</strong>
+                  <button class="beli-btn" data-index="${i}" ${disabledAttr}>${btnText}</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    html += `</div>`; // end .kategori-page
+    container.innerHTML = html;
+
+    document.querySelectorAll('.beli-btn').forEach(btn => {
+      const index = btn.getAttribute('data-index');
+      const produk = produkGabung[index];
+      btn.addEventListener('click', () => {
+        if (btn.disabled) {
+          if (produk.jarakNumber > 20) alert("❌ Layanan tidak tersedia.");
+          else if (!produk.isOpen) alert("❌ Toko sedang tutup.");
+          else alert("❌ Stok habis.");
+        } else {
+          tampilkanPopupDetail(produk);
+        }
+      });
+    });
+
+  } catch (err) {
+    console.error("❌ Error renderKategoriPage:", err);
+    container.innerHTML = `<p style="color:red;">Terjadi kesalahan: ${err.message}</p>`;
+  }
+}
+
+
+
+
+
+
 async function renderTokoPage(idToko) {
+  // HAPUS BANNER
+  document.getElementById("home-banner-wrapper").innerHTML = "";
+  document.getElementById("home-banner-wrapper").style.display = "none";
+
   const container = document.getElementById("page-container");
   container.innerHTML = "<p>Memuat halaman toko...</p>";
 
@@ -11192,7 +11756,7 @@ async function renderTokoPage(idToko) {
               <img src="${produk.urlGambar}" alt="${produk.namaProduk || produk.nama}" class="produk-img" />
               <div class="produk-info">
                 <p class="produk-nama">${produk.namaProduk || produk.nama}</p>
-                <p class="produk-meta">Kategori: ${produk.kategori || '-'}</p>
+                
                 <p class="produk-meta">⭐ ${produk.rating} | ${produk.jarak} | ${estimasiText}</p>
                 <div class="produk-action">
                   <strong>Rp ${Number(produk.harga || 0).toLocaleString()}</strong>
@@ -11914,18 +12478,31 @@ function cekTokoBuka(jamSekarang, buka, tutup) {
   return jamSekarang >= buka || jamSekarang < tutup; // buka malam - tutup pagi
 }
 
+function getWaktuMenu() {
+  const jam = new Date().getHours();
+  if (jam >= 5 && jam < 11) return "Sarapan";
+  if (jam >= 11 && jam < 15) return "Makan Siang";
+  if (jam >= 15 && jam < 21) return "Makan Malam";
+  return "Tengah Malam";
+}
+
+// FINAL RENDER PRODUCT LIST 100% FULL
+let kategoriExpanded = false;
+     const waktuMenu = getWaktuMenu();
+
 async function renderProductList() {
   const produkContainer = document.getElementById('produk-container');
   if (!produkContainer) return;
 
-  produkContainer.innerHTML = '<div class="loader">⏳ Memuat produk...</div>';
-
   const db = firebase.firestore();
   const user = firebase.auth().currentUser;
+
   if (!user) {
     produkContainer.innerHTML = `<p>❌ Harap login terlebih dahulu.</p>`;
     return;
   }
+
+  produkContainer.innerHTML = `<div class="loader">⏳ Memuat produk...</div>`;
 
   try {
     const alamatDoc = await db.collection("alamat").doc(user.uid).get();
@@ -11938,31 +12515,51 @@ async function renderProductList() {
     const lat1 = lokasiUser.latitude;
     const lon1 = lokasiUser.longitude;
 
+    const kategoriUnggulan = [
+      { label: "Menu Hemat", value: "hemat", image: "./img/kategori/hemat.png" },
+      { label: "Terfavorit", value: "bestseller", image: "./img/kategori/favorit.png" },
+      { label: "Menu Sehat", value: "sehat", image: "./img/kategori/sehat.png" },
+      { label: "Promo", value: "promo", image: "./img/kategori/promo.png" },
+      { label: "Terdekat", value: "terdekat", image: "./img/kategori/terdekat.png" },
+    ];
+
+    const kategoriKuliner = [
+      { label: "Martabak", value: "Martabak", image: "./img/kategori/martabak.png" },
+      { label: "Bakso", value: "Bakso", image: "./img/kategori/bakso.png" },
+      { label: "Roti", value: "Roti", image: "./img/kategori/roti.png" },
+      { label: "Jajanan", value: "Jajanan", image: "./img/kategori/jajanan.png" },
+      { label: "Minuman", value: "Minuman", image: "./img/kategori/minuman.png" }
+    ];
+
+    produkContainer.innerHTML = `
+      <!-- === Filter Unggulan (Grid 3 Kolom) === -->
+<h2 class="section-title">Filter Unggulan</h2>
+<div class="kategori-container kategori-filter" id="kategori-filter-container"></div>
+
+<!-- === Kategori Kuliner (Scroll Horizontal) === -->
+<h2 class="section-title">Aneka Kuliner Menarik</h2>
+<div class="kategori-container kategori-kuliner" id="kategori-kuliner-container"></div>
+
+
+      <h2 class="section-title"><i class="fa-solid fa-bell-concierge"></i> Menu ${waktuMenu}</h2>
+      <div id="produk-list-wrapper"><div class="loader">⏳ Memuat produk...</div></div>
+    `;
+
     const produkSnapshot = await db.collection("produk").get();
     const produkList = produkSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-
-    if (produkList.length === 0) {
-      produkContainer.innerHTML = '<p>Produk tidak tersedia.</p>';
-      return;
-    }
 
     const tokoSnapshot = await db.collection("toko").get();
     const tokoMap = {};
     tokoSnapshot.docs.forEach(doc => {
       const data = doc.data();
-      let geo = { lat: 0, lng: 0 };
-      if (data.koordinat instanceof firebase.firestore.GeoPoint) {
-        geo = {
-          lat: data.koordinat.latitude,
-          lng: data.koordinat.longitude
-        };
-      }
       tokoMap[doc.id] = {
         namaToko: data.namaToko || 'Unknown Toko',
-        buka: typeof data.jamBuka === 'number' ? data.jamBuka : 0,
-        tutup: typeof data.jamTutup === 'number' ? data.jamTutup : 0,
+        buka: data.jamBuka || 0,
+        tutup: data.jamTutup || 0,
         isOpen: data.isOpen ?? false,
-        koordinat: geo
+        koordinat: data.koordinat instanceof firebase.firestore.GeoPoint
+          ? { lat: data.koordinat.latitude, lng: data.koordinat.longitude }
+          : { lat: 0, lng: 0 }
       };
     });
 
@@ -11970,32 +12567,19 @@ async function renderProductList() {
       const R = 6371;
       const dLat = (lat2 - lat1) * Math.PI / 180;
       const dLon = (lon2 - lon1) * Math.PI / 180;
-      const a = Math.sin(dLat / 2) ** 2 +
-        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
-        Math.sin(dLon / 2) ** 2;
+      const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) ** 2;
       return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     }
 
     const produkGabung = [];
-
     for (const produk of produkList) {
-      const produkDoc = await db.collection("produk").doc(produk.id).get();
-      const dataProdukFix = produkDoc.exists ? produkDoc.data() : produk;
-      const urlGambar = dataProdukFix.urlGambar || './img/toko-pict.png';
-
       const toko = tokoMap[produk.idToko] || {
-        namaToko: 'Unknown Toko',
-        buka: 0,
-        tutup: 0,
-        isOpen: false,
-        koordinat: { lat: 0, lng: 0 }
+        namaToko: 'Unknown Toko', buka: 0, tutup: 0, isOpen: false, koordinat: { lat: 0, lng: 0 }
       };
-
       const lat2 = toko.koordinat.lat;
       const lon2 = toko.koordinat.lng;
       const jarakKm = (!isNaN(lat1) && !isNaN(lon1) && !isNaN(lat2) && !isNaN(lon2) && lat2 !== 0)
-        ? hitungJarak(lat1, lon1, lat2, lon2)
-        : 0;
+        ? hitungJarak(lat1, lon1, lat2, lon2) : 0;
 
       const ratingSnap = await db.collection("produk").doc(produk.id).collection("rating").get();
       let total = 0, count = 0;
@@ -12007,91 +12591,175 @@ async function renderProductList() {
         }
       });
 
-      const ratingDisplay = count > 0
-        ? `⭐ ${(total / count).toFixed(1)} <span style="color:#888;">(${count})</span>`
-        : "⭐ -";
-
       produkGabung.push({
         ...produk,
-        ...dataProdukFix,
-        idToko: produk.idToko,
         tokoNama: toko.namaToko,
-        buka: toko.buka,
-        tutup: toko.tutup,
         isOpen: toko.isOpen,
-        jarak: jarakKm ? `${jarakKm.toFixed(2)} km` : 'N/A',
         jarakNumber: jarakKm,
-        ratingDisplay,
-        urlGambar
+        jarak: `${jarakKm.toFixed(2)} km`,
+        ratingDisplay: count > 0 ? `⭐ ${(total / count).toFixed(1)} <span style="color:#888;">(${count})</span>` : "⭐ -",
+        urlGambar: produk.urlGambar || './img/toko-pict.png'
       });
     }
 
-    const produkUrut = produkGabung.sort((a, b) => (a.jarakNumber || Infinity) - (b.jarakNumber || Infinity));
+    const produkUrut = produkGabung.sort((a, b) => a.jarakNumber - b.jarakNumber);
 
-    let html = '';
-    produkUrut.forEach((produk, index) => {
-      const tokoAktif = produk.isOpen;
-      const stokHabis = (produk.stok || 0) <= 0;
-      const layananTidakTersedia = produk.jarakNumber > 20;
-      const disabledAttr = (!tokoAktif || stokHabis || layananTidakTersedia) ? 'disabled' : '';
-      let btnText = 'Lihat Detail';
+    window.toggleKategori = function (jenis) {
+      kategoriExpanded = !kategoriExpanded;
+      renderKategoriCards();
+    };
 
-      if (layananTidakTersedia) btnText = 'Layanan Tidak Tersedia';
-      else if (!tokoAktif) btnText = 'Toko Tutup';
-      else if (stokHabis) btnText = 'Stok Habis';
+function renderKategoriCards() {
+  const filterContainer = document.getElementById('kategori-filter-container');
+  const kulinerContainer = document.getElementById('kategori-kuliner-container');
+  const maxTampil = 6;
 
-      const gambarProduk = produk.urlGambar || './img/toko-pict.png';
+  const renderList = (list, expanded, type) => {
+    const tampil = expanded ? list : list.slice(0, maxTampil);
+    return tampil.map(k => `
+      <div class="kategori-card" data-kategori="${k.value}">
+        <img src="${k.image}" alt="${k.label}" />
+        <span>${k.label}</span>
+      </div>
+    `).join('');
+  };
 
-      html += `
-        <div class="produk-horizontal">
-          <div class="produk-toko-bar" onclick="renderTokoPage('${produk.idToko}')">
-            <i class="fa-solid fa-shop"></i>
-            <span class="produk-toko-nama">${produk.tokoNama}</span>
-            <span class="produk-toko-arrow">›</span>
-          </div>
-          <div class="produk-body">
-            <img src="${gambarProduk}" alt="${produk.namaProduk}" class="produk-img" />
-            <div class="produk-info">
-              <p class="produk-nama">${produk.namaProduk}</p>
-              <p class="produk-meta">Kategori: ${produk.kategori || '-'}</p>
-              <p class="produk-meta">
-                ${produk.ratingDisplay} |
-                ${produk.jarak || '-'} |
-                ${produk.estimasi ? produk.estimasi + ' Menit' : '-'}
-              </p>
-              <div class="produk-action">
-                <strong>Rp ${Number(produk.harga || 0).toLocaleString()}</strong>
-                <button class="beli-btn" data-index="${index}" ${disabledAttr}>${btnText}</button>
-              </div>
-            </div>
-          </div>
-        </div>
-      `;
+  filterContainer.innerHTML = renderList(kategoriUnggulan, kategoriExpanded, 'filter');
+  kulinerContainer.innerHTML = renderList(kategoriKuliner, kategoriExpanded, 'kuliner');
+
+  document.querySelectorAll('.kategori-card').forEach(card => {
+    card.addEventListener('click', () => {
+      const selected = card.getAttribute('data-kategori');
+      document.querySelectorAll('.kategori-card').forEach(k => k.classList.remove('active'));
+      card.classList.add('active');
+      tampilkanProdukFilter(selected);
     });
+  });
+}
 
-    produkContainer.innerHTML = html;
+window.tampilkanProdukFilter = function (kategori = "all") {
+  const wrapper = document.getElementById("produk-list-wrapper");
+  let produkFilter = produkUrut;
 
-    document.querySelectorAll('.beli-btn').forEach(button => {
-      const index = button.getAttribute('data-index');
-      const produk = produkUrut[index];
+  switch (kategori.toLowerCase()) {
+    case "bestseller":
+      produkFilter = produkUrut.filter(p => p.totalTerjual > 0).sort((a, b) => b.totalTerjual - a.totalTerjual);
+      break;
+    case "terdekat":
+      produkFilter = [...produkUrut].sort((a, b) => a.jarakNumber - b.jarakNumber);
+      break;
+    case "termurah":
+      produkFilter = [...produkUrut].sort((a, b) => (a.harga || 0) - (b.harga || 0));
+      break;
+    case "promo":
+      produkFilter = produkUrut.filter(p => p.promo === true || (p.diskon || 0) > 0);
+      break;
+    case "hemat":
+      produkFilter = produkUrut.filter(p => (p.harga || 0) <= 10000);
+      break;
+    case "all":
+      break;
+    default:
+      produkFilter = produkUrut.filter(p => (p.kategori || "").toLowerCase() === kategori.toLowerCase());
+  }
 
-      if (button.disabled) {
-        button.addEventListener('click', () => {
-          if (produk.jarakNumber > 20) alert("❌ Layanan tidak tersedia untuk lokasi Anda.");
-          else if (!produk.isOpen) alert("❌ Toko sedang tutup.");
-          else if ((produk.stok || 0) <= 0) alert("❌ Stok produk habis.");
-        });
+  // ⬇️ Tambahkan badge berdasarkan kondisi
+  produkFilter.forEach(p => {
+    if ((p.harga || 0) <= 10000) {
+      p.badge = "Termurah";
+    } else if ((p.jarakNumber || 999) < 1.0) {
+      p.badge = "Terdekat";
+    } else if ((p.totalTerjual || 0) > 50) {
+      p.badge = "Paling Laris";
+    } else {
+      p.badge = "";
+    }
+  });
+
+  if (produkFilter.length === 0) {
+    wrapper.innerHTML = `<p style="text-align:center;">❌ Tidak ada produk di kategori <strong>${kategori}</strong>.</p>`;
+    return;
+  }
+
+  wrapper.innerHTML = produkFilter.map((produk, index) => {
+    const stokHabis = (produk.stok || 0) <= 0;
+    const layananTidakTersedia = produk.jarakNumber > 20;
+    const disabledAttr = (!produk.isOpen || stokHabis || layananTidakTersedia) ? 'disabled' : '';
+    let btnText = 'Lihat Detail';
+    if (layananTidakTersedia) btnText = 'Layanan Tidak Tersedia';
+    else if (!produk.isOpen) btnText = 'Toko Tutup';
+    else if (stokHabis) btnText = 'Stok Habis';
+
+    return `
+<div class="produk-horizontal">
+  <div class="produk-toko-bar" onclick="renderTokoPage('${produk.idToko}')">
+    <i class="fa-solid fa-shop"></i>
+    <span class="produk-toko-nama">${produk.tokoNama}</span>
+    <span class="produk-toko-arrow">›</span>
+  </div>
+
+  <div class="produk-body">
+    <img src="${produk.urlGambar}" alt="${produk.namaProduk}" class="produk-img" />
+    
+    <div class="produk-info">
+      <p class="produk-nama">${produk.namaProduk}</p>
+      
+      <p class="produk-meta">
+         ${produk.ratingDisplay} &nbsp;|&nbsp; ${produk.jarak || '-'}  &nbsp;|&nbsp; ${produk.estimasi || '-'} Menit
+      </p>
+
+
+      <div class="produk-action">
+        <div class="produk-harga">Rp <strong>${Number(produk.harga || 0).toLocaleString()}</strong></div>
+        <button class="beli-btn" data-index="${index}" ${disabledAttr}>${btnText}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+    `;
+  }).join('');
+
+  // Event handler untuk tombol
+  document.querySelectorAll('.beli-btn').forEach(btn => {
+    const index = btn.getAttribute('data-index');
+    const produk = produkFilter[index];
+    btn.addEventListener('click', () => {
+      if (btn.disabled) {
+        if (produk.jarakNumber > 20) alert("❌ Layanan tidak tersedia untuk lokasi Anda.");
+        else if (!produk.isOpen) alert("❌ Toko sedang tutup.");
+        else if ((produk.stok || 0) <= 0) alert("❌ Stok produk habis.");
       } else {
-        button.addEventListener('click', () => {
-          tampilkanPopupDetail(produk);
-        });
+        tampilkanPopupDetail(produk);
       }
     });
+  });
+};
+
+// Jalankan saat halaman dimuat
+renderKategoriCards();
+tampilkanProdukFilter("all");
+
+
 
   } catch (err) {
     console.error("❌ Gagal memuat produk:", err);
     produkContainer.innerHTML = `<p style="color:red;">Terjadi kesalahan saat memuat produk.</p>`;
   }
+}
+
+
+
+
+
+function toggleKategori(type) {
+  const container = document.getElementById(`kategori-${type}-container`);
+  const btn = container.nextElementSibling.querySelector("button");
+
+  container.classList.toggle("show-all");
+  const expanded = container.classList.contains("show-all");
+  btn.textContent = expanded ? "Tampilkan Lebih Sedikit" : "Lihat Lainnya";
 }
 
 

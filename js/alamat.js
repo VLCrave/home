@@ -1,8 +1,15 @@
 let map, customerMarker;
-let customerLocation = { lat: -1.6409437, lng: 105.7686011 }; // Default lokasi
+if (typeof customerLocation === 'undefined') {
+  var customerLocation = { lat: -1.6409437, lng: 105.7686011 };
+}
+let alamatCadanganTerpilih = "";
 
 function initMap(lat = customerLocation.lat, lng = customerLocation.lng) {
-  if (map) return; // Jangan buat ulang peta jika sudah ada
+  if (!document.getElementById("map-container")) {
+    console.warn("❌ Map container not found.");
+    return;
+  }
+  if (map) return;
 
   map = L.map('map-container').setView([lat, lng], 17);
   L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png', {
@@ -21,18 +28,12 @@ function initMap(lat = customerLocation.lat, lng = customerLocation.lng) {
   });
 }
 
-function toggleAddressForm(editMode = false) {
-  document.getElementById('address-form').style.display = 'block';
-  document.getElementById('address-display').style.display = 'none';
-  const formTitle = document.getElementById('form-title');
-  if (formTitle) formTitle.textContent = editMode ? "Edit Alamat Pengiriman" : "Tambah Alamat Pengiriman";
-}
-
 function saveAddress() {
   const nama = document.getElementById('full-name').value.trim();
   const noHp = document.getElementById('phone-number').value.trim();
   const alamat = document.getElementById('full-address').value.trim();
   const catatan = document.getElementById('courier-note').value.trim();
+  const setPrimary = document.getElementById('set-primary')?.checked ?? true;
 
   if (!nama || !noHp || !alamat) return alert("❌ Mohon lengkapi semua data alamat.");
 
@@ -52,10 +53,17 @@ function saveAddress() {
     createdAt: firebase.firestore.FieldValue.serverTimestamp()
   };
 
-  db.collection("alamat").doc(uid).set(dataAlamat)
+  const saveUtama = setPrimary
+    ? db.collection("alamat").doc(uid).set(dataAlamat)
+    : Promise.resolve();
+
+  const saveCadangan = db.collection("alamat").doc(uid).collection("daftar").add(dataAlamat);
+
+  Promise.all([saveUtama, saveCadangan])
     .then(() => {
       alert("✅ Alamat berhasil disimpan.");
       loadSavedAddress();
+      loadAlamatCadangan();
     })
     .catch(err => {
       console.error("❌ Gagal menyimpan:", err);
@@ -89,33 +97,31 @@ function loadSavedAddress() {
 
       if (doc.exists) {
         const data = doc.data();
-        box.style.display = 'block';
-        document.getElementById('address-form').style.display = 'none';
-        text.innerHTML = `👤 ${data.nama}<br/>📱 ${data.noHp}<br/>🏠 ${data.alamat}`;
-        note.textContent = data.catatan || '-';
+        if (box) box.style.display = 'block';
+        if (text) text.innerHTML = `👤 ${data.nama}<br/>📱 ${data.noHp}<br/>🏠 ${data.alamat}`;
+        if (note) note.textContent = data.catatan || '-';
+        const form = document.getElementById('address-form');
+        if (form) form.style.display = 'none';
 
-        if (data.lokasi && data.lokasi.latitude !== undefined && data.lokasi.longitude !== undefined) {
+        if (data.lokasi?.latitude !== undefined && data.lokasi?.longitude !== undefined) {
           customerLocation = {
             lat: data.lokasi.latitude,
             lng: data.lokasi.longitude
           };
-
           if (map && customerMarker) {
             map.setView([customerLocation.lat, customerLocation.lng], 17);
             customerMarker.setLatLng([customerLocation.lat, customerLocation.lng]);
           } else {
-            setTimeout(() => {
-              initMap(customerLocation.lat, customerLocation.lng);
-            }, 100);
+            setTimeout(() => initMap(customerLocation.lat, customerLocation.lng), 200);
           }
         } else {
-          console.warn("❌ Lokasi tidak ditemukan, menggunakan default.");
-          setTimeout(() => initMap(), 100);
+          setTimeout(() => initMap(), 200);
         }
       } else {
-        document.getElementById('address-form').style.display = 'block';
-        box.style.display = 'none';
-        setTimeout(() => initMap(), 100);
+        const form = document.getElementById('address-form');
+        if (form) form.style.display = 'block';
+        if (box) box.style.display = 'none';
+        setTimeout(() => initMap(), 200);
       }
     })
     .catch(err => {
@@ -123,19 +129,118 @@ function loadSavedAddress() {
     });
 }
 
-function deleteAddress() {
+function loadAlamatCadangan() {
+  const user = firebase.auth().currentUser;
+  if (!user) return;
+
+  const select = document.getElementById('alamatTersimpan');
+  if (!select) return;
+
+  select.innerHTML = '<option value="">-- Pilih Alamat Tersimpan --</option>';
+
+  firebase.firestore()
+    .collection("alamat")
+    .doc(user.uid)
+    .collection("daftar")
+    .orderBy("createdAt", "desc")
+    .get()
+    .then(snapshot => {
+      if (snapshot.empty) {
+        const opt = document.createElement("option");
+        opt.disabled = true;
+        opt.textContent = "❌ Tidak ada alamat cadangan";
+        select.appendChild(opt);
+        return;
+      }
+
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const option = document.createElement("option");
+        option.value = doc.id;
+        option.textContent = `${data.nama || 'Alamat'} - ${data.alamat?.substring(0, 35) || ''}...`;
+        select.appendChild(option);
+      });
+    });
+}
+
+function isiDariAlamatCadangan(docId) {
+  if (!docId) return;
+  alamatCadanganTerpilih = docId;
+
+  const user = firebase.auth().currentUser;
+  if (!user) return;
+
+  firebase.firestore()
+    .collection("alamat")
+    .doc(user.uid)
+    .collection("daftar")
+    .doc(docId)
+    .get()
+    .then(doc => {
+      if (!doc.exists) return;
+      const data = doc.data();
+
+      document.getElementById('full-name').value = data.nama || '';
+      document.getElementById('phone-number').value = data.noHp || '';
+      document.getElementById('full-address').value = data.alamat || '';
+      document.getElementById('courier-note').value = data.catatan || '';
+      document.getElementById('set-primary').checked = true;
+
+      if (data.lokasi?.latitude && data.lokasi?.longitude) {
+        customerLocation = {
+          lat: data.lokasi.latitude,
+          lng: data.lokasi.longitude
+        };
+        if (map && customerMarker) {
+          map.setView([customerLocation.lat, customerLocation.lng], 17);
+          customerMarker.setLatLng([customerLocation.lat, customerLocation.lng]);
+        }
+      }
+    });
+}
+
+function jadikanUtamaDariCadangan() {
+  if (!alamatCadanganTerpilih) return alert("❌ Pilih alamat terlebih dahulu.");
+
+  const user = firebase.auth().currentUser;
+  if (!user) return;
+
+  const ref = firebase.firestore()
+    .collection("alamat")
+    .doc(user.uid)
+    .collection("daftar")
+    .doc(alamatCadanganTerpilih);
+
+  ref.get().then(doc => {
+    if (!doc.exists) return alert("❌ Alamat tidak ditemukan.");
+    const data = doc.data();
+
+    firebase.firestore().collection("alamat").doc(user.uid).set(data)
+      .then(() => {
+        alert("✅ Alamat utama diperbarui.");
+        loadSavedAddress();
+      });
+  });
+}
+
+function hapusAlamatCadangan() {
+  if (!alamatCadanganTerpilih) return alert("❌ Pilih alamat terlebih dahulu.");
+
   const user = firebase.auth().currentUser;
   if (!user) return;
 
   if (confirm("Yakin ingin menghapus alamat ini?")) {
-    firebase.firestore().collection("alamat").doc(user.uid).delete()
+    firebase.firestore()
+      .collection("alamat")
+      .doc(user.uid)
+      .collection("daftar")
+      .doc(alamatCadanganTerpilih)
+      .delete()
       .then(() => {
-        alert("✅ Alamat dihapus.");
-        loadSavedAddress();
-      })
-      .catch(err => {
-        alert("❌ Gagal menghapus alamat.");
-        console.error(err);
+        alert("✅ Alamat cadangan dihapus.");
+        alamatCadanganTerpilih = "";
+        document.getElementById("alamatTersimpan").value = "";
+        loadAlamatCadangan();
       });
   }
 }

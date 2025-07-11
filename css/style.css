@@ -4348,19 +4348,22 @@ button[disabled],
 }
 
 .btn-next-status {
-  padding: 12px 20px;
+  padding: 8px 16px; /* lebih kecil dari sebelumnya */
+  font-size: 14px;   /* supaya seimbang */
   border: none;
   background-color: #007bff;
   color: white;
-  font-weight: bold;
-  border-radius: 8px;
+  font-weight: 600;
+  border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  line-height: 1.4;
 }
 
 .btn-next-status:hover {
   background-color: #0056b3;
 }
+
 
 .btn-success {
   background-color: #28a745 !important;
@@ -8365,5 +8368,593 @@ form button:hover {
   padding: 2px 6px;
   border-radius: 8px;
   margin-left: 8px;
+}
+
+
+/* === Judul Section === */
+.section-title {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 24px 0 10px;
+  color: #333;
+  text-align: left;
+  padding: 0 10px;
+  border-left: 4px solid #00b894;
+  padding-left: 10px;
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+/* === Kategori Filter (Grid 3 Kolom) === */
+.kategori-filter {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding: 10px;
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+/* === Kategori Kuliner (Horizontal Scroll) === */
+.kategori-kuliner {
+  display: flex;
+  overflow-x: auto;
+  gap: 10px;
+  padding: 10px 0;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  animation: fadeInUp 0.6s ease forwards;
+  -webkit-overflow-scrolling: touch;
+}
+
+.kategori-kuliner::-webkit-scrollbar {
+  height: 8px;
+}
+
+.kategori-kuliner::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+/* === Ukuran khusus untuk kartu di scroll horizontal === */
+.kategori-kuliner .kategori-card {
+  flex: 0 0 auto;
+  width: 100px;
+  min-width: 100px;
+  max-width: 100px;
+  scroll-snap-align: start;
+}
+
+/* === Kartu Kategori Umum === */
+.kategori-card {
+  text-align: center;
+  border-radius: 10px;
+  padding: 8px;
+  background: #f8f8f8;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.kategori-card img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 6px;
+}
+
+.kategori-card span {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.kategori-card.active {
+  border: 2px solid #007bff;
+  background-color: #eef6ff;
+}
+
+.kategori-card:hover {
+  transform: scale(1.05);
+}
+
+/* === Toggle Button Container === */
+.toggle-kategori-btn {
+  display: flex;
+  justify-content: center;
+  margin: 12px 0 24px;
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+.toggle-kategori-btn button {
+  background-color: #00b894;
+  color: white;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.toggle-kategori-btn button:hover {
+  background-color: #01976f;
+  transform: scale(1.05);
+}
+
+/* === Hide kategori > 6 === */
+#kategori-filter-container > .kategori-card:nth-child(n+7),
+#kategori-kuliner-container > .kategori-card:nth-child(n+7) {
+  display: none;
+}
+
+/* === Show All Toggle === */
+#kategori-filter-container.show-all > .kategori-card,
+#kategori-kuliner-container.show-all > .kategori-card {
+  display: flex;
+}
+
+/* === Animasi Fade In Up === */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+
+
+
+.lokasi-info-box {
+  padding: 20px 16px 8px;
+  background-color: #fff;
+  border-radius: 16px;
+  margin: 8px 12px 16px;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
+}
+
+.lokasi-title {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 4px;
+}
+
+.lokasi-subtitle {
+  font-size: 14px;
+  color: #666;
+  line-height: 1.5;
+}
+
+
+.kategori-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+.kategori-item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #00b894; /* warna hijau */
+}
+
+.kategori-toggle-btn {
+  background: #00b894;
+  color: white;
+  padding: 10px 14px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-bottom: 8px;
+}
+
+.kategori-checklist {
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 12px;
+  background: #f9f9f9;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.hidden {
+  display: none;
+}
+
+
+
+.form-alamat-wrapper {
+  padding: 16px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+.form-alamat-card {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.form-title {
+  text-align: center;
+  font-size: 20px;
+  font-weight: bold;
+}
+
+.form-alamat-card label {
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.form-alamat-card input,
+.form-alamat-card textarea,
+.form-alamat-card select {
+  padding: 10px 14px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  width: 100%;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.btn-simpan-alamat {
+  padding: 12px;
+  background-color: #ff6600;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-simpan-alamat:hover {
+  background-color: #e25800;
+}
+
+#home-banner-wrapper {
+  width: 100%;
+  margin-bottom: 16px;
+  overflow-x: auto;
+  white-space: nowrap;
+  scrollbar-width: none; /* untuk Firefox */
+  -ms-overflow-style: none; /* untuk IE/Edge */
+}
+
+#home-banner-wrapper::-webkit-scrollbar {
+  display: none; /* untuk Chrome/Safari */
+}
+
+.kategori-banner {
+  width: 100%;
+  max-height: 200px;
+  object-fit: cover;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  display: block;
+}
+
+/* Tambahan styling wrapper halaman kategori */
+.kategori-page {
+  max-width: 540px;
+  margin: auto;
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 8px rgba(0,0,0,0.05);
+}
+
+.kategori-heading {
+  padding: 16px;
+}
+
+.kategori-heading .breadcrumb {
+  font-size: 14px;
+  color: #888;
+  margin-bottom: 4px;
+}
+
+.kategori-heading h2 {
+  font-size: 20px;
+  font-weight: bold;
+  color: #1f2937;
+}
+
+.kategori-banner-wrapper {
+  width: 100%;
+  max-height: 180px;
+  overflow: hidden;
+  background: #ffa726;
+}
+
+.kategori-banner {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+}
+
+.kategori-banner-wrapper {
+  width: 100%;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.kategori-banner {
+  width: 100%;
+  height: auto;
+  border-radius: 12px;
+  display: block;
+  object-fit: cover;
+}
+
+.kategori-breadcrumb {
+  margin: 8px 0;
+  padding: 0 12px;
+  font-size: 14px;
+  color: #555;
+}
+
+.banner-section {
+  background: linear-gradient(135deg, #ff6a00, #ffc107); /* Gradasi oranye */
+  color: #fff;
+  padding: 32px 20px 24px;
+  border-radius: 0 0 24px 24px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  text-align: center;
+}
+
+.banner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* center horizontal */
+  justify-content: center;
+  gap: 16px;
+  max-width: 600px;
+  width: 100%;
+  margin: 0 auto;
+  word-wrap: break-word;
+}
+
+.icon-circle {
+  background: #fff;
+  color: #ff6a00;
+  padding: 14px;
+  border-radius: 50%;
+  font-size: 20px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+h1 {
+  font-size: 24px;
+  font-weight: 700;
+  margin: 0;
+  line-height: 1.4;
+  word-break: break-word;
+  max-width: 100%;
+}
+
+h1 span {
+  color: #fffde7;
+}
+
+.banner-container p {
+  font-size: 14px;
+  margin: 0;
+  line-height: 1.5;
+  word-break: break-word;
+  max-width: 100%;
+}
+
+.lokasi-wrapper {
+  width: 100%;
+  max-width: 400px;
+}
+
+.lokasi-wrapper label {
+  display: block;
+  font-size: 14px;
+  margin-bottom: 6px;
+  text-align: left;
+}
+
+.lokasi-custom-select {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: space-between;
+  position: relative;
+  background: #fff;
+  color: #333;
+  padding: 12px 14px;
+  border-radius: 12px;
+  font-size: 14px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  max-width: 100%; /* pastikan tidak melebihi container */
+}
+
+
+.lokasi-custom-select i {
+  color: #ff6a00;
+}
+
+.lokasi-dropdown {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  max-width: 100%;
+  background: #fff;
+  border-radius: 12px;
+  margin-top: 4px;
+  z-index: 9999;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  overflow: hidden;
+}
+
+.lokasi-dropdown div {
+  padding: 10px 14px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  font-size: 14px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.banner-container h1,
+.banner-container p {
+  max-width: 100%;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
+  text-align: center;
+}
+
+@media (max-width: 480px) {
+  .banner-container h1 {
+    font-size: 20px;
+    line-height: 1.3;
+  }
+
+  .banner-container p {
+    font-size: 13px;
+    line-height: 1.4;
+  }
+}
+
+
+.lokasi-dropdown div:hover {
+  background: #f2f2f2;
+}
+
+.eksplor-btn {
+  background: #fff;
+  color: #ff6a00;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  margin-top: 10px;
+  align-self: center; /* tombol di tengah */
+  box-shadow: 0 2px 6px rgba(255, 255, 255, 0.2);
+  max-width: 200px;
+}
+
+@media (max-width: 480px) {
+  .banner-section {
+    padding: 24px 16px 20px;
+    border-radius: 0 0 16px 16px;
+  }
+
+  .banner-container {
+    gap: 12px;
+  }
+
+  .icon-circle {
+    font-size: 18px;
+    padding: 12px;
+  }
+
+  h1 {
+    font-size: 20px;
+    line-height: 1.3;
+  }
+
+  .banner-container p {
+    font-size: 13px;
+  }
+
+ #lokasiSelectText {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: inline-block;
+}
+
+
+  .lokasi-wrapper label {
+    font-size: 13px;
+  }
+
+  .lokasi-custom-select {
+    padding: 10px 12px;
+    font-size: 13px;
+  }
+
+  .lokasi-dropdown div {
+    padding: 10px 12px;
+  }
+
+  .eksplor-btn {
+    padding: 8px 16px;
+    font-size: 13px;
+    border-radius: 16px;
+    max-width: 160px;
+  }
+}
+
+.kategori-tittle {
+  font-size: 14px;
+  color: #666;
+  margin: 12px 10px 0;
+  padding: 6px 10px;
+  background-color: #f0f0f0;
+  border-left: 4px solid #00b894;
+  border-radius: 6px;
+  font-weight: 500;
+  animation: fadeInUp 0.6s ease forwards;
+}
+
+.produk-badge-wrapper {
+  margin-bottom: 6px;
+}
+
+.produk-badge {
+  background: #00aa5b;
+  color: white;
+  font-size: 11px;
+  font-weight: bold;
+  padding: 4px 8px;
+  border-radius: 6px;
+  display: inline-block;
+  text-transform: uppercase;
+}
+
+
+.produk-badge.termurah {
+  background-color: #00aa5b;
+}
+
+.produk-badge.terdekat {
+  background-color: #1e90ff;
+}
+
+.produk-badge.palinglaris {
+  background-color: #ff9800;
 }
 
