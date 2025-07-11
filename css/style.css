@@ -8740,60 +8740,7 @@ h1 span {
     max-width: 160px;
   }
 }
-.section-title {
-  font-size: 1.2rem;
-  font-weight: bold;
-  margin: 1.2rem 1rem 0.6rem;
-}
 
-.kategori-scroll.unggulan {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-  padding: 0 1rem;
-}
-
-.kategori-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 14px;
-  padding: 0 1rem;
-}
-
-.kategori-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  cursor: pointer;
-}
-
-.kategori-img-wrapper,
-.kategori-img-circle {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  overflow: hidden;
-  background: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 6px;
-  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
-}
-
-.kategori-img-wrapper img,
-.kategori-img-circle img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.kategori-card span {
-  font-size: 0.85rem;
-  color: #333;
-  font-weight: 500;
-}
 
 .admin-rating-card {
   border: 1px solid #ddd;
@@ -8876,4 +8823,177 @@ h1 span {
   margin: 4px 0 0;
   font-size: 14px;
   color: #333;
+}
+
+.admin-overlay-panel {
+  background: #fff;
+  padding: 20px;
+  border-radius: 16px;
+  max-width: 600px;
+  margin: 20px auto;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.05);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.admin-overlay-panel h2 {
+  text-align: center;
+  font-size: 22px;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.admin-overlay-panel label {
+  display: block;
+  font-weight: 600;
+  margin: 10px 0 5px;
+  color: #333;
+}
+
+.admin-overlay-panel select,
+.admin-overlay-panel textarea,
+.admin-overlay-panel input[type="text"] {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  box-sizing: border-box;
+  transition: border 0.2s;
+}
+
+.admin-overlay-panel select:focus,
+.admin-overlay-panel textarea:focus,
+.admin-overlay-panel input[type="text"]:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.preview-overlay {
+  background: #f9f9f9;
+  padding: 10px;
+  border-radius: 12px;
+  border: 1px dashed #ccc;
+  text-align: center;
+}
+
+.preview-overlay img {
+  max-height: 120px;
+  margin-bottom: 10px;
+}
+
+.btn-primary {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  background: #007bff;
+  color: white;
+  font-weight: bold;
+  border: none;
+  border-radius: 12px;
+  margin-top: 20px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.btn-primary:hover {
+  background: #0056b3;
+}
+
+#btn-upload-overlay,
+#btn-reset-overlay {
+  display: inline-block;
+  margin-top: 6px;
+  margin-right: 8px;
+  padding: 8px 14px;
+  font-size: 14px;
+  font-weight: 500;
+  color: #fff;
+  background-color: #007BFF;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.25s ease;
+}
+
+#btn-reset-overlay {
+  background-color: #6c757d; /* Abu reset */
+}
+
+#btn-upload-overlay:hover {
+  background-color: #0056b3;
+}
+
+#btn-reset-overlay:hover {
+  background-color: #5a6268;
+}
+
+/* Section Title */
+.section-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 1.2rem 1rem 0.6rem;
+}
+
+/* Grid untuk kategori unggulan */
+.kategori-scroll.unggulan {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  padding: 0 1rem;
+}
+
+/* Kategori Card Umum */
+.kategori-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+  width: 90px;
+  flex: 0 0 auto; /* Penting untuk scroll horizontal */
+  scroll-snap-align: start;
+}
+
+.kuliner-scroll-wrapper {
+  display: flex;
+  overflow-x: auto;
+  overflow-y: hidden;
+  gap: 14px;
+  padding: 0 1rem 0.5rem;
+  scroll-snap-type: x mandatory;
+  max-width: 100vw;       /* ⛔ Batasin lebar maksimal */
+  box-sizing: border-box; /* ✅ Termasuk padding dalam width */
+}
+
+.kuliner-scroll-wrapper::-webkit-scrollbar {
+  display: none;
+}
+
+/* Gambar kategori bulat */
+.kategori-img-wrapper,
+.kategori-img-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+.kategori-img-wrapper img,
+.kategori-img-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Teks nama kategori */
+.kategori-card span {
+  font-size: 0.85rem;
+  color: #333;
+  font-weight: 500;
 }

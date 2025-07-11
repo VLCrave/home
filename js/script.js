@@ -1,60 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   (async () => {
-    const isCapacitor = typeof window.Capacitor !== "undefined" && Capacitor.isNativePlatform?.();
-    const firebaseApp = typeof firebase !== "undefined" ? firebase : null;
-
-    if (!firebaseApp || !firebaseApp.firestore) {
-      console.error("❌ Firebase belum diinisialisasi.");
-      return;
-    }
-
-    if (isCapacitor && Capacitor.Plugins) {
-      const { PushNotifications, Geolocation } = Capacitor.Plugins;
-
-      try {
-        const perm = await PushNotifications.requestPermissions();
-        if (perm.receive === 'granted') {
-          await PushNotifications.register();
-          console.log("🔔 PushNotifications registered");
-
-          PushNotifications.addListener('registration', (token) => {
-            console.log('📲 Token FCM:', token.value);
-          });
-
-          PushNotifications.addListener('registrationError', (err) => {
-            console.error('❌ Gagal mendaftar FCM:', err);
-          });
-
-          PushNotifications.addListener('pushNotificationReceived', (notif) => {
-            console.log('📥 Notif diterima:', notif);
-            alert(`${notif.title}\n${notif.body}`);
-          });
-
-          PushNotifications.addListener('pushNotificationActionPerformed', (notif) => {
-            console.log('📬 User klik notifikasi:', notif.notification);
-            if (typeof loadContent === "function") {
-              loadContent("riwayat");
-            }
-          });
-        } else {
-          console.warn("⚠️ Izin notifikasi ditolak");
-        }
-      } catch (err) {
-        console.error("❌ Gagal minta izin notifikasi:", err);
-      }
-
-      try {
-        const geoPerm = await Geolocation.requestPermissions();
-        if (geoPerm.location === 'granted') {
-          console.log("📍 Izin lokasi diberikan");
-        } else {
-          console.warn("⚠️ Izin lokasi ditolak");
-        }
-      } catch (err) {
-        console.error("❌ Gagal minta izin lokasi:", err);
-      }
-    }
-
+    const db = firebase.firestore();
     const popup = document.getElementById("popup-greeting");
     const overlay = document.getElementById("popup-overlay");
     const closeBtn = document.getElementById("close-popup");
@@ -62,128 +8,103 @@ document.addEventListener("DOMContentLoaded", () => {
     const popupText = document.getElementById("popup-text");
     const checkoutBtn = document.querySelector(".checkout-btn-final");
 
-    if (!popup || !overlay || !closeBtn || !popupImg || !popupText) return;
+    if (!popup || !overlay || !popupImg || !popupText || !closeBtn) return;
 
-    let isOpen = true;
-    let jamBuka = "08:00", jamTutup = "22:00";
+    let popupShown = false;
 
     try {
-      const db = firebase.firestore();
-      const doc = await db.collection("pengaturan").doc("jam_layanan").get();
-      const data = doc.exists ? doc.data() : { buka: "08:00", tutup: "22:00", aktif: true, mode: "otomatis" };
-
-      jamBuka = data.buka || "08:00";
-      jamTutup = data.tutup || "22:00";
+      // 🔄 Ambil jam layanan
+      const jamDoc = await db.collection("pengaturan").doc("jam_layanan").get();
+      const jamData = jamDoc.exists ? jamDoc.data() : { aktif: true, buka: "08:00", tutup: "22:00", mode: "otomatis" };
 
       const now = new Date();
       const hour = now.getHours();
+      const bukaHour = parseInt((jamData.buka || "08:00").split(":")[0]);
+      const tutupHour = parseInt((jamData.tutup || "22:00").split(":")[0]);
+      const isOpen = jamData.aktif && (jamData.mode === "otomatis" ? hour >= bukaHour && hour < tutupHour : true);
 
-      const bukaHour = parseInt(jamBuka.split(":")[0]);
-      const tutupHour = parseInt(jamTutup.split(":")[0]);
+      // ⬇️ Jika jam layanan aktif, tampilkan
+      if (jamData.aktif && !popupShown) {
+        popup.style.display = "block";
+        overlay.style.display = "block";
+        document.body.classList.add("popup-active");
 
-      isOpen = data.aktif && (data.mode === "otomatis" ? (hour >= bukaHour && hour < tutupHour) : true);
+        popupImg.src = isOpen ? "./img/open.png" : "./img/close.png";
+        popupText.innerHTML = isOpen
+          ? `<strong>✅ Layanan Aktif</strong><br>Selamat berbelanja!`
+          : `<strong>⛔ Layanan Tutup</strong><br>Buka setiap ${jamData.buka} - ${jamData.tutup}`;
 
-      popup.style.display = "block";
-      overlay.style.display = "block";
-      document.body.classList.add("popup-active");
+        if (!isOpen && checkoutBtn) {
+          checkoutBtn.disabled = true;
+          checkoutBtn.textContent = "Layanan Tutup";
+          checkoutBtn.style.opacity = "0.6";
+          checkoutBtn.style.cursor = "not-allowed";
+        }
 
-      popupImg.src = isOpen ? "./img/open.png" : "./img/close.png";
-      popupText.innerHTML = isOpen
-        ? `<strong>✅ Layanan Aktif</strong><br>Selamat berbelanja!`
-        : `<strong>⛔ Layanan Tutup</strong><br>Buka setiap ${jamBuka} - ${jamTutup}`;
+        popupShown = true;
+      }
 
-      closeBtn.addEventListener("click", async () => {
+      // 🔄 Ambil overlay popup
+      const overlayDoc = await db.collection("pengaturan").doc("popup_overlay").get();
+      const overlayData = overlayDoc.exists ? overlayDoc.data() : null;
+
+      if (overlayData && overlayData.aktif && !popupShown) {
+        const user = firebase.auth().currentUser;
+        let roleUser = "";
+
+        if (user) {
+          const uDoc = await db.collection("users").doc(user.uid).get();
+          roleUser = uDoc.exists ? (uDoc.data().role || "").toLowerCase() : "";
+        }
+
+        const allowedRoles = Array.isArray(overlayData.role) ? overlayData.role.map(r => r.toLowerCase()) : ["all"];
+        const bolehTampil = allowedRoles.includes("all") || allowedRoles.includes(roleUser);
+
+        if (bolehTampil) {
+          popup.style.display = "block";
+          overlay.style.display = "block";
+          document.body.classList.add("popup-active");
+
+          popupImg.src = overlayData.gambar || "./img/default.png";
+          popupText.innerHTML = `
+            <strong>${overlayData.judul || "Informasi"}</strong><br>
+            ${overlayData.deskripsi || ""}
+          `;
+
+          popupShown = true;
+        }
+      }
+
+      // ✅ Fungsi Tutup Popup
+      closeBtn.onclick = async () => {
         popup.style.display = "none";
         overlay.style.display = "none";
         document.body.classList.remove("popup-active");
 
-        try {
-          const user = firebase.auth().currentUser;
-          let role = "";
-          if (user) {
-            const userDoc = await firebase.firestore().collection("users").doc(user.uid).get();
-            role = userDoc.exists ? (userDoc.data().role || "").toLowerCase() : "";
-          }
-
-          if (typeof loadContent === "function") {
-            if (role === "seller") loadContent("seller-dashboard");
-            else if (role === "driver") loadContent("driver-dashboard");
-            else loadContent("productlist");
-          }
-
-          if (!isOpen) {
-            alert(`⚠️ Layanan tutup.\nJam buka: ${jamBuka} - ${jamTutup}`);
-          }
-        } catch (err) {
-          console.error("❌ Gagal mendeteksi role user:", err);
-          if (typeof loadContent === "function") loadContent("productlist");
+        const user = firebase.auth().currentUser;
+        let role = "";
+        if (user) {
+          const uDoc = await db.collection("users").doc(user.uid).get();
+          role = uDoc.exists ? (uDoc.data().role || "").toLowerCase() : "";
         }
-      });
 
-      if (!isOpen && checkoutBtn) {
-        checkoutBtn.disabled = true;
-        checkoutBtn.textContent = "Layanan Tutup";
-        checkoutBtn.style.opacity = "0.6";
-        checkoutBtn.style.cursor = "not-allowed";
-      }
+        if (typeof loadContent === "function") {
+          if (role === "seller") loadContent("seller-dashboard");
+          else if (role === "driver") loadContent("driver-dashboard");
+          else loadContent("productlist");
+        }
 
+        if (!isOpen && jamData.aktif) {
+          alert(`⚠️ Layanan tutup.\nJam buka: ${jamData.buka} - ${jamData.tutup}`);
+        }
+      };
     } catch (err) {
-      console.error("❌ Gagal mengambil jam layanan:", err);
-      alert("⚠️ Gagal memuat pengaturan layanan.");
+      console.error("❌ Error tampilkan popup:", err);
     }
-
-    if (typeof updateCartBadge === "function") {
-      updateCartBadge();
-    }
-
-    const page = localStorage.getItem("pageAktif") || "";
-    if (page === "riwayat" && typeof renderRiwayat === "function") {
-      renderRiwayat();
-      setInterval(() => {
-        if (document.getElementById("riwayat-list")) {
-          renderRiwayat();
-        }
-      }, 1000);
-    }
-
-    document.addEventListener("click", function (event) {
-      if (event.target.matches(".dropdown-toggle")) {
-        const dropdownContainer = event.target.closest(".dropdown-container");
-        if (!dropdownContainer) return;
-
-        const dropdownMenu = dropdownContainer.querySelector(".dropdown-menu");
-        if (!dropdownMenu) return;
-
-        const isShown = dropdownMenu.style.display === "block";
-        document.querySelectorAll(".dropdown-menu").forEach(menu => {
-          menu.style.display = "none";
-        });
-        dropdownMenu.style.display = isShown ? "none" : "block";
-        event.stopPropagation();
-      } else {
-        document.querySelectorAll(".dropdown-menu").forEach(menu => {
-          menu.style.display = "none";
-        });
-      }
-    });
-
-    // ✅ Injected Listener Alamat Realtime
-    firebase.auth().onAuthStateChanged(user => {
-      if (!user) return;
-
-      const db = firebase.firestore();
-      db.collection("alamat").doc(user.uid).onSnapshot(doc => {
-        if (doc.exists && doc.data().lokasi) {
-          if (window.currentPage === "productlist" && typeof renderProductList === "function") {
-            console.log("📍 Lokasi berubah, update produk...");
-            renderProductList();
-          }
-        }
-      });
-    });
-
   })();
 });
+
+
 
 
 
@@ -1110,8 +1031,13 @@ if (page === "admin-user") {
           </div>
 
           <div class="pyramid-button">
-            <div class="label-with-badge">⏰ Layanan</div>
+            <div class="label-with-badge">⏰ Jam Layanan</div>
             <button onclick="loadContent('jam-layanan')" class="detail-btn">Kelola</button>
+          </div>
+
+          <div class="pyramid-button">
+            <div class="label-with-badge">🪟 Overlay</div>
+            <button onclick="loadContent('admin-overlay')" class="detail-btn">Kelola</button>
           </div>
 
           <div class="pyramid-button">
@@ -1127,6 +1053,9 @@ if (page === "admin-user") {
     container.innerHTML = `<p style="color:red;">Terjadi kesalahan: ${error.message}</p>`;
   }
 }
+
+
+
 
 else if (page === "admin-rating") {
   const container = document.getElementById("page-container");
@@ -1189,6 +1118,129 @@ else if (page === "admin-rating") {
     }
   })(); // Immediately Invoked Async Function Expression
 }
+
+if (page === "admin-overlay") {
+  const container = document.getElementById("page-container");
+  container.innerHTML = `<p>Memuat pengaturan overlay...</p>`;
+
+  const user = firebase.auth().currentUser;
+  if (!user) return container.innerHTML = `<p>Silakan login ulang.</p>`;
+
+  const db = firebase.firestore();
+
+  try {
+    const adminDoc = await db.collection("users").doc(user.uid).get();
+    const role = (adminDoc.data()?.role || "").toLowerCase();
+    if (role !== "admin") return container.innerHTML = `<p style="color:red;">❌ Akses ditolak.</p>`;
+
+    const snap = await db.collection("pengaturan").doc("popup_overlay").get();
+    const data = snap.exists ? snap.data() : {
+      aktif: false,
+      judul: "",
+      deskripsi: "",
+      gambar: "",
+      role: ["all"]
+    };
+
+    container.innerHTML = `
+      <div class="admin-overlay-panel">
+        <h2>🪟 Pengaturan Popup Overlay</h2>
+
+        <label>Status Overlay:</label>
+        <select id="overlay-aktif">
+          <option value="true" ${data.aktif ? "selected" : ""}>Aktif</option>
+          <option value="false" ${!data.aktif ? "selected" : ""}>Nonaktif</option>
+        </select>
+
+        <label>Judul:</label>
+        <input type="text" id="overlay-judul" value="${data.judul || ""}" />
+
+        <label>Deskripsi:</label>
+        <textarea id="overlay-deskripsi" rows="3">${data.deskripsi || ""}</textarea>
+
+        <label>Gambar URL:</label>
+        <input type="text" id="overlay-gambar" value="${data.gambar || ""}" placeholder="https://..." />
+
+        <label>Upload Gambar:</label>
+        <input type="file" id="overlay-upload" accept="image/*" />
+        <button id="btn-upload-overlay">📤 Upload Gambar</button>
+        <button id="btn-reset-overlay">♻️ Reset Gambar</button>
+
+        <label>Tampilkan ke Role:</label>
+        <select id="overlay-role" multiple size="4">
+          <option value="all" ${data.role.includes("all") ? "selected" : ""}>Semua Role</option>
+          <option value="admin" ${data.role.includes("admin") ? "selected" : ""}>Admin</option>
+          <option value="user" ${data.role.includes("user") ? "selected" : ""}>User</option>
+          <option value="driver" ${data.role.includes("driver") ? "selected" : ""}>Driver</option>
+          <option value="seller" ${data.role.includes("seller") ? "selected" : ""}>Seller</option>
+        </select>
+
+        <div class="preview-overlay" style="margin-top: 15px;">
+          <strong>Preview:</strong><br>
+          <img id="preview-img" src="${data.gambar || ""}" style="max-width:150px;border-radius:8px;" />
+          <p id="preview-text">${data.deskripsi || ""}</p>
+        </div>
+
+        <button onclick="simpanOverlayAdmin()" class="btn-primary" style="margin-top:10px;">💾 Simpan Pengaturan</button>
+        <div id="overlay-status" style="margin-top:10px;"></div>
+      </div>
+    `;
+
+    // Live Preview
+    document.getElementById("overlay-deskripsi").addEventListener("input", e => {
+      document.getElementById("preview-text").textContent = e.target.value;
+    });
+    document.getElementById("overlay-gambar").addEventListener("input", e => {
+      document.getElementById("preview-img").src = e.target.value;
+    });
+
+    // Upload Gambar
+    document.getElementById("btn-upload-overlay").addEventListener("click", async () => {
+      const file = document.getElementById("overlay-upload").files[0];
+      const statusEl = document.getElementById("overlay-status");
+      if (!file) return alert("⚠️ Pilih file gambar dulu.");
+
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("upload_preset", "VLCrave-Express");
+      formData.append("folder", "overlay");
+
+      statusEl.textContent = "⏳ Uploading...";
+      try {
+        const res = await fetch("https://api.cloudinary.com/v1_1/du8gsffhb/image/upload", {
+          method: "POST",
+          body: formData
+        });
+        const result = await res.json();
+        if (!result.secure_url) throw new Error(result.error?.message || "Upload gagal");
+
+        document.getElementById("overlay-gambar").value = result.secure_url;
+        document.getElementById("preview-img").src = result.secure_url;
+        statusEl.textContent = "✅ Upload berhasil!";
+      } catch (err) {
+        console.error("❌ Upload:", err);
+        statusEl.style.color = "red";
+        statusEl.textContent = "❌ Upload gagal: " + err.message;
+      }
+    });
+
+    // Reset
+    document.getElementById("btn-reset-overlay").addEventListener("click", () => {
+      document.getElementById("overlay-gambar").value = "";
+      document.getElementById("preview-img").src = "";
+      document.getElementById("overlay-status").textContent = "🔄 Gambar direset.";
+    });
+
+  } catch (err) {
+    console.error("❌ Gagal memuat:", err);
+    container.innerHTML = `<p style="color:red;">${err.message}</p>`;
+  }
+}
+
+
+
+
+
 
 
 
@@ -3678,6 +3730,33 @@ else if (page === "laporan-driver-admin") {
 
 
 ///  BATAS  ////
+
+// Simpan ke Firestore
+async function simpanOverlayAdmin() {
+  const aktif = document.getElementById("overlay-aktif").value === "true";
+  const judul = document.getElementById("overlay-judul").value.trim();
+  const deskripsi = document.getElementById("overlay-deskripsi").value.trim();
+  const gambar = document.getElementById("overlay-gambar").value.trim();
+
+  const roleSelect = document.getElementById("overlay-role");
+  const selectedRoles = Array.from(roleSelect.selectedOptions).map(o => o.value);
+
+  try {
+    await firebase.firestore().collection("pengaturan").doc("popup_overlay").set({
+      aktif,
+      judul,
+      deskripsi,
+      gambar,
+      role: selectedRoles
+    });
+
+    alert("✅ Pengaturan disimpan.");
+  } catch (err) {
+    console.error("❌ Simpan gagal:", err);
+    alert("❌ Gagal simpan: " + err.message);
+  }
+}
+
 
 function editRating(idProduk, idRating, komentarLama, ratingLama) {
   const popup = document.getElementById("popup-greeting");
@@ -12587,8 +12666,7 @@ function getWaktuMenu() {
 const waktuMenu = getWaktuMenu();
 let kategoriExpanded = true;
 
-// FINAL SCRIPT: renderProductList + kategori + produk display tanpa error, no cut, no edit
-
+// FINAL FIX JS UNTUK RENDER PRODUK DAN KATEGORI
 async function renderProductList() {
   const produkContainer = document.getElementById('produk-container');
   if (!produkContainer) return;
@@ -12635,15 +12713,15 @@ async function renderProductList() {
       { label: "Jajanan", value: "Jajanan", image: "./img/kategori/jajanan.png" },
       { label: "Sate", value: "Sate", image: "./img/kategori/sate.png" },
       { label: "Aneka Nasi", value: "Nasi", image: "./img/kategori/nasi.png" },
-      { label: "Ayam", value: "Ayam", image: "./img/kategori/ayam.png" },
+      { label: "Ayam", value: "Ayam", image: "./img/kategori/ayam.png" }
     ];
 
     produkContainer.innerHTML = `
       <h2 class="section-title">Filter Unggulan</h2>
-      <div id="kategori-filter-container"></div>
+      <div id="kategori-filter-container" class="kategori-scroll unggulan"></div>
 
       <h2 class="section-title">Aneka Kuliner</h2>
-      <div id="kategori-kuliner-container"></div>
+      <div id="kategori-kuliner-container" class="kuliner-scroll-wrapper"></div>
 
       <h2 class="section-title" style="margin-top: 1.5rem;"><i class="fa-solid fa-bell-concierge"></i> Menu ${waktuMenu}</h2>
       <div id="produk-list-wrapper"><div class="loader">⏳ Memuat produk...</div></div>
@@ -12712,38 +12790,23 @@ async function renderProductList() {
       const filterContainer = document.getElementById('kategori-filter-container');
       const kulinerContainer = document.getElementById('kategori-kuliner-container');
 
-      const renderScrollKategori = (list, isUnggulan = false) => {
-        if (isUnggulan) {
-          return `
-            <div class="kategori-scroll unggulan">
-              ${list.map(k => `
-                <div class="kategori-card" data-kategori="${k.value}">
-                  <div class="kategori-img-wrapper">
-                    <img src="${k.image}" alt="${k.label}" />
-                  </div>
-                  <span>${k.label}</span>
-                </div>
-              `).join('')}
-            </div>
-          `;
-        } else {
-          return `
-            <div class="kategori-grid">
-              ${list.map(k => `
-                <div class="kategori-card" data-kategori="${k.value}">
-                  <div class="kategori-img-circle">
-                    <img src="${k.image}" alt="${k.label}" />
-                  </div>
-                  <span>${k.label}</span>
-                </div>
-              `).join('')}
-            </div>
-          `;
-        }
-      };
+      filterContainer.innerHTML = kategoriUnggulan.map(k => `
+        <div class="kategori-card" data-kategori="${k.value}">
+          <div class="kategori-img-wrapper">
+            <img src="${k.image}" alt="${k.label}" />
+          </div>
+          <span>${k.label}</span>
+        </div>
+      `).join("");
 
-      filterContainer.innerHTML = renderScrollKategori(kategoriUnggulan, true);
-      kulinerContainer.innerHTML = renderScrollKategori(kategoriKuliner, false);
+      kulinerContainer.innerHTML = kategoriKuliner.map(k => `
+        <div class="kategori-card" data-kategori="${k.value}">
+          <div class="kategori-img-circle">
+            <img src="${k.image}" alt="${k.label}" />
+          </div>
+          <span>${k.label}</span>
+        </div>
+      `).join("");
 
       document.querySelectorAll('.kategori-card').forEach(card => {
         card.addEventListener('click', () => {
@@ -12785,7 +12848,7 @@ async function renderProductList() {
         return;
       }
 
-      wrapper.innerHTML = produkFilter.map((p, index) => {
+      wrapper.innerHTML = produkFilter.map(p => {
         const tokoAktif = p.isOpen;
         const stokHabis = (p.stok || 0) <= 0;
         const luarJangkauan = p.diLuarJangkauan;
@@ -12809,7 +12872,7 @@ async function renderProductList() {
                 <p class="produk-meta">${p.ratingDisplay} | ${p.jarak || '-'} | ${p.estimasi || '-'} Menit</p>
                 <div class="produk-action">
                   <strong>Rp ${Number(p.harga || 0).toLocaleString()}</strong>
-                  <button class="beli-btn" ${disabledAttr} onclick="${luarJangkauan ? `alert('Layanan belum tersedia di lokasi anda')` : `tampilkanPopupDetail(${JSON.stringify(p).replace(/"/g, "&quot;")})`}">
+                  <button class="beli-btn" ${disabledAttr} onclick="${luarJangkauan ? `alert('Layanan belum tersedia di lokasi anda')` : `tampilkanPopupDetail(${JSON.stringify(p).replace(/"/g, '&quot;')})`}">
                     ${btnText}
                   </button>
                 </div>
@@ -12828,6 +12891,9 @@ async function renderProductList() {
     produkContainer.innerHTML = `<p style="color:red;">❌ Terjadi kesalahan saat memuat produk.</p>`;
   }
 }
+
+// Panggil langsung saat halaman dimuat
+renderProductList();
 
 
 

@@ -13,6 +13,10 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
+  <!-- Leaflet Routing -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
+  <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+
   <!-- Custom Style -->
   <link href="css/style.css" rel="stylesheet" />
 </head>
@@ -36,11 +40,15 @@
     </a>
   </header>
 
+  <!-- Banner -->
   <div id="home-banner-wrapper" style="display: none;"></div>
-  <main id="page-container"></main>
 
-  <!-- Container Kategori -->
-  <div id="kategori-container" class="kategori-grid"></div>
+  <!-- Main Content -->
+  <main id="page-container">
+    <div id="produk-container">
+      <!-- Konten dinamis dimuat oleh JS -->
+    </div>
+  </main>
 
   <!-- Footer Dinamis -->
   <footer class="footer-bottom-nav" id="footer-nav"></footer>
@@ -60,24 +68,7 @@
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-firestore-compat.js"></script>
 
-  <!-- Leaflet Routing Machine -->
-  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
-  <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
-
-  <!-- Script Utama -->
-  <script src="js/alamat.js"></script>
-  <script src="js/script.js"></script>
-  
-  <script>
-    function tampilkanFloatingAlert(judul, pesan) {
-      const box = document.getElementById("floating-alert");
-      box.innerHTML = `<strong>${judul}</strong><br>${pesan}`;
-      box.classList.add("show");
-      setTimeout(() => box.classList.remove("show"), 8000);
-    }
-  </script>
-
-  <!-- Role & Footer Dinamis + Notif Global -->
+  <!-- Firebase Init & Dynamic Footer -->
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyAfBzoX9kUwUTWfQYT6QLndd_mP03__8Wo",
@@ -123,31 +114,20 @@
         `;
       } else if (role === "seller") {
         html = `
-          <a onclick="loadContent('seller-dashboard')">
-            <i class="fas fa-store"></i><span>Toko Saya</span>
-          </a>
-          <a onclick="loadContent('riwayat-pesanan-seller')">
-            <i class="fas fa-receipt"></i><span>Riwayat</span>
-          </a>
-          <a onclick="loadContent('user-seller')">
-            <i class="fas fa-user"></i><span>Akun</span>
-          </a>
+          <a onclick="loadContent('seller-dashboard')"><i class="fas fa-store"></i><span>Toko Saya</span></a>
+          <a onclick="loadContent('riwayat-pesanan-seller')"><i class="fas fa-receipt"></i><span>Riwayat</span></a>
+          <a onclick="loadContent('user-seller')"><i class="fas fa-user"></i><span>Akun</span></a>
         `;
       } else if (role === "driver") {
         html = `
           <a onclick="loadContent('driver-dashboard')"><i class="fas fa-motorcycle"></i><span>Driver</span></a>
-          <a onclick="loadContent('riwayat-pesanan-driver')">
-            <i class="fas fa-receipt"></i><span>Riwayat</span>
-          </a>
+          <a onclick="loadContent('riwayat-pesanan-driver')"><i class="fas fa-receipt"></i><span>Riwayat</span></a>
           <a onclick="loadContent('user-driver')"><i class="fas fa-user"></i><span>Akun</span></a>
         `;
       } else {
         html = `
           <a onclick="loadContent('productlist')"><i class="fas fa-home"></i><span>Beranda</span></a>
-          <a onclick="loadContent('checkout')" class="footer-cart-icon">
-            <i class="fas fa-shopping-cart"></i>
-            <span>Keranjang</span>
-          </a>
+          <a onclick="loadContent('checkout')" class="footer-cart-icon"><i class="fas fa-shopping-cart"></i><span>Keranjang</span></a>
           <a onclick="loadContent('alamat')"><i class="fas fa-location-dot"></i><span>Alamat</span></a>
           <a onclick="loadContent('user')"><i class="fas fa-user"></i><span>Akun</span></a>
         `;
@@ -163,11 +143,25 @@
           snapshot.docChanges().forEach(change => {
             const data = change.doc.data();
             if (change.type === "added" && (data.tujuan === "all" || data.tujuan === role)) {
-              tampilkanFloatingAlert(data.judul || "\ud83d\udce2 Info", data.pesan || "");
+              tampilkanFloatingAlert(data.judul || "📢 Info", data.pesan || "");
             }
           });
         });
     });
   </script>
+
+  <!-- Alert Global -->
+  <script>
+    function tampilkanFloatingAlert(judul, pesan) {
+      const box = document.getElementById("floating-alert");
+      box.innerHTML = `<strong>${judul}</strong><br>${pesan}`;
+      box.classList.add("show");
+      setTimeout(() => box.classList.remove("show"), 8000);
+    }
+  </script>
+
+  <!-- Alamat & Script JS (dipanggil terakhir setelah Firebase init) -->
+  <script src="js/alamat.js"></script>
+  <script src="js/script.js"></script>
 </body>
 </html>
