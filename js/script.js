@@ -235,13 +235,8 @@ if (page === 'alamat') {
             <label for="full-address">Alamat Lengkap</label>
             <textarea id="full-address" rows="3" placeholder="Nama jalan, nomor rumah, RT/RW, dll" required></textarea>
 
-            <label for="courier-note">Catatan Kurir</label>
+            <label for="courier-note">Catatan</label>
             <textarea id="courier-note" rows="2" placeholder="Contoh: Dekat warung, pagar hitam, dll"></textarea>
-
-            <label class="checkbox-label">
-              <input type="checkbox" id="set-primary" checked />
-              Jadikan sebagai alamat utama
-            </label>
 
             <button type="submit" class="btn-simpan-alamat">Simpan Alamat</button>
           </form>
@@ -718,7 +713,10 @@ else if (page === "riwayat-pesanan-driver") {
             hour: "2-digit", minute: "2-digit"
           })}</p>
           <div class="btn-group">
-            <button onclick="bukaDetailPesananDriver('${r.driverDocId}')">🔍 Detail</button>
+            <button class="btn-next-status btn-success" id="tombol-selesaikan-${data.idPesanan}" onclick="selesaikanPesanan('${driverDoc.id}')">
+  ✅ Selesaikan Pesanan
+</button>
+
           </div>
         </li>
       `;
@@ -4768,8 +4766,8 @@ async function konfirmasiPesananDriver(idPesanan, idToko, idDriver) {
   const pendingRef = db.collection("pesanan_driver_pending").doc(docId);
   const pesananDriverRef = db.collection("pesanan_driver").doc(docId);
   const pesananRef = db.collection("pesanan").doc(idPesanan);
-  const driverQuery = db.collection("driver").where("idDriver", "==", idDriver).limit(1);
   const tokoRef = db.collection("toko").doc(idToko);
+  const driverQuery = db.collection("driver").where("idDriver", "==", idDriver).limit(1);
 
   try {
     await db.runTransaction(async (transaction) => {
@@ -4792,45 +4790,46 @@ async function konfirmasiPesananDriver(idPesanan, idToko, idDriver) {
       const namaDriver = driverData.nama || "Driver";
       const namaToko = tokoSnap.exists ? tokoSnap.data().namaToko || "Toko" : "Toko";
 
-      // ✅ Validasi driver termasuk calonDriver
+      // Cek apakah termasuk calonDriver
       if (!Array.isArray(dataPending.calonDriver) || !dataPending.calonDriver.includes(idDriver)) {
         throw new Error("❌ Anda tidak termasuk daftar calon driver pesanan ini.");
       }
 
-      // ✅ Cek apakah sudah diambil
-      const cekExist = await db.collection("pesanan_driver").doc(docId).get();
-      if (cekExist.exists) {
+      // Cek apakah pesanan sudah diambil (dalam transaksi)
+      const existingDoc = await transaction.get(pesananDriverRef);
+      if (existingDoc.exists) {
         throw new Error("❌ Pesanan ini sudah diambil oleh driver lain.");
       }
 
-      // ✅ Buang field calonDriver dari dataPending
+      // Buang calonDriver dan simpan pesanan baru
       const { calonDriver, ...dataToSave } = dataPending;
 
-      // ✅ Simpan ke pesanan_driver
       transaction.set(pesananDriverRef, {
         ...dataToSave,
         idDriver,
         status: "Menuju Toko",
-        createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+        createdAt: firebase.firestore.FieldValue.serverTimestamp(),  // boleh, karena bukan di array
         stepsLog: [
           {
             step: `Pesanan dari ${namaToko} diterima oleh ${namaDriver}`,
-            waktu: Date.now()
+            waktu: Date.now()  // jangan pakai FieldValue.serverTimestamp() di sini
           }
         ]
       });
 
-      // ✅ Update status utama
       transaction.update(pesananRef, {
         status: "Diambil Driver",
         stepsLog: firebase.firestore.FieldValue.arrayUnion(
-          `Pesanan dari ${namaToko} diambil oleh ${namaDriver} - ${new Date().toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" })}`
+          `Pesanan dari ${namaToko} diambil oleh ${namaDriver} - [${new Date().toLocaleTimeString("id-ID", {
+            hour: "2-digit",
+            minute: "2-digit"
+          })}]`
         )
       });
-    });
 
-    // ✅ Hapus dokumen pending (bukan koleksi)
-    await firebase.firestore().collection("pesanan_driver_pending").doc(`${idPesanan}-${idToko}`).delete();
+      // Hapus dokumen pending di akhir transaksi
+      transaction.delete(pendingRef);
+    });
 
     alert("✅ Pesanan berhasil diambil! Silakan menuju lokasi toko.");
     loadContent("driver-dashboard");
@@ -4840,18 +4839,6 @@ async function konfirmasiPesananDriver(idPesanan, idToko, idDriver) {
     alert(err.message || "❌ Terjadi kesalahan saat mengambil pesanan.");
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -8356,7 +8343,8 @@ async function bukaDetailPesananDriver(docId) {
       "Menunggu Pesanan": "⏳ Menunggu Pesanan",
       "Pickup Pesanan": "📦 Pickup Pesanan",
       "Menuju Customer": "🛵 Menuju Customer",
-      "Pesanan Diterima": "✅ Pesanan Diterima"
+      "Pesanan Diterima": "✅ Pesanan Diterima",
+      "Selesai": "✅ Selesaikan Pesanan"
     };
 
     const urutanStatus = Object.keys(statusStepMap);
@@ -8371,14 +8359,6 @@ async function bukaDetailPesananDriver(docId) {
             onclick="updateStatusDriver('${driverDocId}', '${nextStatus}', '${idPesanan}')">
             ${statusStepMap[nextStatus]}
           </button>
-        </div>`;
-    } else if (driverData.status === "Pesanan Diterima") {
-      tombolStatus = `
-        <div class="btn-group" style="display: flex; flex-direction: column; align-items: center; margin-top: 20px;">
-          <button class="btn-next-status btn-success" id="tombol-selesaikan-${idPesanan}" onclick="selesaikanPesanan('${idPesanan}')">
-            ✅ Selesaikan Pesanan
-          </button>
-          <p id="jarak-info" style="font-size: 14px; margin-top: 8px; color: #333;"></p>
         </div>`;
     }
 
@@ -8505,6 +8485,10 @@ async function bukaDetailPesananDriver(docId) {
 }
 
 
+
+
+
+
 function formatStatus(status) {
   switch (status) {
     case "Menunggu Driver": return "Pesanan dibuat (Pending)";
@@ -8546,18 +8530,20 @@ async function updateStatusDriver(docId, status, idPesanan) {
 
     const subtotal = Number(dataDriver.subtotalProduk || 0);
     const ongkir = Number(dataDriver.totalOngkir || 0);
-    const idTokoDoc = dataDriver.idToko || dataPP.idToko;
-    const idDriverVal = dataDriver.idDriver || dataDriver.driverId;
+    const idTokoDoc = dataDriver.idToko || dataPP.idToko || "";
+    const idDriverVal = dataDriver.idDriver || dataDriver.driverId || "";
     const metode = (dataPesanan.metode || "").toLowerCase();
+
+    if (!idTokoDoc) throw new Error("❌ idToko tidak ditemukan.");
+    if (!idDriverVal) throw new Error("❌ idDriver tidak ditemukan.");
 
     const tokoRef = db.collection("toko").doc(idTokoDoc);
     const tokoDoc = await tokoRef.get();
     if (!tokoDoc.exists) throw new Error("❌ Data toko tidak ditemukan.");
 
-    // Ambil doc driver berdasarkan idDriver
-    let driverDocSnap = await db.collection("driver").where("idDriver", "==", idDriverVal).limit(1).get();
-    if (driverDocSnap.empty) throw new Error("❌ Driver tidak ditemukan.");
-    const driverDoc = driverDocSnap.docs[0];
+    const driverSnap = await db.collection("driver").where("idDriver", "==", idDriverVal).limit(1).get();
+    if (driverSnap.empty) throw new Error("❌ Driver tidak ditemukan.");
+    const driverDoc = driverSnap.docs[0];
     const driverRef = driverDoc.ref;
 
     const updateData = {
@@ -8566,12 +8552,13 @@ async function updateStatusDriver(docId, status, idPesanan) {
       updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
     };
 
+    // Update status dan log dulu
     await Promise.all([
       pesananDriverRef.update(updateData),
       pesananRef.update(updateData),
     ]);
 
-    // COD dan belum diproses potong
+    // Proses potong saldo COD jika belum diproses
     if (status === "Menunggu Pesanan" && metode === "cod" && !dataPesanan.sudahDiprosesPotong) {
       if (isNaN(subtotal) || isNaN(ongkir) || subtotal <= 0 || ongkir <= 0) {
         console.warn("⚠️ subtotal/ongkir tidak valid. Lewati potongan.");
@@ -8590,6 +8577,7 @@ async function updateStatusDriver(docId, status, idPesanan) {
 
         const saldoTokoAwal = tokoSnap.data().saldo || 0;
         const saldoDriverAwal = driverSnap.data().saldo || 0;
+
         const saldoTokoAkhir = saldoTokoAwal - potonganSeller;
         const saldoDriverAkhir = saldoDriverAwal - totalPotonganDriver;
 
@@ -8599,32 +8587,26 @@ async function updateStatusDriver(docId, status, idPesanan) {
 
         const waktuPesan = firebase.firestore.FieldValue.serverTimestamp();
 
-        // Pesan ke toko
+        // Notifikasi ke toko
         t.set(
-          db.collection("pesan_toko")
-            .doc(tokoSnap.data().idToko)
-            .collection("pesan")
-            .doc(),
+          db.collection("pesan_toko").doc(tokoSnap.data().idToko).collection("pesan").doc(),
           {
             idToko: tokoSnap.data().idToko,
             perihal: "Pemotongan Saldo",
-            keterangan: `Saldo kamu dipotong Rp${potonganSeller.toLocaleString()} untuk pesanan ${idPesanan}. Sisa saldo: Rp${saldoTokoAkhir.toLocaleString()}`,
+            keterangan: `Saldo kamu dipotong Rp${potonganSeller.toLocaleString("id-ID")} untuk pesanan #${idPesanan}. Sisa saldo: Rp${saldoTokoAkhir.toLocaleString("id-ID")}`,
             waktu: waktuPesan,
             dibaca: false,
             dari: "Sistem",
           }
         );
 
-        // Pesan ke driver
+        // Notifikasi ke driver
         t.set(
-          db.collection("pesan_driver")
-            .doc(driverDoc.id)
-            .collection("pesan")
-            .doc(),
+          db.collection("pesan_driver").doc(driverDoc.id).collection("pesan").doc(),
           {
             idDriver: idDriverVal,
             perihal: "Pemotongan Saldo",
-            keterangan: `Saldo kamu dipotong Rp${totalPotonganDriver.toLocaleString()} untuk pesanan ${idPesanan}. Sisa saldo: Rp${saldoDriverAkhir.toLocaleString()}`,
+            keterangan: `Saldo kamu dipotong Rp${totalPotonganDriver.toLocaleString("id-ID")} untuk pesanan #${idPesanan}. Sisa saldo: Rp${saldoDriverAkhir.toLocaleString("id-ID")}`,
             waktu: waktuPesan,
             dibaca: false,
             dari: "Sistem",
@@ -8632,36 +8614,81 @@ async function updateStatusDriver(docId, status, idPesanan) {
         );
       });
 
-      console.log("✅ Saldo & pesan berhasil diproses");
+      console.log("✅ Potongan saldo & pesan terkirim.");
+    }
+
+    // Proses tambah saldo saat status "Selesai"
+    if (status === "Selesai") {
+      const metodePengiriman = (dataPesanan.metodePengiriman || "").toLowerCase();
+
+      let feeSeller = 0;
+      let feeDriver = 0;
+      if (metode === "saldo") {
+        feeSeller = Math.round(subtotal * 0.05);
+        feeDriver = Math.round(ongkir * 0.05);
+      }
+
+      let sellerDiterima = metode === "saldo" ? Math.round(subtotal * 0.95) : subtotal;
+      let driverDiterima = metode === "saldo" ? Math.round(ongkir * 0.95) : ongkir;
+
+      if (metodePengiriman === "priority") {
+        sellerDiterima += 1500;
+        driverDiterima += 1000;
+      }
+
+      await db.runTransaction(async (t) => {
+        const tokoSnap = await t.get(tokoRef);
+        const driverSnap = await t.get(driverRef);
+
+        const saldoTokoAwal = tokoSnap.data().saldo || 0;
+        const saldoDriverAwal = driverSnap.data().saldo || 0;
+
+        const saldoTokoAkhir = saldoTokoAwal + sellerDiterima;
+        const saldoDriverAkhir = saldoDriverAwal + driverDiterima;
+
+        t.update(tokoRef, { saldo: saldoTokoAkhir });
+        t.update(driverRef, { saldo: saldoDriverAkhir });
+
+        const waktuPesan = firebase.firestore.FieldValue.serverTimestamp();
+
+        // Notifikasi ke toko
+        t.set(
+          db.collection("pesan_toko").doc(tokoSnap.data().idToko).collection("pesan").doc(),
+          {
+            idToko: tokoSnap.data().idToko,
+            perihal: "Penambahan Saldo",
+            keterangan: `Saldo kamu bertambah Rp${sellerDiterima.toLocaleString("id-ID")} karena pesanan #${idPesanan} selesai. Total saldo: Rp${saldoTokoAkhir.toLocaleString("id-ID")}`,
+            waktu: waktuPesan,
+            dibaca: false,
+            dari: "Sistem",
+          }
+        );
+
+        // Notifikasi ke driver
+        t.set(
+          db.collection("pesan_driver").doc(driverDoc.id).collection("pesan").doc(),
+          {
+            idDriver: idDriverVal,
+            perihal: "Penambahan Saldo",
+            keterangan: `Saldo kamu bertambah Rp${driverDiterima.toLocaleString("id-ID")} karena pesanan #${idPesanan} selesai. Total saldo: Rp${saldoDriverAkhir.toLocaleString("id-ID")}`,
+            waktu: waktuPesan,
+            dibaca: false,
+            dari: "Sistem",
+          }
+        );
+      });
+
+      console.log("✅ Penambahan saldo & pesan terkirim saat pesanan selesai.");
     }
 
     alert(`✅ Status diubah ke: ${status}`);
     await bukaDetailPesananDriver(idPesanan);
+
   } catch (err) {
     console.error("❌ Gagal update status:", err);
     alert(err.message || "❌ Terjadi kesalahan.");
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -9129,147 +9156,6 @@ async function terimaPesananDriver(idPesanan) {
     console.error("❌ Gagal menerima pesanan:", err);
     alert("❌ Terjadi kesalahan saat menerima pesanan.");
   }
-}
-
-async function selesaikanPesanan(idPesanan) {
-  const db = firebase.firestore();
-  const pesananDoc = await db.collection("pesanan").doc(idPesanan).get();
-  if (!pesananDoc.exists) return alert("❌ Data pesanan tidak ditemukan.");
-
-  const pesanan = pesananDoc.data();
-  const {
-    subtotal,
-    ongkir,
-    idToko,
-    driverId,
-    metode,
-    lokasiCustomer,
-    metodePengiriman = "standard"
-  } = pesanan;
-
-  const waktu = new Date();
-
-  const feeLayanan = (subtotal + ongkir) * 0.01;
-  const feeSeller = metode === "saldo" ? subtotal * 0.05 : 0;
-  const feeDriver = metode === "saldo" ? ongkir * 0.05 : 0;
-
-  let sellerDiterima = metode === "saldo" ? subtotal * 0.95 : subtotal;
-  let driverDiterima = metode === "saldo" ? ongkir * 0.95 : ongkir;
-
-  let tambahanPerusahaan = 0;
-  if (metodePengiriman.toLowerCase() === "priority") {
-    sellerDiterima += 1500;
-    driverDiterima += 1000;
-    tambahanPerusahaan += 1000;
-  }
-
-  const driverSnap = await db.collection("driver").where("idDriver", "==", driverId).limit(1).get();
-  if (driverSnap.empty) return alert("❌ Data driver tidak ditemukan.");
-  const driverDoc = driverSnap.docs[0];
-  const driverRef = driverDoc.ref;
-  const driver = driverDoc.data();
-  const namaDriver = driver.nama || "Driver";
-  const saldoDriverAwal = driver.saldo || 0;
-  const saldoDriverAkhir = saldoDriverAwal + driverDiterima;
-
-  const tokoRef = db.collection("toko").doc(idToko);
-  const tokoDoc = await tokoRef.get();
-  if (!tokoDoc.exists) return alert("❌ Data toko tidak ditemukan.");
-
-  const toko = tokoDoc.data();
-  const namaToko = toko.namaToko || "Toko";
-  const userIdSeller = toko.userId;
-  const saldoTokoAwal = toko.saldo || 0;
-  const saldoTokoAkhir = saldoTokoAwal + sellerDiterima;
-
-  const jarak = hitungJarakMeter(
-    lokasiCustomer.lat,
-    lokasiCustomer.lng,
-    driver.lokasi?.lat || 0,
-    driver.lokasi?.lng || 0
-  );
-
-  const infoElem = document.getElementById(`info-jarak-${idPesanan}`);
-  if (infoElem) {
-    infoElem.innerHTML = `📏 Kamu dapat menyelesaikan pesanan <20meter : <b>${jarak.toFixed(1)} meter</b>`;
-  }
-
-  if (metode.toLowerCase() === "saldo") {
-    await tokoRef.update({
-      saldo: firebase.firestore.FieldValue.increment(sellerDiterima),
-    });
-
-    await driverRef.update({
-      saldo: firebase.firestore.FieldValue.increment(driverDiterima),
-    });
-
-    const waktuPesan = firebase.firestore.FieldValue.serverTimestamp();
-
-    // Kirim pesan ke toko
-    await db
-      .collection("pesan_toko")
-      .doc(toko.idToko)
-      .collection("pesan")
-      .add({
-        idToko: toko.idToko,
-        perihal: `Pesanan #${idPesanan} diselesaikan`,
-        keterangan: `Saldo kamu bertambah Rp${Math.round(sellerDiterima).toLocaleString()}. Saldo akhir: Rp${Math.round(saldoTokoAkhir).toLocaleString()}`,
-        waktu: waktuPesan,
-        dibaca: false,
-        dari: "Sistem",
-      });
-
-    // Kirim pesan ke driver
-    await db
-      .collection("pesan_driver")
-      .doc(driverDoc.id) // <<== VLD-xxx
-      .collection("pesan")
-      .add({
-        idDriver: driver.idDriver,
-        perihal: `Pesanan #${idPesanan} diselesaikan`,
-        keterangan: `Saldo kamu bertambah Rp${Math.round(driverDiterima).toLocaleString()}. Saldo akhir: Rp${Math.round(saldoDriverAkhir).toLocaleString()}`,
-        waktu: waktuPesan,
-        dibaca: false,
-        dari: "Sistem",
-      });
-  }
-
-  await db.collection("pemasukan_perusahaan").add({
-    idOrder: idPesanan,
-    feeLayanan,
-    feeDriver,
-    feeSeller,
-    tambahanPriority: tambahanPerusahaan,
-    totalPemasukan: feeLayanan + feeDriver + feeSeller + tambahanPerusahaan,
-    metodePembayaran: metode,
-    metodePengiriman,
-    waktu,
-    createdAt: firebase.firestore.FieldValue.serverTimestamp(),
-  });
-
-  await db.collection("pesanan").doc(idPesanan).update({
-    status: "Selesai",
-    stepsLog: firebase.firestore.FieldValue.arrayUnion(
-      `${waktu.toLocaleTimeString("id-ID", {
-        hour: "2-digit",
-        minute: "2-digit",
-      })} Selesai`
-    ),
-    updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
-  });
-
-  const tombol = document.getElementById(`tombol-selesaikan-${idPesanan}`);
-  if (tombol) {
-    tombol.disabled = true;
-    tombol.innerText = "✅ Sudah Diselesaikan";
-  }
-
-  alert(`✅ Pesanan diselesaikan!
-🚚 Driver: ${namaDriver}
-📏 Jarak: ${jarak.toFixed(1)} meter
-💸 Metode: ${metode.toUpperCase()}
-🚀 Pengiriman: ${metodePengiriman.toUpperCase()}
-`);
 }
 
 
