@@ -982,7 +982,6 @@ if (page === "admin-user") {
       return;
     }
 
-    // Ambil data paralel kecuali totalFee yang harus async sendiri
     const [
       usersSnapshot,
       pesananSnapshot,
@@ -1001,7 +1000,6 @@ if (page === "admin-user") {
       db.collection("toko").get()
     ]);
 
-    // Hitung total fee perusahaan menggunakan fungsi helper
     const totalFeeKeseluruhan = await hitungTotalFeePerusahaan(db);
 
     let totalUser = 0;
@@ -1018,17 +1016,12 @@ if (page === "admin-user") {
     pesananSnapshot.forEach(doc => {
       const d = doc.data();
       const status = (d.status || "").toLowerCase();
-
-      if (status === "selesai") {
-        const totalPembayaran = d.total || 0;
-        totalNominal += totalPembayaran;
-      } else {
-        totalPesananAktif++;
-      }
+      if (status === "selesai") totalNominal += d.total || 0;
+      else totalPesananAktif++;
     });
 
     const totalDepositMenunggu = depositSnapshot.size;
-    const totalWithdrawMenunggu = tarikSaldoSnapshot.size;  // Ganti dengan tarikSaldoSnapshot
+    const totalWithdrawMenunggu = tarikSaldoSnapshot.size;
     const totalLaporanDriver = laporanDriverSnapshot.size;
     const totalLaporanSeller = laporanSellerSnapshot.size;
     const totalToko = tokoSnapshot.size;
@@ -1040,27 +1033,27 @@ if (page === "admin-user") {
         <div class="pyramid-grid-2">
 
           <div class="pyramid-button">
-            <div class="label-with-badge">👤 Users ${totalUser > 0 ? `<span class="badge">${totalUser}</span>` : ""}</div>
+            <div class="label-with-badge">👤 Users ${totalUser ? `<span class="badge">${totalUser}</span>` : ""}</div>
             <button onclick="loadContent('users-management')" class="detail-btn">Lihat Detail</button>
           </div>
 
           <div class="pyramid-button">
-            <div class="label-with-badge">🛵 Driver ${totalDriver > 0 ? `<span class="badge">${totalDriver}</span>` : ""}</div>
+            <div class="label-with-badge">🛵 Driver ${totalDriver ? `<span class="badge">${totalDriver}</span>` : ""}</div>
             <button onclick="loadContent('admin-driver')" class="detail-btn">Lihat Detail</button>
           </div>
 
           <div class="pyramid-button">
-            <div class="label-with-badge">👤 Live Chat ${totalUser > 0 ? `<span class="badge">${totalUser}</span>` : ""}</div>
+            <div class="label-with-badge">👤 Live Chat</div>
             <button onclick="loadContent('livechat-admin')" class="detail-btn">Lihat Detail</button>
           </div>
 
           <div class="pyramid-button">
-            <div class="label-with-badge">🏪 Toko ${totalToko > 0 ? `<span class="badge" id="badge-total-toko">${totalToko}</span>` : ""}</div>
+            <div class="label-with-badge">🏪 Toko ${totalToko ? `<span class="badge">${totalToko}</span>` : ""}</div>
             <button onclick="loadContent('admin-toko')" class="detail-btn">Kelola Toko</button>
           </div>
 
           <div class="pyramid-button">
-            <div class="label-with-badge">📦 Pesanan ${totalPesananAktif > 0 ? `<span class="badge">${totalPesananAktif}</span>` : ""}</div>
+            <div class="label-with-badge">📦 Pesanan ${totalPesananAktif ? `<span class="badge">${totalPesananAktif}</span>` : ""}</div>
             <button onclick="loadContent('pesanan-admin')" class="detail-btn">Lihat Pesanan</button>
           </div>
 
@@ -1077,22 +1070,22 @@ if (page === "admin-user") {
           </div>
 
           <div class="pyramid-button">
-            <div class="label-with-badge">💰 Deposit ${totalDepositMenunggu > 0 ? `<span class="badge">${totalDepositMenunggu}</span>` : ""}</div>
+            <div class="label-with-badge">💰 Deposit ${totalDepositMenunggu ? `<span class="badge">${totalDepositMenunggu}</span>` : ""}</div>
             <button onclick="loadContent('permintaan-deposit')" class="detail-btn">Lihat Permintaan</button>
           </div>
 
           <div class="pyramid-button">
-            <div class="label-with-badge">💸 Withdraw ${totalWithdrawMenunggu > 0 ? `<span class="badge">${totalWithdrawMenunggu}</span>` : ""}</div>
+            <div class="label-with-badge">💸 Withdraw ${totalWithdrawMenunggu ? `<span class="badge">${totalWithdrawMenunggu}</span>` : ""}</div>
             <button onclick="loadContent('permintaan-withdraw')" class="detail-btn">Lihat Permintaan</button>
           </div>
 
           <div class="pyramid-button">
-            <div class="label-with-badge">🚨 Laporan Driver ${totalLaporanDriver > 0 ? `<span class="badge">${totalLaporanDriver}</span>` : ""}</div>
+            <div class="label-with-badge">🚨 Laporan Driver ${totalLaporanDriver ? `<span class="badge">${totalLaporanDriver}</span>` : ""}</div>
             <button onclick="loadContent('laporan-driver-admin')" class="detail-btn">Tinjau</button>
           </div>
 
           <div class="pyramid-button">
-            <div class="label-with-badge">🚨 Laporan Seller ${totalLaporanSeller > 0 ? `<span class="badge">${totalLaporanSeller}</span>` : ""}</div>
+            <div class="label-with-badge">🚨 Laporan Seller ${totalLaporanSeller ? `<span class="badge">${totalLaporanSeller}</span>` : ""}</div>
             <button onclick="loadContent('laporan-seller-admin')" class="detail-btn">Tinjau</button>
           </div>
 
@@ -1101,13 +1094,10 @@ if (page === "admin-user") {
             <button onclick="loadContent('admin-kirim-pesan')" class="detail-btn">Kelola</button>
           </div>
 
-<div class="pyramid-button">
-  <div class="label-with-badge">📣 Notifikasi</div>
-  <button onclick="formNotifikasiAdmin()" class="detail-btn">
-    📢 Kirim Notifikasi
-  </button>
-</div>
-
+          <div class="pyramid-button">
+            <div class="label-with-badge">📢 Notifikasi</div>
+            <button onclick="formNotifikasiAdmin()" class="detail-btn">Kirim Notifikasi</button>
+          </div>
 
           <div class="pyramid-button">
             <div class="label-with-badge">💳 Voucher</div>
@@ -1124,6 +1114,11 @@ if (page === "admin-user") {
             <button onclick="loadContent('jam-layanan')" class="detail-btn">Kelola</button>
           </div>
 
+          <div class="pyramid-button">
+            <div class="label-with-badge">⭐ Kelola Rating</div>
+            <button onclick="loadContent('admin-rating')" class="detail-btn">Kelola</button>
+          </div>
+
         </div>
       </div>
     `;
@@ -1132,6 +1127,71 @@ if (page === "admin-user") {
     container.innerHTML = `<p style="color:red;">Terjadi kesalahan: ${error.message}</p>`;
   }
 }
+
+else if (page === "admin-rating") {
+  const container = document.getElementById("page-container");
+  container.innerHTML = `<p>Memuat rating...</p>`;
+
+  (async () => {
+    const db = firebase.firestore();
+    try {
+      const ratingData = [];
+
+      // Ambil rating dari koleksi produk
+      const produkSnapshot = await db.collection("produk").get();
+      for (const doc of produkSnapshot.docs) {
+        const produk = doc.data();
+        const ratingSnap = await db.collection("produk").doc(doc.id).collection("rating").get();
+        ratingSnap.forEach(r => {
+          const d = r.data();
+          ratingData.push({
+            idRating: r.id,
+            idProduk: doc.id,
+            namaProduk: produk.namaProduk || "-",
+            rating: d.rating,
+            komentar: d.ulasan || d.komentar || "-",
+            user: d.namaUser || d.nama || "Anonim",
+            waktu: d.waktu?.toDate?.() || new Date(d.waktu),
+            idPesanan: d.idPesanan || "-",
+          });
+        });
+      }
+
+      if (ratingData.length === 0) {
+        container.innerHTML = `<p style="text-align:center;">Belum ada data rating.</p>`;
+        return;
+      }
+
+      ratingData.sort((a, b) => b.waktu - a.waktu);
+
+      container.innerHTML = `
+        <h2>⭐ Kelola Rating Produk</h2>
+        ${ratingData.map(r => `
+          <div class="admin-rating-card">
+            <div class="admin-rating-header">
+              <span class="admin-rating-jenis">Produk: ${r.namaProduk}</span>
+              <span class="admin-rating-nama">👤 ${r.user}</span>
+            </div>
+            <div class="admin-rating-bintang">⭐ ${r.rating}/5</div>
+            <div class="admin-rating-komentar">"${r.komentar}"</div>
+            <div class="admin-rating-footer">
+              🆔 Order: ${r.idPesanan}<br>
+              <small>🕒 ${r.waktu.toLocaleString("id-ID")}</small><br>
+              <button onclick="editRating('${r.idProduk}', '${r.idRating}', '${r.komentar.replace(/'/g, "\\'")}', ${r.rating})" class="btn-mini">✏️ Edit</button>
+              <button onclick="hapusRating('${r.idProduk}', '${r.idRating}')" class="btn-mini" style="color:red;">🗑 Hapus</button>
+            </div>
+          </div>
+        `).join("")}
+      `;
+    } catch (err) {
+      console.error("❌ Gagal load admin-rating:", err);
+      container.innerHTML = `<p style="color:red;">Gagal memuat rating.</p>`;
+    }
+  })(); // Immediately Invoked Async Function Expression
+}
+
+
+
 
 if (page === "users-management") {
   const container = document.getElementById("page-container");
@@ -1245,198 +1305,167 @@ else if (page === 'pesanan-admin') {
 
 
 
-
 if (page === "livechat-admin") {
   const container = document.getElementById("page-container");
   container.innerHTML = `<p>Memuat Live Chat Admin...</p>`;
 
   const db = firebase.firestore();
-  const adminUid = "JtD1wA2wkzVg6SWwWSFTxFZMhxO2"; // Ganti sesuai UID adminmu
-  let currentChatUser = null;
+  const adminUid = "JtD1wA2wkzVg6SWwWSFTxFZMhxO2";
   let unsubscribeChat = null;
 
   async function renderLiveChatPanel() {
     try {
-      // Ambil status live chat
-      const settingDoc = await db.collection("pengaturan").doc("liveChatStatus").get();
-      const liveChatStatus = settingDoc.exists ? settingDoc.data().status || "offline" : "offline";
+      const pengaturan = await db.collection("pengaturan").doc("liveChatStatus").get();
+      const status = pengaturan.exists ? pengaturan.data().status || "offline" : "offline";
 
-      // Ambil 50 chat terbaru
       const chatSnapshot = await db.collection("chat")
         .orderBy("waktu", "desc")
         .limit(50)
         .get();
 
-      // Kumpulkan user unik yang chat dengan admin
-      const usersMap = new Map();
+      const userMap = new Map();
+
       chatSnapshot.docs.forEach(doc => {
         const data = doc.data();
-        const otherUid = data.dari !== adminUid ? data.dari : data.ke;
-        if (!usersMap.has(otherUid)) {
-          usersMap.set(otherUid, { lastChat: data.waktu, unreadCount: 0 });
+        const uidUser = data.dari !== adminUid ? data.dari : data.ke;
+        if (uidUser !== adminUid && !userMap.has(uidUser)) {
+          userMap.set(uidUser, {
+            uid: uidUser,
+            waktu: data.waktu?.toDate() || new Date(),
+            unread: 0
+          });
         }
       });
 
-      // Hitung unread pesan per user (pesan ke admin dengan status_baca false)
-      const unreadSnapshot = await db.collection("chat")
+      const unreadSnap = await db.collection("chat")
         .where("ke", "==", adminUid)
         .where("status_baca", "==", false)
         .get();
 
-      unreadSnapshot.docs.forEach(doc => {
+      unreadSnap.docs.forEach(doc => {
         const data = doc.data();
-        if (usersMap.has(data.dari)) {
-          usersMap.get(data.dari).unreadCount++;
+        if (userMap.has(data.dari)) {
+          userMap.get(data.dari).unread++;
         }
       });
 
       container.innerHTML = `
         <h2>💬 Live Chat Admin</h2>
-        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
-          <span>Status Live Chat:</span>
+        <div style="margin-bottom:12px;">
+          Status Live Chat: 
           <label class="toggle-switch">
-            <input type="checkbox" id="toggle-live-chat-switch" ${liveChatStatus === "online" ? "checked" : ""} />
+            <input type="checkbox" id="toggle-live-chat-switch" ${status === "online" ? "checked" : ""} />
             <span class="slider"></span>
           </label>
-          <span id="live-chat-status-text" style="font-weight:bold; color:${liveChatStatus === 'online' ? 'green' : 'red'};">
-            ${liveChatStatus.toUpperCase()}
+          <span id="live-chat-status-text" style="font-weight:bold; color:${status === 'online' ? 'green' : 'red'};">
+            ${status.toUpperCase()}
           </span>
         </div>
         <hr />
-        <div id="live-chat-users-list" style="max-height: 400px; overflow-y:auto; margin-top:10px;">
-          ${usersMap.size === 0 ? "<p>Tidak ada chat aktif.</p>" : ""}
-        </div>
+        <div id="live-chat-users-list" style="max-height:300px; overflow-y:auto; margin-top:10px;"></div>
         <div id="live-chat-chatbox" style="margin-top:20px;"></div>
       `;
 
-      // Render list user
-      const usersListElem = document.getElementById("live-chat-users-list");
-      usersMap.forEach((val, key) => {
-        const badge = val.unreadCount > 0
-          ? `<span>${val.unreadCount}</span>`
-          : "";
-        const userBtn = document.createElement("button");
-        userBtn.innerHTML = key + badge;
-        userBtn.style = `
-          display:block; width:100%; text-align:left; padding:8px; 
-          cursor:pointer; border:none; background:#f0f0f0; margin-bottom:4px; 
-          border-radius:6px; font-weight:600; font-size:14px; color:#333;
-          display: flex; justify-content: space-between; align-items: center;
-          transition: background-color 0.2s ease;
+      const usersList = document.getElementById("live-chat-users-list");
+      userMap.forEach((val, uid) => {
+        const btn = document.createElement("button");
+        btn.textContent = `${uid}`;
+        btn.style = `
+          display:block; width:100%; text-align:left; padding:8px;
+          margin-bottom:4px; background:#eee; border:none; border-radius:6px;
+          font-weight:bold; cursor:pointer;
         `;
-        userBtn.onmouseover = () => userBtn.style.backgroundColor = "#e0e0e0";
-        userBtn.onmouseout = () => userBtn.style.backgroundColor = "#f0f0f0";
-        userBtn.onclick = () => openLiveChatWithUser(key);
-        usersListElem.appendChild(userBtn);
+        if (val.unread > 0) {
+          const badge = document.createElement("span");
+          badge.textContent = val.unread;
+          badge.style = `
+            float:right; background:red; color:white; padding:2px 8px;
+            border-radius:12px; font-size:12px;
+          `;
+          btn.appendChild(badge);
+        }
+        btn.onclick = () => openChatWith(uid);
+        usersList.appendChild(btn);
       });
 
-      // Toggle status live chat
-      const toggleSwitch = document.getElementById("toggle-live-chat-switch");
-      const statusText = document.getElementById("live-chat-status-text");
-
-      toggleSwitch.onchange = async () => {
-        const newStatus = toggleSwitch.checked ? "online" : "offline";
+      document.getElementById("toggle-live-chat-switch").onchange = async (e) => {
+        const newStatus = e.target.checked ? "online" : "offline";
         await db.collection("pengaturan").doc("liveChatStatus").set({ status: newStatus });
-        statusText.textContent = newStatus.toUpperCase();
-        statusText.style.color = newStatus === "online" ? "green" : "red";
-        alert("Status live chat diubah menjadi: " + newStatus.toUpperCase());
+        document.getElementById("live-chat-status-text").textContent = newStatus.toUpperCase();
+        document.getElementById("live-chat-status-text").style.color = newStatus === "online" ? "green" : "red";
       };
-
-    } catch (error) {
-      container.innerHTML = `<p style="color:red;">Terjadi kesalahan: ${error.message}</p>`;
+    } catch (e) {
+      container.innerHTML = `<p style="color:red;">❌ ${e.message}</p>`;
     }
   }
 
-  async function openLiveChatWithUser(userId) {
-    currentChatUser = userId;
-    const chatContainer = document.getElementById("live-chat-chatbox");
-    chatContainer.innerHTML = `<p>Memuat chat dengan ${userId}...</p>`;
-
-    // Jika ada subscription chat sebelumnya, unsubscribe dulu
+  async function openChatWith(userId) {
     if (unsubscribeChat) unsubscribeChat();
 
-    const messagesElem = document.createElement("div");
-    messagesElem.style.cssText = `
-      height:300px; overflow-y:auto; border:1px solid #ccc; 
-      padding:8px; border-radius:8px; background:#fafafa; 
-      display:flex; flex-direction: column; gap: 6px;
+    const box = document.getElementById("live-chat-chatbox");
+    box.innerHTML = `
+      <div id="admin-chat-messages" style="height:300px; overflow-y:auto; padding:10px; border:1px solid #ccc; border-radius:8px; background:#fafafa;"></div>
+      <div style="margin-top:8px;">
+        <input id="admin-chat-input" style="width:70%; padding:6px;" placeholder="Tulis pesan..." />
+        <button id="admin-send-btn" style="padding:6px 10px;">Kirim</button>
+        <button id="admin-close-btn" style="padding:6px 10px; background:red; color:white;">Tutup</button>
+      </div>
     `;
-    chatContainer.appendChild(messagesElem);
 
-    const inputWrapper = document.createElement("div");
-    inputWrapper.style.marginTop = "8px";
-    inputWrapper.innerHTML = `
-      <input type="text" id="chat-input" placeholder="Ketik pesan..." 
-        style="width: 80%; padding:6px; border-radius:6px; border:1px solid #ccc;" />
-      <button id="send-chat-btn" 
-        style="padding:6px 12px; border-radius:6px; background:#4caf50; color:white; border:none; cursor:pointer;">
-        Kirim
-      </button>
-      <button id="close-chat-btn" 
-        style="padding:6px 12px; border-radius:6px; background:#f44336; color:white; border:none; cursor:pointer; margin-left:8px;">
-        Tutup Chat
-      </button>
-    `;
-    chatContainer.appendChild(inputWrapper);
+    const msgBox = document.getElementById("admin-chat-messages");
+    const input = document.getElementById("admin-chat-input");
+    const sendBtn = document.getElementById("admin-send-btn");
+    const closeBtn = document.getElementById("admin-close-btn");
+    const chatId = [userId, adminUid].sort().join("_");
 
-    const inputElem = inputWrapper.querySelector("#chat-input");
-    const sendBtn = inputWrapper.querySelector("#send-chat-btn");
-    const closeBtn = inputWrapper.querySelector("#close-chat-btn");
-
-    // Load chat realtime
     unsubscribeChat = db.collection("chat")
-      .where("dari", "in", [userId, adminUid])
-      .where("ke", "in", [userId, adminUid])
+      .where("chatId", "==", chatId)
       .orderBy("waktu", "asc")
       .onSnapshot(snapshot => {
-        messagesElem.innerHTML = "";
+        msgBox.innerHTML = "";
         snapshot.docs.forEach(doc => {
           const data = doc.data();
-          const isAdmin = data.dari === adminUid;
           const bubble = document.createElement("div");
-          bubble.style.padding = "8px";
-          bubble.style.borderRadius = "10px";
-          bubble.style.maxWidth = "70%";
-          bubble.style.backgroundColor = isAdmin ? "#dcf8c6" : "#fff";
-          bubble.style.alignSelf = isAdmin ? "flex-end" : "flex-start";
           bubble.textContent = data.isi;
-          messagesElem.appendChild(bubble);
+          bubble.style = `
+            padding:8px; margin:4px 0;
+            background:${data.dari === adminUid ? '#dcf8c6' : '#fff'};
+            border-radius:10px; max-width:70%;
+            align-self: ${data.dari === adminUid ? 'flex-end' : 'flex-start'};
+          `;
+          msgBox.appendChild(bubble);
 
-          // Tandai pesan user ke admin sudah dibaca
-          if (!isAdmin && data.status_baca === false) {
+          if (data.ke === adminUid && !data.status_baca) {
             doc.ref.update({ status_baca: true });
           }
         });
-        messagesElem.scrollTop = messagesElem.scrollHeight;
+        msgBox.scrollTop = msgBox.scrollHeight;
       });
 
-    // Kirim pesan admin ke user
     sendBtn.onclick = async () => {
-      const text = inputElem.value.trim();
+      const text = input.value.trim();
       if (!text) return;
       await db.collection("chat").add({
         dari: adminUid,
         ke: userId,
         isi: text,
         waktu: new Date(),
+        chatId: chatId,
         status_baca: false
       });
-      inputElem.value = "";
+      input.value = "";
     };
 
-    // Tombol tutup chat
     closeBtn.onclick = () => {
-      if (unsubscribeChat) {
-        unsubscribeChat();
-        unsubscribeChat = null;
-      }
-      currentChatUser = null;
-      chatContainer.innerHTML = "";
+      if (unsubscribeChat) unsubscribeChat();
+      document.getElementById("live-chat-chatbox").innerHTML = "";
     };
   }
 
   renderLiveChatPanel();
 }
+
+
 
 
 
@@ -3442,64 +3471,17 @@ else if (page === "admin-kirim-pesan") {
     </div>
 
     <div id="riwayat-pesan" style="margin-top:30px;">
-      <h3>📜 Riwayat Pesan Terakhir</h3>
-      <p>⏳ Memuat riwayat pesan...</p>
-    </div>
-  `;
-
-  loadTargetDropdown();
-  loadRiwayatPesanAdmin(); // panggil fungsi ini
-}
-
-
- else if (page === "chat") {
-  const container = document.getElementById("page-container");
-  const db = firebase.firestore();
-  const user = firebase.auth().currentUser;
-
-  if (!user) {
-    container.innerHTML = "<p>❌ Harap login terlebih dahulu.</p>";
-    return;
-  }
-
-  const adminUid = data?.uid || "JtD1wA2wkzVg6SWwWSFTxFZMhxO2";
-  const chatRef = db.collection("chat");
-  const chatId = [user.uid, adminUid].sort().join("_");
-
-  container.innerHTML = `
-    <div class="chat-box">
-      <div class="chat-messages" id="chat-messages">Memuat pesan...</div>
-      <div class="chat-input">
-        <input type="text" id="pesan" placeholder="Tulis pesan..." />
-        <button onclick="kirimPesanChat('${chatId}', '${user.uid}', '${adminUid}')">Kirim</button>
+      <h3>📜 Riwayat Pesan</h3>
+      <div id="pesan-list" class="card-list-view">
+        <p>⏳ Memuat riwayat pesan...</p>
       </div>
     </div>
   `;
 
-  // Tampilkan chat real-time
-  chatRef.where("chatId", "==", chatId).orderBy("timestamp")
-    .onSnapshot((snap) => {
-      const pesanBox = document.getElementById("chat-messages");
-      if (snap.empty) {
-        pesanBox.innerHTML = "<p>Belum ada pesan.</p>";
-        return;
-      }
-
-      let html = "";
-      snap.forEach(doc => {
-        const p = doc.data();
-        const align = p.from === user.uid ? "right" : "left";
-        html += `
-          <div class="chat-bubble ${align}">
-            <div class="bubble">${p.pesan}</div>
-            <small>${new Date(p.timestamp).toLocaleTimeString("id-ID", { hour: '2-digit', minute: '2-digit' })}</small>
-          </div>
-        `;
-      });
-      pesanBox.innerHTML = html;
-      pesanBox.scrollTop = pesanBox.scrollHeight;
-    });
+  loadTargetDropdown();
+  loadRiwayatPesanAdmin();
 }
+
 
 else if (page === "daftar-chat-user") {
   const container = document.getElementById("page-container");
@@ -3696,6 +3678,147 @@ else if (page === "laporan-driver-admin") {
 
 
 ///  BATAS  ////
+
+function editRating(idProduk, idRating, komentarLama, ratingLama) {
+  const popup = document.getElementById("popup-greeting");
+  const overlay = document.getElementById("popup-overlay");
+
+  popup.innerHTML = `
+    <div class="popup-container-detail-produk">
+      <div class="popup-header-detail-produk">
+        <span class="popup-close-detail-produk" onclick="tutupPopup()">✕</span>
+      </div>
+
+      <div class="popup-text-detail-produk">
+        <h3>✏️ Edit Rating</h3>
+
+        <label for="edit-rating-nilai">Rating (1–5):</label>
+        <input type="number" id="edit-rating-nilai" value="${ratingLama}" min="1" max="5" style="width: 60px;" />
+
+        <label for="edit-rating-komentar" style="margin-top:10px;">Komentar:</label>
+        <textarea id="edit-rating-komentar" rows="4" style="width:100%;">${komentarLama}</textarea>
+
+        <button onclick="simpanEditRating('${idProduk}', '${idRating}')" class="btn-mini" style="margin-top:10px;">💾 Simpan Perubahan</button>
+      </div>
+    </div>
+  `;
+
+  popup.style.display = "block";
+  overlay.style.display = "block";
+  document.body.classList.add("popup-active");
+}
+
+async function simpanEditRating(idProduk, idRating) {
+  const db = firebase.firestore();
+  const nilai = parseInt(document.getElementById("edit-rating-nilai").value);
+  const komentar = document.getElementById("edit-rating-komentar").value.trim();
+
+  if (!nilai || nilai < 1 || nilai > 5) return alert("❌ Rating harus antara 1–5.");
+  if (!komentar) return alert("❌ Komentar tidak boleh kosong.");
+
+  try {
+    await db.collection("produk")
+      .doc(idProduk)
+      .collection("rating")
+      .doc(idRating)
+      .update({
+        rating: nilai,
+        ulasan: komentar,
+        waktu: Date.now()
+      });
+
+    alert("✅ Rating berhasil diperbarui.");
+    tutupPopup();
+    loadContent("admin-rating");
+
+  } catch (err) {
+    console.error("❌ Gagal update rating:", err);
+    alert("❌ Terjadi kesalahan saat menyimpan perubahan.");
+  }
+}
+
+async function hapusRating(idProduk, idRating) {
+  const konfirmasi = confirm("⚠️ Yakin ingin menghapus rating ini?");
+  if (!konfirmasi) return;
+
+  const db = firebase.firestore();
+  try {
+    await db.collection("produk")
+      .doc(idProduk)
+      .collection("rating")
+      .doc(idRating)
+      .delete();
+
+    alert("✅ Rating berhasil dihapus.");
+    loadContent("admin-rating");
+  } catch (err) {
+    console.error("❌ Gagal menghapus rating:", err);
+    alert("❌ Terjadi kesalahan saat menghapus.");
+  }
+}
+
+function editPesan(docPath, isiLama) {
+  const popup = document.getElementById("popup-greeting");
+  const overlay = document.getElementById("popup-overlay");
+
+  popup.innerHTML = `
+    <div class="popup-container-detail-produk">
+      <div class="popup-header-detail-produk">
+        <span class="popup-close-detail-produk" onclick="tutupPopup()">✕</span>
+      </div>
+
+      <div class="popup-text-detail-produk">
+        <h3>✏️ Edit Pesan</h3>
+
+        <label for="edit-isi-pesan">Pesan:</label>
+        <textarea id="edit-isi-pesan" rows="4" style="width:100%;">${isiLama}</textarea>
+
+        <button onclick="simpanEditPesan(\`${docPath}\`)" class="btn-mini" style="margin-top:10px;">💾 Simpan</button>
+      </div>
+    </div>
+  `;
+
+  popup.style.display = "block";
+  overlay.style.display = "block";
+  document.body.classList.add("popup-active");
+}
+
+async function simpanEditPesan(docPath) {
+  const db = firebase.firestore();
+  const isiBaru = document.getElementById("edit-isi-pesan").value.trim();
+  if (!isiBaru) return alert("❌ Pesan tidak boleh kosong.");
+
+  try {
+    await db.doc(docPath).update({
+      keterangan: isiBaru,
+      waktu: Date.now()
+    });
+
+    alert("✅ Pesan berhasil diperbarui.");
+    tutupPopup();
+    loadRiwayatPesanAdmin();
+  } catch (err) {
+    console.error("❌ Gagal update pesan:", err);
+    alert("❌ Gagal menyimpan perubahan.");
+  }
+}
+
+async function hapusPesan(docPath) {
+  const konfirmasi = confirm("⚠️ Yakin ingin menghapus pesan ini?");
+  if (!konfirmasi) return;
+
+  const db = firebase.firestore();
+
+  try {
+    await db.doc(docPath).delete();
+    alert("✅ Pesan berhasil dihapus.");
+    loadRiwayatPesanAdmin();
+  } catch (err) {
+    console.error("❌ Gagal hapus pesan:", err);
+    alert("❌ Terjadi kesalahan saat menghapus pesan.");
+  }
+}
+
 
 const GEOCODE_API_KEY = "c00bb655a8ab4a33adf7d27d2a904d8f";
 
@@ -5862,70 +5985,76 @@ async function kirimPesanKeAdmin() {
   if (!user) return;
 
   const uid = user.uid;
+  const adminUid = "JtD1wA2wkzVg6SWwWSFTxFZMhxO2";
   const input = document.getElementById("input-chat");
   const isiPesan = input.value.trim();
   if (!isiPesan) return;
 
   const db = firebase.firestore();
   const waktu = firebase.firestore.Timestamp.now();
+  const chatId = [uid, adminUid].sort().join("_");
 
-  // Kirim pesan user ke admin
+  // Tambahkan pesan user
   await db.collection("chat").add({
     dari: uid,
-    ke: "JtD1wA2wkzVg6SWwWSFTxFZMhxO2", // admin ID
+    ke: adminUid,
+    chatId: chatId,
     isi: isiPesan,
-    waktu: waktu,
+    waktu: waktu
   });
 
   input.value = "";
 
-  // Tentukan balasan otomatis sistem berdasarkan isi pesan user
+  // Balasan otomatis sistem
+  const isiLower = isiPesan.toLowerCase();
   let balasan = "";
 
-  if (isiPesan.toLowerCase().includes("topup")) {
+  if (isiLower.includes("topup")) {
     balasan = "🔁 Untuk topup saldo, silakan gunakan menu Dompet → Top Up.";
-  } else if (isiPesan.toLowerCase().includes("login")) {
-    balasan = "🔒 Coba logout dan login kembali jika mengalami masalah login.";
-  } else if (isiPesan.toLowerCase().includes("tarik")) {
-    balasan = "💸 Penarikan saldo bisa dilakukan melalui menu Dompet → Tarik Saldo.";
-  } else if (isiPesan.toLowerCase().includes("biaya")) {
-    balasan = "💡 Tidak ada biaya tambahan untuk penggunaan normal.";
-  } else if (isiPesan.toLowerCase().includes("verifikasi")) {
-    balasan = "🕒 Proses verifikasi akun biasanya 1-2 hari kerja.";
+  } else if (isiLower.includes("login")) {
+    balasan = "🔒 Jika mengalami kendala login, coba logout lalu login kembali.";
+  } else if (isiLower.includes("tarik")) {
+    balasan = "💸 Penarikan saldo bisa dilakukan di menu Dompet → Tarik Saldo.";
+  } else if (isiLower.includes("biaya")) {
+    balasan = "💡 Penggunaan normal tidak dikenakan biaya tambahan.";
+  } else if (isiLower.includes("verifikasi")) {
+    balasan = "🕒 Proses verifikasi akun membutuhkan waktu 1–2 hari kerja.";
   }
 
-  // Kirim balasan sistem jika ada
   if (balasan) {
     await db.collection("chat").add({
-      dari: "SISTEM",       // ID khusus untuk sistem
+      dari: "SISTEM",
       ke: uid,
+      chatId: chatId,
       isi: balasan,
-      waktu: firebase.firestore.Timestamp.now(),
+      waktu: firebase.firestore.Timestamp.now()
     });
   }
 }
 
 
+
+
 async function renderChatBox() {
   const user = firebase.auth().currentUser;
   if (!user) return;
-  const uid = user.uid;
 
+  const uid = user.uid;
+  const adminUid = "JtD1wA2wkzVg6SWwWSFTxFZMhxO2";
   const chatBox = document.querySelector(".-admin-chat-box");
   const timestampElem = document.getElementById("chat-timestamp");
+  const avatarDefault = "https://w7.pngwing.com/pngs/205/731/png-transparent-default-avatar.png";
+
   if (!chatBox || !timestampElem) return;
 
   const db = firebase.firestore();
-
-  const avatarDefault = "https://w7.pngwing.com/pngs/205/731/png-transparent-default-avatar.png";
+  const chatId = [uid, adminUid].sort().join("_");
 
   db.collection("chat")
-    .where("dari", "in", [uid, "JtD1wA2wkzVg6SWwWSFTxFZMhxO2", "SISTEM"])
-    .where("ke", "in", [uid, "JtD1wA2wkzVg6SWwWSFTxFZMhxO2", "SISTEM"])
+    .where("chatId", "==", chatId)
     .orderBy("waktu", "asc")
     .onSnapshot(async (snapshot) => {
       chatBox.innerHTML = "";
-
       let lastTimestamp = "";
 
       for (const doc of snapshot.docs) {
@@ -5952,13 +6081,12 @@ async function renderChatBox() {
         } else if (data.dari === "SISTEM") {
           namaPengirim = "[Sistem]";
         } else {
-          const adminDoc = await db.collection("users").doc("JtD1wA2wkzVg6SWwWSFTxFZMhxO2").get();
+          const adminDoc = await db.collection("users").doc(adminUid).get();
           namaPengirim = adminDoc.exists ? adminDoc.data().nama || "Admin" : "Admin";
         }
 
         const pesanElem = document.createElement("div");
         pesanElem.className = "-admin-chat-message " + (isSender ? "right" : "left");
-
         pesanElem.innerHTML = `
           <img class="-admin-chat-avatar" src="${avatar}" />
           <div class="-admin-chat-bubble">
@@ -5967,35 +6095,37 @@ async function renderChatBox() {
             <div class="-admin-chat-waktu">${waktuStr}</div>
           </div>
         `;
-
         chatBox.appendChild(pesanElem);
       }
-
-// ... bagian akhir renderChatBox setelah loop chat bubble ...
-const templateBubble = document.createElement("div");
-templateBubble.className = "-admin-chat-message left";
-templateBubble.innerHTML = `
-  <img class="-admin-chat-avatar" src="${avatarDefault}" />
-  <div class="-admin-chat-bubble" style="background:#fff7d1">
-    <div class="-admin-chat-nama">[Sistem]</div>
-    <div class="-admin-chat-isi">Silakan pilih salah satu pertanyaan di bawah ini:</div>
-    <div class="-admin-chat-template-bubbles" style="margin-top: 8px;">
-      <span onclick="isiTemplate('Bagaimana cara topup saldo?')">Cara topup saldo</span>
-      <span onclick="isiTemplate('Saya mengalami kendala saat login')">Kendala login</span>
-      <span onclick="isiTemplate('Bagaimana cara menarik saldo?')">Tarik saldo</span>
-      <span onclick="isiTemplate('Berapa lama proses verifikasi?')">Lama verifikasi</span>
-    </div>
-    <button onclick="hubungkanKeAdmin()" style="margin-top: 12px; background:#4caf50; color:#fff; border:none; border-radius: 16px; padding: 8px 16px; cursor:pointer; font-weight:bold;">
-      Chat dengan Admin
-    </button>
-  </div>
-`;
-chatBox.appendChild(templateBubble);
-
 
       chatBox.scrollTop = chatBox.scrollHeight;
     });
 }
+
+
+function showChatPopupNotification(pesan) {
+  const notif = document.createElement("div");
+  notif.className = "chat-popup-notif";
+  notif.innerHTML = `
+    <div class="chat-popup-content">
+      <strong>📩 Pesan Baru dari Admin</strong>
+      <p>${pesan}</p>
+    </div>
+  `;
+
+  document.body.appendChild(notif);
+
+  setTimeout(() => {
+    notif.classList.add("show");
+  }, 100);
+
+  // Sembunyikan otomatis dalam 5 detik
+  setTimeout(() => {
+    notif.classList.remove("show");
+    setTimeout(() => notif.remove(), 300);
+  }, 5000);
+}
+
 
 
 async function hubungkanKeAdmin() {
@@ -6003,24 +6133,25 @@ async function hubungkanKeAdmin() {
 
   try {
     const statusDoc = await db.collection("pengaturan").doc("liveChatStatus").get();
+    const input = document.getElementById("input-chat");
 
     if (statusDoc.exists && statusDoc.data().status === "online") {
-      // Admin online
-      const input = document.getElementById("input-chat");
+      // ✅ Admin sedang online
       if (input) {
         input.focus();
         input.value = "";
       }
-      alert("Admin sedang online, silakan ketik pesan dan kirim.");
+      alert("✅ Admin sedang online! Silakan ketik pesan dan kirim sekarang.");
     } else {
-      // Admin offline
-      alert("Admin sedang tidak tersedia sekarang. Silakan tinggalkan pesan, kami akan membalas secepatnya.");
+      // ❌ Admin sedang offline
+      alert("⚠️ Admin sedang tidak tersedia saat ini. Tinggalkan pesan dan kami akan membalas secepatnya.");
     }
   } catch (error) {
-    console.error("Gagal cek status live chat admin:", error);
-    alert("Terjadi kesalahan saat mengecek status admin. Silakan coba lagi nanti.");
+    console.error("❌ Gagal cek status live chat admin:", error);
+    alert("❌ Gagal memeriksa status admin. Coba lagi nanti.");
   }
 }
+
 
 
 
@@ -6029,61 +6160,60 @@ async function hubungkanKeAdmin() {
 async function loadRiwayatPesanAdmin() {
   const db = firebase.firestore();
   const riwayatEl = document.getElementById("riwayat-pesan");
-  let pesanRows = "";
+  const listEl = document.createElement("div");
+  listEl.className = "card-list-view";
+  riwayatEl.innerHTML = `<h3>📜 Riwayat Pesan</h3>`;
 
   try {
-    // Ambil 20 pesan terbaru dari pesan_driver dan pesan_toko
-    const [driverSnap, sellerSnap] = await Promise.all([
-      db.collectionGroup("pesan").where("dari", "==", "Admin").orderBy("waktu", "desc").limit(20).get(),
-    ]);
+    const snap = await db
+      .collectionGroup("pesan")
+      .where("dari", "==", "Admin")
+      .orderBy("waktu", "desc")
+      .limit(20)
+      .get();
 
-    if (driverSnap.empty) {
-      riwayatEl.innerHTML += `<p>Belum ada riwayat pesan.</p>`;
+    if (snap.empty) {
+      riwayatEl.innerHTML += `<p><em>Belum ada riwayat pesan terkirim.</em></p>`;
       return;
     }
 
-    pesanRows += `
-      <table style="width:100%; border-collapse: collapse; margin-top:10px;">
-        <thead>
-          <tr style="background:#f5f5f5;">
-            <th style="padding:6px; border:1px solid #ccc;">No</th>
-            <th style="padding:6px; border:1px solid #ccc;">Tanggal</th>
-            <th style="padding:6px; border:1px solid #ccc;">Waktu</th>
-            <th style="padding:6px; border:1px solid #ccc;">Perihal</th>
-            <th style="padding:6px; border:1px solid #ccc;">Keterangan</th>
-            <th style="padding:6px; border:1px solid #ccc;">Tujuan</th>
-          </tr>
-        </thead>
-        <tbody>
-    `;
-
-    let no = 1;
-    driverSnap.forEach(doc => {
+    snap.forEach(doc => {
       const data = doc.data();
-      const waktu = data.waktu?.toDate?.();
-      const tanggal = waktu?.toLocaleDateString("id-ID") || "-";
-      const jam = waktu?.toLocaleTimeString("id-ID", { hour: '2-digit', minute: '2-digit' }) || "-";
-      const tujuan = doc.ref.path.includes("pesan_driver") ? `Driver (${doc.ref.parent.parent.id})` : `Seller (${doc.ref.parent.parent.id})`;
+      const refPath = doc.ref.path;
+      const waktu = data.waktu?.toDate?.() || new Date();
+      const tanggal = waktu.toLocaleDateString("id-ID");
+      const jam = waktu.toLocaleTimeString("id-ID", { hour: '2-digit', minute: '2-digit' });
+      const isDriver = refPath.includes("pesan_driver");
+      const tujuanID = doc.ref.parent.parent.id;
+      const tujuan = isDriver ? `🛵 Driver (${tujuanID})` : `🏪 Seller (${tujuanID})`;
 
-      pesanRows += `
-        <tr>
-          <td style="padding:6px; border:1px solid #ccc;">${no++}</td>
-          <td style="padding:6px; border:1px solid #ccc;">${tanggal}</td>
-          <td style="padding:6px; border:1px solid #ccc;">${jam}</td>
-          <td style="padding:6px; border:1px solid #ccc;">${data.perihal}</td>
-          <td style="padding:6px; border:1px solid #ccc;">${data.keterangan}</td>
-          <td style="padding:6px; border:1px solid #ccc;">${tujuan}</td>
-        </tr>
+      const card = document.createElement("div");
+      card.className = "pesan-card";
+      card.innerHTML = `
+        <div class="pesan-info">
+          <div class="pesan-header">
+            <strong>${tujuan}</strong> - <small>${tanggal} ${jam}</small>
+          </div>
+          <div><strong>Perihal:</strong> ${data.perihal || "-"}</div>
+          <div><strong>Keterangan:</strong> ${data.keterangan || data.pesan || "-"}</div>
+          <div><strong>ID Order:</strong> ${data.idPesanan || "-"}</div>
+          <div class="action-buttons">
+            <button onclick="hapusPesan('${doc.ref.path}')" class="btn-mini btn-red">🗑 Hapus</button>
+            <button onclick='editPesan("${doc.ref.path}", "${data.perihal || ""}", "${data.keterangan || data.pesan || ""}")' class="btn-mini">✏️ Edit</button>
+          </div>
+        </div>
       `;
+      listEl.appendChild(card);
     });
 
-    pesanRows += `</tbody></table>`;
-    riwayatEl.innerHTML = `<h3>📜 Riwayat Pesan Terakhir</h3>${pesanRows}`;
+    riwayatEl.appendChild(listEl);
 
   } catch (err) {
-    riwayatEl.innerHTML += `<p style="color:red;">❌ Gagal memuat riwayat: ${err.message}</p>`;
+    console.error("❌ Gagal memuat riwayat:", err);
+    riwayatEl.innerHTML += `<p style="color:red;">❌ Gagal memuat: ${err.message}</p>`;
   }
 }
+
 
 
 async function loadTargetDropdown() {
@@ -7389,10 +7519,14 @@ function renderBintang(divId) {
   }
 }
 
-async function kirimRating(idPesanan, namaUser) {
+async function kirimRating(idPesanan) {
   const db = firebase.firestore();
   const user = firebase.auth().currentUser;
   if (!user) return alert("Silakan login terlebih dahulu.");
+
+  // ✅ Ambil nama user asli dari Firestore
+  const userDoc = await db.collection("users").doc(user.uid).get();
+  const namaUser = userDoc.exists ? (userDoc.data().nama || "Anonim") : "Anonim";
 
   const pesananRef = db.collection("pesanan").doc(idPesanan);
   const pesananDoc = await pesananRef.get();
@@ -7423,23 +7557,22 @@ async function kirimRating(idPesanan, namaUser) {
   const idDriverUID = driverData.idDriver || "-";
   const idTokoUID = driverData.idToko || "-";
 
-  // ✅ Update rata-rata rating
- async function updateAverageRating(ref, ratingBaru) {
-  const doc = await ref.get();
-  if (!doc.exists) return;
-  const data = doc.data();
-  const jumlahLama = data.jumlahRating || 0;
-  const totalLama = data.totalRating || 0;
+  // ✅ Fungsi bantu update rating rata-rata
+  async function updateAverageRating(ref, ratingBaru) {
+    const doc = await ref.get();
+    if (!doc.exists) return;
+    const data = doc.data();
+    const jumlahLama = data.jumlahRating || 0;
+    const totalLama = data.totalRating || 0;
 
-  const jumlahBaru = jumlahLama + 1;
-  const totalBaru = totalLama + ratingBaru;
+    const jumlahBaru = jumlahLama + 1;
+    const totalBaru = totalLama + ratingBaru;
 
-  await ref.update({
-    jumlahRating: jumlahBaru,
-    totalRating: totalBaru
-  });
-}
-
+    await ref.update({
+      jumlahRating: jumlahBaru,
+      totalRating: totalBaru
+    });
+  }
 
   // ✅ Rating untuk DRIVER
   if (idDriverUID !== "-") {
@@ -7462,7 +7595,7 @@ async function kirimRating(idPesanan, namaUser) {
 
       await updateAverageRating(driverRef, ratingDriver);
 
-      // 💬 Pesan ke: pesan_driver > doc(VLD-xxx) > pesan
+      // 💬 Pesan ke driver
       await db.collection("pesan_driver")
         .doc(driverDocFire.id)
         .collection("pesan")
@@ -7471,7 +7604,7 @@ async function kirimRating(idPesanan, namaUser) {
           idPesanan,
           pesan: `✅ Orderan ID ${idPesanan} selesai.\n⭐ Rating: ${"⭐".repeat(ratingDriver)}\n📝 Ulasan: ${ulasanDriver || "-"}`,
           waktu: waktuSekarang,
-          dari: namaUser || "Customer",
+          dari: namaUser,
           dibaca: false
         });
     }
@@ -7515,7 +7648,8 @@ async function kirimRating(idPesanan, namaUser) {
       namaUser,
       rating: ratingResto,
       ulasan: ulasanResto,
-      waktu: waktuSekarang
+      waktu: waktuSekarang,
+      idPesanan
     });
 
     await updateAverageRating(produkRef, ratingResto);
@@ -9137,7 +9271,6 @@ async function simpanProduk(event, idToko) {
   event.preventDefault();
   const db = firebase.firestore();
 
-  // Ambil input
   const namaProduk = document.getElementById("namaProduk").value.trim();
   const harga = parseInt(document.getElementById("harga").value);
   const stok = parseInt(document.getElementById("stok").value);
@@ -9145,17 +9278,13 @@ async function simpanProduk(event, idToko) {
   const deskripsi = document.getElementById("deskripsi").value.trim();
   const fileInput = document.getElementById("fileGambar");
   const statusUpload = document.getElementById("statusUpload");
+  const kategori = document.getElementById("kategori").value;
 
-  // Ambil kategori (checkbox)
-  const kategori = [...document.querySelectorAll('input[name="kategori"]:checked')].map(el => el.value);
-
-  // Validasi
-  if (!namaProduk || !harga || !stok || !estimasi || kategori.length === 0) {
+  if (!namaProduk || !harga || !stok || !estimasi || !kategori) {
     alert("❌ Harap lengkapi semua data produk termasuk kategori.");
     return;
   }
 
-  // Upload gambar
   const file = fileInput.files[0];
   if (!file) {
     alert("❌ Harap pilih gambar produk.");
@@ -9164,9 +9293,10 @@ async function simpanProduk(event, idToko) {
 
   let urlGambar = "";
   try {
+    // Upload ke Cloudinary
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", "vlcravepreset"); // preset Cloudinary kamu
+    formData.append("upload_preset", "VLCrave-Express");
     formData.append("folder", "produk");
 
     statusUpload.textContent = "📤 Mengupload gambar ke Cloudinary...";
@@ -9174,6 +9304,7 @@ async function simpanProduk(event, idToko) {
       method: "POST",
       body: formData
     });
+
     const data = await res.json();
     if (data.secure_url) {
       urlGambar = data.secure_url;
@@ -9182,7 +9313,7 @@ async function simpanProduk(event, idToko) {
       throw new Error("Upload gagal, tidak ada secure_url.");
     }
 
-    // Ambil Add-On jika ada
+    // Ambil Add-On jika ada (opsional, meskipun tidak disimpan ke subkoleksi)
     const addonNodes = document.querySelectorAll(".addon-item");
     const addOn = Array.from(addonNodes).map(node => {
       return {
@@ -9191,8 +9322,20 @@ async function simpanProduk(event, idToko) {
       };
     }).filter(a => a.nama && a.harga);
 
-    // Buat data produk
+    // 🔧 Buat custom ID (misalnya VLC-1234)
+    const random4Digit = Math.floor(1000 + Math.random() * 9000);
+    const customId = `VLC-${random4Digit}`;
+
+    // Pastikan tidak ada duplikat ID (opsional tapi disarankan)
+    const check = await db.collection("produk").doc(customId).get();
+    if (check.exists) {
+      alert("⚠️ Gagal membuat ID unik. Silakan coba lagi.");
+      return;
+    }
+
+    // Simpan produk ke Firestore dengan custom ID
     const dataProduk = {
+      idProduk: customId,
       idToko,
       namaProduk,
       harga,
@@ -9205,7 +9348,7 @@ async function simpanProduk(event, idToko) {
       dibuat: firebase.firestore.FieldValue.serverTimestamp()
     };
 
-    await db.collection("produk").add(dataProduk);
+    await db.collection("produk").doc(customId).set(dataProduk);
 
     alert("✅ Produk berhasil ditambahkan!");
     kelolaProduk(idToko);
@@ -9214,14 +9357,6 @@ async function simpanProduk(event, idToko) {
     alert("❌ Gagal menyimpan produk.");
   }
 }
-
-
-
-
-
-
-
-
 
 
 
@@ -9243,15 +9378,17 @@ async function editProduk(docId, idToko) {
       "Martabak", "Bakso", "Roti", "Jajanan", "Minuman", "Kue",
       "Promo", "Terfavorit", "Hemat", "Terdekat", "Termurah",
       "24jam", "Sehat", "Aneka Nasi", "Aneka Makanan", "Lauk",
-      "Sarapan", "Makan Siang", "Makan Malam"
+      "Sarapan", "Makan Siang", "Makan Malam", "Ayam", "Sate"
     ];
 
-    const checkboxKategoriHTML = semuaKategori.map(kat => `
-      <label class="kategori-item">
-        <input type="checkbox" name="kategori" value="${kat}" ${p.kategori?.includes(kat) ? "checked" : ""} />
-        ${kat}
-      </label>
-    `).join("");
+    const selectKategoriHTML = `
+      <select id="kategori" required>
+        <option value="">-- Pilih Kategori --</option>
+        ${semuaKategori.map(kat => `
+          <option value="${kat}" ${p.kategori === kat ? "selected" : ""}>${kat}</option>
+        `).join("")}
+      </select>
+    `;
 
     container.innerHTML = `
       <div class="form-box">
@@ -9279,12 +9416,7 @@ async function editProduk(docId, idToko) {
           <p id="statusUpload" style="color:green;"></p>
 
           <label>Kategori Produk:</label>
-          <div class="kategori-toggle-container">
-            <button type="button" onclick="toggleKategoriForm()" class="kategori-toggle-btn">+ Lihat/Pilih Kategori</button>
-            <div id="kategoriChecklist" class="kategori-checklist hidden">
-              ${checkboxKategoriHTML}
-            </div>
-          </div>
+          ${selectKategoriHTML}
 
           <button type="submit" class="btn-simpan">💾 Simpan Perubahan</button>
         </form>
@@ -9295,19 +9427,6 @@ async function editProduk(docId, idToko) {
     console.error("❌ Gagal load produk:", err);
     container.innerHTML = `<p style="color:red;">❌ Gagal memuat data produk.</p>`;
   }
-}
-
-function toggleKategoriForm() {
-  document.getElementById("kategoriChecklist").classList.toggle("hidden");
-}
-
-
-
-
-function toggleFieldPromoEdit() {
-  const kategori = document.getElementById("kategori").value;
-  const promoFields = document.getElementById("promo-fields");
-  promoFields.style.display = kategori === "Promo" ? "block" : "none";
 }
 
 
@@ -9323,16 +9442,16 @@ async function simpanEditProduk(event, docId, idToko) {
   const deskripsi = document.getElementById("deskripsi").value.trim();
   const fileInput = document.getElementById("fileGambar");
   const statusUpload = document.getElementById("statusUpload");
+  const kategori = document.getElementById("kategori").value;
 
-  const kategori = [...document.querySelectorAll('input[name="kategori"]:checked')].map(k => k.value);
-
-  if (!namaProduk || !harga || !stok || !estimasi || kategori.length === 0) {
+  // Validasi input
+  if (!namaProduk || !harga || !stok || !estimasi || !kategori) {
     alert("❌ Harap lengkapi semua data termasuk kategori.");
     return;
   }
 
   try {
-    // Ambil data lama
+    // Ambil data lama (untuk mempertahankan gambar lama jika tidak diganti)
     const doc = await db.collection("produk").doc(docId).get();
     const dataLama = doc.data();
     let urlGambar = dataLama.urlGambar;
@@ -9341,7 +9460,7 @@ async function simpanEditProduk(event, docId, idToko) {
     if (file) {
       const formData = new FormData();
       formData.append("file", file);
-      formData.append("upload_preset", "vlcravepreset"); // preset Cloudinary kamu
+      formData.append("upload_preset", "VLCrave-Express");
       formData.append("folder", "produk");
 
       statusUpload.textContent = "📤 Upload gambar ke Cloudinary...";
@@ -9349,6 +9468,7 @@ async function simpanEditProduk(event, docId, idToko) {
         method: "POST",
         body: formData
       });
+
       const data = await res.json();
       if (data.secure_url) {
         urlGambar = data.secure_url;
@@ -9364,7 +9484,7 @@ async function simpanEditProduk(event, docId, idToko) {
       stok,
       estimasi,
       deskripsi,
-      kategori,
+      kategori, // ✅ hanya value string
       urlGambar,
       diupdate: firebase.firestore.FieldValue.serverTimestamp()
     };
@@ -9377,10 +9497,6 @@ async function simpanEditProduk(event, docId, idToko) {
     alert("❌ Gagal menyimpan perubahan produk.");
   }
 }
-
-
-
-
 
 
 
@@ -9534,6 +9650,18 @@ async function toggleStatusProduk(idProduk, isChecked) {
 function formTambahProduk(idToko) {
   const container = document.getElementById("page-container");
 
+  const kategoriList = [
+    { label: "Martabak", value: "Martabak" },
+    { label: "Bakso", value: "Bakso" },
+    { label: "Roti", value: "Roti" },
+    { label: "Minuman", value: "Minuman" },
+    { label: "Kue", value: "Kue" },
+    { label: "Jajanan", value: "Jajanan" },
+    { label: "Sate", value: "Sate" },
+    { label: "Aneka Nasi", value: "Nasi" },
+    { label: "Ayam", value: "Ayam" }
+  ];
+
   container.innerHTML = `
     <div class="form-box">
       <h2>➕ Tambah Produk</h2>
@@ -9558,37 +9686,19 @@ function formTambahProduk(idToko) {
         <input id="fileGambar" type="file" accept="image/*" required />
         <p id="statusUpload" style="color:green;"></p>
 
-        <label>Kategori Produk:</label>
-        <div class="kategori-toggle-container">
-          <button type="button" onclick="toggleKategoriForm()" class="kategori-toggle-btn">+ Pilih Kategori Produk</button>
-          <div id="kategoriChecklist" class="kategori-checklist hidden">
-            ${[
-              "Martabak", "Bakso", "Roti", "Jajanan", "Minuman", "Kue",
-              "Promo", "Terfavorit", "Hemat", "Terdekat", "Termurah",
-              "24jam", "Sehat", "Aneka Nasi", "Aneka Makanan", "Lauk",
-              "Sarapan", "Makan Siang", "Makan Malam"
-            ]
-              .map(kat => `
-                <label class="kategori-item">
-                  <input type="checkbox" name="kategori" value="${kat}" />
-                  ${kat}
-                </label>
-              `)
-              .join("")}
-          </div>
-        </div>
-
-        <hr>
-        <h4>Tambah Add-On (Opsional)</h4>
-        <div id="addon-container"></div>
-        <button type="button" onclick="tambahFieldAddon()">➕ Tambah Add-On</button>
-
+        <label for="kategori">Kategori Produk:</label>
+        <select id="kategori" required>
+          <option value="">-- Pilih Kategori --</option>
+          ${kategoriList.map(k => `<option value="${k.value}">${k.label}</option>`).join("")}
+        </select>
         <br><br>
         <button type="submit">💾 Simpan Produk</button>
       </form>
     </div>
   `;
 }
+
+
 
 function toggleKategoriForm() {
   const box = document.getElementById("kategoriChecklist");
@@ -9971,8 +10081,14 @@ async function formTambahToko() {
         <label>Nama Toko</label>
         <input required id="namaToko" placeholder="Nama toko" />
 
-        <label>Deskripsi Toko</label>
-        <textarea required id="deskripsiToko" placeholder="Deskripsi singkat tentang toko" rows="3"></textarea>
+        <label>Kategori Toko</label>
+        <div class="checkbox-kategori">
+          <label><input type="checkbox" name="kategori" value="Cepat Saji" /> Cepat Saji</label>
+          <label><input type="checkbox" name="kategori" value="Martabak" /> Martabak</label>
+          <label><input type="checkbox" name="kategori" value="Bakso/Soto" /> Bakso/Soto</label>
+          <label><input type="checkbox" name="kategori" value="Minuman" /> Minuman</label>
+          <label><input type="checkbox" name="kategori" value="Jajanan" /> Jajanan</label>
+        </div>
 
         <label>Alamat Toko</label>
         <textarea required id="alamatToko" placeholder="Alamat lengkap toko" rows="3"></textarea>
@@ -10020,14 +10136,17 @@ async function simpanToko(event) {
   const uid = user.uid;
   const namaPemilik = document.getElementById("namaPemilik").value.trim();
   const namaToko = document.getElementById("namaToko").value.trim();
-  const deskripsiToko = document.getElementById("deskripsiToko").value.trim();
   const alamatToko = document.getElementById("alamatToko").value.trim();
   const jamBuka = parseInt(document.getElementById("jamBuka").value);
   const jamTutup = parseInt(document.getElementById("jamTutup").value);
   const koordinatInput = document.getElementById("koordinat").value.trim();
   const file = document.getElementById("fileLogo").files[0];
 
-  if (!namaPemilik || !namaToko || !deskripsiToko || !alamatToko || isNaN(jamBuka) || isNaN(jamTutup)) {
+  const kategoriCheckboxes = document.querySelectorAll("input[name='kategori']:checked");
+  const kategoriList = Array.from(kategoriCheckboxes).map(cb => cb.value);
+  if (kategoriList.length === 0) return alert("❌ Pilih minimal satu kategori.");
+
+  if (!namaPemilik || !namaToko || !alamatToko || isNaN(jamBuka) || isNaN(jamTutup)) {
     return alert("❌ Semua field wajib diisi dengan benar.");
   }
 
@@ -10047,15 +10166,14 @@ async function simpanToko(event) {
   if (!userDoc.exists) return alert("❌ Data akun tidak ditemukan.");
   if ((userDoc.data().role || "").toLowerCase() !== "seller") return alert("❌ Akun Anda bukan seller.");
 
-  // Buat doc ID custom
   const random = Math.random().toString(36).substring(2, 6);
   const docId = `VLT-${random}${Date.now().toString().slice(-3)}`;
 
-  let logoURL = "/img/toko-pict.png"; // default logo
+  let logoURL = "/img/toko-pict.png";
   if (file) {
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", "vlcravepreset");
+    formData.append("upload_preset", "VLCrave-Express");
     formData.append("folder", "toko");
 
     try {
@@ -10076,13 +10194,13 @@ async function simpanToko(event) {
       userId: uid,
       namaPemilik,
       namaToko,
-      deskripsiToko,
       alamatToko,
       jamBuka,
       jamTutup,
       koordinat: new firebase.firestore.GeoPoint(latitude, longitude),
       saldo: 0,
       logo: logoURL,
+      kategori: kategoriList, // array ['Martabak', 'Jajanan']
       createdAt: firebase.firestore.FieldValue.serverTimestamp()
     });
 
@@ -11071,38 +11189,39 @@ async function renderRiwayat() {
         let tombolAction = "";
 
         if (!isDibatalkan) {
-          if (isPending) {
-            tombolAction += `
-              <div class="riwayat-chat-actions-riwayat-transaksi">
-                <button class="btn-chat-driver-riwayat-transaksi" onclick="renderChatSeller({ 
-                  idPesanan: '${item.id}', 
-                  idCustomer: '${item.userId}',
-                  namaCustomer: '${namaCustomer}',
-                  namaToko: '${(item.namaToko || "Seller").replace(/'/g, "\\'")}'})">💬 Chat Seller</button>
-                <button class="btn-batal-pesanan-riwayat-transaksi" onclick="bukaModalPembatalan('${item.id}')">❌ Batalkan Pesanan</button>
-              </div>
-            `;
-          } else if (isDriverProcess) {
-            tombolAction += `
-              <div class="riwayat-chat-actions-riwayat-transaksi">
-                <button class="btn-chat-driver-riwayat-transaksi" onclick="renderChatCustomer({ 
-                  idPesanan: '${item.id}', 
-                  idDriver: '${idDriver}', 
-                  idCustomer: '${item.userId}',
-                  namaDriver: '${namaDriver}',
-                  namaCustomer: '${namaCustomer}'
-                })">💬 Chat Driver</button>
-                <button class="btn-laporkan-driver-riwayat-transaksi" onclick="laporkanDriver('${item.id}', '${idDriver}')">⚠️ Laporkan Driver</button>
-              </div>
-            `;
-          } else if (isSelesai && selisihWaktu > 10 * 60 * 1000 && !item.ratingDiberikan) {
-            tombolAction += `
-              <div class="riwayat-rating-riwayat-transaksi">
-                <button onclick="formRatingRestoDriver('${item.id}')" class="btn-rating-resto-riwayat-transaksi">🌟 Beri Rating</button>
-              </div>
-            `;
-          }
-        }
+  if (isPending) {
+    tombolAction += `
+      <div class="riwayat-chat-actions-riwayat-transaksi">
+        <button class="btn-chat-driver-riwayat-transaksi" onclick="renderChatSeller({ 
+          idPesanan: '${item.id}', 
+          idCustomer: '${item.userId}',
+          namaCustomer: '${namaCustomer}',
+          namaToko: '${(item.namaToko || "Seller").replace(/'/g, "\\'")}'})">💬 Chat Seller</button>
+        <button class="btn-batal-pesanan-riwayat-transaksi" onclick="bukaModalPembatalan('${item.id}')">❌ Batalkan Pesanan</button>
+      </div>
+    `;
+  } else if (isDriverProcess) {
+    tombolAction += `
+      <div class="riwayat-chat-actions-riwayat-transaksi">
+        <button class="btn-chat-driver-riwayat-transaksi" onclick="renderChatCustomer({ 
+          idPesanan: '${item.id}', 
+          idDriver: '${idDriver}', 
+          idCustomer: '${item.userId}',
+          namaDriver: '${namaDriver}',
+          namaCustomer: '${namaCustomer}'
+        })">💬 Chat Driver</button>
+        <button class="btn-laporkan-driver-riwayat-transaksi" onclick="laporkanDriver('${item.id}', '${idDriver}')">⚠️ Laporkan Driver</button>
+      </div>
+    `;
+  } else if (isSelesai && selisihWaktu > 10 * 1000 && !item.ratingDiberikan) {
+    tombolAction += `
+      <div class="riwayat-rating-riwayat-transaksi">
+        <button onclick="formRatingRestoDriver('${item.id}')" class="btn-rating-resto-riwayat-transaksi">🌟 Beri Rating</button>
+      </div>
+    `;
+  }
+}
+
 
         const box = document.createElement("div");
         box.className = "riwayat-box-riwayat-transaksi";
@@ -11448,37 +11567,41 @@ function filterProduk() {
 
 async function renderKategoriPage(kategori) {
   const bannerWrapper = document.getElementById("home-banner-wrapper");
-  const container = document.getElementById("page-container");
+  if (bannerWrapper) {
+    bannerWrapper.innerHTML = `
+      <div class="kategori-banner-full">
+        <img src="./img/banner-bg.png" alt="${kategori}" class="kategori-banner-img" />
+      </div>
+      <div class="breadcrumb">
+        <span>Beranda</span> / Kategori / <strong>${kategori}</strong>
+      </div>
+    `;
+  }
+
+  const main = document.getElementById("page-container");
+  main.innerHTML = `
+    <div class="kategori-page">
+      <nav class="breadcrumb"></nav>
+      <div id="produk-container"><div class="loader">⏳ Memuat produk...</div></div>
+    </div>
+  `;
+
   const db = firebase.firestore();
   const user = firebase.auth().currentUser;
-
-// Render banner kategori (di luar page-container)
-if (bannerWrapper) {
-  bannerWrapper.innerHTML = `
-    <div class="kategori-banner-wrapper">
-      <img src="./img/banner-bg.png" alt="Kategori Banner" class="kategori-banner" />
-    </div>
-    <div class="kategori-tittle">Home / Kategori / ${kategori}</div>
-  `;
-}
-
-
-
-  container.innerHTML = `<div class="loader">⏳ Memuat kategori <strong>${kategori}</strong>...</div>`;
-
   if (!user) {
-    container.innerHTML = "<p>❌ Harap login terlebih dahulu.</p>";
+    document.getElementById("produk-container").innerHTML = "<p>❌ Harap login terlebih dahulu.</p>";
     return;
   }
 
   try {
     const alamatDoc = await db.collection("alamat").doc(user.uid).get();
     if (!alamatDoc.exists || !alamatDoc.data().lokasi) {
-      container.innerHTML = "<p>❌ Lokasi pengguna tidak ditemukan.</p>";
+      document.getElementById("produk-container").innerHTML = "<p>❌ Lokasi pengguna tidak ditemukan.</p>";
       return;
     }
 
     const { latitude: lat1, longitude: lon1 } = alamatDoc.data().lokasi;
+
     const produkSnapshot = await db.collection("produk").get();
     const tokoSnapshot = await db.collection("toko").get();
 
@@ -11488,10 +11611,9 @@ if (bannerWrapper) {
       tokoMap[doc.id] = {
         namaToko: data.namaToko || 'Toko',
         isOpen: data.isOpen ?? false,
-        koordinat: data.koordinat?.latitude ? {
-          lat: data.koordinat.latitude,
-          lng: data.koordinat.longitude
-        } : { lat: 0, lng: 0 }
+        koordinat: data.koordinat instanceof firebase.firestore.GeoPoint
+          ? { lat: data.koordinat.latitude, lng: data.koordinat.longitude }
+          : { lat: 0, lng: 0 }
       };
     });
 
@@ -11508,121 +11630,92 @@ if (bannerWrapper) {
     const produkGabung = [];
 
     for (const doc of produkSnapshot.docs) {
-      const produk = doc.data();
+      const p = doc.data();
       const id = doc.id;
-      const toko = tokoMap[produk.idToko] || {
-        namaToko: 'Toko',
-        isOpen: false,
-        koordinat: { lat: 0, lng: 0 }
-      };
+      const toko = tokoMap[p.idToko];
+      if (!toko) continue;
 
       const jarakKm = hitungJarak(lat1, lon1, toko.koordinat.lat, toko.koordinat.lng);
 
-      const ratingSnap = await db.collection("produk").doc(id).collection("rating").get();
-      let total = 0, count = 0;
-      ratingSnap.forEach(r => {
-        const d = r.data();
-        if (typeof d.rating === "number") {
-          total += d.rating;
-          count++;
-        }
-      });
-
-      const cocok = (
+      const cocok =
         kategori.toLowerCase() === "terdekat" ||
-        (kategori.toLowerCase() === "bestseller" && produk.totalTerjual > 0) ||
-        (kategori.toLowerCase() === "promo" && (produk.promo || produk.diskon > 0)) ||
-        (kategori.toLowerCase() === "hemat" && (produk.harga || 0) <= 10000) ||
-        (kategori.toLowerCase() === (produk.kategori || "").toLowerCase()) ||
-        kategori.toLowerCase() === "all"
-      );
+        (kategori.toLowerCase() === "bestseller" && (p.totalTerjual || 0) > 0) ||
+        (kategori.toLowerCase() === "promo" && (p.promo || p.diskon > 0)) ||
+        (kategori.toLowerCase() === "hemat" && (p.harga || 0) <= 10000) ||
+        (kategori.toLowerCase() === (p.kategori || "").toLowerCase());
 
       if (cocok) {
+        const ratingSnap = await db.collection("produk").doc(id).collection("rating").get();
+        let total = 0, count = 0;
+        ratingSnap.forEach(r => {
+          const d = r.data();
+          if (typeof d.rating === "number") {
+            total += d.rating;
+            count++;
+          }
+        });
+
         produkGabung.push({
+          ...p,
           id,
-          ...produk,
-          jarak: `${jarakKm.toFixed(2)} km`,
-          jarakNumber: jarakKm,
           tokoNama: toko.namaToko,
           isOpen: toko.isOpen,
+          jarak: `${jarakKm.toFixed(2)} km`,
+          jarakNumber: jarakKm,
+          urlGambar: p.urlGambar || './img/toko-pict.png',
           ratingDisplay: count > 0 ? `⭐ ${(total / count).toFixed(1)} <span style="color:#888;">(${count})</span>` : "⭐ -",
-          urlGambar: produk.urlGambar || "./img/toko-pict.png"
+          diLuarJangkauan: jarakKm > 20
         });
       }
     }
 
-    if (kategori === "terdekat") produkGabung.sort((a, b) => a.jarakNumber - b.jarakNumber);
-    if (kategori === "bestseller") produkGabung.sort((a, b) => (b.totalTerjual || 0) - (a.totalTerjual || 0));
+    const produkFinal = kategori.toLowerCase() === "terdekat"
+      ? produkGabung.sort((a, b) => a.jarakNumber - b.jarakNumber)
+      : produkGabung;
 
-    let html = `
-        </div>
-    `;
+    const produkHTML = produkFinal.map(p => {
+      const stokHabis = (p.stok || 0) <= 0;
+      const luarJangkauan = p.diLuarJangkauan;
+      const disabledAttr = (!p.isOpen || stokHabis || luarJangkauan) ? 'disabled' : '';
+      let btnText = 'Lihat Detail';
+      if (!p.isOpen) btnText = 'Toko Tutup';
+      else if (stokHabis) btnText = 'Stok Habis';
+      else if (luarJangkauan) btnText = 'Tidak tersedia';
 
-    if (produkGabung.length === 0) {
-      html += `<p>❌ Tidak ada produk ditemukan.</p>`;
-    } else {
-      produkGabung.forEach((produk, i) => {
-        const stokHabis = (produk.stok || 0) <= 0;
-        const layananTidakTersedia = produk.jarakNumber > 20;
-        const disabledAttr = (!produk.isOpen || stokHabis || layananTidakTersedia) ? 'disabled' : '';
-        let btnText = 'Lihat Detail';
-        if (layananTidakTersedia) btnText = 'Layanan Tidak Tersedia';
-        else if (!produk.isOpen) btnText = 'Toko Tutup';
-        else if (stokHabis) btnText = 'Stok Habis';
-
-        html += `
-          <div class="produk-horizontal">
-            <div class="produk-toko-bar" onclick="renderTokoPage('${produk.idToko}')">
-              <i class="fa-solid fa-shop"></i>
-              <span class="produk-toko-nama">${produk.tokoNama}</span>
-              <span class="produk-toko-arrow">›</span>
-            </div>
-            <div class="produk-body">
-              <img src="${produk.urlGambar}" alt="${produk.namaProduk}" class="produk-img" />
-              <div class="produk-info">
-                <p class="produk-nama">${produk.namaProduk}</p>
-                <p class="produk-meta">${produk.ratingDisplay} | ${produk.jarak} | ${produk.estimasi || '-'} Menit</p>
-                <div class="produk-action">
-                  <strong>Rp ${Number(produk.harga || 0).toLocaleString()}</strong>
-                  <button class="beli-btn" data-index="${i}" ${disabledAttr}>${btnText}</button>
-                </div>
+      return `
+        <div class="produk-horizontal">
+          <div class="produk-toko-bar" onclick="renderTokoPage('${p.idToko}')">
+            <i class="fa-solid fa-shop"></i>
+            <span class="produk-toko-nama">${p.tokoNama}</span>
+            <span class="produk-toko-arrow">›</span>
+          </div>
+          <div class="produk-body">
+            <img src="${p.urlGambar}" alt="${p.namaProduk}" class="produk-img" />
+            <div class="produk-info">
+              <p class="produk-nama">${p.namaProduk}</p>
+              <p class="produk-meta">${p.ratingDisplay} | ${p.jarak || '-'} | ${p.estimasi || '-'} Menit</p>
+              <div class="produk-action">
+                <strong>Rp ${Number(p.harga || 0).toLocaleString()}</strong>
+                <button class="beli-btn" ${disabledAttr} onclick='${luarJangkauan ? `alert("Layanan belum tersedia di lokasi anda")` : `tampilkanPopupDetail(${JSON.stringify(p).replace(/"/g, "&quot;")})`}'>${btnText}</button>
               </div>
             </div>
           </div>
-        `;
-      });
-    }
+        </div>
+      `;
+    }).join("");
 
-    html += `</div>`; // end .kategori-page
-    container.innerHTML = html;
-
-    document.querySelectorAll('.beli-btn').forEach(btn => {
-      const index = btn.getAttribute('data-index');
-      const produk = produkGabung[index];
-      btn.addEventListener('click', () => {
-        if (btn.disabled) {
-          if (produk.jarakNumber > 20) alert("❌ Layanan tidak tersedia.");
-          else if (!produk.isOpen) alert("❌ Toko sedang tutup.");
-          else alert("❌ Stok habis.");
-        } else {
-          tampilkanPopupDetail(produk);
-        }
-      });
-    });
+    document.getElementById("produk-container").innerHTML = produkFinal.length
+      ? produkHTML
+      : `<p style="text-align:center;">❌ Belum ada produk untuk kategori <strong>${kategori}</strong>.</p>`;
 
   } catch (err) {
-    console.error("❌ Error renderKategoriPage:", err);
-    container.innerHTML = `<p style="color:red;">Terjadi kesalahan: ${err.message}</p>`;
+    console.error("❌ Gagal renderKategoriPage:", err);
+    document.getElementById("produk-container").innerHTML = `<p style="color:red;">❌ Terjadi kesalahan saat memuat produk.</p>`;
   }
 }
 
 
-
-
-
-
 async function renderTokoPage(idToko) {
-  // HAPUS BANNER
   document.getElementById("home-banner-wrapper").innerHTML = "";
   document.getElementById("home-banner-wrapper").style.display = "none";
 
@@ -11656,7 +11749,6 @@ async function renderTokoPage(idToko) {
 
     const toko = tokoDoc.data();
 
-    // 💥 HITUNG RATING TOKO SECARA DINAMIS
     const ratingSnapshot = await db.collection("toko").doc(idToko).collection("rating").get();
     let totalRatingToko = 0;
     let countRatingToko = 0;
@@ -11671,7 +11763,6 @@ async function renderTokoPage(idToko) {
 
     const rataToko = countRatingToko > 0 ? (totalRatingToko / countRatingToko).toFixed(1) : null;
 
-    // Fungsi hitung jarak
     const hitungJarak = (lat1, lon1, lat2, lon2) => {
       const R = 6371;
       const dLat = (lat2 - lat1) * Math.PI / 180;
@@ -11697,8 +11788,8 @@ async function renderTokoPage(idToko) {
           count++;
         }
       });
-      const rataRating = count > 0 ? (total / count).toFixed(1) : "-";
 
+      const rataRating = count > 0 ? (total / count).toFixed(1) : "-";
       const lat2 = toko.koordinat?.latitude || 0;
       const lon2 = toko.koordinat?.longitude || 0;
       const jarakKm = (!isNaN(lat1) && !isNaN(lon1) && !isNaN(lat2) && !isNaN(lon2))
@@ -11712,7 +11803,9 @@ async function renderTokoPage(idToko) {
         tokoNama: toko.namaToko,
         isOpen: toko.isOpen ?? false,
         jarak: `${jarakKm.toFixed(2)} km`,
+        jarakNumber: jarakKm,
         urlGambar: produk.urlGambar || './img/toko-pict.png',
+        diLuarJangkauan: jarakKm > 20
       };
     });
 
@@ -11743,10 +11836,12 @@ async function renderTokoPage(idToko) {
       produkTokoFull.forEach((produk, index) => {
         const tokoAktif = produk.isOpen;
         const stokHabis = (produk.stok || 0) <= 0;
-        const disabledAttr = (!tokoAktif || stokHabis) ? 'disabled' : '';
+        const luarJangkauan = produk.diLuarJangkauan;
+        const disabledAttr = (!tokoAktif || stokHabis || luarJangkauan) ? 'disabled' : '';
         let btnText = 'Lihat Detail';
         if (!tokoAktif) btnText = 'Toko Tutup';
         else if (stokHabis) btnText = 'Stok Habis';
+        else if (luarJangkauan) btnText = 'Tidak tersedia';
 
         const estimasiText = produk.estimasi ? `${produk.estimasi} Menit` : '-';
 
@@ -11756,7 +11851,6 @@ async function renderTokoPage(idToko) {
               <img src="${produk.urlGambar}" alt="${produk.namaProduk || produk.nama}" class="produk-img" />
               <div class="produk-info">
                 <p class="produk-nama">${produk.namaProduk || produk.nama}</p>
-                
                 <p class="produk-meta">⭐ ${produk.rating} | ${produk.jarak} | ${estimasiText}</p>
                 <div class="produk-action">
                   <strong>Rp ${Number(produk.harga || 0).toLocaleString()}</strong>
@@ -11775,9 +11869,12 @@ async function renderTokoPage(idToko) {
     container.innerHTML = html;
 
     document.querySelectorAll('.beli-btn').forEach(button => {
-      if (!button.disabled) {
-        const index = button.getAttribute('data-index');
-        button.addEventListener('click', () => tampilkanPopupDetail(produkTokoFull[index]));
+      const index = button.getAttribute('data-index');
+      const produk = produkTokoFull[index];
+      if (!button.disabled && produk && !produk.diLuarJangkauan) {
+        button.addEventListener('click', () => tampilkanPopupDetail(produk));
+      } else if (produk && produk.diLuarJangkauan) {
+        button.addEventListener('click', () => alert("Layanan belum tersedia di lokasi anda"));
       }
     });
 
@@ -11786,6 +11883,7 @@ async function renderTokoPage(idToko) {
     container.innerHTML = `<p style="color:red;">Terjadi kesalahan: ${err.message}</p>`;
   }
 }
+
 
 
 
@@ -12486,9 +12584,10 @@ function getWaktuMenu() {
   return "Tengah Malam";
 }
 
-// FINAL RENDER PRODUCT LIST 100% FULL
-let kategoriExpanded = false;
-     const waktuMenu = getWaktuMenu();
+const waktuMenu = getWaktuMenu();
+let kategoriExpanded = true;
+
+// FINAL SCRIPT: renderProductList + kategori + produk display tanpa error, no cut, no edit
 
 async function renderProductList() {
   const produkContainer = document.getElementById('produk-container');
@@ -12515,33 +12614,38 @@ async function renderProductList() {
     const lat1 = lokasiUser.latitude;
     const lon1 = lokasiUser.longitude;
 
+    const waktu = new Date().getHours();
+    const waktuMenu = waktu < 11 ? 'Sarapan' : (waktu < 17 ? 'Makan Siang' : 'Makan Malam');
+
     const kategoriUnggulan = [
-      { label: "Menu Hemat", value: "hemat", image: "./img/kategori/hemat.png" },
-      { label: "Terfavorit", value: "bestseller", image: "./img/kategori/favorit.png" },
-      { label: "Menu Sehat", value: "sehat", image: "./img/kategori/sehat.png" },
-      { label: "Promo", value: "promo", image: "./img/kategori/promo.png" },
-      { label: "Terdekat", value: "terdekat", image: "./img/kategori/terdekat.png" },
+      { label: "Menu Hemat", value: "Hemat", image: "./img/kategori/hemat.png" },
+      { label: "Menu Sehat", value: "Sehat", image: "./img/kategori/sehat.png" },
+      { label: "Promo", value: "Promo", image: "./img/kategori/promo.png" },
+      { label: "Ojek", value: "Ojek", image: "./img/kategori/ojek.png" },
+      { label: "JasTip", value: "Jasa Titip", image: "./img/kategori/jastip.png" },
+      { label: "Terdekat", value: "Terdekat", image: "./img/kategori/terdekat.png" }
     ];
 
     const kategoriKuliner = [
       { label: "Martabak", value: "Martabak", image: "./img/kategori/martabak.png" },
       { label: "Bakso", value: "Bakso", image: "./img/kategori/bakso.png" },
       { label: "Roti", value: "Roti", image: "./img/kategori/roti.png" },
+      { label: "Minuman", value: "Minuman", image: "./img/kategori/minuman.png" },
+      { label: "Kue", value: "Kue", image: "./img/kategori/kue.png" },
       { label: "Jajanan", value: "Jajanan", image: "./img/kategori/jajanan.png" },
-      { label: "Minuman", value: "Minuman", image: "./img/kategori/minuman.png" }
+      { label: "Sate", value: "Sate", image: "./img/kategori/sate.png" },
+      { label: "Aneka Nasi", value: "Nasi", image: "./img/kategori/nasi.png" },
+      { label: "Ayam", value: "Ayam", image: "./img/kategori/ayam.png" },
     ];
 
     produkContainer.innerHTML = `
-      <!-- === Filter Unggulan (Grid 3 Kolom) === -->
-<h2 class="section-title">Filter Unggulan</h2>
-<div class="kategori-container kategori-filter" id="kategori-filter-container"></div>
+      <h2 class="section-title">Filter Unggulan</h2>
+      <div id="kategori-filter-container"></div>
 
-<!-- === Kategori Kuliner (Scroll Horizontal) === -->
-<h2 class="section-title">Aneka Kuliner Menarik</h2>
-<div class="kategori-container kategori-kuliner" id="kategori-kuliner-container"></div>
+      <h2 class="section-title">Aneka Kuliner</h2>
+      <div id="kategori-kuliner-container"></div>
 
-
-      <h2 class="section-title"><i class="fa-solid fa-bell-concierge"></i> Menu ${waktuMenu}</h2>
+      <h2 class="section-title" style="margin-top: 1.5rem;"><i class="fa-solid fa-bell-concierge"></i> Menu ${waktuMenu}</h2>
       <div id="produk-list-wrapper"><div class="loader">⏳ Memuat produk...</div></div>
     `;
 
@@ -12553,9 +12657,7 @@ async function renderProductList() {
     tokoSnapshot.docs.forEach(doc => {
       const data = doc.data();
       tokoMap[doc.id] = {
-        namaToko: data.namaToko || 'Unknown Toko',
-        buka: data.jamBuka || 0,
-        tutup: data.jamTutup || 0,
+        namaToko: data.namaToko || 'Toko',
         isOpen: data.isOpen ?? false,
         koordinat: data.koordinat instanceof firebase.firestore.GeoPoint
           ? { lat: data.koordinat.latitude, lng: data.koordinat.longitude }
@@ -12567,19 +12669,20 @@ async function renderProductList() {
       const R = 6371;
       const dLat = (lat2 - lat1) * Math.PI / 180;
       const dLon = (lon2 - lon1) * Math.PI / 180;
-      const a = Math.sin(dLat / 2) ** 2 + Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * Math.sin(dLon / 2) ** 2;
+      const a = Math.sin(dLat / 2) ** 2 +
+        Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+        Math.sin(dLon / 2) ** 2;
       return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     }
 
     const produkGabung = [];
     for (const produk of produkList) {
       const toko = tokoMap[produk.idToko] || {
-        namaToko: 'Unknown Toko', buka: 0, tutup: 0, isOpen: false, koordinat: { lat: 0, lng: 0 }
+        namaToko: 'Toko', isOpen: false, koordinat: { lat: 0, lng: 0 }
       };
       const lat2 = toko.koordinat.lat;
       const lon2 = toko.koordinat.lng;
-      const jarakKm = (!isNaN(lat1) && !isNaN(lon1) && !isNaN(lat2) && !isNaN(lon2) && lat2 !== 0)
-        ? hitungJarak(lat1, lon1, lat2, lon2) : 0;
+      const jarakKm = lat2 !== 0 ? hitungJarak(lat1, lon1, lat2, lon2) : 0;
 
       const ratingSnap = await db.collection("produk").doc(produk.id).collection("rating").get();
       let total = 0, count = 0;
@@ -12598,154 +12701,131 @@ async function renderProductList() {
         jarakNumber: jarakKm,
         jarak: `${jarakKm.toFixed(2)} km`,
         ratingDisplay: count > 0 ? `⭐ ${(total / count).toFixed(1)} <span style="color:#888;">(${count})</span>` : "⭐ -",
-        urlGambar: produk.urlGambar || './img/toko-pict.png'
+        urlGambar: produk.urlGambar || './img/toko-pict.png',
+        diLuarJangkauan: jarakKm > 20
       });
     }
 
     const produkUrut = produkGabung.sort((a, b) => a.jarakNumber - b.jarakNumber);
 
-    window.toggleKategori = function (jenis) {
-      kategoriExpanded = !kategoriExpanded;
-      renderKategoriCards();
+    function renderKategoriCards() {
+      const filterContainer = document.getElementById('kategori-filter-container');
+      const kulinerContainer = document.getElementById('kategori-kuliner-container');
+
+      const renderScrollKategori = (list, isUnggulan = false) => {
+        if (isUnggulan) {
+          return `
+            <div class="kategori-scroll unggulan">
+              ${list.map(k => `
+                <div class="kategori-card" data-kategori="${k.value}">
+                  <div class="kategori-img-wrapper">
+                    <img src="${k.image}" alt="${k.label}" />
+                  </div>
+                  <span>${k.label}</span>
+                </div>
+              `).join('')}
+            </div>
+          `;
+        } else {
+          return `
+            <div class="kategori-grid">
+              ${list.map(k => `
+                <div class="kategori-card" data-kategori="${k.value}">
+                  <div class="kategori-img-circle">
+                    <img src="${k.image}" alt="${k.label}" />
+                  </div>
+                  <span>${k.label}</span>
+                </div>
+              `).join('')}
+            </div>
+          `;
+        }
+      };
+
+      filterContainer.innerHTML = renderScrollKategori(kategoriUnggulan, true);
+      kulinerContainer.innerHTML = renderScrollKategori(kategoriKuliner, false);
+
+      document.querySelectorAll('.kategori-card').forEach(card => {
+        card.addEventListener('click', () => {
+          const selected = card.getAttribute('data-kategori');
+          renderKategoriPage(selected);
+        });
+      });
+    }
+
+    window.tampilkanProdukFilter = function (kategori = "all", containerId = "produk-list-wrapper") {
+      const wrapper = document.getElementById(containerId);
+      let produkFilter = produkUrut;
+
+      switch (kategori.toLowerCase()) {
+        case "bestseller":
+          produkFilter = produkUrut.filter(p => p.totalTerjual > 0).sort((a, b) => b.totalTerjual - a.totalTerjual);
+          break;
+        case "terdekat":
+          produkFilter = [...produkUrut];
+          break;
+        case "promo":
+          produkFilter = produkUrut.filter(p => p.promo || p.diskon > 0);
+          break;
+        case "hemat":
+          produkFilter = produkUrut.filter(p => p.harga <= 10000);
+          break;
+        case "sehat":
+          produkFilter = produkUrut.filter(p => (p.kategori || "").toLowerCase().includes("sehat"));
+          break;
+        case "all":
+          produkFilter = produkUrut;
+          break;
+        default:
+          produkFilter = produkUrut.filter(p => (p.kategori || "").toLowerCase() === kategori.toLowerCase());
+      }
+
+      if (produkFilter.length === 0) {
+        wrapper.innerHTML = `<p style="text-align:center;">❌ Tidak ada produk untuk kategori <strong>${kategori}</strong>.</p>`;
+        return;
+      }
+
+      wrapper.innerHTML = produkFilter.map((p, index) => {
+        const tokoAktif = p.isOpen;
+        const stokHabis = (p.stok || 0) <= 0;
+        const luarJangkauan = p.diLuarJangkauan;
+        const disabledAttr = (!tokoAktif || stokHabis || luarJangkauan) ? 'disabled' : '';
+        let btnText = 'Beli';
+        if (!tokoAktif) btnText = 'Toko Tutup';
+        else if (stokHabis) btnText = 'Stok Habis';
+        else if (luarJangkauan) btnText = 'Tidak tersedia';
+
+        return `
+          <div class="produk-horizontal">
+            <div class="produk-toko-bar" onclick="renderTokoPage('${p.idToko}')">
+              <i class="fa-solid fa-shop"></i>
+              <span class="produk-toko-nama">${p.tokoNama}</span>
+              <span class="produk-toko-arrow">›</span>
+            </div>
+            <div class="produk-body">
+              <img src="${p.urlGambar}" alt="${p.namaProduk}" class="produk-img" />
+              <div class="produk-info">
+                <p class="produk-nama">${p.namaProduk}</p>
+                <p class="produk-meta">${p.ratingDisplay} | ${p.jarak || '-'} | ${p.estimasi || '-'} Menit</p>
+                <div class="produk-action">
+                  <strong>Rp ${Number(p.harga || 0).toLocaleString()}</strong>
+                  <button class="beli-btn" ${disabledAttr} onclick="${luarJangkauan ? `alert('Layanan belum tersedia di lokasi anda')` : `tampilkanPopupDetail(${JSON.stringify(p).replace(/"/g, "&quot;")})`}">
+                    ${btnText}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
     };
 
-function renderKategoriCards() {
-  const filterContainer = document.getElementById('kategori-filter-container');
-  const kulinerContainer = document.getElementById('kategori-kuliner-container');
-  const maxTampil = 6;
-
-  const renderList = (list, expanded, type) => {
-    const tampil = expanded ? list : list.slice(0, maxTampil);
-    return tampil.map(k => `
-      <div class="kategori-card" data-kategori="${k.value}">
-        <img src="${k.image}" alt="${k.label}" />
-        <span>${k.label}</span>
-      </div>
-    `).join('');
-  };
-
-  filterContainer.innerHTML = renderList(kategoriUnggulan, kategoriExpanded, 'filter');
-  kulinerContainer.innerHTML = renderList(kategoriKuliner, kategoriExpanded, 'kuliner');
-
-  document.querySelectorAll('.kategori-card').forEach(card => {
-    card.addEventListener('click', () => {
-      const selected = card.getAttribute('data-kategori');
-      document.querySelectorAll('.kategori-card').forEach(k => k.classList.remove('active'));
-      card.classList.add('active');
-      tampilkanProdukFilter(selected);
-    });
-  });
-}
-
-window.tampilkanProdukFilter = function (kategori = "all") {
-  const wrapper = document.getElementById("produk-list-wrapper");
-  let produkFilter = produkUrut;
-
-  switch (kategori.toLowerCase()) {
-    case "bestseller":
-      produkFilter = produkUrut.filter(p => p.totalTerjual > 0).sort((a, b) => b.totalTerjual - a.totalTerjual);
-      break;
-    case "terdekat":
-      produkFilter = [...produkUrut].sort((a, b) => a.jarakNumber - b.jarakNumber);
-      break;
-    case "termurah":
-      produkFilter = [...produkUrut].sort((a, b) => (a.harga || 0) - (b.harga || 0));
-      break;
-    case "promo":
-      produkFilter = produkUrut.filter(p => p.promo === true || (p.diskon || 0) > 0);
-      break;
-    case "hemat":
-      produkFilter = produkUrut.filter(p => (p.harga || 0) <= 10000);
-      break;
-    case "all":
-      break;
-    default:
-      produkFilter = produkUrut.filter(p => (p.kategori || "").toLowerCase() === kategori.toLowerCase());
-  }
-
-  // ⬇️ Tambahkan badge berdasarkan kondisi
-  produkFilter.forEach(p => {
-    if ((p.harga || 0) <= 10000) {
-      p.badge = "Termurah";
-    } else if ((p.jarakNumber || 999) < 1.0) {
-      p.badge = "Terdekat";
-    } else if ((p.totalTerjual || 0) > 50) {
-      p.badge = "Paling Laris";
-    } else {
-      p.badge = "";
-    }
-  });
-
-  if (produkFilter.length === 0) {
-    wrapper.innerHTML = `<p style="text-align:center;">❌ Tidak ada produk di kategori <strong>${kategori}</strong>.</p>`;
-    return;
-  }
-
-  wrapper.innerHTML = produkFilter.map((produk, index) => {
-    const stokHabis = (produk.stok || 0) <= 0;
-    const layananTidakTersedia = produk.jarakNumber > 20;
-    const disabledAttr = (!produk.isOpen || stokHabis || layananTidakTersedia) ? 'disabled' : '';
-    let btnText = 'Lihat Detail';
-    if (layananTidakTersedia) btnText = 'Layanan Tidak Tersedia';
-    else if (!produk.isOpen) btnText = 'Toko Tutup';
-    else if (stokHabis) btnText = 'Stok Habis';
-
-    return `
-<div class="produk-horizontal">
-  <div class="produk-toko-bar" onclick="renderTokoPage('${produk.idToko}')">
-    <i class="fa-solid fa-shop"></i>
-    <span class="produk-toko-nama">${produk.tokoNama}</span>
-    <span class="produk-toko-arrow">›</span>
-  </div>
-
-  <div class="produk-body">
-    <img src="${produk.urlGambar}" alt="${produk.namaProduk}" class="produk-img" />
-    
-    <div class="produk-info">
-      <p class="produk-nama">${produk.namaProduk}</p>
-      
-      <p class="produk-meta">
-         ${produk.ratingDisplay} &nbsp;|&nbsp; ${produk.jarak || '-'}  &nbsp;|&nbsp; ${produk.estimasi || '-'} Menit
-      </p>
-
-
-      <div class="produk-action">
-        <div class="produk-harga">Rp <strong>${Number(produk.harga || 0).toLocaleString()}</strong></div>
-        <button class="beli-btn" data-index="${index}" ${disabledAttr}>${btnText}</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-    `;
-  }).join('');
-
-  // Event handler untuk tombol
-  document.querySelectorAll('.beli-btn').forEach(btn => {
-    const index = btn.getAttribute('data-index');
-    const produk = produkFilter[index];
-    btn.addEventListener('click', () => {
-      if (btn.disabled) {
-        if (produk.jarakNumber > 20) alert("❌ Layanan tidak tersedia untuk lokasi Anda.");
-        else if (!produk.isOpen) alert("❌ Toko sedang tutup.");
-        else if ((produk.stok || 0) <= 0) alert("❌ Stok produk habis.");
-      } else {
-        tampilkanPopupDetail(produk);
-      }
-    });
-  });
-};
-
-// Jalankan saat halaman dimuat
-renderKategoriCards();
-tampilkanProdukFilter("all");
-
-
+    renderKategoriCards();
+    tampilkanProdukFilter("all");
 
   } catch (err) {
     console.error("❌ Gagal memuat produk:", err);
-    produkContainer.innerHTML = `<p style="color:red;">Terjadi kesalahan saat memuat produk.</p>`;
+    produkContainer.innerHTML = `<p style="color:red;">❌ Terjadi kesalahan saat memuat produk.</p>`;
   }
 }
 
@@ -12753,14 +12833,8 @@ tampilkanProdukFilter("all");
 
 
 
-function toggleKategori(type) {
-  const container = document.getElementById(`kategori-${type}-container`);
-  const btn = container.nextElementSibling.querySelector("button");
 
-  container.classList.toggle("show-all");
-  const expanded = container.classList.contains("show-all");
-  btn.textContent = expanded ? "Tampilkan Lebih Sedikit" : "Lihat Lainnya";
-}
+
 
 
 
@@ -12791,7 +12865,7 @@ async function tampilkanPopupDetail(produk) {
       .collection("produk")
       .doc(produk.id)
       .collection("rating")
-      .orderBy("timestamp", "desc")
+      .orderBy("waktu", "desc")
       .get();
 
     totalUlasan = ratingSnap.size;
@@ -12803,7 +12877,7 @@ async function tampilkanPopupDetail(produk) {
         if (daftarUlasan.length < 3) {
           daftarUlasan.push({
             rating,
-            komentar: data.komentar || "-",
+            komentar: data.ulasan || data.komentar || "-"
           });
         }
       }
@@ -12892,6 +12966,7 @@ async function tampilkanPopupDetail(produk) {
 
 
 
+
 async function tampilkanSemuaUlasan(idProduk) {
   const db = firebase.firestore();
 
@@ -12902,7 +12977,7 @@ async function tampilkanSemuaUlasan(idProduk) {
       .collection("produk")
       .doc(idProduk)
       .collection("rating")
-      .orderBy("waktuRating", "desc")
+      .orderBy("waktu", "desc")
       .get();
 
     if (snap.empty) {
@@ -12910,19 +12985,21 @@ async function tampilkanSemuaUlasan(idProduk) {
     } else {
       snap.forEach(doc => {
         const r = doc.data();
-        const waktu = r.waktuRating?.toDate
-          ? r.waktuRating.toDate().toLocaleString("id-ID")
-          : (new Date(r.waktuRating)).toLocaleString("id-ID");
+        const waktu = r.waktu?.toDate?.()
+          ? r.waktu.toDate().toLocaleString("id-ID")
+          : new Date(r.waktu || Date.now()).toLocaleString("id-ID");
 
         const ratingBintang = "⭐".repeat(r.rating || 0);
-        const komentar = (r.komentar || "-").trim();
-        const namaUser = r.nama || "Anonim";
+        const komentar = (r.ulasan || r.komentar || "-").trim();
+        const namaUser = r.namaUser || r.nama || "Anonim";
+        const idPesanan = r.idPesanan || "-";
 
         html += `
           <div style="border: 1px solid #ddd; border-radius: 8px; padding: 10px; margin-bottom: 10px; background:#fff;">
-            <div style="font-weight: bold; font-size: 14px; color: #333;">${namaUser}</div>
+            <div style="font-weight: bold; font-size: 14px; color: #333;">👤 ${namaUser}</div>
             <div style="color: #f1c40f;">${ratingBintang} (${r.rating}/5)</div>
             <div style="font-style: italic; margin: 5px 0; color: #555;">"${komentar}"</div>
+            <div style="font-size: 12px; color: #999;">🆔 Order ID: ${idPesanan}</div>
             <div style="font-size: 12px; color: #999;">🕒 ${waktu}</div>
           </div>
         `;
@@ -12932,8 +13009,8 @@ async function tampilkanSemuaUlasan(idProduk) {
     document.getElementById("popup-greeting").innerHTML = `
       <div style="max-height: 70vh; overflow-y: auto; padding: 12px;">
         ${html}
+        <button onclick="tutupPopup()" class="btn-mini" style="margin-top: 15px;">✕ Tutup</button>
       </div>
-      <button onclick="tutupPopup()" class="btn-mini" style="margin-top: 15px;">✕ Tutup</button>
     `;
 
     document.getElementById("popup-greeting").style.display = "block";
@@ -12945,6 +13022,8 @@ async function tampilkanSemuaUlasan(idProduk) {
     alert("❌ Terjadi kesalahan saat memuat ulasan.");
   }
 }
+
+
 
 
 

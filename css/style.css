@@ -8371,207 +8371,6 @@ form button:hover {
 }
 
 
-/* === Judul Section === */
-.section-title {
-  font-size: 18px;
-  font-weight: bold;
-  margin: 24px 0 10px;
-  color: #333;
-  text-align: left;
-  padding: 0 10px;
-  border-left: 4px solid #00b894;
-  padding-left: 10px;
-  animation: fadeInUp 0.6s ease forwards;
-}
-
-/* === Kategori Filter (Grid 3 Kolom) === */
-.kategori-filter {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
-  padding: 10px;
-  animation: fadeInUp 0.6s ease forwards;
-}
-
-/* === Kategori Kuliner (Horizontal Scroll) === */
-.kategori-kuliner {
-  display: flex;
-  overflow-x: auto;
-  gap: 10px;
-  padding: 10px 0;
-  scroll-snap-type: x mandatory;
-  scroll-behavior: smooth;
-  animation: fadeInUp 0.6s ease forwards;
-  -webkit-overflow-scrolling: touch;
-}
-
-.kategori-kuliner::-webkit-scrollbar {
-  height: 8px;
-}
-
-.kategori-kuliner::-webkit-scrollbar-thumb {
-  background: #ccc;
-  border-radius: 4px;
-}
-
-/* === Ukuran khusus untuk kartu di scroll horizontal === */
-.kategori-kuliner .kategori-card {
-  flex: 0 0 auto;
-  width: 100px;
-  min-width: 100px;
-  max-width: 100px;
-  scroll-snap-align: start;
-}
-
-/* === Kartu Kategori Umum === */
-.kategori-card {
-  text-align: center;
-  border-radius: 10px;
-  padding: 8px;
-  background: #f8f8f8;
-  cursor: pointer;
-  transition: transform 0.2s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
-
-.kategori-card img {
-  width: 60px;
-  height: 60px;
-  object-fit: cover;
-  border-radius: 6px;
-  margin-bottom: 6px;
-}
-
-.kategori-card span {
-  font-size: 14px;
-  font-weight: 600;
-  color: #333;
-}
-
-.kategori-card.active {
-  border: 2px solid #007bff;
-  background-color: #eef6ff;
-}
-
-.kategori-card:hover {
-  transform: scale(1.05);
-}
-
-/* === Toggle Button Container === */
-.toggle-kategori-btn {
-  display: flex;
-  justify-content: center;
-  margin: 12px 0 24px;
-  animation: fadeInUp 0.6s ease forwards;
-}
-
-.toggle-kategori-btn button {
-  background-color: #00b894;
-  color: white;
-  padding: 8px 14px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  font-weight: 600;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-}
-
-.toggle-kategori-btn button:hover {
-  background-color: #01976f;
-  transform: scale(1.05);
-}
-
-/* === Hide kategori > 6 === */
-#kategori-filter-container > .kategori-card:nth-child(n+7),
-#kategori-kuliner-container > .kategori-card:nth-child(n+7) {
-  display: none;
-}
-
-/* === Show All Toggle === */
-#kategori-filter-container.show-all > .kategori-card,
-#kategori-kuliner-container.show-all > .kategori-card {
-  display: flex;
-}
-
-/* === Animasi Fade In Up === */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(16px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-
-
-
-.lokasi-info-box {
-  padding: 20px 16px 8px;
-  background-color: #fff;
-  border-radius: 16px;
-  margin: 8px 12px 16px;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.05);
-}
-
-.lokasi-title {
-  font-size: 18px;
-  font-weight: bold;
-  color: #333;
-  margin-bottom: 4px;
-}
-
-.lokasi-subtitle {
-  font-size: 14px;
-  color: #666;
-  line-height: 1.5;
-}
-
-
-.kategori-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 6px;
-  font-size: 14px;
-}
-.kategori-item input[type="checkbox"] {
-  width: 16px;
-  height: 16px;
-  accent-color: #00b894; /* warna hijau */
-}
-
-.kategori-toggle-btn {
-  background: #00b894;
-  color: white;
-  padding: 10px 14px;
-  border: none;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
-  margin-bottom: 8px;
-}
-
-.kategori-checklist {
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  padding: 12px;
-  background: #f9f9f9;
-  max-height: 300px;
-  overflow-y: auto;
-}
-
-.hidden {
-  display: none;
-}
-
-
-
 .form-alamat-wrapper {
   padding: 16px;
   max-width: 500px;
@@ -8630,6 +8429,30 @@ form button:hover {
 .btn-simpan-alamat:hover {
   background-color: #e25800;
 }
+
+.kategori-header {
+  background: #ffe28c;
+  padding: 10px;
+  text-align: center;
+}
+.kategori-banner-img {
+  max-width: 100%;
+  height: auto;
+}
+.breadcrumb {
+  padding: 10px 16px;
+  font-size: 14px;
+  color: #555;
+}
+.breadcrumb span {
+  margin-right: 5px;
+}
+.kategori-judul {
+  padding: 0 16px;
+  font-size: 20px;
+  font-weight: bold;
+}
+
 
 #home-banner-wrapper {
   width: 100%;
@@ -8917,44 +8740,140 @@ h1 span {
     max-width: 160px;
   }
 }
-
-.kategori-tittle {
-  font-size: 14px;
-  color: #666;
-  margin: 12px 10px 0;
-  padding: 6px 10px;
-  background-color: #f0f0f0;
-  border-left: 4px solid #00b894;
-  border-radius: 6px;
-  font-weight: 500;
-  animation: fadeInUp 0.6s ease forwards;
+.section-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin: 1.2rem 1rem 0.6rem;
 }
 
-.produk-badge-wrapper {
+.kategori-scroll.unggulan {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  padding: 0 1rem;
+}
+
+.kategori-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+  padding: 0 1rem;
+}
+
+.kategori-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  cursor: pointer;
+}
+
+.kategori-img-wrapper,
+.kategori-img-circle {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+.kategori-img-wrapper img,
+.kategori-img-circle img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.kategori-card span {
+  font-size: 0.85rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.admin-rating-card {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 15px;
+  background-color: #fff;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  transition: box-shadow 0.3s ease;
+}
+
+.admin-rating-card:hover {
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.admin-rating-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 6px;
+  font-weight: bold;
+  font-size: 15px;
+  color: #333;
+}
+
+.admin-rating-nama {
+  color: #007bff;
+}
+
+.admin-rating-bintang {
+  font-size: 16px;
+  color: #f1c40f;
   margin-bottom: 6px;
 }
 
-.produk-badge {
-  background: #00aa5b;
-  color: white;
-  font-size: 11px;
-  font-weight: bold;
-  padding: 4px 8px;
-  border-radius: 6px;
-  display: inline-block;
-  text-transform: uppercase;
+.admin-rating-komentar {
+  font-style: italic;
+  color: #555;
+  margin-bottom: 10px;
 }
 
-
-.produk-badge.termurah {
-  background-color: #00aa5b;
+.admin-rating-footer {
+  font-size: 13px;
+  color: #666;
+  border-top: 1px dashed #ddd;
+  padding-top: 8px;
 }
 
-.produk-badge.terdekat {
-  background-color: #1e90ff;
+.btn-mini[style*="color:red"] {
+  color: white !important;
+  background-color: #e74c3c;
 }
 
-.produk-badge.palinglaris {
-  background-color: #ff9800;
+.btn-mini[style*="color:red"]:hover {
+  background-color: #c0392b;
 }
 
+.chat-popup-notif {
+  position: fixed;
+  bottom: 100px;
+  right: 20px;
+  background: #fefefe;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 12px rgba(0,0,0,0.2);
+  border-radius: 10px;
+  padding: 12px 16px;
+  max-width: 280px;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.3s ease;
+  z-index: 9999;
+  font-family: sans-serif;
+}
+
+.chat-popup-notif.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.chat-popup-notif p {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: #333;
+}
