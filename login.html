@@ -52,7 +52,7 @@
     };
 
     // ✅ Public key Web Push dari Firebase Console
-    const vapidKey = "BLonv1vVmUKPHiz3xqDyJ_8a9QhiuDugvCMnK9HYKgd6NlytGPNCVuFuuBOqQQKbSw7NK0ASxAGr_LUVs1PsY0Q"; // <= Ganti ya
+    const vapidKey = "BLonv1vVmUKPHiz3xqDyJ_8a9QhiuDugvCMnK9HYKgd6NlytGPNCVuFuuBOqQQKbSw7NK0ASxAGr_LUVs1PsY0Q"; // Sesuaikan
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
@@ -65,7 +65,7 @@
 
     let currentUserUID = null;
 
-    // ✅ Ambil dan Simpan Token FCM Web
+    // ✅ Fungsi registrasi Service Worker & simpan token FCM
     async function simpanTokenFCM(uid) {
       try {
         const permission = await Notification.requestPermission();
@@ -74,19 +74,23 @@
           return;
         }
 
-        const token = await getToken(messaging, { vapidKey });
+        // Registrasi service worker di path yang benar (pastikan file ini ada di repo/public)
+        const registration = await navigator.serviceWorker.register('/home/firebase-messaging-sw.js');
+
+        // Ambil token FCM dengan service worker yang sudah terdaftar
+        const token = await getToken(messaging, { vapidKey, serviceWorkerRegistration: registration });
 
         if (token) {
-          await updateDoc(doc(db, "users", uid), {
-            fcmToken: token
-          });
+          await updateDoc(doc(db, "users", uid), { fcmToken: token });
           console.log("✅ Token FCM Web disimpan:", token);
         } else {
           console.warn("❌ Token tidak tersedia.");
+          msg.innerText = "❌ Token FCM tidak tersedia.";
         }
 
       } catch (error) {
         console.error("❌ Gagal ambil/simpan token:", error);
+        msg.innerText = "❌ Gagal ambil/simpan token: " + error.message;
       }
     }
 
