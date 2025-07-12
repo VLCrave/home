@@ -37,7 +37,9 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
-    import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+    import {
+      getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs
+    } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
     import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-messaging.js";
 
     const firebaseConfig = {
@@ -66,16 +68,28 @@
       const userRef = doc(db, "users", uid);
       const userSnap = await getDoc(userRef);
       if (!userSnap.exists()) return;
+
       const userData = userSnap.data();
       const role = (userData.role || "").toLowerCase();
-      const idToko = userData.idToko || uid;
 
-      await updateDoc(userRef, { fcmToken: token });
+      await setDoc(userRef, { fcmToken: token }, { merge: true });
 
+      // Simpan ke driver berdasarkan idDriver === uid
       if (role === "driver") {
-        await updateDoc(doc(db, "driver", uid), { fcmToken: token });
-      } else if (role === "seller" || role === "toko") {
-        await updateDoc(doc(db, "toko", idToko), { fcmToken: token });
+        const q = query(collection(db, "driver"), where("idDriver", "==", uid));
+        const snap = await getDocs(q);
+        snap.forEach(docSnap => {
+          setDoc(doc(db, "driver", docSnap.id), { fcmToken: token }, { merge: true });
+        });
+      }
+
+      // Simpan ke toko berdasarkan userId === uid
+      if (role === "seller" || role === "toko") {
+        const q = query(collection(db, "toko"), where("userId", "==", uid));
+        const snap = await getDocs(q);
+        snap.forEach(docSnap => {
+          setDoc(doc(db, "toko", docSnap.id), { fcmToken: token }, { merge: true });
+        });
       }
     }
 
@@ -141,9 +155,9 @@
         const storedPin = userData.pin?.toString().padStart(6, "0");
 
         if (pinInput === storedPin) {
-          msg.innerText = "✅ PIN benar. Menyimpan token...";
+          msg.innerText = "✅ PIN benar. Mengalihkan...";
           await simpanTokenFCM(currentUserUID);
-          setTimeout(() => window.location.href = "index.html", 1200);
+          setTimeout(() => window.location.href = "index.html", 500);
         } else {
           msg.innerText = "❌ PIN salah.";
         }
