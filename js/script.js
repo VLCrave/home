@@ -492,6 +492,8 @@ for (const doc of pesananSnap.docs) {
   if (!pesananDoc.exists) continue;
   const pesanan = pesananDoc.data();
 
+  if ((pesanan.status || "").toLowerCase() === "selesai") continue; // ⛔️ Skip jika sudah selesai
+
   const lokasiCustomer = pesanan.lokasi || null;
   const idToko = pesanan.produk?.[0]?.idToko || data.idToko || "";
   const tokoDoc = await db.collection("toko").doc(idToko).get();
@@ -510,7 +512,7 @@ for (const doc of pesananSnap.docs) {
   daftarPesanan.push({
     id: doc.id,
     idPesanan: data.idPesanan,
-    idToko, // ✅ Penting juga di sini
+    idToko,
     idCustomer: pesanan.userId || "-",
     namaCustomer,
     namaToko,
@@ -530,13 +532,20 @@ for (const doc of pesananSnap.docs) {
 }
 
 
-    // 🔽 Urutkan dengan priority dan waktu
-    daftarPesanan.sort((a, b) => {
-      const prioritasA = (a.pengiriman || "").toLowerCase() === "priority" ? 1 : 0;
-      const prioritasB = (b.pengiriman || "").toLowerCase() === "priority" ? 1 : 0;
-      if (prioritasA !== prioritasB) return prioritasB - prioritasA;
-      return b.createdAt - a.createdAt;
-    });
+
+// 🔽 Urutkan: priority > non-priority, lalu terbaru ke terlama
+daftarPesanan.sort((a, b) => {
+  const isPriorityA = (a.pengiriman || "").toLowerCase() === "priority";
+  const isPriorityB = (b.pengiriman || "").toLowerCase() === "priority";
+
+  // Priority tampil dulu
+  if (isPriorityA && !isPriorityB) return -1;
+  if (!isPriorityA && isPriorityB) return 1;
+
+  // Kalau sama-sama priority atau sama-sama bukan, urutkan dari terbaru ke lama
+  return b.createdAt - a.createdAt;
+});
+
 
     // 🖥️ Tampilan
     let html = `
@@ -630,7 +639,49 @@ for (const doc of pesananSnap.docs) {
 
 else if (page === "riwayat-pesanan-driver") {
   const container = document.getElementById("page-container");
-  container.innerHTML = "<h2>📦 Riwayat Pengiriman Driver</h2><p>⏳ Memuat data...</p>";
+  container.innerHTML = `
+    <h2>📦 Riwayat Pengiriman Driver</h2>
+    <div id="info-saldo-driver" class="info-box-modern">💳 Saldo Sekarang: <strong id="saldo-driver">Memuat...</strong></div>
+    <div id="filter-riwayat-driver">
+      <input type="text" id="filterInputDriver" placeholder="🔍 Cari Order ID / Nama Customer..." />
+    </div>
+    <div id="riwayat-driver-container"><p>⏳ Memuat data...</p></div>
+
+    <style>
+      #info-saldo-driver {
+        background: linear-gradient(135deg, #d1f0e1, #b2dfdb);
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        font-size: 1.1rem;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      }
+      #filter-riwayat-driver {
+        margin-bottom: 15px;
+      }
+      #filter-riwayat-driver input {
+        padding: 8px 12px;
+        width: 100%;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 1rem;
+      }
+      .pesanan-item {
+        border: 1px solid #ddd;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        background: #fafafa;
+      }
+      .ringkasan-driver-riwayat {
+        background: #fff;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        padding: 15px;
+        margin-bottom: 20px;
+      }
+    </style>
+  `;
 
   (async () => {
     const user = firebase.auth().currentUser;
@@ -638,94 +689,125 @@ else if (page === "riwayat-pesanan-driver") {
     const db = firebase.firestore();
     const driverId = user.uid;
 
-    const snap = await db.collection("pesanan_driver")
-      .where("idDriver", "==", driverId)
-      .get();
-
-    if (snap.empty) {
-      container.innerHTML = "<p>Tidak ada riwayat pesanan ditemukan.</p>";
+    const driverSnap = await db.collection("driver").where("idDriver", "==", driverId).limit(1).get();
+    if (driverSnap.empty) {
+      document.getElementById("riwayat-driver-container").innerHTML = "<p style='color:red;'>❌ Data driver tidak ditemukan.</p>";
       return;
     }
 
+    const driverDoc = driverSnap.docs[0];
+    const driverData = driverDoc.data();
+    const currentSaldo = driverData.saldo || 0;
+    document.getElementById("saldo-driver").textContent = `Rp ${currentSaldo.toLocaleString("id-ID")}`;
+
+    const snap = await db.collection("pesanan_driver")
+      .where("idDriver", "==", driverId).get();
+
     const riwayat = [];
+    let totalOngkir = 0;
+    let totalPotongan = 0;
+    let totalPenghasilanBersih = 0;
 
     for (const doc of snap.docs) {
       const data = doc.data();
-      const driverDocId = doc.id;
       const idPesanan = data.idPesanan;
       if (!idPesanan) continue;
 
       const pesananDoc = await db.collection("pesanan").doc(idPesanan).get();
       if (!pesananDoc.exists) continue;
-
       const pesanan = pesananDoc.data();
       const status = (pesanan.status || "").toLowerCase();
       if (status !== "selesai") continue;
 
-      const createdAt = pesanan.createdAt?.toDate?.();
-      const selesaiAt = pesanan.updatedAt?.toDate?.() || createdAt;
+      const selesaiAt = pesanan.updatedAt?.toDate?.() || new Date();
 
       let namaCustomer = "Customer";
       if (pesanan.userId) {
         const userDoc = await db.collection("users").doc(pesanan.userId).get();
-        if (userDoc.exists) {
-          namaCustomer = userDoc.data().nama || namaCustomer;
-        }
+        if (userDoc.exists) namaCustomer = userDoc.data().nama || namaCustomer;
       }
 
       const idToko = pesanan.produk?.[0]?.idToko || "-";
       let namaToko = "Toko";
       const tokoDoc = await db.collection("toko").doc(idToko).get();
-      if (tokoDoc.exists) {
-        namaToko = tokoDoc.data().namaToko || namaToko;
-      }
+      if (tokoDoc.exists) namaToko = tokoDoc.data().namaToko || namaToko;
+
+      const ongkir = Number(data.totalOngkir || 0);
+      const potongan = Math.round(ongkir * 0.05);
+      const bersih = ongkir - potongan;
+
+      totalOngkir += ongkir;
+      totalPotongan += potongan;
+      totalPenghasilanBersih += bersih;
 
       riwayat.push({
-        driverDocId,
         idPesanan,
         namaCustomer,
         namaToko,
         total: pesanan.total || 0,
         metode: pesanan.metode || "-",
-        selesaiAt
+        selesaiAt,
+        ongkir,
+        potongan,
+        bersih
       });
     }
 
     if (riwayat.length === 0) {
-      container.innerHTML = "<p>Tidak ada pesanan yang diselesaikan oleh Anda.</p>";
+      document.getElementById("riwayat-driver-container").innerHTML = "<p>Tidak ada pesanan yang diselesaikan oleh Anda.</p>";
       return;
     }
 
     riwayat.sort((a, b) => b.selesaiAt - a.selesaiAt);
 
-    let html = `<ul class="riwayat-driver-list">`;
-
-    for (const r of riwayat) {
-      html += `
-        <li class="pesanan-item">
-          <p><strong>ID Pesanan:</strong> ${r.idPesanan}</p>
-          <p><strong>Customer:</strong> ${r.namaCustomer}</p>
-          <p><strong>Toko:</strong> ${r.namaToko}</p>
-          <p><strong>Total:</strong> Rp ${r.total.toLocaleString()}</p>
-          <p><strong>Metode:</strong> ${r.metode.toUpperCase()}</p>
-          <p><strong>Selesai:</strong> ${r.selesaiAt.toLocaleString("id-ID", {
-            weekday: "short", day: "2-digit", month: "short", year: "numeric",
-            hour: "2-digit", minute: "2-digit"
-          })}</p>
-          <div class="btn-group">
-            <button class="btn-next-status btn-success" id="tombol-selesaikan-${data.idPesanan}" onclick="selesaikanPesanan('${driverDoc.id}')">
-  ✅ Selesaikan Pesanan
-</button>
-
-          </div>
-        </li>
+    const renderRiwayat = (data) => {
+      let html = `
+        <div class="ringkasan-driver-riwayat">
+          <p><strong>📊 Total Pengiriman:</strong> ${data.length} pesanan</p>
+          <p><strong>💰 Total Ongkir:</strong> Rp ${totalOngkir.toLocaleString("id-ID")}</p>
+          <p><strong>❌ Total Potongan (5%):</strong> Rp ${totalPotongan.toLocaleString("id-ID")}</p>
+          <p><strong>✅ Total Penghasilan Bersih:</strong> Rp ${totalPenghasilanBersih.toLocaleString("id-ID")}</p>
+        </div>
+        <ul class="riwayat-driver-list">
       `;
-    }
 
-    html += "</ul>";
-    container.innerHTML = html;
+      for (const r of data) {
+        html += `
+          <li class="pesanan-item">
+            <p><strong>ID Pesanan:</strong> ${r.idPesanan}</p>
+            <p><strong>Customer:</strong> ${r.namaCustomer}</p>
+            <p><strong>Toko:</strong> ${r.namaToko}</p>
+            <p><strong>Total Belanja:</strong> Rp ${r.total.toLocaleString("id-ID")}</p>
+            <p><strong>Metode:</strong> ${r.metode.toUpperCase()}</p>
+            <p><strong>Selesai:</strong> ${r.selesaiAt.toLocaleString("id-ID", {
+              weekday: "short", day: "2-digit", month: "short", year: "numeric",
+              hour: "2-digit", minute: "2-digit"
+            })}</p>
+            <hr>
+            <p>💰 <strong>Ongkir:</strong> Rp ${r.ongkir.toLocaleString("id-ID")}</p>
+            <p>❌ <strong>Potongan (5%):</strong> Rp ${r.potongan.toLocaleString("id-ID")}</p>
+            <p>✅ <strong>Penghasilan Bersih:</strong> Rp ${r.bersih.toLocaleString("id-ID")}</p>
+          </li>
+        `;
+      }
+
+      html += "</ul>";
+      document.getElementById("riwayat-driver-container").innerHTML = html;
+    };
+
+    renderRiwayat(riwayat);
+
+    document.getElementById("filterInputDriver").addEventListener("input", (e) => {
+      const q = e.target.value.toLowerCase();
+      const filtered = riwayat.filter(item =>
+        item.idPesanan.toLowerCase().includes(q) || item.namaCustomer.toLowerCase().includes(q)
+      );
+      renderRiwayat(filtered);
+    });
   })();
 }
+
+
 
 
 
@@ -3623,44 +3705,204 @@ else if (page === "laporan-seller-admin") {
 else if (page === "riwayat-pesanan-seller") {
   const container = document.getElementById("page-container");
   container.innerHTML = `
-    <h2>📜 Riwayat Pesanan</h2>
+    <h2>📜 Riwayat Pesanan Selesai</h2>
+    <div id="info-saldo" class="info-box-modern">💰 Saldo Toko Saat Ini: <strong id="saldo-terakhir">Memuat...</strong></div>
+    <div id="filter-riwayat">
+      <input type="text" id="filterInput" placeholder="🔍 Cari Order ID / Nama Customer..." />
+    </div>
     <div id="riwayat-container"><p>🔄 Memuat data...</p></div>
+    <style>
+      #info-saldo {
+        background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 20px;
+        font-size: 1.1rem;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      }
+      #filter-riwayat {
+        margin-bottom: 15px;
+      }
+      #filter-riwayat input {
+        padding: 8px 12px;
+        width: 100%;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        font-size: 1rem;
+      }
+      .pesanan-item {
+        border: 1px solid #ddd;
+        padding: 15px;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        background: #fafafa;
+      }
+      .mutasi {
+        background: #fff;
+        padding: 10px;
+        border-left: 4px solid #2196f3;
+        margin-top: 10px;
+        font-size: 0.95rem;
+      }
+    </style>
   `;
 
   const db = firebase.firestore();
   const user = firebase.auth().currentUser;
-
-  if (!user) {
-    document.getElementById("riwayat-container").innerHTML = `<p style="color:red;">❗ Silakan login terlebih dahulu.</p>`;
-    return;
-  }
+  if (!user) return;
 
   try {
-    // ✅ COCOKKAN FIELD userId (BUKAN idUser)
     const tokoQuery = await db.collection("toko")
       .where("userId", "==", user.uid)
-      .limit(1)
-      .get();
+      .limit(1).get();
 
     if (tokoQuery.empty) {
-      document.getElementById("riwayat-container").innerHTML = `<p style="color:red;">⚠️ Toko tidak ditemukan untuk akun ini.</p>`;
+      document.getElementById("riwayat-container").innerHTML = `<p style="color:red;">⚠️ Toko tidak ditemukan.</p>`;
       return;
     }
 
     const tokoDoc = tokoQuery.docs[0];
-    const idToko = tokoDoc.id; // ✅ Ambil ID dokumennya sebagai idToko
+    const idToko = tokoDoc.id;
+    const saldoAkhir = tokoDoc.data().saldo || 0;
+    document.getElementById("saldo-terakhir").textContent = `Rp ${saldoAkhir.toLocaleString("id-ID")}`;
 
-    const snapshot = await db.collection("pesanan")
+    const snap = await db.collection("pesanan_driver")
       .where("idToko", "==", idToko)
-      .where("status", "in", ["selesai", "dibatalkan"])
-      .orderBy("createdAt", "desc")
       .get();
 
-    const docs = snapshot.docs;
-    renderRiwayatPesananCards(docs); // ✅ Tampilkan riwayat
+    let hasil = [];
+
+    for (const doc of snap.docs) {
+      const data = doc.data();
+      const idPesanan = data.idPesanan;
+      if (!idPesanan) continue;
+
+      const pesananDoc = await db.collection("pesanan").doc(idPesanan).get();
+      if (!pesananDoc.exists) continue;
+
+      const pesanan = pesananDoc.data();
+      if ((pesanan.status || "").toLowerCase() !== "selesai") continue;
+
+      const subtotal = Number(data.subtotalProduk || 0);
+      const metode = (pesanan.metode || "-").toLowerCase();
+      const waktu = pesanan.updatedAt?.toDate?.() || new Date();
+
+      let namaCustomer = "Customer";
+      if (pesanan.userId) {
+        const userDoc = await db.collection("users").doc(pesanan.userId).get();
+        if (userDoc.exists) namaCustomer = userDoc.data().nama || namaCustomer;
+      }
+
+      const potongan = Math.round(subtotal * 0.05);
+      const diterima = metode === "saldo" ? subtotal - potongan : subtotal;
+
+      hasil.push({
+        idPesanan,
+        namaCustomer,
+        subtotal,
+        potongan,
+        diterima,
+        metode,
+        waktu
+      });
+    }
+
+    // Urutkan dari terbaru ke paling lama
+    hasil.sort((a, b) => b.waktu - a.waktu);
+
+    // Hitung saldo mundur
+    let saldoSimulasi = saldoAkhir;
+    for (let i = 0; i < hasil.length; i++) {
+      const trx = hasil[i];
+      trx.saldoSetelah = saldoSimulasi;
+      trx.saldoSebelum = trx.metode === "saldo" 
+        ? saldoSimulasi - trx.diterima 
+        : saldoSimulasi + trx.potongan;
+      saldoSimulasi = trx.saldoSebelum;
+    }
+
+    const tampilkan = (data) => {
+      const container = document.getElementById("riwayat-container");
+      if (!data.length) {
+        container.innerHTML = "<p>Belum ada pesanan yang selesai.</p>";
+        return;
+      }
+
+      let html = "<ul>";
+      for (const d of data) {
+        html += `
+          <li class="pesanan-item">
+            <p><strong>ID Pesanan:</strong> ${d.idPesanan}</p>
+            <p><strong>Customer:</strong> ${d.namaCustomer}</p>
+            <p><strong>Subtotal:</strong> Rp ${d.subtotal.toLocaleString("id-ID")}</p>
+            <p><strong>Potongan (5%):</strong> Rp ${d.potongan.toLocaleString("id-ID")} (${d.metode.toUpperCase()})</p>
+            <p><strong>Penghasilan Bersih:</strong> Rp ${d.diterima.toLocaleString("id-ID")}</p>
+            <p><strong>Metode Pembayaran:</strong> ${d.metode.toUpperCase()}</p>
+            <p><strong>Selesai:</strong> ${d.waktu.toLocaleString("id-ID", {
+              weekday: "short", day: "2-digit", month: "short", year: "numeric",
+              hour: "2-digit", minute: "2-digit"
+            })}</p>
+            <div class="mutasi">
+              🔄 <strong>Saldo Sebelum:</strong> Rp ${d.saldoSebelum.toLocaleString("id-ID")}<br>
+              ${d.metode === "saldo" 
+                ? `📥 + Rp ${d.diterima.toLocaleString("id-ID")} (Masuk)` 
+                : `📤 - Rp ${d.potongan.toLocaleString("id-ID")} (Potongan COD)`}<br>
+              💳 <strong>Saldo Setelah:</strong> Rp ${d.saldoSetelah.toLocaleString("id-ID")}
+            </div>
+          </li>
+        `;
+      }
+      html += "</ul>";
+      container.innerHTML = html;
+    };
+
+    tampilkan(hasil);
+
+    document.getElementById("filterInput").addEventListener("input", (e) => {
+      const q = e.target.value.toLowerCase();
+      const filtered = hasil.filter(r =>
+        r.idPesanan.toLowerCase().includes(q) ||
+        r.namaCustomer.toLowerCase().includes(q)
+      );
+      tampilkan(filtered);
+    });
+
   } catch (e) {
-    document.getElementById("riwayat-container").innerHTML = `<p style="color:red;">❌ Gagal memuat data: ${e.message}</p>`;
+    document.getElementById("riwayat-container").innerHTML = `<p style="color:red;">❌ ${e.message}</p>`;
   }
+}
+
+
+
+
+else if (page === "kategori-ojek") {
+  const container = document.getElementById("page-container");
+  container.innerHTML = `
+    <div class="kategori-layanan">
+      <h2>🛵 Layanan Ojek</h2>
+      <p>Gunakan layanan ojek kami untuk antar jemput lebih cepat dan aman.</p>
+      <ul class="fitur-layanan">
+        <li>📍 Jemput lokasi real-time</li>
+        <li>🕒 Cepat tanggap dan responsif</li>
+        <li>💸 Harga transparan & terjangkau</li>
+      </ul>
+      <button class="btn-primary" onclick="alert('Segera tersedia 🚀')">Pesan Ojek</button>
+    </div>
+  `;
+} else if (page === "kategori-jastip") {
+  const container = document.getElementById("page-container");
+  container.innerHTML = `
+    <div class="kategori-layanan">
+      <h2>🛍️ Jasa Titip (JasTip)</h2>
+      <p>Ingin titip beli barang di sekitar kota? Gunakan JasTip!</p>
+      <ul class="fitur-layanan">
+        <li>🛒 Titip belanja ke minimarket/toko</li>
+        <li>📦 Kirim dan antar dengan aman</li>
+        <li>💬 Chat langsung dengan driver</li>
+      </ul>
+      <button class="btn-primary" onclick="alert('Fitur JasTip akan segera hadir!')">Gunakan JasTip</button>
+    </div>
+  `;
 }
 
 
@@ -8552,13 +8794,12 @@ async function updateStatusDriver(docId, status, idPesanan) {
       updatedAt: firebase.firestore.FieldValue.serverTimestamp(),
     };
 
-    // Update status dan log dulu
     await Promise.all([
       pesananDriverRef.update(updateData),
       pesananRef.update(updateData),
     ]);
 
-    // Proses potong saldo COD jika belum diproses
+    // ✅ POTONG SALDO JIKA COD + STATUS "Menunggu Pesanan"
     if (status === "Menunggu Pesanan" && metode === "cod" && !dataPesanan.sudahDiprosesPotong) {
       if (isNaN(subtotal) || isNaN(ongkir) || subtotal <= 0 || ongkir <= 0) {
         console.warn("⚠️ subtotal/ongkir tidak valid. Lewati potongan.");
@@ -8575,11 +8816,8 @@ async function updateStatusDriver(docId, status, idPesanan) {
         const tokoSnap = await t.get(tokoRef);
         const driverSnap = await t.get(driverRef);
 
-        const saldoTokoAwal = tokoSnap.data().saldo || 0;
-        const saldoDriverAwal = driverSnap.data().saldo || 0;
-
-        const saldoTokoAkhir = saldoTokoAwal - potonganSeller;
-        const saldoDriverAkhir = saldoDriverAwal - totalPotonganDriver;
+        const saldoTokoAkhir = (tokoSnap.data().saldo || 0) - potonganSeller;
+        const saldoDriverAkhir = (driverSnap.data().saldo || 0) - totalPotonganDriver;
 
         t.update(tokoRef, { saldo: saldoTokoAkhir });
         t.update(driverRef, { saldo: saldoDriverAkhir });
@@ -8587,26 +8825,24 @@ async function updateStatusDriver(docId, status, idPesanan) {
 
         const waktuPesan = firebase.firestore.FieldValue.serverTimestamp();
 
-        // Notifikasi ke toko
         t.set(
           db.collection("pesan_toko").doc(tokoSnap.data().idToko).collection("pesan").doc(),
           {
             idToko: tokoSnap.data().idToko,
             perihal: "Pemotongan Saldo",
-            keterangan: `Saldo kamu dipotong Rp${potonganSeller.toLocaleString("id-ID")} untuk pesanan #${idPesanan}. Sisa saldo: Rp${saldoTokoAkhir.toLocaleString("id-ID")}`,
+            keterangan: `Saldo kamu dipotong Rp${potonganSeller.toLocaleString("id-ID")} untuk pesanan #${idPesanan}.`,
             waktu: waktuPesan,
             dibaca: false,
             dari: "Sistem",
           }
         );
 
-        // Notifikasi ke driver
         t.set(
           db.collection("pesan_driver").doc(driverDoc.id).collection("pesan").doc(),
           {
             idDriver: idDriverVal,
             perihal: "Pemotongan Saldo",
-            keterangan: `Saldo kamu dipotong Rp${totalPotonganDriver.toLocaleString("id-ID")} untuk pesanan #${idPesanan}. Sisa saldo: Rp${saldoDriverAkhir.toLocaleString("id-ID")}`,
+            keterangan: `Saldo kamu dipotong Rp${totalPotonganDriver.toLocaleString("id-ID")} untuk pesanan #${idPesanan}.`,
             waktu: waktuPesan,
             dibaca: false,
             dari: "Sistem",
@@ -8614,22 +8850,15 @@ async function updateStatusDriver(docId, status, idPesanan) {
         );
       });
 
-      console.log("✅ Potongan saldo & pesan terkirim.");
+      console.log("✅ Potongan saldo COD berhasil.");
     }
 
-    // Proses tambah saldo saat status "Selesai"
-    if (status === "Selesai") {
+    // ✅ TAMBAH SALDO JIKA METODE SALDO + STATUS "Selesai"
+    if (status === "Selesai" && metode === "saldo") {
       const metodePengiriman = (dataPesanan.metodePengiriman || "").toLowerCase();
 
-      let feeSeller = 0;
-      let feeDriver = 0;
-      if (metode === "saldo") {
-        feeSeller = Math.round(subtotal * 0.05);
-        feeDriver = Math.round(ongkir * 0.05);
-      }
-
-      let sellerDiterima = metode === "saldo" ? Math.round(subtotal * 0.95) : subtotal;
-      let driverDiterima = metode === "saldo" ? Math.round(ongkir * 0.95) : ongkir;
+      let sellerDiterima = Math.round(subtotal * 0.95);
+      let driverDiterima = Math.round(ongkir * 0.95);
 
       if (metodePengiriman === "priority") {
         sellerDiterima += 1500;
@@ -8640,37 +8869,32 @@ async function updateStatusDriver(docId, status, idPesanan) {
         const tokoSnap = await t.get(tokoRef);
         const driverSnap = await t.get(driverRef);
 
-        const saldoTokoAwal = tokoSnap.data().saldo || 0;
-        const saldoDriverAwal = driverSnap.data().saldo || 0;
-
-        const saldoTokoAkhir = saldoTokoAwal + sellerDiterima;
-        const saldoDriverAkhir = saldoDriverAwal + driverDiterima;
+        const saldoTokoAkhir = (tokoSnap.data().saldo || 0) + sellerDiterima;
+        const saldoDriverAkhir = (driverSnap.data().saldo || 0) + driverDiterima;
 
         t.update(tokoRef, { saldo: saldoTokoAkhir });
         t.update(driverRef, { saldo: saldoDriverAkhir });
 
         const waktuPesan = firebase.firestore.FieldValue.serverTimestamp();
 
-        // Notifikasi ke toko
         t.set(
           db.collection("pesan_toko").doc(tokoSnap.data().idToko).collection("pesan").doc(),
           {
             idToko: tokoSnap.data().idToko,
             perihal: "Penambahan Saldo",
-            keterangan: `Saldo kamu bertambah Rp${sellerDiterima.toLocaleString("id-ID")} karena pesanan #${idPesanan} selesai. Total saldo: Rp${saldoTokoAkhir.toLocaleString("id-ID")}`,
+            keterangan: `Saldo kamu bertambah Rp${sellerDiterima.toLocaleString("id-ID")} dari pesanan #${idPesanan}.`,
             waktu: waktuPesan,
             dibaca: false,
             dari: "Sistem",
           }
         );
 
-        // Notifikasi ke driver
         t.set(
           db.collection("pesan_driver").doc(driverDoc.id).collection("pesan").doc(),
           {
             idDriver: idDriverVal,
             perihal: "Penambahan Saldo",
-            keterangan: `Saldo kamu bertambah Rp${driverDiterima.toLocaleString("id-ID")} karena pesanan #${idPesanan} selesai. Total saldo: Rp${saldoDriverAkhir.toLocaleString("id-ID")}`,
+            keterangan: `Saldo kamu bertambah Rp${driverDiterima.toLocaleString("id-ID")} dari pesanan #${idPesanan}.`,
             waktu: waktuPesan,
             dibaca: false,
             dari: "Sistem",
@@ -8678,7 +8902,7 @@ async function updateStatusDriver(docId, status, idPesanan) {
         );
       });
 
-      console.log("✅ Penambahan saldo & pesan terkirim saat pesanan selesai.");
+      console.log("✅ Penambahan saldo berhasil.");
     }
 
     alert(`✅ Status diubah ke: ${status}`);
@@ -8689,6 +8913,7 @@ async function updateStatusDriver(docId, status, idPesanan) {
     alert(err.message || "❌ Terjadi kesalahan.");
   }
 }
+
 
 
 
@@ -12673,34 +12898,42 @@ async function renderProductList() {
     const produkUrut = produkGabung.sort((a, b) => a.jarakNumber - b.jarakNumber);
 
     function renderKategoriCards() {
-      const filterContainer = document.getElementById('kategori-filter-container');
-      const kulinerContainer = document.getElementById('kategori-kuliner-container');
+  const filterContainer = document.getElementById('kategori-filter-container');
+  const kulinerContainer = document.getElementById('kategori-kuliner-container');
 
-      filterContainer.innerHTML = kategoriUnggulan.map(k => `
-        <div class="kategori-card" data-kategori="${k.value}">
-          <div class="kategori-img-wrapper">
-            <img src="${k.image}" alt="${k.label}" />
-          </div>
-          <span>${k.label}</span>
-        </div>
-      `).join("");
+  filterContainer.innerHTML = kategoriUnggulan.map(k => `
+    <div class="kategori-card" data-kategori="${k.value}">
+      <div class="kategori-img-wrapper">
+        <img src="${k.image}" alt="${k.label}" />
+      </div>
+      <span>${k.label}</span>
+    </div>
+  `).join("");
 
-      kulinerContainer.innerHTML = kategoriKuliner.map(k => `
-        <div class="kategori-card" data-kategori="${k.value}">
-          <div class="kategori-img-circle">
-            <img src="${k.image}" alt="${k.label}" />
-          </div>
-          <span>${k.label}</span>
-        </div>
-      `).join("");
-
-      document.querySelectorAll('.kategori-card').forEach(card => {
-        card.addEventListener('click', () => {
-          const selected = card.getAttribute('data-kategori');
-          renderKategoriPage(selected);
-        });
-      });
+  kulinerContainer.innerHTML = kategoriKuliner.map(k => `
+    <div class="kategori-card" data-kategori="${k.value}">
+      <div class="kategori-img-circle">
+        <img src="${k.image}" alt="${k.label}" />
+      </div>
+      <span>${k.label}</span>
+    </div>
+  `).join("");
+document.querySelectorAll('.kategori-card').forEach(card => {
+  card.addEventListener('click', () => {
+    const selected = card.getAttribute('data-kategori');
+    
+    if (selected === "Ojek") {
+      alert("🛵 Fitur Ojek akan segera tersedia.");
+    } else if (selected === "Jasa Titip") {
+      alert("🛍️ Fitur Jasa Titip akan segera tersedia.");
+    } else {
+      renderKategoriPage(selected);
     }
+  });
+});
+
+}
+
 
     window.tampilkanProdukFilter = function (kategori = "all", containerId = "produk-list-wrapper") {
       const wrapper = document.getElementById(containerId);
