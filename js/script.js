@@ -2752,9 +2752,6 @@ if (page === "user") {
         <button onclick="topupSaldoUser()" class="panel-user-btn-mini">🔼 Top Up</button>
       </div>
 
-      <div class="panel-user-label">Role</div>
-      <div class="panel-user-value"><i class="fas fa-id-badge"></i> ${role}</div>
-
       <div class="panel-user-label">Email</div>
       <div class="panel-user-value"><i class="fas fa-envelope"></i> ${email}</div>
 
@@ -3199,7 +3196,6 @@ async function renderPesananCards(docs) {
     const createdAt = p.createdAt?.toDate();
     const jamMenit = createdAt ? createdAt.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" }) : "-";
 
-    // Ambil status dari dokumen pesanan utama
     let statusPesanan = "menunggu pesanan";
     try {
       const pesananSnap = await firebase.firestore().collection("pesanan").doc(idPesanan).get();
@@ -3210,7 +3206,6 @@ async function renderPesananCards(docs) {
       console.warn("❌ Gagal ambil status pesanan utama:", e);
     }
 
-    // ❌ Lewati jika status selesai/dibatalkan/ditolak
     if (["selesai", "dibatalkan", "ditolak"].includes(statusPesanan)) continue;
 
     const pengiriman = (p.pengiriman || "standard").toLowerCase();
@@ -3246,7 +3241,6 @@ async function renderPesananCards(docs) {
     const disableBtn = (deadline && now < deadline) ? "disabled" : "";
     const sisaDetik = deadline && now < deadline ? Math.ceil((deadline - now) / 1000) : 0;
 
-    // ❌ Auto reject jika 2 menit tidak respon
     if (deadline && now > deadline && statusLower === "pending") {
       await firebase.firestore().collection("pesanan_penjual").doc(idDoc).update({
         status: "Ditolak",
@@ -3258,15 +3252,24 @@ async function renderPesananCards(docs) {
       const pesananDoc = await pesananRef.get();
       if (pesananDoc.exists) {
         const dataPesanan = pesananDoc.data();
+
+        const stepsLogSnapshot = await firebase.firestore()
+          .collection("pesanan_driver")
+          .where("idPesanan", "==", idPesanan)
+          .limit(1)
+          .get();
+
+        let logBaru = {
+          status: "Dibatalkan (auto reject)",
+          alasan: "Auto tolak karena tidak ada respon toko",
+          waktu: now
+        };
+
         await pesananRef.update({
           status: "Dibatalkan",
           alasanPenolakan: "Auto tolak oleh sistem",
           waktuDibatalkan: firebase.firestore.FieldValue.serverTimestamp(),
-          stepsLog: firebase.firestore.FieldValue.arrayUnion({
-            status: "Dibatalkan (auto reject)",
-            alasan: "Auto tolak karena tidak ada respon toko",
-            waktu: now
-          })
+          stepsLog: firebase.firestore.FieldValue.arrayUnion(logBaru)
         });
 
         if (dataPesanan.metode === "saldo" && dataPesanan.total > 0) {
@@ -3324,6 +3327,7 @@ async function renderPesananCards(docs) {
 
   return html;
 }
+
 
 
 
@@ -8738,7 +8742,7 @@ function formatStatus(status) {
     case "Pesanan Diambil": return "Pesanan diambil";
     case "Menuju Customer": return "Sedang diantar";
     case "Pesanan Tiba": return "Pesanan sampai";
-    case "Menunggu Pesanan": return "Menunggu pesanan (COD)";
+    case "Menunggu Pesanan": return "Menunggu pesanan";
     case "Selesai": return "Pesanan selesai";
     default: return status;
   }
@@ -12918,21 +12922,41 @@ async function renderProductList() {
       <span>${k.label}</span>
     </div>
   `).join("");
-document.querySelectorAll('.kategori-card').forEach(card => {
+
+  document.querySelectorAll('.kategori-card').forEach(card => {
   card.addEventListener('click', () => {
     const selected = card.getAttribute('data-kategori');
-    
-    if (selected === "Ojek") {
-      alert("🛵 Fitur Ojek akan segera tersedia.");
-    } else if (selected === "Jasa Titip") {
-      alert("🛍️ Fitur Jasa Titip akan segera tersedia.");
-    } else {
-      renderKategoriPage(selected);
+
+    if (selected === "Ojek" || selected === "Jasa Titip") {
+      document.body.classList.add("popup-active");
+      document.getElementById("popup-img").src = "img/maintenance.png";
+      document.getElementById("popup-text").innerHTML = ""; // Kosongkan teks
+      document.getElementById("popup-greeting").style.display = "flex";
+
+      document.getElementById("close-popup").onclick = () => {
+        document.getElementById("popup-greeting").style.display = "none";
+        document.body.classList.remove("popup-active");
+      };
+
+      return;
     }
+
+    renderKategoriPage(selected);
   });
 });
 
+
+
+  // Tombol Tutup Popup
+  const closeBtn = document.getElementById("close-popup");
+  if (closeBtn) {
+    closeBtn.addEventListener('click', () => {
+      document.getElementById("popup-overlay").style.display = "none";
+      document.getElementById("popup-greeting").style.display = "none";
+    });
+  }
 }
+
 
 
     window.tampilkanProdukFilter = function (kategori = "all", containerId = "produk-list-wrapper") {

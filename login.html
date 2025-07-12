@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -39,9 +38,10 @@
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
     import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
-    import { getFirestore, doc, getDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+    import { getFirestore, doc, getDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
+    import { getMessaging, getToken } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-messaging.js";
 
-    // Konfigurasi Firebase
+    // ✅ Konfigurasi Firebase
     const firebaseConfig = {
       apiKey: "AIzaSyAfBzoX9kUwUTWfQYT6QLndd_mP03__8Wo",
       authDomain: "vlcrave-express.firebaseapp.com",
@@ -51,9 +51,13 @@
       appId: "1:609330453287:web:5280b9ec5c0d435518e702"
     };
 
+    // ✅ Public key Web Push dari Firebase Console
+    const vapidKey = "BLonv1vVmUKPHiz3xqDyJ_8a9QhiuDugvCMnK9HYKgd6NlytGPNCVuFuuBOqQQKbSw7NK0ASxAGr_LUVs1PsY0Q"; // <= Ganti ya
+
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
+    const messaging = getMessaging(app);
 
     const loginBtn = document.getElementById("login-btn");
     const pinBtn = document.getElementById("pin-submit-btn");
@@ -61,7 +65,32 @@
 
     let currentUserUID = null;
 
-    // Langkah 1: Login email dan password
+    // ✅ Ambil dan Simpan Token FCM Web
+    async function simpanTokenFCM(uid) {
+      try {
+        const permission = await Notification.requestPermission();
+        if (permission !== "granted") {
+          msg.innerText = "❌ Notifikasi ditolak. Token tidak disimpan.";
+          return;
+        }
+
+        const token = await getToken(messaging, { vapidKey });
+
+        if (token) {
+          await updateDoc(doc(db, "users", uid), {
+            fcmToken: token
+          });
+          console.log("✅ Token FCM Web disimpan:", token);
+        } else {
+          console.warn("❌ Token tidak tersedia.");
+        }
+
+      } catch (error) {
+        console.error("❌ Gagal ambil/simpan token:", error);
+      }
+    }
+
+    // ✅ Login
     loginBtn.addEventListener("click", async () => {
       const email = document.getElementById("login-email").value.trim();
       const password = document.getElementById("login-password").value;
@@ -74,15 +103,17 @@
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         currentUserUID = userCredential.user.uid;
+
         msg.innerText = "✅ Login berhasil. Silakan verifikasi PIN.";
         document.getElementById("step-login").style.display = "none";
         document.getElementById("step-pin").style.display = "block";
+
       } catch (error) {
         msg.innerText = "❌ " + error.message;
       }
     });
 
-    // Langkah 2: Verifikasi PIN
+    // ✅ Verifikasi PIN + Simpan Token FCM
     pinBtn.addEventListener("click", async () => {
       const pinInput = document.getElementById("pin-input").value.trim();
 
@@ -102,10 +133,13 @@
         const storedPin = userData.pin?.toString().padStart(6, "0");
 
         if (pinInput === storedPin) {
-          msg.innerText = "✅ PIN benar. Mengalihkan...";
+          msg.innerText = "✅ PIN benar. Menyimpan token...";
+
+          await simpanTokenFCM(currentUserUID);
+
           setTimeout(() => {
             window.location.href = "index.html";
-          }, 1000);
+          }, 1200);
         } else {
           msg.innerText = "❌ PIN salah.";
         }

@@ -1,3 +1,4 @@
+
 :root {
   --bg-main: #f5f5f5;
   --text-color: #111;
@@ -3408,12 +3409,14 @@ form#rekening-form button#btn-batal.detail-btn:focus {
   color: #e74c3c !important;
 }
 
-/* Responsive untuk layar kecil */
 @media (max-width: 480px) {
   #page-container {
-    padding: 0 12px;
-  margin: 24px 12px;
+    padding: 16px 12px 140px 12px; /* Atas, kanan, bawah, kiri */
+    margin: 0;
+    box-sizing: border-box;
+  }
 }
+
 
 table th,
   table td {
