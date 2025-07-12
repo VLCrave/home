@@ -62,6 +62,23 @@
 
     let currentUserUID = null;
 
+    async function simpanTokenKeSemuaRole(uid, token) {
+      const userRef = doc(db, "users", uid);
+      const userSnap = await getDoc(userRef);
+      if (!userSnap.exists()) return;
+      const userData = userSnap.data();
+      const role = (userData.role || "").toLowerCase();
+      const idToko = userData.idToko || uid;
+
+      await updateDoc(userRef, { fcmToken: token });
+
+      if (role === "driver") {
+        await updateDoc(doc(db, "driver", uid), { fcmToken: token });
+      } else if (role === "seller" || role === "toko") {
+        await updateDoc(doc(db, "toko", idToko), { fcmToken: token });
+      }
+    }
+
     async function simpanTokenFCM(uid) {
       try {
         const permission = await Notification.requestPermission();
@@ -70,21 +87,15 @@
           return;
         }
 
-        // Service Worker harus berada di path yang benar
         const registration = await navigator.serviceWorker.register('/home/firebase-messaging-sw.js');
-
-        const token = await getToken(messaging, {
-          vapidKey,
-          serviceWorkerRegistration: registration
-        });
+        const token = await getToken(messaging, { vapidKey, serviceWorkerRegistration: registration });
 
         if (token) {
-          await updateDoc(doc(db, "users", uid), { fcmToken: token });
-          console.log("✅ Token FCM Web disimpan:", token);
+          await simpanTokenKeSemuaRole(uid, token);
+          console.log("✅ Token FCM disimpan:", token);
         } else {
           msg.innerText = "❌ Token tidak tersedia.";
         }
-
       } catch (err) {
         console.error("❌ Gagal simpan token:", err);
         msg.innerText = "❌ Gagal simpan token: " + err.message;
@@ -103,11 +114,9 @@
       try {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         currentUserUID = userCredential.user.uid;
-
         msg.innerText = "✅ Login berhasil. Silakan verifikasi PIN.";
         document.getElementById("step-login").style.display = "none";
         document.getElementById("step-pin").style.display = "block";
-
       } catch (error) {
         msg.innerText = "❌ " + error.message;
       }
@@ -138,7 +147,6 @@
         } else {
           msg.innerText = "❌ PIN salah.";
         }
-
       } catch (error) {
         msg.innerText = "❌ " + error.message;
       }
