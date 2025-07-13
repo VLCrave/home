@@ -19,6 +19,9 @@
       <input type="email" id="login-email" placeholder="Email" required />
       <input type="password" id="login-password" placeholder="Password" required />
       <button id="login-btn">Masuk</button>
+      <p style="margin-top: 10px;">
+        <a href="#" id="forgot-password-link">Lupa Password?</a>
+      </p>
     </div>
 
     <div id="step-pin" style="display: none;">
@@ -33,10 +36,24 @@
     </div>
   </div>
 
+  <!-- Modal Reset Password -->
+  <div id="forgot-password-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#00000080; z-index:999; justify-content:center; align-items:center;">
+    <div style="background:#fff; padding:20px; border-radius:10px; width:90%; max-width:400px;">
+      <h3>Reset Password</h3>
+      <p>Masukkan email kamu untuk menerima link reset password.</p>
+      <input type="email" id="reset-email" placeholder="Email kamu" style="width:100%; padding:10px; margin-top:10px;" />
+      <div style="margin-top: 15px;">
+        <button id="send-reset-btn" style="padding:10px 20px;">Kirim</button>
+        <button id="close-reset-btn" style="padding:10px 20px; background:#ccc;">Batal</button>
+      </div>
+      <p id="reset-msg" style="margin-top:10px;"></p>
+    </div>
+  </div>
+
   <!-- Firebase & Logic -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-app.js";
-    import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
+    import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-auth.js";
     import {
       getFirestore, doc, getDoc, setDoc, collection, query, where, getDocs
     } from "https://www.gstatic.com/firebasejs/11.9.1/firebase-firestore.js";
@@ -74,7 +91,6 @@
 
       await setDoc(userRef, { fcmToken: token }, { merge: true });
 
-      // Simpan ke driver berdasarkan idDriver === uid
       if (role === "driver") {
         const q = query(collection(db, "driver"), where("idDriver", "==", uid));
         const snap = await getDocs(q);
@@ -83,7 +99,6 @@
         });
       }
 
-      // Simpan ke toko berdasarkan userId === uid
       if (role === "seller" || role === "toko") {
         const q = query(collection(db, "toko"), where("userId", "==", uid));
         const snap = await getDocs(q);
@@ -163,6 +178,34 @@
         }
       } catch (error) {
         msg.innerText = "❌ " + error.message;
+      }
+    });
+
+    // Lupa Password
+    document.getElementById("forgot-password-link").addEventListener("click", () => {
+      document.getElementById("forgot-password-modal").style.display = "flex";
+      document.getElementById("reset-msg").innerText = "";
+      document.getElementById("reset-email").value = "";
+    });
+
+    document.getElementById("close-reset-btn").addEventListener("click", () => {
+      document.getElementById("forgot-password-modal").style.display = "none";
+    });
+
+    document.getElementById("send-reset-btn").addEventListener("click", async () => {
+      const email = document.getElementById("reset-email").value.trim();
+      const resetMsg = document.getElementById("reset-msg");
+
+      if (!email) {
+        resetMsg.innerText = "❌ Email tidak boleh kosong.";
+        return;
+      }
+
+      try {
+        await sendPasswordResetEmail(auth, email);
+        resetMsg.innerText = "✅ Link reset password telah dikirim ke email kamu.";
+      } catch (error) {
+        resetMsg.innerText = "❌ Gagal mengirim email: " + error.message;
       }
     });
   </script>
