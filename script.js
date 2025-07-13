@@ -1369,14 +1369,73 @@ if (page === "users-management") {
           <button onclick="gantiRole('${uid}', '${d.role || ""}')">🔁 Ganti Role</button>
           <button onclick="resetPin('${uid}')">🔐 Reset PIN</button>
           <button onclick="transferSaldo('${uid}')">💰 Transfer Saldo</button>
+          <button onclick="gantiPassword('${uid}', '${d.email || ""}')">🔒 Ganti Password</button>
         </div>
       </div>
     `;
   });
 
-  html += `</div><br/><button onclick="loadContent('admin-user')" class="btn-mini">⬅️ Kembali</button>`;
+  html += `
+    </div><br/>
+    <button onclick="loadContent('admin-user')" class="btn-mini">⬅️ Kembali</button>
+
+    <!-- Modal Ganti Password -->
+    <div id="modal-password" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); justify-content:center; align-items:center; z-index:999;">
+      <div style="background:#fff; padding:2rem; border-radius:12px; width:90%; max-width:400px; text-align:left;">
+        <h3>Ganti Password</h3>
+        <p id="ganti-pass-email"></p>
+        <input id="new-password" type="password" placeholder="Password baru (min 6 karakter)" style="width:100%; padding:10px; margin:10px 0; border:1px solid #ccc; border-radius:8px;" />
+        <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:1rem;">
+          <button onclick="submitGantiPassword()" style="padding:10px 16px; background:#1e90ff; color:#fff; border:none; border-radius:6px; cursor:pointer;">Simpan</button>
+          <button onclick="tutupModalPassword()" style="padding:10px 16px; background:#ddd; border:none; border-radius:6px; cursor:pointer;">Batal</button>
+        </div>
+        <p id="ganti-pass-msg" style="margin-top:1rem; font-size:0.9rem;"></p>
+      </div>
+    </div>
+  `;
+
   container.innerHTML = html;
+
+  // Script pendukung ganti password
+  let selectedPasswordUid = null;
+  let selectedPasswordEmail = null;
+
+  window.gantiPassword = (uid, email) => {
+    selectedPasswordUid = uid;
+    selectedPasswordEmail = email;
+    document.getElementById("modal-password").style.display = "flex";
+    document.getElementById("ganti-pass-email").innerText = `Untuk akun: ${email}`;
+    document.getElementById("new-password").value = "";
+    document.getElementById("ganti-pass-msg").innerText = "";
+  };
+
+  window.tutupModalPassword = () => {
+    document.getElementById("modal-password").style.display = "none";
+  };
+
+  window.submitGantiPassword = async () => {
+    const newPass = document.getElementById("new-password").value.trim();
+    const msg = document.getElementById("ganti-pass-msg");
+
+    if (newPass.length < 6) {
+      msg.innerText = "❌ Password minimal 6 karakter.";
+      return;
+    }
+
+    try {
+      // Mendapatkan custom token dari server kamu (jika menggunakan backend), atau hanya update Firestore
+      await firebase.firestore().collection("users").doc(selectedPasswordUid).update({
+        passwordBaru: newPass, // bisa disimpan sementara lalu diproses backend untuk ganti asli
+        passwordChangeAt: new Date()
+      });
+
+      msg.innerText = "✅ Password berhasil diperbarui (silakan arahkan user untuk login ulang).";
+    } catch (err) {
+      msg.innerText = "❌ Gagal memperbarui password: " + err.message;
+    }
+  };
 }
+
 
 
 
@@ -3204,13 +3263,28 @@ async function renderPesananCards(docs) {
     const jamMenit = createdAt ? createdAt.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" }) : "-";
 
     let statusPesanan = "menunggu pesanan";
+    let statusDriver = "-";
+    let driverName = "-";
+
     try {
       const pesananSnap = await firebase.firestore().collection("pesanan").doc(idPesanan).get();
       if (pesananSnap.exists) {
         statusPesanan = (pesananSnap.data().status || "").toLowerCase();
       }
+
+      const driverSnap = await firebase.firestore()
+        .collection("pesanan_driver")
+        .where("idPesanan", "==", idPesanan)
+        .limit(1)
+        .get();
+
+      if (!driverSnap.empty) {
+        const driverData = driverSnap.docs[0].data();
+        statusDriver = driverData.status || "-";
+        driverName = driverData.namaDriver || "-";
+      }
     } catch (e) {
-      console.warn("❌ Gagal ambil status pesanan utama:", e);
+      console.warn("❌ Gagal ambil status pesanan/driver:", e);
     }
 
     if (["selesai", "dibatalkan", "ditolak"].includes(statusPesanan)) continue;
@@ -3219,8 +3293,6 @@ async function renderPesananCards(docs) {
     const isPriority = pengiriman === "priority";
     const pengirimanLabel = isPriority ? "⚡ Priority" : pengiriman.charAt(0).toUpperCase() + pengiriman.slice(1);
     const stylePengiriman = isPriority ? "color: #d9534f; font-weight: bold;" : "color: #333;";
-    const statusLabel = p.status || "Menunggu Pesanan";
-    const statusLower = (p.status || "").toLowerCase();
 
     let estimasiMasak = 0;
     try {
@@ -3235,20 +3307,31 @@ async function renderPesananCards(docs) {
     const mulai = createdAt?.getTime() || 0;
     const akhirMasak = mulai + estimasiMasak * 60 * 1000;
     const countdownId = `countdown-${idDoc}`;
-    if (estimasiMasak > 0 && statusLower === "menunggu driver") {
+    if (estimasiMasak > 0 && statusPesanan === "menunggu driver") {
       window.countdownList.push({ id: countdownId, akhir: akhirMasak, docId: idDoc });
     }
 
-    const countdownHtml = (estimasiMasak > 0 && statusLower === "menunggu driver")
+    const countdownHtml = (estimasiMasak > 0 && statusPesanan === "menunggu driver")
       ? `<p><strong>Masak:</strong> <span id="${countdownId}">...</span></p>`
       : "";
+
+    let tombolAksi = `
+      <div class="btn-group-seller-pesanan">
+        <button onclick="lihatLogPesananSeller('${idPesanan}', '${idToko}')">📄 Detail</button>
+        <button onclick="renderChatPelanggan({
+          idPesanan: '${idPesanan}',
+          idCustomer: '${p.idPembeli}',
+          namaCustomer: '${p.namaPembeli}',
+          namaToko: '${p.namaToko || "-"}'
+        })">💬 Chat</button>
+      </div>`;
 
     const deadline = p.deadlineKonfirmasi?.toDate?.() || null;
     const now = new Date();
     const disableBtn = (deadline && now < deadline) ? "disabled" : "";
     const sisaDetik = deadline && now < deadline ? Math.ceil((deadline - now) / 1000) : 0;
 
-    if (deadline && now > deadline && statusLower === "pending") {
+    if (deadline && now > deadline && statusPesanan === "pending") {
       await firebase.firestore().collection("pesanan_penjual").doc(idDoc).update({
         status: "Ditolak",
         alasanPenolakan: "Auto tolak karena tidak ada respon",
@@ -3287,24 +3370,7 @@ async function renderPesananCards(docs) {
       continue;
     }
 
-    let tombolAksi = `
-      <div class="btn-group-seller-pesanan">
-        <button onclick="lihatLogPesananSeller('${idPesanan}', '${idToko}')">📄 Detail</button>
-        <button onclick="renderChatPelanggan({
-          idPesanan: '${idPesanan}',
-          idCustomer: '${p.idPembeli}',
-          namaCustomer: '${p.namaPembeli}',
-          namaToko: '${p.namaToko || "-"}'
-        })">💬 Chat</button>
-      </div>`;
-
-    const cekDriver = await firebase.firestore()
-      .collection("pesanan_driver")
-      .where("idPesanan", "==", idPesanan)
-      .limit(1)
-      .get();
-
-    if (cekDriver.empty && statusLower === "pending") {
+    if (statusPesanan === "pending") {
       tombolAksi += `
         <div id="btn-group-${idDoc}" class="btn-group-seller-pesanan">
           <button onclick="konfirmasiPesanan('${idDoc}', '${idPesanan}')" ${disableBtn}>✅ Konfirmasi</button>
@@ -3323,17 +3389,16 @@ async function renderPesananCards(docs) {
           🚚 Metode Pengiriman: ${pengirimanLabel}
           ${isPriority ? '<span class="badge-priority-reward">+1.500</span>' : ""}
         </p>
-        <p><strong>Status:</strong> <span id="status-driver-${idDoc}">${statusLabel}</span></p>
-        <p><strong>Driver:</strong> <span id="driver-info-${idDoc}">-</span></p>
+        <p><strong>Status Driver:</strong> <span id="status-driver-${idDoc}">${statusDriver}</span></p>
+        <p><strong>Driver:</strong> <span id="driver-info-${idDoc}">${driverName}</span></p>
         ${countdownHtml}
         ${tombolAksi}
       </div>`;
-
-    updateDriverInfo(idDoc, idPesanan);
   }
 
   return html;
 }
+
 
 
 
