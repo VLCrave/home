@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <title>Pendaftaran Mitra | VLCrave Express</title>
   <style>
     :root {
       --primary-color: #ff6f00;
@@ -27,37 +28,6 @@
       max-width: 480px;
       margin: auto;
       padding: 24px 16px;
-    }
-
-    /* Static Sidebar (non-toggle) */
-    #sidebar {
-      background: #fff;
-      padding: 20px 16px;
-      border-bottom: 1px solid #eee;
-    }
-
-    #sidebar ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: flex;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
-
-    #sidebar li {
-      display: inline;
-    }
-
-    #sidebar a {
-      text-decoration: none;
-      color: var(--text-color);
-      font-weight: 500;
-      font-size: 15px;
-    }
-
-    #sidebar a:hover {
-      color: var(--primary-color);
     }
 
     .logo-section {
@@ -237,18 +207,41 @@
     .social-icons a:hover {
       color: var(--primary-color);
     }
+header.sticky-header {
+  position: sticky;
+  top: 0;
+  background-color: white;
+  z-index: 999;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+  padding: 16px;
+}
+
+.header-container {
+  max-width: 768px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 16px;
+}
+
+.header-title {
+  color: #ff6f00;
+  font-weight: bold;
+  font-size: 18px;
+}
+
   </style>
 </head>
 <body>
 
-  <!-- Sidebar Static -->
-  <div id="sidebar">
-    <ul>
-      <li><a href="/">🏠 Beranda</a></li>
-      <li><a href="/login.html">🔐 Login</a></li>
-      <li><a href="https://wa.me/6282181670112">📞 Kontak</a></li>
-    </ul>
+<header class="sticky-header">
+  <div class="header-container">
+    <div class="header-title">🍽 VLCrave Express</div>
   </div>
+</header>
+
+
 
   <div class="container">
     <section class="logo-section">
