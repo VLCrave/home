@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VLCrave Express - Unduh Sekarang!</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <style>
+    :root {
+      --primary-color: #ff6f00;
+      --secondary-color: #f4f7ff;
+      --text-color: #333;
+      --muted-color: #777;
+      --bg-color: #fff;
+      --font: 'Segoe UI', sans-serif;
+    }
+
+    body {
+      font-family: var(--font);
+      margin: 0;
+      background: var(--bg-color);
+      color: var(--text-color);
+    }
+
+    .container {
+      max-width: 480px;
+      margin: auto;
+      padding: 24px 16px;
+    }
+
+    .logo-section {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .logo-section img {
+      width: 140px;
+      margin-bottom: 12px;
+    }
+
+    .logo-section .title {
+      font-size: 22px;
+      font-weight: bold;
+      color: #222;
+    }
+
+    .logo-section .subtitle {
+      font-size: 14px;
+      color: #666;
+    }
+
+    .download-section {
+      text-align: center;
+      margin: 32px 0;
+    }
+
+    .download-section img {
+      max-width: 200px;
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+      transition: transform 0.3s ease;
+    }
+
+    .download-section img:hover {
+      transform: scale(1.04);
+    }
+
+    .download-section .caption {
+      font-size: 13px;
+      margin-top: 8px;
+      color: #555;
+    }
+
+    .slider-container {
+      position: relative;
+      width: 100%;
+      max-width: 480px;
+      margin: 24px auto;
+      overflow: hidden;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .slider-wrapper {
+      display: flex;
+      transition: transform 0.5s ease-in-out;
+    }
+
+    .slider-wrapper img {
+      width: 100%;
+      flex-shrink: 0;
+    }
+
+    .features-section {
+      margin-top: 32px;
+    }
+
+    .features-section h2 {
+      text-align: center;
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 24px;
+    }
+
+    .feature {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .feature img {
+      width: 40px;
+      height: 40px;
+    }
+
+    .feature h4 {
+      margin: 0 0 4px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #222;
+    }
+
+    .feature p {
+      margin: 0;
+      font-size: 13px;
+      color: #555;
+    }
+
+    .cta-mitra {
+      display: block;
+      background: var(--primary-color);
+      color: #fff;
+      text-align: center;
+      padding: 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      margin: 32px auto 16px;
+      max-width: 300px;
+      font-weight: bold;
+    }
+
+    .cta-mitra:hover {
+      background: #e65c00;
+    }
+
+    .stats-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f9fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      padding: 16px;
+      margin: 24px 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .stat-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex: 1;
+      min-width: 30%;
+    }
+
+    .stat-item i {
+      font-size: 22px;
+      color: #0077ff;
+    }
+
+    .stat-number {
+      font-size: 20px;
+      font-weight: 700;
+      color: #222;
+      line-height: 1.2;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: #666;
+    }
+
+    .voucher-referral {
+      background: #fff4e5;
+      padding: 20px;
+      border-radius: 12px;
+      margin: 32px 0;
+      text-align: center;
+      font-size: 14px;
+      color: #444;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+
+    .voucher-referral b {
+      color: #e65c00;
+    }
+
+    .testimonials {
+      background: #fff8f2;
+      padding: 24px;
+      border-radius: 12px;
+      margin: 32px 0;
+    }
+
+    .testimonials h2 {
+      font-size: 16px;
+      font-weight: bold;
+      text-align: center;
+      margin-bottom: 16px;
+    }
+
+    .testimonial {
+      margin-bottom: 16px;
+      font-size: 13px;
+      color: #444;
+    }
+
+    .testimonial span {
+      display: block;
+      font-size: 12px;
+      color: #999;
+      margin-top: 6px;
+    }
+
+    footer {
+      text-align: center;
+      font-size: 13px;
+      color: var(--muted-color);
+      padding: 20px 0;
+    }
+
+    .social-icons {
+      margin-top: 10px;
+    }
+
+    .social-icons a {
+      color: #555;
+      margin: 0 8px;
+      font-size: 18px;
+      text-decoration: none;
+      transition: color 0.2s ease;
+    }
+
+    .social-icons a:hover {
+      color: var(--primary-color);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Logo -->
+    <section class="logo-section">
+      <img src="./img/icon.png" alt="Logo VLCrave Express" />
+      <div class="title">VLCrave Express Hadir di Bangka!</div>
+      <div class="subtitle">Nikmati layanan antar makanan & belanja dengan promo spesial pengguna baru.</div>
+    </section>
+
+    <!-- Tombol Download -->
+    <section class="download-section">
+      <a href="https://github.com/VLCrave/home/releases/download/vlcrave/VLCrave_Express_5_0_9.apk" download>
+        <img src="./img/download.png" alt="Download APK VLCrave Express" />
+      </a>
+      <div class="caption">Unduh sekarang dan nikmati gratis ongkir hingga 30%!</div>
+    </section>
+
+    <!-- Slider -->
+    <div class="slider-container">
+      <div class="slider-wrapper" id="slider">
+        <img src="./img/banner1.png" alt="Banner 1">
+        <img src="./img/banner2.png" alt="Banner 2">
+        <img src="./img/banner3.png" alt="Banner 3">
+        <img src="./img/banner4.png" alt="Banner 4">
+        <img src="./img/banner5.png" alt="Banner 5">
+      </div>
+    </div>
+
+    <!-- Fitur -->
+    <section class="features-section">
+      <h2>Kenapa Pilih VLCrave?</h2>
+      <div class="feature">
+        <img src="./img/1.png" alt="Pengiriman Kilat" />
+        <div>
+          <h4>Pengiriman Kilat</h4>
+          <p>Pesananmu sampai dalam hitungan menit. Cepat, aman, dan terpercaya.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <img src="./img/2.png" alt="Promo Setiap Hari" />
+        <div>
+          <h4>Promo Setiap Hari</h4>
+          <p>Dari diskon hingga cashback, selalu ada alasan untuk pesan lagi.</p>
+        </div>
+      </div>
+      <div class="feature">
+        <img src="./img/3.png" alt="Toko Lokal" />
+        <div>
+          <h4>Pilihan Toko Lokal</h4>
+          <p>Jangkau lebih banyak toko dan makanan favorit di sekitarmu.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA Mitra -->
+    <a href="https://wa.me/6282181670112?text=Halo%20Saya%20ingin%20daftar%20mitra%20VLCrave" class="cta-mitra">Daftar Jadi Mitra</a>
+
+    <!-- Statistik -->
+    <div class="stats-bar">
+      <div class="stat-item">
+        <i class="fas fa-motorcycle"></i>
+        <div>
+          <div class="stat-number" id="driver-count">0</div>
+          <div class="stat-label">Driver Aktif</div>
+        </div>
+      </div>
+      <div class="stat-item">
+        <i class="fas fa-store"></i>
+        <div>
+          <div class="stat-number" id="outlet-count">0</div>
+          <div class="stat-label">Outlet Terdaftar</div>
+        </div>
+      </div>
+      <div class="stat-item">
+        <i class="fas fa-users"></i>
+        <div>
+          <div class="stat-number" id="user-count">0</div>
+          <div class="stat-label">Total Pengguna</div>
+        </div>
+      </div>
+    </div>
+
+  <!-- Footer -->
+  <footer>
+    &copy; 2025 VLCrave Express
+    <div class="social-icons">
+      <a href="#"><i class="fab fa-facebook-f"></i></a>
+      <a href="#"><i class="fab fa-instagram"></i></a>
+      <a href="#"><i class="fab fa-whatsapp"></i></a>
+    </div>
+  </footer>
+
+  <!-- Firebase SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyAfBzoX9kUwUTWfQYT6QLndd_mP03__8Wo",
+      authDomain: "vlcrave-express.firebaseapp.com",
+      projectId: "vlcrave-express",
+      storageBucket: "vlcrave-express.appspot.com",
+      messagingSenderId: "609330453287",
+      appId: "1:609330453287:web:5280b9ec5c0d435518e702"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
+    async function loadStats() {
+      try {
+        const driverSnap = await db.collection("driver").get();
+        const tokoSnap = await db.collection("toko").get();
+        const userSnap = await db.collection("users").get();
+        document.getElementById("driver-count").innerText = driverSnap.size;
+        document.getElementById("outlet-count").innerText = tokoSnap.size;
+        document.getElementById("user-count").innerText = userSnap.size;
+      } catch (err) {
+        console.error("Gagal memuat statistik:", err);
+      }
+    }
+
+    // Slider Otomatis
+    const slider = document.getElementById("slider");
+    let index = 0;
+    const slides = slider.children.length;
+    setInterval(() => {
+      index = (index + 1) % slides;
+      slider.style.transform = `translateX(-${index * 100}%)`;
+    }, 3000);
+
+    window.addEventListener("DOMContentLoaded", loadStats);
+  </script>
+</body>
+</html>
