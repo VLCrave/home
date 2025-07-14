@@ -5409,7 +5409,7 @@ async function simpanEditToko(event, idToko) {
 
     await tokoRef.update(updateData);
     alert("✅ Data toko berhasil diperbarui!");
-    loadContent("admin-toko"); // Optional: refresh halaman
+    loadContent("seller-dashboard"); // Optional: refresh halaman
   } catch (err) {
     console.error("❌ Gagal menyimpan data toko:", err);
     alert("❌ Gagal menyimpan data toko. Silakan coba lagi.");
