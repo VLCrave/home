@@ -12,71 +12,105 @@
     }
   </style>
 </head>
-<body class="bg-white min-h-screen flex flex-col items-center justify-center px-6 py-10 text-gray-800">
+<body class="bg-white min-h-screen text-gray-800">
 
-  <!-- Header -->
-  <div class="w-full max-w-md text-center mb-10">
-    <h1 class="text-3xl font-bold text-gray-900">Bergabung Menjadi Mitra VLCrave</h1>
-    <p class="mt-2 text-sm text-gray-600">Daftarkan bisnis kulinermu atau jadi driver handal bersama kami.</p>
-  </div>
-
-  <!-- Mitra Cards -->
-  <div class="w-full max-w-md space-y-5">
-    <button onclick="openModal('outlet')" class="w-full border border-gray-200 rounded-xl shadow hover:shadow-md transition bg-orange-50 hover:bg-orange-100 p-5 text-left">
-      <div class="flex items-center">
-        <div class="bg-orange-500 text-white p-3 rounded-full mr-4">🏪</div>
-        <div>
-          <h2 class="text-lg font-semibold text-gray-800">Daftar Mitra Outlet</h2>
-          <p class="text-sm text-gray-600">Untuk pemilik rumah makan, kafe, atau warung.</p>
-        </div>
-      </div>
-    </button>
-
-    <button onclick="openModal('driver')" class="w-full border border-gray-200 rounded-xl shadow hover:shadow-md transition bg-blue-50 hover:bg-blue-100 p-5 text-left">
-      <div class="flex items-center">
-        <div class="bg-blue-500 text-white p-3 rounded-full mr-4">🛵</div>
-        <div>
-          <h2 class="text-lg font-semibold text-gray-800">Daftar Mitra Driver</h2>
-          <p class="text-sm text-gray-600">Untuk kamu yang ingin jadi pengantar pesanan.</p>
-        </div>
-      </div>
-    </button>
-  </div>
-
-  <!-- Modal -->
-  <div id="modalBenefit" class="fixed inset-0 z-50 bg-black bg-opacity-50 hidden items-center justify-center">
-    <div class="bg-white rounded-xl shadow-lg p-6 w-full max-w-md relative">
-      <h3 class="text-xl font-semibold mb-4 text-center text-gray-800">Benefit & Syarat Ketentuan</h3>
-
-      <div class="mb-4 text-sm text-gray-700 space-y-2">
-  <p><strong>🎁 Benefit Bergabung Sebagai Mitra VLCrave Express:</strong></p>
-  <ul class="list-disc list-inside space-y-1">
-    <li><strong>Pendaftaran 100% Gratis</strong> tanpa biaya admin</li>
-    <li><strong>Bonus saldo awal hingga Rp5.000</strong> langsung ke dompet mitra</li>
-    <li><strong>Potongan aplikasi hanya 5%</strong> — lebih kecil dari kompetitor!</li>
-    <li><strong>Pembayaran langsung ke dompet</strong> secara otomatis & transparan</li>
-    <li><strong>Support penuh</strong> dari tim customer care kami</li>
-    <li><strong>Peluang lebih besar</strong> karena kami fokus ke wilayah lokal</li>
-    <li><strong>Promosi rutin</strong> yang menguntungkan mitra</li>
-  </ul>
-
-  <p class="mt-4"><strong>📌 Syarat & Ketentuan:</strong></p>
-  <ul class="list-disc list-inside space-y-1">
-    <li>Bonus hanya berlaku untuk pendaftaran pertama</li>
-    <li>Data mitra harus valid dan dapat diverifikasi</li>
-    <li>Promo dapat berubah sewaktu-waktu tanpa pemberitahuan</li>
-  </ul>
-</div>
-
-
-      <div class="flex justify-end gap-3 mt-6">
-        <button onclick="closeModal()" class="text-sm text-gray-500 hover:text-red-600">Batal</button>
-        <a id="agreeLink" href="#" class="bg-orange-500 hover:bg-orange-600 text-white text-sm px-4 py-2 rounded-md transition">
-          Setuju & Lanjut Daftar
-        </a>
-      </div>
+  <!-- Sidebar -->
+  <div id="sidebar" class="fixed inset-y-0 left-0 w-64 bg-white shadow-lg transform -translate-x-full transition-transform duration-300 z-50">
+    <div class="p-5">
+      <h2 class="text-xl font-bold text-orange-500 mb-4">VLCrave Menu</h2>
+      <ul class="space-y-3 text-sm">
+        <li><a href="/" class="block text-gray-700 hover:text-orange-500">🏠 Beranda</a></li>
+        <li><a href="/login.html" class="block text-gray-700 hover:text-orange-500">🔐 Login</a></li>
+      </ul>
     </div>
   </div>
+
+  <!-- Overlay -->
+  <div id="overlay" class="fixed inset-0 bg-black bg-opacity-40 hidden z-40" onclick="closeSidebar()"></div>
+
+  <!-- Topbar -->
+  <div class="flex items-center justify-between px-4 py-3 shadow-sm bg-white sticky top-0 z-30">
+    <button onclick="toggleSidebar()" class="text-2xl text-orange-500">
+      ☰
+    </button>
+    <h1 class="text-lg font-semibold text-gray-800">Pendaftaran Mitra</h1>
+    <div></div>
+  </div>
+
+  <!-- Main Content -->
+  <main class="flex flex-col items-center justify-center px-6 py-10">
+    
+    <!-- Header -->
+    <div class="w-full max-w-md text-center mb-6">
+      <h1 class="text-3xl font-bold text-gray-900">Bergabung Menjadi Mitra VLCrave</h1>
+      <p class="mt-2 text-sm text-gray-600">Daftarkan bisnis kulinermu atau jadi driver handal bersama kami.</p>
+    </div>
+
+    <!-- Image Slider -->
+    <div class="w-full max-w-md mb-6 relative">
+      <div id="sliderWrapper" class="overflow-hidden rounded-xl">
+        <div id="sliderImages" class="flex transition-transform duration-500 ease-in-out" style="transform: translateX(0%)">
+          <img src="/img/banner3.png" class="w-full object-cover">
+          <img src="/img/banner5.png">
+        </div>
+      </div>
+  
+
+    <!-- Mitra Cards -->
+    <div class="w-full max-w-md space-y-5">
+      <button onclick="openModal('outlet')" class="w-full border border-gray-200 rounded-xl shadow hover:shadow-md transition bg-orange-50 hover:bg-orange-100 p-5 text-left">
+        <div class="flex items-center">
+          <div class="bg-orange-500 text-white p-3 rounded-full mr-4">🏪</div>
+          <div>
+            <h2 class="text-lg font-semibold text-gray-800">Daftar Mitra Outlet</h2>
+            <p class="text-sm text-gray-600">Untuk pemilik rumah makan, kafe, atau warung.</p>
+          </div>
+        </div>
+      </button>
+
+      <button onclick="openModal('driver')" class="w-full border border-gray-200 rounded-xl shadow hover:shadow-md transition bg-blue-50 hover:bg-blue-100 p-5 text-left">
+        <div class="flex items-center">
+          <div class="bg-blue-500 text-white p-3 rounded-full mr-4">🛵</div>
+          <div>
+            <h2 class="text-lg font-semibold text-gray-800">Daftar Mitra Driver</h2>
+            <p class="text-sm text-gray-600">Untuk kamu yang ingin jadi pengantar pesanan.</p>
+          </div>
+        </div>
+      </button>
+    </div>
+
+    <!-- Modal -->
+    <div id="modalBenefit" class="fixed inset-0 z-50 bg-black bg-opacity-50 hidden items-center justify-center">
+      <div class="bg-white rounded-xl shadow-lg p-6 w-full max-w-md relative">
+        <h3 class="text-xl font-semibold mb-4 text-center text-gray-800">Benefit & Syarat Ketentuan</h3>
+        <div class="mb-4 text-sm text-gray-700 space-y-2">
+          <p><strong>🎁 Benefit Bergabung Sebagai Mitra VLCrave Express:</strong></p>
+          <ul class="list-disc list-inside space-y-1">
+            <li><strong>Pendaftaran 100% Gratis</strong> tanpa biaya admin</li>
+            <li><strong>Bonus saldo awal hingga Rp5.000</strong> langsung ke dompet mitra</li>
+            <li><strong>Potongan aplikasi hanya 5%</strong> — lebih kecil dari kompetitor!</li>
+            <li><strong>Pembayaran langsung ke dompet</strong> secara otomatis & transparan</li>
+            <li><strong>Support penuh</strong> dari tim customer care kami</li>
+            <li><strong>Peluang lebih besar</strong> karena kami fokus ke wilayah lokal</li>
+            <li><strong>Promosi rutin</strong> yang menguntungkan mitra</li>
+          </ul>
+          <p class="mt-4"><strong>📌 Syarat & Ketentuan:</strong></p>
+          <ul class="list-disc list-inside space-y-1">
+            <li>Bonus hanya berlaku untuk pendaftaran pertama</li>
+            <li>Data mitra harus valid dan dapat diverifikasi</li>
+            <li>Promo dapat berubah sewaktu-waktu tanpa pemberitahuan</li>
+          </ul>
+        </div>
+
+        <div class="flex justify-end gap-3 mt-6">
+          <button onclick="closeModal()" class="text-sm text-gray-500 hover:text-red-600">Batal</button>
+          <a id="agreeLink" href="#" class="bg-orange-500 hover:bg-orange-600 text-white text-sm px-4 py-2 rounded-md transition">
+            Setuju & Lanjut Daftar
+          </a>
+        </div>
+      </div>
+    </div>
+  </main>
 
   <!-- Footer -->
   <div class="mt-10 text-xs text-gray-400 text-center">
@@ -85,17 +119,11 @@
 
   <!-- Script -->
   <script>
+    // Modal
     function openModal(type) {
       const modal = document.getElementById('modalBenefit');
       const agreeBtn = document.getElementById('agreeLink');
-
-      // Set target pendaftaran
-      if (type === 'outlet') {
-        agreeBtn.href = "https://vlcrave.github.io/home/mitraoutlet.html";
-      } else if (type === 'driver') {
-        agreeBtn.href = "https://vlcrave.github.io/home/mitradriver.html";
-      }
-
+      agreeBtn.href = type === 'outlet' ? "https://vlcrave.github.io/home/mitraoutlet.html" : "https://vlcrave.github.io/home/mitradriver.html";
       modal.classList.remove('hidden');
       modal.classList.add('flex');
     }
@@ -105,7 +133,38 @@
       modal.classList.add('hidden');
       modal.classList.remove('flex');
     }
-  </script>
 
+    // Slider
+    let currentSlide = 0;
+    const slider = document.getElementById('sliderImages');
+    const totalSlides = slider.children.length;
+
+    function updateSlider() {
+      slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+    }
+
+    function nextSlide() {
+      currentSlide = (currentSlide + 1) % totalSlides;
+      updateSlider();
+    }
+
+    function prevSlide() {
+      currentSlide = (currentSlide - 1 + totalSlides) % totalSlides;
+      updateSlider();
+    }
+
+    // Sidebar
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const overlay = document.getElementById('overlay');
+      sidebar.classList.toggle('-translate-x-full');
+      overlay.classList.toggle('hidden');
+    }
+
+    function closeSidebar() {
+      document.getElementById('sidebar').classList.add('-translate-x-full');
+      document.getElementById('overlay').classList.add('hidden');
+    }
+  </script>
 </body>
 </html>

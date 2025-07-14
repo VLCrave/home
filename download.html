@@ -5,10 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>VLCrave Express - Unduh Sekarang!</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
   <style>
     :root {
       --primary-color: #ff6f00;
-      --secondary-color: #f4f7ff;
       --text-color: #333;
       --muted-color: #777;
       --bg-color: #fff;
@@ -26,6 +27,37 @@
       max-width: 480px;
       margin: auto;
       padding: 24px 16px;
+    }
+
+    /* Static Sidebar (non-toggle) */
+    #sidebar {
+      background: #fff;
+      padding: 20px 16px;
+      border-bottom: 1px solid #eee;
+    }
+
+    #sidebar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    #sidebar li {
+      display: inline;
+    }
+
+    #sidebar a {
+      text-decoration: none;
+      color: var(--text-color);
+      font-weight: 500;
+      font-size: 15px;
+    }
+
+    #sidebar a:hover {
+      color: var(--primary-color);
     }
 
     .logo-section {
@@ -176,54 +208,11 @@
       font-size: 20px;
       font-weight: 700;
       color: #222;
-      line-height: 1.2;
     }
 
     .stat-label {
       font-size: 12px;
       color: #666;
-    }
-
-    .voucher-referral {
-      background: #fff4e5;
-      padding: 20px;
-      border-radius: 12px;
-      margin: 32px 0;
-      text-align: center;
-      font-size: 14px;
-      color: #444;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-    }
-
-    .voucher-referral b {
-      color: #e65c00;
-    }
-
-    .testimonials {
-      background: #fff8f2;
-      padding: 24px;
-      border-radius: 12px;
-      margin: 32px 0;
-    }
-
-    .testimonials h2 {
-      font-size: 16px;
-      font-weight: bold;
-      text-align: center;
-      margin-bottom: 16px;
-    }
-
-    .testimonial {
-      margin-bottom: 16px;
-      font-size: 13px;
-      color: #444;
-    }
-
-    .testimonial span {
-      display: block;
-      font-size: 12px;
-      color: #999;
-      margin-top: 6px;
     }
 
     footer {
@@ -251,15 +240,23 @@
   </style>
 </head>
 <body>
+
+  <!-- Sidebar Static -->
+  <div id="sidebar">
+    <ul>
+      <li><a href="/">🏠 Beranda</a></li>
+      <li><a href="/login.html">🔐 Login</a></li>
+      <li><a href="https://wa.me/6282181670112">📞 Kontak</a></li>
+    </ul>
+  </div>
+
   <div class="container">
-    <!-- Logo -->
     <section class="logo-section">
       <img src="./img/icon.png" alt="Logo VLCrave Express" />
       <div class="title">VLCrave Express Hadir di Bangka!</div>
       <div class="subtitle">Nikmati layanan antar makanan & belanja dengan promo spesial pengguna baru.</div>
     </section>
 
-    <!-- Tombol Download -->
     <section class="download-section">
       <a href="https://github.com/VLCrave/home/releases/download/vlcrave/VLCrave_Express_5_0_9.apk" download>
         <img src="./img/download.png" alt="Download APK VLCrave Express" />
@@ -267,7 +264,6 @@
       <div class="caption">Unduh sekarang dan nikmati gratis ongkir hingga 30%!</div>
     </section>
 
-    <!-- Slider -->
     <div class="slider-container">
       <div class="slider-wrapper" id="slider">
         <img src="./img/banner1.png" alt="Banner 1">
@@ -278,7 +274,6 @@
       </div>
     </div>
 
-    <!-- Fitur -->
     <section class="features-section">
       <h2>Kenapa Pilih VLCrave?</h2>
       <div class="feature">
@@ -304,10 +299,8 @@
       </div>
     </section>
 
-    <!-- CTA Mitra -->
     <a href="https://vlcrave.github.io/home/mitra.html" class="cta-mitra">Daftar Jadi Mitra</a>
 
-    <!-- Statistik -->
     <div class="stats-bar">
       <div class="stat-item">
         <i class="fas fa-motorcycle"></i>
@@ -331,8 +324,8 @@
         </div>
       </div>
     </div>
+  </div>
 
-  <!-- Footer -->
   <footer>
     &copy; 2025 VLCrave Express
     <div class="social-icons">
@@ -342,9 +335,7 @@
     </div>
   </footer>
 
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <!-- Script Firebase & Slider -->
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyAfBzoX9kUwUTWfQYT6QLndd_mP03__8Wo",
@@ -370,7 +361,6 @@
       }
     }
 
-    // Slider Otomatis
     const slider = document.getElementById("slider");
     let index = 0;
     const slides = slider.children.length;
